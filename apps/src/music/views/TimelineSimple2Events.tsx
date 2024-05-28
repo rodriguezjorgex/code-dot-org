@@ -187,7 +187,7 @@ const TimelineSimple2Events: React.FunctionComponent<
             key={index}
             eventData={eventData}
             barWidth={barWidth}
-            height={eventHeight - eventVerticalSpace - 1}
+            height={eventHeight - 1}
             top={
               32 +
               getVerticalOffsetForEventId(

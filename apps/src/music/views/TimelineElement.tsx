@@ -36,6 +36,7 @@ const TimelineElement: React.FunctionComponent<TimelineElementProps> = ({
   );
   const isInsideRandom = eventData.skipContext?.insideRandom;
   const isSkipSound = isPlaying && eventData.skipContext?.skipSound;
+  const isThinBorder = height <= 4;
 
   const isCurrentlyPlaying =
     isPlaying &&
@@ -62,7 +63,8 @@ const TimelineElement: React.FunctionComponent<TimelineElementProps> = ({
         isInsideRandom && moduleStyles.timelineElementInsideRandom,
         isSkipSound && moduleStyles.timelineElementSkipSound,
         isBlockSelected && moduleStyles.timelineElementBlockSelected,
-        !isPlaying && moduleStyles.timelineElementClickable
+        !isPlaying && moduleStyles.timelineElementClickable,
+        isThinBorder && moduleStyles.timelineElementThinBorder
       )}
       style={{
         width: barWidth * eventData.length,
