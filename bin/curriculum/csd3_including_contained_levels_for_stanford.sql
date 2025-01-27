@@ -1,3 +1,6 @@
+--
+-- this is an analytics query, to be run against the redshift database.
+--
 with
     course_structure_segment as (
         select distinct
