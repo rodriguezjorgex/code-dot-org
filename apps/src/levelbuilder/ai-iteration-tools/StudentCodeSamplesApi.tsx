@@ -7,7 +7,7 @@ export async function fetchStudentCodeSamples(
 ): Promise<string | null> {
   try {
     const response = await fetch(
-      `/student_code_samples/${numSamples}/${scriptId}/${levelId}`,
+      `/student_code_sample/${numSamples}/${scriptId}/${levelId}`,
       {
         method: 'GET',
         headers: {

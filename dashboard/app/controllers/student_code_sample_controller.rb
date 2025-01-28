@@ -25,8 +25,9 @@ class StudentCodeSampleController < ApplicationController
     sections = Section.where(script_id: params[:script_id].to_i)
     student_ids = Follower.where(section: sections).pluck(:student_user_id)
     code_samples = []
-    until code_samples.length == num_samples
-      student_ids.each do |student_id|
+    have_enough_samples = false
+    student_ids.each do |student_id|
+      unless have_enough_samples
         storage_id = storage_id_for_user_id(student_id)
         channel_token = ChannelToken.where(storage_id: storage_id, level_id: level_id, script_id: script_id).last
         user_level = UserLevel.where(user_id: student_id, level_id: level_id, script_id: script_id).last
@@ -39,6 +40,7 @@ class StudentCodeSampleController < ApplicationController
           student_code = JSON.parse(body)['source'] if body
           code_samples << {level_id: level_id, script_id: script_id, user_id: student_id, project_id: token, student_code: student_code}
         end
+        have_enough_samples = code_samples.length >= num_samples
       end
     end
     render json: code_samples
