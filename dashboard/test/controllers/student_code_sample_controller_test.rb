@@ -5,13 +5,14 @@ class StudentCodeSampleControllerTest < ActionController::TestCase
     @controller = StudentCodeSampleController.new
   end
 
-  # Anonymous, signed-out user cannot fetch student code samples
+  # Anonymous, signed-out user cannot fetch student code samples,
+  # expects redirect to sign in
   test_user_gets_response_for :fetch_student_code_samples,
   name: "no_user_no_access_test",
   user: nil,
   method: :get,
   params: {level_id: 123, script_id: 456, num_samples: 7},
-  response: :forbidden
+  response: :redirect
 
   # Student cannot fetch student code samples
   test_user_gets_response_for :fetch_student_code_samples,

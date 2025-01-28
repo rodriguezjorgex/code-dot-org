@@ -354,9 +354,9 @@ class Ability
       can :extra_links, ProjectsController
     end
 
-    if user.can_use_ai_iteration_tools?
+    if user.persisted? && user.can_use_ai_iteration_tools?
       can [:tools], :ai_iteration
-      can [:fetch_student_code_samples], :student_code_samples
+      can [:fetch_student_code_samples], :student_code_sample
     end
 
     # In order to accommodate the possibility of there being no database, we

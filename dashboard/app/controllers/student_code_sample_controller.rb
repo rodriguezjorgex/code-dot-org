@@ -1,7 +1,8 @@
 class StudentCodeSampleController < ApplicationController
-  def fetch_student_code_samples
-    return head :forbidden unless current_user&.can_use_ai_iteration_tools?
+  authorize_resource class: false
 
+  # GET /student_code_sample/fetch_student_code_samples
+  def fetch_student_code_samples
     level_id = params[:level_id]
     script_id = params[:script_id]
     num_samples = params[:num_samples].to_i
