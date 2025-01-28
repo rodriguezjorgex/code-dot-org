@@ -10,7 +10,7 @@ class AiIterationControllerTest < ActionController::TestCase
   name: "no_user_no_access_test",
   user: nil,
   method: :get,
-  response: :forbidden
+  response: :redirect
 
   # Student cannot access the tools page
   test_user_gets_response_for :tools,
