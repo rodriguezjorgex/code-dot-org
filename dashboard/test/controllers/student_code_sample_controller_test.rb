@@ -48,9 +48,19 @@ class StudentCodeSampleControllerTest < ActionController::TestCase
   # AI Tutor Access + Levelbuilder can fetch student code samples
   # not found if bogus params
   test_user_gets_response_for :fetch_student_code_samples,
-  name: "ai_iteration_tools_user_can_access_test",
+  name: "ai_iteration_tools_user_can_access_bogus_params",
   user: :ai_iteration_tools_user,
   method: :get,
   params: {level_id: 123, script_id: 456, num_samples: 7},
   response: :not_found
+
+  # AI Tutor Access + Levelbuilder response ok if valid params
+  test 'ai iteration tools user can access valid params",' do
+    user = create(:ai_iteration_tools_user)
+    sign_in(user)
+    level = create(:level)
+    script = create(:script)
+    get :fetch_student_code_samples, params: {level_id: level.id, script_id: script.id, num_samples: 0}
+    assert_response :ok
+  end
 end
