@@ -16,7 +16,7 @@ class UserLevelInteractionsController < ApplicationController
         render(status: :not_acceptable, json: {error: 'There was an error creating a new UserLevelInteraction.'})
       end
     else
-      render(status: :ok, json: {message: 'UserLevelInteraction not created because this is not a CSP 2024+ script or the user is not a student.'})
+      render(status: :bad_request, json: {message: 'UserLevelInteraction not created because this is not a CSP 2024+ script or the user is not a student.'})
     end
   end
 
@@ -46,23 +46,18 @@ class UserLevelInteractionsController < ApplicationController
       :school_year,
       :interaction,
       :code_version,
+      :metadata,
     )
     user_level_interaction_params[:user_id] = current_user.id
     user_level_interaction_params[:school_year] = school_year
     unit = Unit.find(user_level_interaction_params[:script_id])
-    version_year = unit.version_year
-    level = Level.find(user_level_interaction_params[:level_id])
+    parsed_metadata = JSON.parse(user_level_interaction_params[:metadata])
     project_data = get_project_and_version_id(user_level_interaction_params[:level_id], user_level_interaction_params[:script_id])
     user_level_interaction_params[:code_version] = project_data[:version_id]
-    metadata = {
-      course_offering: unit.properties["curriculum_umbrella"],
-      version_year: version_year,
-      unit: unit.name,
-      level_type: level.type,
-      user_type: current_user.user_type,
-      project_id: project_data[:project_id],
-    }.to_json
-    user_level_interaction_params[:metadata] = metadata
+    parsed_metadata[:course_offering] = unit.properties["curriculum_umbrella"]
+    parsed_metadata[:user_type] = current_user.user_type
+    parsed_metadata[:project_id] = project_data[:project_id]
+    user_level_interaction_params[:metadata] = parsed_metadata.to_json
     user_level_interaction_params
   end
 end
