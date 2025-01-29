@@ -8,12 +8,14 @@ import {EVENTS} from '@cdo/apps/metrics/AnalyticsConstants';
 import {useAppSelector} from '@cdo/apps/util/reduxHooks';
 
 import {sendCodebridgeAnalyticsEvent} from '../utils/analyticsReporterHelper';
+import {logUserLevelInteraction} from '@cdo/apps/userLevelInteractionsLogger/userLevelInteractionsApi';
 
 import ForTeachersOnly from './ForTeachersOnly';
 import HelpAndTips from './HelpAndTips';
 
 import moduleStyles from './styles/info-panel.module.scss';
 import darkModeStyles from '@cdo/apps/lab2/styles/dark-mode.module.scss';
+import {UserLevelInteractions} from '@cdo/generated-scripts/sharedConstants';
 
 enum Panels {
   Instructions = 'Instructions',
@@ -46,6 +48,8 @@ const panelHeaderNames = {
 };
 
 export const InfoPanel = React.memo(() => {
+  const levelId = useAppSelector(state => state.lab.levelProperties?.id);
+  const scriptId = useAppSelector(state => state.lab.scriptId);
   const mapReference = useAppSelector(
     state => state.lab.levelProperties?.mapReference
   );
@@ -119,6 +123,13 @@ export const InfoPanel = React.memo(() => {
   };
 
   const changePanel = (panel: Panels) => {
+    if (panel == Panels.HelpAndTips) {
+      logUserLevelInteraction({
+        levelId: levelId,
+        scriptId: scriptId,
+        interaction: UserLevelInteractions.click_help_and_tips,
+      });
+    }
     if (panel !== currentPanel) {
       setCurrentPanel(panel);
       setCurrentPanelHeader(panelHeaderNames[panel]);

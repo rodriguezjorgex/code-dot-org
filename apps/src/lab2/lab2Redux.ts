@@ -81,6 +81,8 @@ export interface LabState {
   validationState: ValidationState;
   // Level properties for the current level.
   levelProperties: LevelProperties | undefined;
+  // Script id for the current level.
+  scriptId: number | undefined;
   // If this lab should presented in a "share" or "play-only" view, which may hide certain UI elements.
   isShareView: boolean | undefined;
   // If this lab is blocked because abuse score >= 15.
@@ -97,6 +99,7 @@ const initialState: LabState = {
   initialSources: undefined,
   validationState: getInitialValidationState(),
   levelProperties: undefined,
+  scriptId: undefined,
   isShareView: undefined,
   isBlocked: undefined,
   overrideValidations: undefined,
@@ -142,6 +145,8 @@ export const setUpWithLevel = createAsyncThunk<
     const levelProperties = await loadLevelProperties(
       payload.levelPropertiesPath
     );
+
+    thunkAPI.dispatch(setScriptId(payload.scriptId));
 
     Lab2Registry.getInstance()
       .getMetricsReporter()
@@ -386,6 +391,9 @@ const labSlice = createSlice({
     },
     setChannel(state, action: PayloadAction<Channel | undefined>) {
       state.channel = action.payload;
+    },
+    setScriptId(state, action: PayloadAction<number | undefined>) {
+      state.scriptId = action.payload;
     },
     setValidationState(state, action: PayloadAction<ValidationState>) {
       state.validationState = {...action.payload};
@@ -638,6 +646,7 @@ export const {
   setValidationState,
   setIsShareView,
   setOverrideValidations,
+  setScriptId,
   onLevelChange,
   setPermissions,
 } = labSlice.actions;
