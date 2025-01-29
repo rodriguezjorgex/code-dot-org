@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class StudentCodeSampleControllerTest < ActionController::TestCase
+  include Devise::Test::ControllerHelpers
+
   setup do
     @controller = StudentCodeSampleController.new
   end

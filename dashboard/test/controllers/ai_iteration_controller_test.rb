@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class AiIterationControllerTest < ActionController::TestCase
+  include Devise::Test::ControllerHelpers
+
   setup do
     @controller = AiIterationController.new
   end
