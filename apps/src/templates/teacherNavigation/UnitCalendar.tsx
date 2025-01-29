@@ -29,7 +29,7 @@ import styles from './teacher-navigation.module.scss';
 const WEEKLY_INSTRUCTIONAL_MINUTES_OPTIONS = [
   45, 90, 135, 180, 225, 270, 315, 360, 405, 450,
 ];
-export const WEEK_WIDTH = 585;
+export const WEEK_WIDTH = 800;
 
 const UnitCalendar: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -194,7 +194,7 @@ const UnitCalendar: React.FC = () => {
               </div>
             </div>
             <UnitCalendarGrid
-              lessons={calendarLessons}
+              lessons={calendarLessons || []}
               weeklyInstructionalMinutes={parseInt(weeklyInstructionalMinutes)}
               weekWidth={WEEK_WIDTH}
             />
