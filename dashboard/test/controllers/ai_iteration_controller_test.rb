@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'webmock/minitest'
 
 class AiIterationControllerTest < ActionController::TestCase
   include Devise::Test::ControllerHelpers
