@@ -1,5 +1,5 @@
+require 'aws-sdk-s3'
 require 'test_helper'
-require 'webmock/minitest'
 
 class StudentCodeSampleControllerTest < ActionController::TestCase
   include Devise::Test::ControllerHelpers
