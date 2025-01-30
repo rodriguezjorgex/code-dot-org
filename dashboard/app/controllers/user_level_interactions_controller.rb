@@ -16,19 +16,19 @@ class UserLevelInteractionsController < ApplicationController
         render(status: :not_acceptable, json: {error: 'There was an error creating a new UserLevelInteraction.'})
       end
     else
-      render(status: :bad_request, json: {message: 'UserLevelInteraction not created because this is not a CSP 2024+ script or the user is not a student.'})
+      render(status: :bad_request, json: {message: 'UserLevelInteraction not created because this is not a CSP 2024+ script.'})
     end
   end
 
   # The UserLevelInteractions table has the potential to grow very quickly.
   # Given that we are still experimenting with the best way to store and use this data,
   # we are going to cautiously limit the number of interactions we store to only
-  # CSP units from 2024 and beyond for students.
+  # CSP units from 2024 and beyond.
   def should_create_uli?(metadata)
     parsed_metadata = JSON.parse(metadata)
     course_offering = parsed_metadata["course_offering"]
     version_year = parsed_metadata["version_year"]
-    current_user.student? && csp_unit?(course_offering) && recent_unit?(version_year)
+    csp_unit?(course_offering) && recent_unit?(version_year)
   end
 
   def csp_unit?(course_offering)
@@ -46,18 +46,25 @@ class UserLevelInteractionsController < ApplicationController
       :school_year,
       :interaction,
       :code_version,
-      :metadata,
     )
     user_level_interaction_params[:user_id] = current_user.id
     user_level_interaction_params[:school_year] = school_year
-    unit = Unit.find(user_level_interaction_params[:script_id])
-    parsed_metadata = JSON.parse(user_level_interaction_params[:metadata])
+    script_id = user_level_interaction_params[:script_id]
+    unit = Unit.find(script_id)
+    level = Level.find(user_level_interaction_params[:level_id])
     project_data = get_project_and_version_id(user_level_interaction_params[:level_id], user_level_interaction_params[:script_id])
+    channel = get_channel_for(level, script_id, current_user)
     user_level_interaction_params[:code_version] = project_data[:version_id]
-    parsed_metadata[:course_offering] = unit.properties["curriculum_umbrella"]
-    parsed_metadata[:user_type] = current_user.user_type
-    parsed_metadata[:project_id] = project_data[:project_id]
-    user_level_interaction_params[:metadata] = parsed_metadata.to_json
+    metadata = {
+      course_offering: unit.properties["curriculum_umbrella"],
+      version_year: unit.get_course_version.key,
+      unit: unit.name,
+      level_type: level.type,
+      user_type: current_user.user_type,
+      project_id: project_data[:project_id],
+      channel: channel,
+    }.to_json
+    user_level_interaction_params[:metadata] = metadata
     user_level_interaction_params
   end
 end
