@@ -12,7 +12,9 @@ import {
 } from '@cdo/apps/music/player/interfaces/InstrumentEvent';
 import {SoundEvent} from '@cdo/apps/music/player/interfaces/SoundEvent';
 import MusicLibrary, {SoundData} from '@cdo/apps/music/player/MusicLibrary';
-import Simple2Sequencer from '@cdo/apps/music/player/sequencer/Simple2Sequencer';
+import Simple2Sequencer, {
+  maxSimultaneousDuplicateEvents,
+} from '@cdo/apps/music/player/sequencer/Simple2Sequencer';
 
 import setGoogleBlocklyGlobal from '../../../../util/setupGoogleBlocklyGlobal';
 
@@ -374,16 +376,17 @@ describe('Simple2Sequencer', () => {
     ]);
   });
 
-  it('does not play the same sound more than once at the same time', () => {
+  it('does not play the same sound too many times at the same time', () => {
     sequencer.newSequence();
     sequencer.startFunctionContext('when_run');
     sequencer.playTogether();
-    sequencer.playSound('id1', 'blockId1');
-    sequencer.playSound('id1', 'blockId1');
+    for (let i = 0; i < maxSimultaneousDuplicateEvents + 2; i++) {
+      sequencer.playSound('id1', 'blockId1');
+    }
     sequencer.endTogether();
     sequencer.endFunctionContext();
 
     const playbackEvents = sequencer.getPlaybackEvents();
-    expect(playbackEvents.length).to.equal(1);
+    expect(playbackEvents.length).to.equal(maxSimultaneousDuplicateEvents);
   });
 });

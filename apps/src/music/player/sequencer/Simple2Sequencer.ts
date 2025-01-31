@@ -34,6 +34,9 @@ interface SkipFrame {
   randomIndex: number;
 }
 
+// How many times the same sound can be played at the same moment.
+export const maxSimultaneousDuplicateEvents = 3;
+
 /**
  * A {@link Sequencer} used in the Simple2 (functions) block mode.
  */
@@ -48,9 +51,9 @@ export default class Simple2Sequencer extends Sequencer {
   private startMeasure: number;
   private inTrigger: boolean;
 
-  // A set of strings (e.g. "electro/beat-4", which is a hyphen-separated event ID and measure) that are
-  // used to ensure the same sound isn't played more than once at the same time.
-  private uniqueEvents: Set<string>;
+  // A Map of strings (e.g. "electro/beat-4", which is a hyphen-separated event ID and measure) that are
+  // used to ensure the same sound isn't played more than a certain number of times at the same moment.
+  private uniqueEventCounts: Map<string, number>;
 
   private currentEventCount: number;
 
@@ -64,7 +67,7 @@ export default class Simple2Sequencer extends Sequencer {
     this.randomStack = [];
 
     this.functionMap = {};
-    this.uniqueEvents = new Set();
+    this.uniqueEventCounts = new Map();
     this.uniqueInvocationIdUpTo = 0;
     this.startMeasure = 1;
     this.inTrigger = false;
@@ -79,7 +82,7 @@ export default class Simple2Sequencer extends Sequencer {
   clear(existingEventCount: number = 0) {
     this.newSequence();
     this.functionMap = {};
-    this.uniqueEvents.clear();
+    this.uniqueEventCounts.clear();
 
     this.currentEventCount = existingEventCount;
   }
@@ -333,7 +336,8 @@ export default class Simple2Sequencer extends Sequencer {
 
   private addNewEvent<T extends PlaybackEvent>(event: T) {
     const uniqueEventKey = `${event.id}-${event.when}`;
-    if (this.uniqueEvents.has(uniqueEventKey)) {
+    const uniqueEventCount = this.uniqueEventCounts.get(uniqueEventKey) || 0;
+    if (uniqueEventCount >= maxSimultaneousDuplicateEvents) {
       return;
     }
 
@@ -354,7 +358,7 @@ export default class Simple2Sequencer extends Sequencer {
 
     currentFunction.playbackEvents.push(event);
     this.updateMeasureForPlayByLength(event.length);
-    this.uniqueEvents.add(uniqueEventKey);
+    this.uniqueEventCounts.set(uniqueEventKey, uniqueEventCount + 1);
   }
 
   // Internal helper to get the entry at the top of the stack, or null
