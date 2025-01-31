@@ -51,10 +51,6 @@ export default class Simple2Sequencer extends Sequencer {
   private startMeasure: number;
   private inTrigger: boolean;
 
-  // A Map of strings (e.g. "electro/beat-4", which is a hyphen-separated event ID and measure) that are
-  // used to ensure the same sound isn't played more than a certain number of times at the same moment.
-  private uniqueEventCounts: Map<string, number>;
-
   private currentEventCount: number;
 
   constructor(
@@ -67,7 +63,6 @@ export default class Simple2Sequencer extends Sequencer {
     this.randomStack = [];
 
     this.functionMap = {};
-    this.uniqueEventCounts = new Map();
     this.uniqueInvocationIdUpTo = 0;
     this.startMeasure = 1;
     this.inTrigger = false;
@@ -82,7 +77,6 @@ export default class Simple2Sequencer extends Sequencer {
   clear(existingEventCount: number = 0) {
     this.newSequence();
     this.functionMap = {};
-    this.uniqueEventCounts.clear();
 
     this.currentEventCount = existingEventCount;
   }
@@ -335,12 +329,6 @@ export default class Simple2Sequencer extends Sequencer {
   }
 
   private addNewEvent<T extends PlaybackEvent>(event: T) {
-    const uniqueEventKey = `${event.id}-${event.when}`;
-    const uniqueEventCount = this.uniqueEventCounts.get(uniqueEventKey) || 0;
-    if (uniqueEventCount >= maxSimultaneousDuplicateEvents) {
-      return;
-    }
-
     this.currentEventCount++;
     if (this.currentEventCount === MAX_NUMBER_EVENTS) {
       console.log(`Reached MAX_NUMBER_EVENTS (${MAX_NUMBER_EVENTS}) events.`);
@@ -358,7 +346,6 @@ export default class Simple2Sequencer extends Sequencer {
 
     currentFunction.playbackEvents.push(event);
     this.updateMeasureForPlayByLength(event.length);
-    this.uniqueEventCounts.set(uniqueEventKey, uniqueEventCount + 1);
   }
 
   // Internal helper to get the entry at the top of the stack, or null
