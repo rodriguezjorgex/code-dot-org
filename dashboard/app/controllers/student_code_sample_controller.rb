@@ -7,6 +7,8 @@ class StudentCodeSampleController < ApplicationController
     script_id = params[:script_id]
     num_samples = params[:num_samples].to_i
 
+    return render json: [] if num_samples == 0
+
     begin
       Level.find(level_id)
     rescue ActiveRecord::RecordNotFound
