@@ -34,9 +34,6 @@ interface SkipFrame {
   randomIndex: number;
 }
 
-// How many times the same sound can be played at the same moment.
-export const maxSimultaneousDuplicateEvents = 3;
-
 /**
  * A {@link Sequencer} used in the Simple2 (functions) block mode.
  */
