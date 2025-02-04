@@ -233,26 +233,6 @@ const TimelineSimple2Events: React.FunctionComponent<
             functionExtents={functionExtents}
           />
         ))}
-<<<<<<< HEAD
-      </div>
-      <div id="timeline-events-sound-events">
-        {soundEvents.map((eventData, index) => (
-          <TimelineElement
-            key={index}
-            eventData={eventData}
-            barWidth={barWidth}
-            height={eventHeight - 1}
-            top={
-              32 +
-              getVerticalOffsetForEventId(
-                eventData.functionContext?.name + ' ' + eventData.id
-              )
-            }
-            left={paddingOffset + barWidth * (eventData.when - 1)}
-          />
-        ))}
-      </div>
-=======
     </div>
   );
 
@@ -263,7 +243,7 @@ const TimelineSimple2Events: React.FunctionComponent<
           key={index}
           eventData={eventData}
           barWidth={barWidth}
-          height={eventHeight - eventVerticalSpace - 1}
+          height={eventHeight - 1}
           top={
             32 +
             getVerticalOffsetForEventId(
@@ -280,7 +260,6 @@ const TimelineSimple2Events: React.FunctionComponent<
     <div id="timeline-events">
       {timelineFunctionExtents}
       {timelineSoundEvents}
->>>>>>> staging
     </div>
   );
 };
