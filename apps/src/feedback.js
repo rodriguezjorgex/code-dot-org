@@ -309,14 +309,19 @@ FeedbackUtils.prototype.displayFeedback = function (
 
   const levelId = this.studioApp_.config.serverLevelId;
   const scriptId = this.studioApp_.config.serverScriptId;
+  // We only want to log UserLevelInteractions for units from 2024 onwards.
+  const unitYear = Number(this.studioApp_.config.unitYear);
+
   if (againButton) {
     dom.addClickTouchEvent(againButton, function () {
       feedbackDialog.hide();
-      logUserLevelInteraction({
-        levelId: levelId,
-        scriptId: scriptId,
-        interaction: UserLevelInteractions.click_keep_working,
-      });
+      if (unitYear >= 2024) {
+        logUserLevelInteraction({
+          levelId: levelId,
+          scriptId: scriptId,
+          interaction: UserLevelInteractions.click_keep_working,
+        });
+      }
     });
   }
 
@@ -410,11 +415,13 @@ FeedbackUtils.prototype.displayFeedback = function (
           level_id: options.response.level_id,
         });
       }
-      logUserLevelInteraction({
-        levelId: levelId,
-        scriptId: scriptId,
-        interaction: UserLevelInteractions.click_continue,
-      });
+      if (unitYear >= 2024) {
+        logUserLevelInteraction({
+          levelId: levelId,
+          scriptId: scriptId,
+          interaction: UserLevelInteractions.click_continue,
+        });
+      }
       options.onContinue();
     });
   }
