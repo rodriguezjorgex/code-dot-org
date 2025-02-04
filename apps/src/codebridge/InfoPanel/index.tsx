@@ -5,17 +5,17 @@ import React, {useEffect, useState} from 'react';
 import codebridgeI18n from '@cdo/apps/codebridge/locale';
 import PanelContainer from '@cdo/apps/lab2/views/components/PanelContainer';
 import {EVENTS} from '@cdo/apps/metrics/AnalyticsConstants';
+import {logUserLevelInteraction} from '@cdo/apps/userLevelInteractionsLogger/userLevelInteractionsApi';
 import {useAppSelector} from '@cdo/apps/util/reduxHooks';
+import {UserLevelInteractions} from '@cdo/generated-scripts/sharedConstants';
 
 import {sendCodebridgeAnalyticsEvent} from '../utils/analyticsReporterHelper';
-import {logUserLevelInteraction} from '@cdo/apps/userLevelInteractionsLogger/userLevelInteractionsApi';
 
 import ForTeachersOnly from './ForTeachersOnly';
 import HelpAndTips from './HelpAndTips';
 
 import moduleStyles from './styles/info-panel.module.scss';
 import darkModeStyles from '@cdo/apps/lab2/styles/dark-mode.module.scss';
-import {UserLevelInteractions} from '@cdo/generated-scripts/sharedConstants';
 
 enum Panels {
   Instructions = 'Instructions',
@@ -123,7 +123,7 @@ export const InfoPanel = React.memo(() => {
   };
 
   const changePanel = (panel: Panels) => {
-    if (panel == Panels.HelpAndTips) {
+    if (panel === Panels.HelpAndTips) {
       logUserLevelInteraction({
         levelId: levelId,
         scriptId: scriptId,
@@ -139,7 +139,6 @@ export const InfoPanel = React.memo(() => {
   };
 
   const CurrentPanelView = panelMap[currentPanel];
-
   return (
     <PanelContainer
       id="codebridge-info-panel"
