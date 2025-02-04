@@ -1,156 +1,132 @@
 class AichatController < ApplicationController
-  include AichatSagemakerHelper
   authorize_resource class: false
 
-  # params are
-  # newMessage: string
-  # storedMessages: Array of {role: <'user', 'system', or 'assistant'>; content: string} - does not include user's new message
-  # aichatModelCustomizations: {temperature: number; retrievalContexts: string[]; systemPrompt: string;}
-  # aichatContext: {currentLevelId: number; scriptId: number; channelId: string;}
-  # POST /aichat/chat_completion
-  def chat_completion
-    return render status: :forbidden, json: {} unless AichatSagemakerHelper.can_request_aichat_chat_completion?
-    unless has_required_params?
+  # params are newChatEvent: ChatEvent, aichatContext: {currentLevelId: number; scriptId: number; channelId: string;}
+  # POST /aichat/log_chat_event
+  def log_chat_event
+    begin
+      params.require([:newChatEvent, :aichatContext])
+    rescue ActionController::ParameterMissing
       return render status: :bad_request, json: {}
     end
 
-    # Check for profanity
-    locale = params[:locale] || "en"
-    filter_result = ShareFiltering.find_failure(params[:newMessage], locale)
-    if filter_result&.type == ShareFiltering::FailureType::PROFANITY
-      new_messages = [
-        {
-          role: 'user',
-          content: params[:newMessage],
-          status: SharedConstants::AI_INTERACTION_STATUS[:PROFANITY_VIOLATION]
-        }
-      ]
-      session_id = log_chat_session(new_messages)
-      return render(
-        status: :ok,
-        json: {
-          status: SharedConstants::AICHAT_ERROR_TYPE[:PROFANITY_USER],
-          flagged_content: filter_result.content,
-          session_id: session_id
-        }
-      )
+    context = params[:aichatContext]
+    event = params[:newChatEvent]
+
+    project_id = nil
+    if context[:channelId]
+      _, project_id = storage_decrypt_channel_id(context[:channelId])
     end
 
-    # Use to_unsafe_h here to allow testing this function.
-    # Safe params are primarily targeted at preventing "mass assignment vulnerability"
-    # which isn't relevant here.
-    input = AichatSagemakerHelper.format_inputs_for_sagemaker_request(
-      params.to_unsafe_h[:aichatModelCustomizations],
-      params.to_unsafe_h[:storedMessages].filter {|message| message[:status] == SharedConstants::AI_INTERACTION_STATUS[:OK]},
-      params.to_unsafe_h[:newMessage]
-    )
-    sagemaker_response = AichatSagemakerHelper.request_sagemaker_chat_completion(input, params[:aichatModelCustomizations][:selectedModelId])
-    latest_assistant_response = AichatSagemakerHelper.get_sagemaker_assistant_response(sagemaker_response)
-
-    filter_result = ShareFiltering.find_failure(latest_assistant_response, locale)
-    if filter_result&.type == ShareFiltering::FailureType::PROFANITY
-      new_messages = [
-        {
-          role: 'user',
-          content: params[:newMessage],
-          status: SharedConstants::AI_INTERACTION_STATUS[:ERROR]
-        }
-      ]
-      session_id = log_chat_session(new_messages)
-
-      Honeybadger.notify(
-        'Profanity returned from aichat model (blocked before reaching student)',
-        context: {
-          model_response: latest_assistant_response,
-          flagged_content: filter_result.content,
-          aichat_session_id: session_id
-        }
-      )
-      return render(
-        status: :ok,
-        json: {
-          status: SharedConstants::AICHAT_ERROR_TYPE[:PROFANITY_MODEL],
-          session_id: session_id
-        }
-      )
-    end
-
-    assistant_message = {role: "assistant", content: latest_assistant_response, status: SharedConstants::AI_INTERACTION_STATUS[:OK]}
-    new_messages = [
-      {role: 'user', content: params[:newMessage], status: SharedConstants::AI_INTERACTION_STATUS[:OK]},
-      assistant_message,
-    ]
-    session_id = log_chat_session(new_messages)
-
-    render(status: :ok, json: assistant_message.merge({session_id: session_id}).to_json)
-  end
-
-  private def has_required_params?
     begin
-      params.require([:newMessage, :aichatModelCustomizations, :aichatContext])
+      logged_event = AichatEvent.create!(
+        user_id: current_user.id,
+        level_id: context[:currentLevelId],
+        script_id: context[:scriptId],
+        project_id: project_id,
+        request_id: event[:requestId], # Only present if ChatEvent is a ChatMessage, otherwise nil
+        aichat_event: event
+      )
+    rescue StandardError => exception
+      return render status: :bad_request, json: {error: exception.message}
+    end
+
+    response_body = {
+      id: logged_event.id,
+      **logged_event.aichat_event
+    }
+
+    render(status: :ok, json: response_body)
+  end
+
+  # params are eventId: number, feedback?: 'clean_disagree' | 'profanity_agree' | 'profanity_disagree'
+  # POST /aichat/submit_teacher_feedback
+  # Update a given chat message with teacher feedback. If feedback is nil, remove any existing feedback.
+  # Also has the side effect of fixing up any chat events that were stored as strings.
+  def submit_teacher_feedback
+    begin
+      params.require([:eventId])
     rescue ActionController::ParameterMissing
-      return false
+      return render status: :bad_request, json: {}
     end
-    # It is possible that storedMessages is an empty array.
-    # If so, the above require check will not pass.
-    # Check storedMessages param separately.
-    params[:storedMessages].is_a?(Array)
-  end
 
-  private def log_chat_session(new_messages)
-    if params[:sessionId].present?
-      session_id = params[:sessionId]
-      session = AichatSession.find_by(id: session_id)
-      if session && matches_existing_session?(session)
-        return update_session(session, new_messages)
+    chat_event_id = params[:eventId]
+    feedback = params[:feedback]
+
+    return render status: :bad_request, json: {} if feedback && !SharedConstants::AI_CHAT_TEACHER_FEEDBACK.value?(feedback)
+
+    begin
+      chat_event = AichatEvent.find(chat_event_id)
+      unless can_view_student_chat_history?(chat_event.user_id)
+        return render(status: :forbidden, json: {error: "Access denied for submitting teacher feedback."})
       end
+
+      # Parse aichat_event if it's stored as a string
+      chat_event.aichat_event = JSON.parse(chat_event.aichat_event) if chat_event.aichat_event.is_a?(String)
+    rescue ActiveRecord::RecordNotFound
+      return render status: :not_found, json: {}
     end
 
-    create_session(new_messages)
+    chat_event.aichat_event.delete('teacherFeedback') if chat_event.aichat_event['teacherFeedback']
+    chat_event.aichat_event['teacherFeedback'] = feedback if feedback
+    chat_event.save!
+
+    render status: :ok, json: {}
   end
 
-  private def matches_existing_session?(session)
-    context = params[:aichatContext]
-    if session.level_id != context[:currentLevelId] ||
-        session.script_id != context[:scriptId] ||
-        current_user.id != session.user_id
-      return false
+  # params are studentUserId: number, levelId: number, scriptId: number
+  # GET /aichat/student_chat_history
+  def student_chat_history
+    # Request all chat events for a student at a given level/script.
+    begin
+      params.require([:studentUserId, :levelId, :scriptId])
+    rescue ActionController::ParameterMissing
+      return render status: :bad_request, json: {}
     end
 
-    _, project_id = storage_decrypt_channel_id(context[:channelId])
-    if session.project_id != project_id
-      return false
+    script_id = params[:scriptId]
+    level_id = params[:levelId]
+    student_user_id = params[:studentUserId]
+    unless can_view_student_chat_history?(student_user_id)
+      return render(status: :forbidden, json: {error: "Access denied for student chat history."})
     end
 
-    if params[:aichatModelCustomizations] != JSON.parse(session.model_customizations) ||
-        params[:storedMessages] != JSON.parse(session.messages)
-      return false
+    aichat_events = AichatEvent.where(user_id: student_user_id, level_id: level_id, script_id: script_id).order(:created_at).map do |event|
+      chat_event = event[:aichat_event].is_a?(String) ? JSON.parse(event[:aichat_event]) : event[:aichat_event]
+      {
+        id: event.id,
+        **chat_event
+      }
+    end
+    render json: aichat_events
+  end
+
+  # GET /aichat/user_has_access
+  def user_has_access
+    render(status: :ok, json: {userHasAccess: current_user&.has_aichat_access?})
+  end
+
+  # POST /aichat/find_toxicity
+  # Finds toxicity in the given system prompt and retrieval contexts and returns a list of flagged fields.
+  def find_toxicity
+    locale = params[:locale] || "en"
+    flagged_fields = []
+
+    if params[:systemPrompt].present?
+      toxicity = AichatSafetyHelper.find_toxicity('user', params[:systemPrompt], locale)
+      flagged_fields << {field: 'systemPrompt', toxicity: toxicity} if toxicity.present?
     end
 
-    true
+    if params[:retrievalContexts].present?
+      retrieval_joined = params[:retrievalContexts].join(' ')
+      toxicity = AichatSafetyHelper.find_toxicity('user', retrieval_joined, locale)
+      flagged_fields << {field: 'retrievalContexts', toxicity: toxicity} if toxicity.present?
+    end
+
+    render json: {flagged_fields: flagged_fields}.deep_transform_keys {|key| key.to_s.camelize(:lower)}
   end
 
-  private def update_session(session, new_messages)
-    session.messages = updated_message_list(new_messages).to_json
-    session.save
-    session.id
-  end
-
-  private def create_session(new_messages)
-    context = params[:aichatContext]
-    _, project_id = storage_decrypt_channel_id(context[:channelId])
-
-    AichatSession.create(
-      user_id: current_user.id,
-      level_id: context[:currentLevelId],
-      script_id: context[:scriptId],
-      project_id: project_id,
-      model_customizations: params[:aichatModelCustomizations].to_json,
-      messages: updated_message_list(new_messages).to_json
-    ).id
-  end
-
-  private def updated_message_list(new_messages)
-    params[:storedMessages] + new_messages
+  private def can_view_student_chat_history?(student_user_id)
+    User.find_by_id(student_user_id)&.student_of?(current_user)
   end
 end

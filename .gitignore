@@ -100,3 +100,7 @@ npm-debug.log
 /i18n/locales/*/piskel/
 /i18n/locales/*/standards/
 /i18n/locales/*/docs/
+
+# python venv:
+.venv
+.pdm-python

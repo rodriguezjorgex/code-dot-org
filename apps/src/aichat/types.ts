@@ -1,19 +1,72 @@
 import {LevelProperties} from '@cdo/apps/lab2/types';
+import type {
+  AiInteractionStatus,
+  AiChatModelIds,
+  AiChatTeacherFeedback,
+} from '@cdo/generated-scripts/sharedConstants';
 
-// TODO: Update this once https://codedotorg.atlassian.net/browse/CT-471 is resolved
-export type AichatInteractionStatusValue = string;
+import {Role} from '../aiComponentLibrary/chatMessage/types';
+import type {ValueOf} from '../types/utils';
 
-export type ChatCompletionMessage = {
-  id: number;
-  role: Role;
+import {FIELDS_CHECKED_FOR_TOXICITY} from './views/modelCustomization/constants';
+
+export type ChatEventDescriptionKey = 'COPY_CHAT' | 'CLEAR_CHAT' | 'LOAD_LEVEL';
+
+export interface ChatEvent {
+  // Populated from the db when fetching chat events from the backend
+  id?: number;
+  // UTC timestamp in milliseconds
+  timestamp: number;
+  // This field is optional but when it is defined, it must be set to `true`.
+  // This allows the chat event to be visible by default without having to add an extra field.
+  hideForParticipants?: true;
+  /** Optional key used if this event has a localized text description (ex. copy chat, clear chat, load level) */
+  descriptionKey?: ChatEventDescriptionKey;
+}
+
+// Convenience type for the values of AiChatTeacherFeedback
+export type FeedbackValue = ValueOf<typeof AiChatTeacherFeedback>;
+
+export interface ChatMessage extends ChatEvent {
   chatMessageText: string;
-  status: AichatInteractionStatusValue;
-  timestamp?: string;
-  // sessionId is the Rails-side identifier for the logging session to which this message belongs.
-  // It can be missing a) if the session has been reset because a model customization has changed (or chat history has been reset),
-  // or for model update messages that do not need to be sent to the server.
-  sessionId?: number;
-};
+  role: Role;
+  status: ValueOf<typeof AiInteractionStatus>;
+  requestId?: number;
+  // If undefined, the teacher took no action or undid their action.
+  teacherFeedback?: FeedbackValue;
+}
+
+export interface ModelUpdate extends ChatEvent {
+  id: number;
+  updatedField: keyof AiCustomizations;
+  updatedValue: AiCustomizations[keyof AiCustomizations];
+}
+
+export interface Notification extends ChatEvent {
+  id: number;
+  text: string;
+  notificationType: 'permissionsError' | 'error' | 'success';
+  includeInChatHistory?: boolean;
+}
+
+// Type Predicates: checks if a ChatEvent is a given type, and more helpfully,
+// automatically narrows to the specific type.
+export function isChatMessage(event: ChatEvent): event is ChatMessage {
+  return (event as ChatMessage).chatMessageText !== undefined;
+}
+
+export function isModelUpdate(event: ChatEvent): event is ModelUpdate {
+  return (event as ModelUpdate).updatedField !== undefined;
+}
+
+export function isNotification(event: ChatEvent): event is Notification {
+  return (event as Notification).notificationType !== undefined;
+}
+
+export interface ChatCompletionApiResponse {
+  messages: ChatMessage[];
+  flagged_content?: string;
+}
 
 export type AichatContext = {
   currentLevelId: number | null;
@@ -21,25 +74,12 @@ export type AichatContext = {
   channelId: string | undefined;
 };
 
-export enum Role {
-  ASSISTANT = 'assistant',
-  USER = 'user',
-  SYSTEM = 'system',
-  MODEL_UPDATE = 'update',
-}
-
 export enum ViewMode {
   EDIT = 'edit-mode',
   PRESENTATION = 'presentation-mode',
 }
 
 export interface AichatLevelProperties extends LevelProperties {
-  // --- DEPRECATED - used for old AI Chat
-  systemPrompt: string;
-  botTitle?: string;
-  botDescription?: string;
-  // ---
-
   /**
    * Initial AI chat customizations set by the level.
    * For each field, levelbuilders may define the initial default value,
@@ -53,7 +93,7 @@ export interface AichatLevelProperties extends LevelProperties {
 /** Model customizations and model card information for aichat levels.
  *  selectedModelId is a foreign key to ModelDescription.id */
 export interface AiCustomizations {
-  selectedModelId: string;
+  selectedModelId: ValueOf<typeof AiChatModelIds>;
   temperature: number;
   systemPrompt: string;
   retrievalContexts: string[];
@@ -63,6 +103,8 @@ export interface AiCustomizations {
 // Model customizations sent to backend for aichat levels - excludes modelCardInfo.
 // The customizations will be included in request to LLM endpoint.
 export type AichatModelCustomizations = Omit<AiCustomizations, 'modelCardInfo'>;
+
+export type FieldVisibilities = {[key in keyof AiCustomizations]: Visibility};
 
 /** Chat bot Model Card information */
 export interface ModelCardInfo {
@@ -77,7 +119,7 @@ export interface ModelCardInfo {
 
 /** Metadata about a given model, common across all aichat levels */
 export interface ModelDescription {
-  id: string;
+  id: ValueOf<typeof AiChatModelIds>;
   name: string;
   overview: string;
   trainingData: string;
@@ -97,8 +139,49 @@ export enum Visibility {
 export interface LevelAichatSettings {
   initialCustomizations: AiCustomizations;
   visibilities: {[key in keyof AiCustomizations]: Visibility};
+  // This system prompt is hidden from students and adds additional safety features or hidden guidelines to a level.
+  levelSystemPrompt: string;
   /** If the presentation panel is hidden from the student. */
   hidePresentationPanel: boolean;
   /** list of ModelDescription.ids to limit the models available to choose from in the level */
-  availableModelIds: string[];
+  availableModelIds: ValueOf<typeof AiChatModelIds>[];
+}
+
+// The type of save action being performed (customization update, publish, model card save, etc).
+export type SaveType = 'updateChatbot' | 'publishModelCard' | 'saveModelCard';
+
+/** Response structure for the detect toxicity API */
+export interface DetectToxicityResponse {
+  flaggedFields: FlaggedField[];
+}
+
+export type ToxicityCheckedField = (typeof FIELDS_CHECKED_FOR_TOXICITY)[number];
+
+export interface FlaggedField {
+  field: ToxicityCheckedField;
+  toxicity: {
+    text: string;
+    blockedBy: SafetyService;
+    details: BlocklistDetails | WebPurifyDetails | ComprehendDetails;
+  };
+}
+
+type SafetyService = 'blocklist' | 'webpurify' | 'comprehend';
+
+interface BlocklistDetails {
+  blockedWord: string;
+}
+
+interface WebPurifyDetails {
+  type: 'email' | 'address' | 'phone' | 'profanity';
+  content: string;
+}
+
+interface ComprehendDetails {
+  flaggedSegment: string;
+  toxicity: number;
+  maxCategory: {
+    name: string;
+    score: number;
+  };
 }

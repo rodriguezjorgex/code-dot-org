@@ -1,41 +1,50 @@
+import {EventEmitter} from 'events';
 import $ from 'jquery';
+import _ from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {EventEmitter} from 'events';
-import _ from 'lodash';
 import {Provider} from 'react-redux';
-import trackEvent from './util/trackEvent';
 
 // Make sure polyfills are available in all code studio apps and level tests.
 import './polyfills';
-import * as aceMode from './acemode/mode-javascript_codeorg';
-import * as assetPrefix from './assetManagement/assetPrefix';
-import * as assets from './code-studio/assets';
-import * as blockUtils from './block_utils';
-var codegen = require('./lib/tools/jsinterpreter/codegen');
-import * as dom from './dom';
-import * as dropletUtils from './dropletUtils';
-import * as shareWarnings from './shareWarnings';
-import * as utils from './utils';
-import AbuseError from './code-studio/components/AbuseError';
-import Alert from './templates/alert';
-import AuthoredHints from './authoredHints';
-import ChallengeDialog from './templates/ChallengeDialog';
-import DropletTooltipManager from './blockTooltips/DropletTooltipManager';
-import FeedbackUtils from './feedback';
+import {
+  Renderers,
+  stringIsXml,
+  stripUserCreated,
+} from '@cdo/apps/blockly/constants';
+import {addCallouts} from '@cdo/apps/code-studio/callouts';
+import {createLibraryClosure} from '@cdo/apps/code-studio/components/libraries/libraryParser';
+import WorkspaceAlert from '@cdo/apps/code-studio/components/WorkspaceAlert';
+import {queryParams} from '@cdo/apps/code-studio/utils';
+import {EVENTS, PLATFORMS} from '@cdo/apps/metrics/AnalyticsConstants';
+import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
+import {userAlreadyReportedAbuse} from '@cdo/apps/reportAbuse';
+import {setArrowButtonDisabled} from '@cdo/apps/templates/arrowDisplayRedux';
+import {
+  setUserRoleInCourse,
+  CourseRoles,
+} from '@cdo/apps/templates/currentUserRedux';
 import InstructionsDialog from '@cdo/apps/templates/instructions/InstructionsDialog';
-import SmallFooter from './code-studio/components/SmallFooter';
-import Sounds from './Sounds';
-import VersionHistory from './templates/VersionHistory';
-import WireframeButtons from './lib/ui/WireframeButtons';
-import annotationList from './acemode/annotationList';
-import color from './util/color';
-import firehoseClient from './lib/util/firehose';
-import getAchievements from './achievements';
-import logToCloud from './logToCloud';
+import {workspace_running_background, white} from '@cdo/apps/util/color';
+import experiments from '@cdo/apps/util/experiments';
 import msg from '@cdo/locale';
+
+import annotationList from './acemode/annotationList';
+import * as aceMode from './acemode/mode-javascript_codeorg';
+import getAchievements from './achievements';
+import * as assetPrefix from './assetManagement/assetPrefix';
+import AuthoredHints from './authoredHints';
+import * as blockUtils from './block_utils';
+import DropletTooltipManager from './blockTooltips/DropletTooltipManager';
+import {assets as assetsApi} from './clientApi';
+import * as assets from './code-studio/assets';
+import AbuseError from './code-studio/components/AbuseError';
+import SmallFooter from './code-studio/components/SmallFooter';
+import {RESIZE_VISUALIZATION_EVENT} from './code-studio/components/VisualizationResizeBar';
+import WireframeButtons from './code-studio/components/WireframeButtons';
 import project from './code-studio/initApp/project';
-import puzzleRatingUtils from './puzzleRatingUtils';
+import {lockContainedLevelAnswers} from './code-studio/levels/codeStudioLevels';
+import {closeWorkspaceAlert} from './code-studio/projectRedux';
 import {
   KeyCodes,
   TestResults,
@@ -43,62 +52,70 @@ import {
   NOTIFICATION_ALERT_TYPE,
   START_BLOCKS,
 } from './constants';
-import {
-  Renderers,
-  stringIsXml,
-  stripUserCreated,
-} from '@cdo/apps/blockly/constants';
-import {assets as assetsApi} from './clientApi';
-import {
-  configCircuitPlayground,
-  configMicrobit,
-} from './lib/kits/maker/dropletConfig';
-import {getStore} from './redux';
 import {getValidatedResult, initializeContainedLevel} from './containedLevels';
-import {lockContainedLevelAnswers} from './code-studio/levels/codeStudioLevels';
-import {parseElement as parseXmlElement} from './xml';
-import {setIsRunning, setIsEditWhileRun, setStepSpeed} from './redux/runState';
-import {
-  getIdleTimeSinceLastReport,
-  resetIdleTime,
-} from './redux/studioAppActivity';
+import * as dom from './dom';
+import * as dropletUtils from './dropletUtils';
+import FeedbackUtils from './feedback';
+import Alert from './legacySharedComponents/alert';
 import {isEditWhileRun} from './lib/tools/jsdebugger/redux';
-import {setPageConstants} from './redux/pageConstants';
-import {setVisualizationScale} from './redux/layout';
-import {createLibraryClosure} from '@cdo/apps/code-studio/components/libraries/libraryParser';
+import {configCircuitPlayground, configMicrobit} from './maker/dropletConfig';
+import firehoseClient from './metrics/firehose';
+import puzzleRatingUtils from './puzzleRatingUtils';
+import {getStore} from './redux';
 import {
   setAchievements,
   setBlockLimit,
   setFeedbackData,
   showFeedback,
 } from './redux/feedback';
-import experiments from '@cdo/apps/util/experiments';
 import {
   determineInstructionsConstants,
   setInstructionsConstants,
   setFeedback,
 } from './redux/instructions';
+import {setVisualizationScale} from './redux/layout';
+import {setPageConstants} from './redux/pageConstants';
+import {setIsRunning, setIsEditWhileRun, setStepSpeed} from './redux/runState';
 import {
-  setUserRoleInCourse,
-  CourseRoles,
-} from '@cdo/apps/templates/currentUserRedux';
-import {addCallouts} from '@cdo/apps/code-studio/callouts';
-import {queryParams} from '@cdo/apps/code-studio/utils';
-import {RESIZE_VISUALIZATION_EVENT} from './lib/ui/VisualizationResizeBar';
-import {userAlreadyReportedAbuse} from '@cdo/apps/reportAbuse';
-import {setArrowButtonDisabled} from '@cdo/apps/templates/arrowDisplayRedux';
-import {workspace_running_background, white} from '@cdo/apps/util/color';
-import WorkspaceAlert from '@cdo/apps/code-studio/components/WorkspaceAlert';
-import {closeWorkspaceAlert} from './code-studio/projectRedux';
+  getIdleTimeSinceLastReport,
+  resetIdleTime,
+} from './redux/studioAppActivity';
+import * as shareWarnings from './shareWarnings';
+import Sounds from './Sounds';
+import ChallengeDialog from './templates/ChallengeDialog';
+import VersionHistory from './templates/VersionHistory';
+import color from './util/color';
 import KeyHandler from './util/KeyHandler';
+import trackEvent from './util/trackEvent';
+import * as utils from './utils';
+import {parseElement as parseXmlElement} from './xml';
 
-var copyrightStrings;
+var codegen = require('./lib/tools/jsinterpreter/codegen');
 
 /**
- * The minimum width of a playable whole blockly game.
+ * If the bigPlayspace is enabled, either by experiment or by level property,
+ * then the padding can be configured via query param as well.
  */
+const bigPlaySpacePadding = queryParams('bigPlayspacePadding') || 160;
+
+/**
+ * Track whether the run button was clicked, which we log an event for. We
+ * only want to log this event once for the first click but not subsequent clicks
+ */
+let runButtonWasClicked = false;
+
+/**
+ * Get the maximum resizable width of the playspace.
+ */
+const getMaxResizableVisualizationWidth = isBigPlayspaceEnabled => {
+  return isBigPlayspaceEnabled
+    ? Math.min(window.innerHeight - bigPlaySpacePadding, window.innerWidth / 2)
+    : 400;
+};
+
 const MIN_WIDTH = 1400;
 const DEFAULT_MOBILE_NO_PADDING_SHARE_WIDTH = 400;
+const DEFAULT_VISUALIZATION_WIDTH = 400;
 export const MAX_VISUALIZATION_WIDTH = 400;
 export const MIN_VISUALIZATION_WIDTH = 200;
 
@@ -247,6 +264,12 @@ class StudioApp extends EventEmitter {
      * Global key handler for the app.
      */
     this.keyHandler = new KeyHandler(document);
+
+    /**
+     * Last window dimensions when a resize was handled.
+     */
+    this.lastWindowInnerWidth = undefined;
+    this.lastWindowInnerHeight = undefined;
   }
 }
 /**
@@ -268,8 +291,13 @@ StudioApp.prototype.configure = function (options) {
   // binding correctly as they pass this function around.
   this.assetUrl = _.bind(this.assetUrl_, this);
 
+  this.isBigPlayspaceEnabled =
+    experiments.isEnabledAllowingQueryString(experiments.BIG_PLAYSPACE) ||
+    options.level.enableBigPlayspace;
+
   this.maxVisualizationWidth =
-    options.maxVisualizationWidth || MAX_VISUALIZATION_WIDTH;
+    options.maxVisualizationWidth ||
+    getMaxResizableVisualizationWidth(this.isBigPlayspaceEnabled);
   this.minVisualizationWidth =
     options.minVisualizationWidth || MIN_VISUALIZATION_WIDTH;
 
@@ -317,7 +345,6 @@ StudioApp.prototype.init = function (config) {
   this.config = config;
 
   config.getCode = this.getCode.bind(this);
-  copyrightStrings = config.copyrightStrings;
 
   if (config.legacyShareStyle && config.hideSource) {
     $('body').addClass('legacy-share-view');
@@ -519,6 +546,14 @@ StudioApp.prototype.init = function (config) {
       }, this)
     );
 
+    if (Blockly.getHiddenDefinitionWorkspace()) {
+      this.hiddenWorkspaceChangeListener =
+        Blockly.getHiddenDefinitionWorkspace().addChangeListener(
+          _.bind(function () {
+            this.updateBlockCount();
+          }, this)
+        );
+    }
     if (config.level.openFunctionDefinition) {
       this.openFunctionDefinition_(config);
     }
@@ -995,10 +1030,9 @@ StudioApp.prototype.renderShareFooter_ = function (container) {
   container.appendChild(footerDiv);
 
   var reactProps = {
-    i18nDropdown: '',
+    i18nDropdownInBase: false,
     privacyPolicyInBase: false,
     copyrightInBase: false,
-    copyrightStrings: copyrightStrings,
     baseMoreMenuString: msg.builtOnCodeStudio(),
     baseStyle: {
       paddingLeft: 0,
@@ -1340,18 +1374,11 @@ StudioApp.prototype.onReportComplete = function (response) {
   }
   this.lastShareUrl = response.level_source;
 
-  // Track GA events
   if (response.new_level_completed) {
-    trackEvent(
-      'Puzzle',
-      'Completed',
-      response.level_path,
-      response.level_attempts
-    );
-  }
-
-  if (response.share_failure) {
-    trackEvent('Share', 'Failure', response.share_failure.type);
+    trackEvent('puzzle', 'puzzle_completed', {
+      path: response.level_path,
+      value: response.level_attempts,
+    });
   }
 };
 
@@ -1382,6 +1409,27 @@ StudioApp.prototype.onResize = function () {
 
     // Content below visualization is a resizing scroll area in pinned mode
     onResizeSmallFooter();
+  }
+
+  if (this.isBigPlayspaceEnabled) {
+    // Let's avoid an infinite recursion by making sure this is a genuine resize.
+    if (
+      window.innerWidth !== this.lastWindowInnerWidth ||
+      window.innerHeight !== this.lastWindowInnerHeight
+    ) {
+      this.maxVisualizationWidth = getMaxResizableVisualizationWidth(
+        this.isBigPlayspaceEnabled
+      );
+
+      const visualizationColumn = document.getElementById(
+        'visualizationColumn'
+      );
+      const visualizationColumnWidth = $(visualizationColumn).width();
+      this.resizeVisualization(visualizationColumnWidth, true);
+
+      this.lastWindowInnerWidth = window.innerWidth;
+      this.lastWindowInnerHeight = window.innerHeight;
+    }
   }
 };
 
@@ -1482,7 +1530,7 @@ function applyTransformOrigin(element, origin) {
  * Resize the visualization to the given width. If no width is provided, the
  * scale of child elements is updated to the current width.
  */
-StudioApp.prototype.resizeVisualization = function (width) {
+StudioApp.prototype.resizeVisualization = function (width, skipFire = false) {
   if ($('#visualizationColumn').hasClass('wireframeShare')) {
     return;
   }
@@ -1524,6 +1572,12 @@ StudioApp.prototype.resizeVisualization = function (width) {
   visualizationColumn.style.maxWidth = newVizWidth + vizSideBorderWidth + 'px';
   visualization.style.maxWidth = newVizWidthString;
   visualization.style.maxHeight = newVizHeightString;
+  if (this.isBigPlayspaceEnabled) {
+    // Override the max visualization column width.
+    visualizationColumn.style.width = visualizationColumn.style.maxWidth;
+    // Override the visualization height.
+    visualization.style.height = newVizHeightString;
+  }
 
   var scale = newVizWidth / this.nativeVizWidth;
   getStore().dispatch(setVisualizationScale(scale));
@@ -1548,8 +1602,10 @@ StudioApp.prototype.resizeVisualization = function (width) {
     smallFooter.style.maxWidth = newVizWidthString;
   }
 
-  // Fire resize so blockly and droplet handle this type of resize properly:
-  utils.fireResizeEvent();
+  if (!skipFire) {
+    // Fire resize so blockly and droplet handle this type of resize properly:
+    utils.fireResizeEvent();
+  }
 };
 
 /**
@@ -1619,13 +1675,6 @@ StudioApp.prototype.displayFeedback = function (options) {
   }
 
   if (experiments.isEnabled(experiments.BUBBLE_DIALOG)) {
-    // Track whether this experiment is in use. If not, delete this and similar
-    // sections of code. If it is, create a non-experiment flag.
-    trackEvent(
-      'experiment',
-      'Feedback bubbleDialog',
-      `AppType ${this.config.app}. Level ${this.config.serverLevelId}`
-    );
     const {response, preventDialog, feedbackType, feedbackImage} = options;
 
     const newFinishDialogApps = {
@@ -2004,7 +2053,7 @@ StudioApp.prototype.setConfigValues_ = function (config) {
   this.startBlocks_ =
     config.level.lastAttempt || config.level.startBlocks || '';
   this.vizAspectRatio = config.vizAspectRatio || 1.0;
-  this.nativeVizWidth = config.nativeVizWidth || this.maxVisualizationWidth;
+  this.nativeVizWidth = config.nativeVizWidth || DEFAULT_VISUALIZATION_WIDTH;
 
   if (config.level.initializationBlocks) {
     var xml = parseXmlElement(config.level.initializationBlocks);
@@ -2012,6 +2061,16 @@ StudioApp.prototype.setConfigValues_ = function (config) {
       'JavaScript',
       xml
     );
+
+    // Generate code for the initialization blocks. Used at execution time
+    // for labs like Maze.
+    if (this.initializationBlocks.length) {
+      const generator = Blockly.getGenerator();
+      generator.init(this.initializationBlocks[0].workspace);
+      this.initializationCode = generator.finish(
+        Blockly.Generator.blocksToCode('JavaScript', this.initializationBlocks)
+      );
+    }
   }
 
   // enableShowCode defaults to true if not defined
@@ -2060,7 +2119,7 @@ function runButtonClickWrapper(callback) {
     );
     Blockly.mainBlockSpace.getCanvas().dispatchEvent(customEvent);
   }
-
+  getStore().dispatch(setFeedback(null));
   callback();
 }
 
@@ -2098,6 +2157,27 @@ StudioApp.prototype.configureDom = function (config) {
     leading: true,
     trailing: false,
   });
+
+  // Modify throttledRunClick to include metrics logging
+  const originalThrottledRunClick = throttledRunClick;
+  throttledRunClick = () => {
+    originalThrottledRunClick();
+    let eventName;
+    if (!!config.level.isProjectLevel) {
+      eventName = EVENTS.PROJECT_ACTIVITY;
+    } else {
+      eventName = EVENTS.LEVEL_ACTIVITY;
+    }
+    if (!runButtonWasClicked) {
+      analyticsReporter.sendEvent(
+        eventName,
+        {signedIn: config.isSignedIn},
+        PLATFORMS.BOTH
+      );
+      runButtonWasClicked = true;
+    }
+  };
+
   if (runButton && resetButton) {
     dom.addClickTouchEvent(runButton, _.bind(throttledRunClick, this));
     dom.addClickTouchEvent(resetButton, _.bind(this.resetButtonClick, this));
@@ -2109,6 +2189,7 @@ StudioApp.prototype.configureDom = function (config) {
       }
     });
   }
+
   var skipButton = container.querySelector('#skipButton');
   if (skipButton) {
     dom.addClickTouchEvent(skipButton, this.skipLevel.bind(this));
@@ -2424,7 +2505,7 @@ StudioApp.prototype.handleEditCode_ = function (config) {
     var filtered =
       editor.completer.completions && editor.completer.completions.filtered;
     for (var i = 0; i < (filtered && filtered.length); i++) {
-      // If we have any exact maches in our filtered completions that include
+      // If we have any exact matches in our filtered completions that include
       // this period, allow the completer to stay active:
       if (filtered[i].exactMatch) {
         return;
@@ -2764,7 +2845,7 @@ StudioApp.prototype.setStartBlocks_ = function (config, loadLastAttempt) {
   let isXml = stringIsXml(startBlocks);
 
   if (isXml) {
-    // Only used in Calc/Eval, Craft, Maze, and Artist
+    // Only used in Craft, Maze, and Artist
     if (config.forceInsertTopBlock) {
       // Adds a 'when_run' or similar block to workspace, if there isn't one.
       startBlocks = blockUtils.forceInsertTopBlock(
@@ -2861,6 +2942,7 @@ StudioApp.prototype.handleUsingBlockly_ = function (config) {
   }
 
   var div = document.getElementById('codeWorkspace');
+  var isJigsaw = config.levelGameName === 'Jigsaw';
   // TODO: How many of these options apply to modal function editor?
   var options = {
     toolbox: config.level.toolbox,
@@ -2901,8 +2983,14 @@ StudioApp.prototype.handleUsingBlockly_ = function (config) {
     showExampleTestButtons: utils.valueOr(config.showExampleTestButtons, false),
     valueTypeTabShapeMap: utils.valueOr(config.valueTypeTabShapeMap, {}),
     typeHints: utils.valueOr(config.level.showTypeHints, false),
-    isBlocklyRtl:
-      getStore().getState().isRtl && config.levelGameName !== 'Jigsaw', // disable RTL for blockly on jigsaw
+    isBlocklyRtl: getStore().getState().isRtl && !isJigsaw, // disable RTL for blockly on jigsaw
+    isJigsaw,
+    analyticsData: {
+      appType: config.app,
+      scriptName: config.scriptName,
+      scriptId: config.scriptId,
+      levelId: config.serverLevelId,
+    },
   };
 
   // Never show unused blocks in edit mode. Procedure autopopulate should always
@@ -2974,178 +3062,6 @@ StudioApp.prototype.hasUnwantedExtraTopBlocks = function () {
  */
 StudioApp.prototype.hasQuestionMarksInNumberField = function () {
   return this.feedback_.hasQuestionMarksInNumberField();
-};
-
-/**
- * @returns true if any non-example block in the workspace has an unfilled input
- */
-StudioApp.prototype.hasUnfilledFunctionalBlock = function () {
-  return !!this.getUnfilledFunctionalBlock();
-};
-
-/**
- * @returns {Block} The first block that has an unfilled input, or undefined
- *   if there isn't one.
- */
-StudioApp.prototype.getUnfilledFunctionalBlock = function () {
-  return this.getFilteredUnfilledFunctionalBlock_(function (rootBlock) {
-    return rootBlock.type !== 'functional_example';
-  });
-};
-
-/**
- * @returns {Block} The first example block that has an unfilled input, or
- *   undefined if there isn't one. Ignores example blocks that don't have a
- *   call portion, as these are considered invalid.
- */
-StudioApp.prototype.getUnfilledFunctionalExample = function () {
-  return this.getFilteredUnfilledFunctionalBlock_(function (rootBlock) {
-    if (rootBlock.type !== 'functional_example') {
-      return false;
-    }
-    var actual = rootBlock.getInputTargetBlock('ACTUAL');
-    return actual && actual.getFieldValue('NAME');
-  });
-};
-
-/**
- * @param {function} filter Run against root block in chain. Returns true if
- *   this is a block we care about
- */
-StudioApp.prototype.getFilteredUnfilledFunctionalBlock_ = function (filter) {
-  var unfilledBlock;
-  Blockly.mainBlockSpace.getAllUsedBlocks().some(function (block) {
-    // Get the root block in the chain
-    var rootBlock = block.getRootBlock();
-    if (!filter(rootBlock)) {
-      return false;
-    }
-
-    if (block.hasUnfilledFunctionalInput()) {
-      unfilledBlock = block;
-      return true;
-    }
-  });
-
-  return unfilledBlock;
-};
-
-/**
- * @returns {string} The name of a function that doesn't have any examples, or
- *   undefined if all have at least one.
- */
-StudioApp.prototype.getFunctionWithoutTwoExamples = function () {
-  var definitionNames = Blockly.mainBlockSpace
-    .getTopBlocks()
-    .filter(function (block) {
-      return block.type === 'functional_definition' && !block.isVariable();
-    })
-    .map(function (definitionBlock) {
-      return definitionBlock.getProcedureInfo().name;
-    });
-
-  var exampleNames = Blockly.mainBlockSpace
-    .getTopBlocks()
-    .filter(function (block) {
-      if (block.type !== 'functional_example') {
-        return false;
-      }
-
-      // Only care about functional_examples that have an ACTUAL input (i.e. it's
-      // clear which function they're for
-      var actual = block.getInputTargetBlock('ACTUAL');
-      return actual && actual.getFieldValue('NAME');
-    })
-    .map(function (exampleBlock) {
-      return exampleBlock.getInputTargetBlock('ACTUAL').getFieldValue('NAME');
-    });
-
-  var definitionWithLessThanTwoExamples;
-  definitionNames.forEach(function (def) {
-    var definitionExamples = exampleNames.filter(function (example) {
-      return def === example;
-    });
-
-    if (definitionExamples.length < 2) {
-      definitionWithLessThanTwoExamples = def;
-    }
-  });
-  return definitionWithLessThanTwoExamples;
-};
-
-/**
- * Get the error message when we have an unfilled block
- * @param {string} topLevelType The block.type For our expected top level block
- */
-StudioApp.prototype.getUnfilledFunctionalBlockError = function (topLevelType) {
-  var unfilled = this.getUnfilledFunctionalBlock();
-
-  if (!unfilled) {
-    return null;
-  }
-
-  var topParent = unfilled;
-  while (topParent.getParent()) {
-    topParent = topParent.getParent();
-  }
-
-  if (unfilled.type === topLevelType) {
-    return msg.emptyTopLevelBlock({
-      topLevelBlockName: unfilled.getFieldValue(),
-    });
-  }
-
-  if (topParent.type !== 'functional_definition') {
-    return msg.emptyFunctionalBlock();
-  }
-
-  var procedureInfo = topParent.getProcedureInfo();
-  if (topParent.isVariable()) {
-    return msg.emptyBlockInVariable({name: procedureInfo.name});
-  } else {
-    return msg.emptyBlockInFunction({name: procedureInfo.name});
-  }
-};
-
-/**
- * Looks for failing examples, and updates the result text for them if they're
- * open in the contract editor
- * @param {function} failureChecker Apps example tester that takes in an example
- *   block, and outputs a failure string (or null if success)
- * @returns {string} Name of block containing first failing example we found, or
- *   empty string if no failures.
- */
-StudioApp.prototype.checkForFailingExamples = function (failureChecker) {
-  var failingBlockName = '';
-  Blockly.mainBlockSpace
-    .findFunctionExamples()
-    .forEach(function (exampleBlock) {
-      var failure = failureChecker(exampleBlock, false);
-
-      // Update the example result. No-op if we're not currently editing this
-      // function.
-      Blockly.contractEditor.updateExampleResult(exampleBlock, failure);
-
-      if (failure) {
-        failingBlockName = exampleBlock
-          .getInputTargetBlock('ACTUAL')
-          .getFieldValue('NAME');
-      }
-    });
-  return failingBlockName;
-};
-
-/**
- * @returns {boolean} True if we have a function or variable named "" (empty string)
- */
-StudioApp.prototype.hasEmptyFunctionOrVariableName = function () {
-  return Blockly.mainBlockSpace.getTopBlocks().some(function (block) {
-    if (block.type !== 'functional_definition') {
-      return false;
-    }
-
-    return !block.getProcedureInfo().name;
-  });
 };
 
 StudioApp.prototype.createCoordinateGridBackground = function (options) {
@@ -3434,6 +3350,7 @@ StudioApp.prototype.setPageConstants = function (config, appSpecificConstants) {
       locale: config.locale,
       assetUrl: this.assetUrl,
       inStartBlocksMode: level.edit_blocks === START_BLOCKS,
+      inToolboxBlocksMode: level.edit_blocks === TOOLBOX_EDIT_MODE,
       isReadOnlyWorkspace: !!config.readonlyWorkspace,
       isDroplet: !!level.editCode,
       isBlockly: this.isUsingBlockly(),
@@ -3488,27 +3405,6 @@ StudioApp.prototype.setPageConstants = function (config, appSpecificConstants) {
   getStore().dispatch(setInstructionsConstants(instructionsConstants));
 };
 
-StudioApp.prototype.showRateLimitAlert = function () {
-  // only show the alert once per session
-  if (this.hasSeenRateLimitAlert_) {
-    return false;
-  }
-  this.hasSeenRateLimitAlert_ = true;
-
-  var alert = <div>{msg.dataLimitAlert()}</div>;
-  if (this.share) {
-    this.displayPlayspaceAlert('error', alert);
-  } else {
-    this.displayWorkspaceAlert('error', alert);
-  }
-
-  logToCloud.addPageAction(logToCloud.PageAction.FirebaseRateLimitExceeded, {
-    isEditing: project.isEditing(),
-    isOwner: project.isOwner(),
-    share: !!this.share,
-  });
-};
-
 /** @return Promise */
 StudioApp.prototype.loadLibraries = function (helperLibraryNames = []) {
   if (!this.libraryPreload_) {
@@ -3558,6 +3454,9 @@ if (IN_UNIT_TEST) {
     instance.libraries = {};
     if (instance.changeListener) {
       Blockly.removeChangeListener(instance.changeListener);
+    }
+    if (instance.hiddenWorkspaceChangeListener) {
+      Blockly.removeChangeListener(instance.hiddenWorkspaceChangeListener);
     }
     instance = __oldInstance;
     __oldInstance = null;

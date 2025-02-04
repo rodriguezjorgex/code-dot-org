@@ -1,18 +1,21 @@
-import {Panel, PanelLayout} from '@cdo/apps/panels/types';
+import Checkbox from '@code-dot-org/component-library/checkbox';
+import FontAwesomeV6Icon from '@code-dot-org/component-library/fontAwesomeV6Icon';
+import classNames from 'classnames';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import moduleStyles from './edit-panels.module.scss';
-import PanelsView from '@cdo/apps/panels/PanelsView';
+
 import {SimpleDropdown} from '@cdo/apps/componentLibrary/dropdown';
 import {
   BodyThreeText,
   Heading3,
   Heading5,
 } from '@cdo/apps/componentLibrary/typography';
+import Button from '@cdo/apps/legacySharedComponents/Button';
+import ImageInput from '@cdo/apps/levelbuilder/ImageInput';
+import PanelsView from '@cdo/apps/panels/PanelsView';
+import {Panel, PanelLayout} from '@cdo/apps/panels/types';
 import {createUuid} from '@cdo/apps/utils';
-import FontAwesomeV6Icon from '@cdo/apps/componentLibrary/fontAwesomeV6Icon/FontAwesomeV6Icon';
-import classNames from 'classnames';
-import ImageInput from '@cdo/apps/lib/levelbuilder/ImageInput';
-import Button from '@cdo/apps/templates/Button';
+
+import moduleStyles from './edit-panels.module.scss';
 
 const createKey = (levelName: string) => levelName + '-' + createUuid();
 
@@ -116,10 +119,13 @@ const EditPanels: React.FunctionComponent<EditPanelsProps> = ({
         <div className={moduleStyles.fullSizeContainer}>
           <PanelsView
             panels={panels}
+            background={'light'}
             onContinue={onContinue}
             targetWidth={1920}
             targetHeight={1080}
+            offerBrowserTts={false}
             resetOnChange={false}
+            levelId={null}
           />
         </div>
       </div>
@@ -219,8 +225,10 @@ const EditPanel: React.FunctionComponent<EditPanelProps> = ({
           selectedValue={panel.layout || 'text-top-right'}
           items={[
             {value: 'text-top-left', text: 'Top Left'},
+            {value: 'text-top-center', text: 'Top Center'},
             {value: 'text-top-right', text: 'Top Right'},
             {value: 'text-bottom-left', text: 'Bottom Left'},
+            {value: 'text-bottom-center', text: 'Bottom Center'},
             {value: 'text-bottom-right', text: 'Bottom Right'},
           ]}
         />
@@ -231,6 +239,34 @@ const EditPanel: React.FunctionComponent<EditPanelProps> = ({
           updateImageUrl={imageUrl => {
             updatePanel({...panel, imageUrl: imageUrl});
           }}
+        />
+      </div>
+      <div className={moduleStyles.fieldRow}>
+        <Checkbox
+          checked={!!panel.typing}
+          name="typing"
+          label="Typing? (No markdown support)"
+          size="s"
+          onChange={event =>
+            updatePanel({
+              ...panel,
+              typing: event.target.checked,
+            })
+          }
+        />
+      </div>
+      <div className={moduleStyles.fieldRow}>
+        <Checkbox
+          checked={!!panel.fadeInOverPrevious}
+          name="fadeInOverPrevious"
+          label="Fade in over previous"
+          size="s"
+          onChange={event =>
+            updatePanel({
+              ...panel,
+              fadeInOverPrevious: event.target.checked,
+            })
+          }
         />
       </div>
       {last && (

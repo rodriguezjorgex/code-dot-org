@@ -1,6 +1,11 @@
+import Checkbox from '@code-dot-org/component-library/checkbox';
+import classNames from 'classnames';
 import React, {useCallback} from 'react';
-import {Key} from '../utils/Notes';
-import moduleStyles from './advanced-controls.module.scss';
+
+import {Heading5} from '@cdo/apps/componentLibrary/typography';
+import {useAppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
+
+import {MAX_BPM, MIN_BPM} from '../constants';
 import {
   setBpm,
   setKey,
@@ -8,11 +13,9 @@ import {
   setLoopEnd,
   setLoopStart,
 } from '../redux/musicRedux';
-import {Heading5} from '@cdo/apps/componentLibrary/typography';
-import {useAppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
-import classNames from 'classnames';
-import Checkbox from '@cdo/apps/componentLibrary/checkbox/Checkbox';
-import {MAX_BPM, MIN_BPM} from '../constants';
+import {Key} from '../utils/Notes';
+
+import moduleStyles from './advanced-controls.module.scss';
 
 /**
  * Displays advanced controls used only by the ToneJS player, including

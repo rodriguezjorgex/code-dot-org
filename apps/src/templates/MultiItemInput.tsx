@@ -1,7 +1,6 @@
+import Button from '@code-dot-org/component-library/button';
 import classNames from 'classnames';
 import React from 'react';
-
-import Button from '@cdo/apps/componentLibrary/button/Button';
 
 import moduleStyles from './multi-item-input.module.scss';
 
@@ -56,6 +55,7 @@ export const MultiItemInput: React.FunctionComponent<{
               isIconOnly
               size="s"
               type="secondary"
+              color="gray"
               icon={{iconName: 'plus'}}
             />
           )}
@@ -65,6 +65,7 @@ export const MultiItemInput: React.FunctionComponent<{
             isIconOnly
             size="s"
             type="secondary"
+            color="gray"
             icon={{iconName: 'minus'}}
           />
         </div>

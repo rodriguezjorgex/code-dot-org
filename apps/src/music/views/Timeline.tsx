@@ -1,19 +1,29 @@
-import React, {MouseEvent, useCallback, useRef} from 'react';
-import moduleStyles from './timeline.module.scss';
 import classNames from 'classnames';
-import TimelineSampleEvents from './TimelineSampleEvents';
-import TimelineTrackEvents from './TimelineTrackEvents';
-import TimelineSimple2Events from './TimelineSimple2Events';
-import appConfig, {getBlockMode} from '../appConfig';
+import React, {MouseEvent, useCallback, useRef} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+
+import {useAppSelector} from '@cdo/apps/util/reduxHooks';
+
+import appConfig from '../appConfig';
 import {BlockMode, MIN_NUM_MEASURES} from '../constants';
-import {useDispatch} from 'react-redux';
 import {
   clearSelectedBlockId,
-  setStartPlayheadPosition,
+  getBlockMode,
+  setStartingPlayheadPosition,
 } from '../redux/musicRedux';
-import {useMusicSelector} from './types';
-import usePlaybackUpdate from './hooks/usePlaybackUpdate';
+import {MusicLevelData} from '../types';
 
+import usePlaybackUpdate from './hooks/usePlaybackUpdate';
+import TimelineSampleEvents from './TimelineSampleEvents';
+import TimelineSimple2Events from './TimelineSimple2Events';
+import {useMusicSelector} from './types';
+
+import moduleStyles from './timeline.module.scss';
+
+// The height of the primary timeline area for drawing events.  This is the height of each measure's
+// vertical bar.
+const timelineHeight = 130;
+// The width of one measure.
 const barWidth = 60;
 // Leave some vertical space between each event block.
 const eventVerticalSpace = 2;
@@ -21,8 +31,13 @@ const eventVerticalSpace = 2;
 const paddingOffset = 10;
 // Start scrolling the playhead when it's more than this percentage of the way across the timeline area.
 const playheadScrollThreshold = 0.75;
+// How many extra measures to show at the end.
+const extraMeasures = 8;
 
-const getEventHeight = (numUniqueRows: number, availableHeight = 130) => {
+const getEventHeight = (
+  numUniqueRows: number,
+  availableHeight = timelineHeight
+) => {
   // While we might not actually have this many rows to show,
   // we will limit each row's height to the size that would allow
   // this many to be shown at once.
@@ -45,6 +60,8 @@ const getEventHeight = (numUniqueRows: number, availableHeight = 130) => {
  */
 const Timeline: React.FunctionComponent = () => {
   const isPlaying = useMusicSelector(state => state.music.isPlaying);
+
+  const blockMode = useSelector(getBlockMode);
   const dispatch = useDispatch();
   const currentPlayheadPosition = useMusicSelector(
     state => state.music.currentPlayheadPosition
@@ -52,10 +69,21 @@ const Timeline: React.FunctionComponent = () => {
   const startingPlayheadPosition = useMusicSelector(
     state => state.music.startingPlayheadPosition
   );
-  const measuresToDisplay = Math.max(
-    MIN_NUM_MEASURES,
-    useMusicSelector(state => state.music.lastMeasure)
-  );
+
+  const allowChangeStartingPlayheadPosition =
+    (useAppSelector(
+      state =>
+        (state.lab.levelProperties?.levelData as MusicLevelData | undefined)
+          ?.allowChangeStartingPlayheadPosition
+    ) ||
+      appConfig.getValue('allow-change-starting-playhead-position') ===
+        'true') &&
+    !isPlaying;
+  const measuresToDisplay =
+    Math.max(
+      MIN_NUM_MEASURES,
+      useMusicSelector(state => state.music.lastMeasure)
+    ) + extraMeasures;
   const loopEnabled = useMusicSelector(state => state.music.loopEnabled);
   const loopStart = useMusicSelector(state => state.music.loopStart);
   const loopEnd = useMusicSelector(state => state.music.loopEnd);
@@ -80,33 +108,36 @@ const Timeline: React.FunctionComponent = () => {
     (_, i) => i + 1
   );
 
+  const currentlyAllowChangeStartingPlayheadPosition =
+    !isPlaying && allowChangeStartingPlayheadPosition;
+
   const onMeasuresBackgroundClick = useCallback(
     (event: MouseEvent) => {
-      // Ignore if playing unless using ToneJS player
-      if (isPlaying && appConfig.getValue('player') !== 'tonejs') {
+      if (!currentlyAllowChangeStartingPlayheadPosition) {
         return;
       }
+
       const offset =
         event.clientX -
         (event.target as Element).getBoundingClientRect().x -
         paddingOffset;
       const exactMeasure = offset / barWidth + 1;
-      // Round measure to the nearest beat (1/4 note)
+      // Round measure to the nearest beat (1/4 note).
       const roundedMeasure = Math.round(exactMeasure * 4) / 4;
-      dispatch(setStartPlayheadPosition(roundedMeasure));
+      dispatch(setStartingPlayheadPosition(roundedMeasure));
     },
-    [dispatch, isPlaying]
+    [dispatch, currentlyAllowChangeStartingPlayheadPosition]
   );
 
   const onMeasureNumberClick = useCallback(
     (measureNumber: number) => {
-      if (isPlaying) {
+      if (!currentlyAllowChangeStartingPlayheadPosition) {
         return;
       }
 
-      dispatch(setStartPlayheadPosition(measureNumber));
+      dispatch(setStartingPlayheadPosition(measureNumber));
     },
-    [dispatch, isPlaying]
+    [dispatch, currentlyAllowChangeStartingPlayheadPosition]
   );
 
   const onTimelineClick = useCallback(() => {
@@ -148,7 +179,9 @@ const Timeline: React.FunctionComponent = () => {
         id="timeline-measures-background"
         className={classNames(
           moduleStyles.measuresBackground,
-          moduleStyles.fullWidthOverlay
+          moduleStyles.fullWidthOverlay,
+          currentlyAllowChangeStartingPlayheadPosition &&
+            moduleStyles.measuresBackgroundClickable
         )}
         style={{width: paddingOffset + measuresToDisplay * barWidth}}
         onClick={onMeasuresBackgroundClick}
@@ -167,7 +200,9 @@ const Timeline: React.FunctionComponent = () => {
                 className={classNames(
                   moduleStyles.barNumber,
                   measure === Math.floor(currentPlayheadPosition) &&
-                    moduleStyles.barNumberCurrent
+                    moduleStyles.barNumberCurrent,
+                  currentlyAllowChangeStartingPlayheadPosition &&
+                    moduleStyles.barNumberClickable
                 )}
                 onClick={() => onMeasureNumberClick(measure)}
               >
@@ -186,9 +221,7 @@ const Timeline: React.FunctionComponent = () => {
       </div>
 
       <div id="timeline-soundsarea" className={moduleStyles.soundsArea}>
-        {getBlockMode() === BlockMode.TRACKS ? (
-          <TimelineTrackEvents {...timelineElementProps} />
-        ) : getBlockMode() === BlockMode.SIMPLE2 ? (
+        {blockMode === BlockMode.SIMPLE2 ? (
           <TimelineSimple2Events {...timelineElementProps} />
         ) : (
           <TimelineSampleEvents {...timelineElementProps} />

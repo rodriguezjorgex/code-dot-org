@@ -437,6 +437,35 @@ class Api::V1::Pd::WorkshopsControllerTest < ActionController::TestCase
     end
   end
 
+  test 'cannot update a Build Your Own Workshop without pl topics' do
+    sign_in create :admin
+    session_start = tomorrow_at 9
+    session_end = session_start + 8.hours
+    byo_params =
+      {
+        location_address: 'Seattle, WA',
+        on_map: true,
+        funded: false,
+        course: Pd::Workshop::COURSE_BUILD_YOUR_OWN,
+        course_offerings: [] << (create :course_offering),
+        subject: nil,
+        capacity: 10,
+        virtual: false,
+        suppress_email: false,
+        sessions_attributes: [
+          {
+            start: session_start,
+            end: session_end
+          }
+        ]
+      }
+
+    workshop = create :pd_workshop, funded: false, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, subject: nil, course_offerings: [] << (create :course_offering)
+
+    put :update, params: {id: workshop.id, pd_workshop: byo_params.merge(course_offerings: nil)}
+    assert_response :bad_request
+  end
+
   test_user_gets_response_for(
     :create,
     name: 'facilitators cannot create workshops',
@@ -757,6 +786,28 @@ class Api::V1::Pd::WorkshopsControllerTest < ActionController::TestCase
     put :update, params: {
       id: @workshop.id,
       pd_workshop: workshop_params,
+      notify: true
+    }
+  end
+
+  test 'updating with notify true sends detail change notification emails to both a teachers email and alternate summer email for summer workshops' do
+    mock_mail = stub
+    mock_mail.stubs(:deliver_now)
+    sign_in create :admin
+
+    teacher = create :teacher
+    workshop = create :csa_academic_year_workshop, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, virtual: 'true', funding_type: nil
+    application = create :pd_teacher_application, course: 'csa', application_year: workshop.school_year, user: teacher, status: 'accepted'
+    enrollment = create :pd_enrollment, application_id: application.id, user: teacher, workshop: workshop
+
+    Pd::WorkshopMailer.expects(:detail_change_notification).with(enrollment).returns(mock_mail)
+    Pd::WorkshopMailer.expects(:detail_change_notification).with(enrollment, to_email: teacher.alternate_email).returns(mock_mail)
+
+    params = workshop_params.merge(course: Pd::Workshop::COURSE_CSA, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, virtual: true, funding_type: nil)
+
+    put :update, params: {
+      id: workshop.id,
+      pd_workshop: params,
       notify: true
     }
   end

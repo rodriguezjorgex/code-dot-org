@@ -58,13 +58,13 @@ class ScaryChangeDetector
 
         #{changes.join("\n")}
 
-        If you'd like Drone to test your changes across all browsers
+        If you'd like CI to test your changes across all browsers
         (instead of only in Chrome, the default),
         amend your commit message to include the tag [test all browsers] if you haven't already.
 
-        Note that (as of January 2021) Drone will not successfully run all tests across all browsers,
+        Note that (as of January 2021) CI will not successfully run all tests across all browsers,
         so you may need another commit without the [test all browsers] tag
-        if you'd like to see all tests (in Chrome) passing in Drone without manual inspection.
+        if you'd like to see all tests (in Chrome) passing in CI without manual inspection.
     EOS
   end
 
@@ -107,7 +107,7 @@ class ScaryChangeDetector
         Making these types of changes on a large table (>10M rows) needs to be reviewed and
         tested with the Infrastructure team to avoid negatively impacting production database performance.
         The may cause MySQL to rebuild the entire table.
-        For more information see https://dev.mysql.com/doc/refman/5.7/en/innodb-online-ddl-operations.html#online-ddl-column-operations.
+        For more information see https://dev.mysql.com/doc/refman/8.0/en/innodb-online-ddl-operations.html#online-ddl-column-operations-table
 
     EOS
   end

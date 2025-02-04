@@ -57,7 +57,7 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
   test 'query by enrolled teacher' do
     # Teachers enroll in a workshop as a whole
     teacher = create :teacher
-    create :pd_enrollment, workshop: @workshop, full_name: teacher.name, email: teacher.email_for_enrollments
+    create :pd_enrollment, workshop: @workshop, full_name: teacher.name, email: teacher.email
 
     # create a workshop with a different teacher enrollment, which should not be returned below
     other_workshop = create(:workshop)
@@ -74,7 +74,7 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
     assert_empty Pd::Workshop.enrolled_in_by(teacher)
 
     # Email match only
-    enrollment.update!(email: teacher.email_for_enrollments)
+    enrollment.update!(email: teacher.email)
     assert_equal [@workshop], Pd::Workshop.enrolled_in_by(teacher)
 
     # UserId only
@@ -82,7 +82,12 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
     assert_equal [@workshop], Pd::Workshop.enrolled_in_by(teacher)
 
     # Both email and user id. Should still find workshop exactly once
-    enrollment.update!(email: teacher.email_for_enrollments, user: teacher)
+    enrollment.update!(email: teacher.email, user: teacher)
+    assert_equal [@workshop], Pd::Workshop.enrolled_in_by(teacher)
+
+    # Alternate email match only
+    create :pd_teacher_application, user: teacher, status: 'accepted'
+    enrollment.update!(email: teacher.alternate_email, user: nil)
     assert_equal [@workshop], Pd::Workshop.enrolled_in_by(teacher)
   end
 
@@ -303,6 +308,26 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
     Pd::Workshop.any_instance.expects(:send_facilitator_post_surveys)
 
     workshop.end!
+
+    # This is normally called by a cron job on production-daemon, but in this test
+    # we call it synchronously.
+    Pd::Workshop.process_ends
+  end
+
+  test 'end workshop sends exit surveys to facilitators for Build Your Own workshops' do
+    byo_workshop = create :pd_workshop,
+      :ended,
+      funded: false,
+      course: Pd::Workshop::COURSE_BUILD_YOUR_OWN,
+      subject: nil,
+      course_offerings: [] << (create :course_offering),
+      num_facilitators: 1
+    byo_workshop.start!
+
+    Pd::Workshop.any_instance.expects(:send_exit_surveys)
+    Pd::WorkshopMailer.any_instance.expects(:facilitator_post_workshop)
+
+    byo_workshop.end!
 
     # This is normally called by a cron job on production-daemon, but in this test
     # we call it synchronously.
@@ -769,6 +794,22 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
     assert_includes(e.message, 'bad email')
   end
 
+  test 'sends teacher_enrollment_reminder email to both the users email and alternate email if available and for a summer workshop' do
+    mock_mail = stub
+    mock_mail.stubs(:deliver_now)
+
+    teacher = create :teacher
+    workshop = create :summer_workshop, course: Pd::SharedWorkshopConstants::COURSE_CSD
+    application = create :pd_teacher_application, course: 'csd', application_year: workshop.school_year, user: teacher, status: 'accepted'
+    enrollment = create :pd_enrollment, application_id: application.id, user: teacher, workshop: workshop
+
+    Pd::Workshop.expects(:scheduled_start_in_days).returns([workshop])
+    Pd::WorkshopMailer.expects(:teacher_enrollment_reminder).with(enrollment, options: {:days_before => 1}).returns(mock_mail)
+    Pd::WorkshopMailer.expects(:teacher_enrollment_reminder).with(enrollment, options: {:days_before => 1}, to_email: teacher.alternate_email).returns(mock_mail)
+
+    Pd::Workshop.send_reminder_for_upcoming_in_days(1)
+  end
+
   test 'errors in organizer reminders in send_reminder_for_upcoming_in_days do not stop batch' do
     mock_mail = stub
     mock_mail.stubs(:deliver_now).returns(nil).then.returns(nil).then.returns(nil).then.returns(nil).then.returns(nil).then.raises(RuntimeError, 'bad email')
@@ -882,6 +923,21 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
     Pd::Workshop.expects(:scheduled_start_in_days).returns([workshop])
 
     Pd::WorkshopMailer.expects(:teacher_pre_workshop_csa).returns(mock_mail).never
+    Pd::Workshop.send_teacher_pre_work_csa
+  end
+
+  test 'CSA teacher pre-work email sends to both the users email and alternate summer email if available' do
+    mock_mail = stub
+    mock_mail.stubs(:deliver_now).returns(nil)
+
+    teacher = create :teacher
+    workshop = create :csa_academic_year_workshop, num_facilitators: 2, subject: Pd::Workshop::SUBJECT_CSA_SUMMER_WORKSHOP
+    application = create :pd_teacher_application, course: 'csa', application_year: workshop.school_year, user: teacher, status: 'accepted'
+    enrollment = create :pd_enrollment, application_id: application.id, user: teacher, workshop: workshop
+
+    Pd::Workshop.expects(:scheduled_start_in_days).returns([workshop])
+    Pd::WorkshopMailer.expects(:teacher_pre_workshop_csa).with(enrollment).returns(mock_mail)
+    Pd::WorkshopMailer.expects(:teacher_pre_workshop_csa).with(enrollment, to_email: teacher.alternate_email).returns(mock_mail)
     Pd::Workshop.send_teacher_pre_work_csa
   end
 
@@ -1120,7 +1176,7 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
     unit_group = create :unit_group, name: 'pd-workshop-pre-survey-test-1991', family_name: 'pd-workshop-pre-survey-test', version_year: '1991'
     CourseOffering.add_course_offering(unit_group)
     next_position = 1
-    add_unit = ->(unit_name, lesson_names) do
+    add_unit = lambda do |unit_name, lesson_names|
       create(:script, name: unit_name).tap do |script|
         create :unit_group_unit, unit_group: unit_group, script: script, position: (next_position += 1)
         create :lesson_group, script: script

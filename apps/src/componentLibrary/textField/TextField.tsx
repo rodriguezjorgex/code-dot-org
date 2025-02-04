@@ -1,17 +1,20 @@
-import classnames from 'classnames';
-import React, {ChangeEvent, AriaAttributes} from 'react';
+import FontAwesomeV6Icon, {
+  FontAwesomeV6IconProps,
+} from '@code-dot-org/component-library/fontAwesomeV6Icon';
+import classNames from 'classnames';
+import React, {ChangeEvent, HTMLAttributes} from 'react';
 
-import {componentSizeToBodyTextSizeMap} from '@cdo/apps/componentLibrary/common/constants';
 import {ComponentSizeXSToL} from '@cdo/apps/componentLibrary/common/types';
-import Typography from '@cdo/apps/componentLibrary/typography';
 
 import moduleStyles from './textfield.module.scss';
 
-export interface TextFieldProps extends AriaAttributes {
-  /** TextField checked state */
-  checked: boolean;
+export interface TextFieldProps extends HTMLAttributes<HTMLInputElement> {
   /** TextField onChange handler*/
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  /** TextField id */
+  id?: string;
+  /** Specifies the type of input; see included options below. */
+  inputType?: 'text' | 'email' | 'password' | 'number';
   /** The name attribute specifies the name of an input element.
      The name attribute is used to reference elements in a JavaScript,
      or to reference form data after a form is submitted.
@@ -21,59 +24,112 @@ export interface TextFieldProps extends AriaAttributes {
   value?: string;
   /** TextField label */
   label?: string;
+  /** TextField helper message */
+  helperMessage?: string;
+  /** TextField helper icon */
+  helperIcon?: FontAwesomeV6IconProps;
+  /** TextField placeholder */
+  placeholder?: string;
+  /** Is TextField readOnly */
+  readOnly?: boolean;
   /** Is TextField disabled */
   disabled?: boolean;
-  /** Is TextField indeterminate */
-  readonly?: boolean;
-  error?: {message: string; hasError: boolean};
+  /** TextField error message */
+  errorMessage?: string;
+  /** TextField custom className */
+  className?: string;
+  /** TextField color */
+  color?: 'black' | 'gray' | 'white';
   /** Size of TextField */
-  size?: ComponentSizeXSToL;
+  size?: Exclude<ComponentSizeXSToL, 'xs'>;
+  /** max length of TextField */
+  maxLength?: number;
+  /** min length of TextField */
+  minLength?: number;
+  /** min length of TextField */
+  autoComplete?: string;
 }
 
 /**
  * ### Production-ready Checklist:
- * * (?) implementation of component approved by design team;
- * * (?) has storybook, covered with stories and documentation;
- * * (?) has tests: test every prop, every state and every interaction that's js related;
- * * (see apps/test/unit/componentLibrary/TextFieldTest.jsx)
+ * * (✔) implementation of component approved by design team;
+ * * (✔) has storybook, covered with stories and documentation;
+ * * (✔) has tests: test every prop, every state and every interaction that's js related;
+ * * (see apps/test/unit/componentLibrary/TextFieldTest.tsx)
  * * (?) passes accessibility checks;
  *
- * ###  Status: ```WIP```
+ * ###  Status: ```Ready for dev```
  *
  * Design System: TextField Component.
  * Used to render a text field.
  */
 const TextField: React.FunctionComponent<TextFieldProps> = ({
+  id,
+  inputType = 'text',
   label,
-  checked,
   onChange,
   name,
   value,
+  placeholder,
   disabled = false,
-  readonly = false,
-  error,
+  readOnly = false,
+  helperMessage,
+  helperIcon,
+  errorMessage,
+  className,
+  maxLength,
+  minLength,
+  autoComplete,
+  color = 'black',
   size = 'm',
-  ...rest
+  ...HTMLAttributes
 }) => {
-  const bodyTextSize = componentSizeToBodyTextSizeMap[size];
-
   return (
     <label
-      className={classnames(moduleStyles.label, moduleStyles[`label-${size}`])}
-      aria-describedby={rest['aria-describedby']}
-    >
-      {label && (
-        <Typography semanticTag="span" visualAppearance={bodyTextSize}>
-          {label}
-        </Typography>
+      className={classNames(
+        moduleStyles.textField,
+        moduleStyles[`textField-${color}`],
+        moduleStyles[`textField-${size}`],
+        className
       )}
+      aria-describedby={HTMLAttributes['aria-describedby']}
+    >
+      {label && <span className={moduleStyles.textFieldLabel}>{label}</span>}
       <input
-        type="text"
+        id={id}
+        type={inputType}
         name={name}
         value={value}
+        placeholder={placeholder}
+        readOnly={readOnly}
         disabled={disabled}
+        maxLength={maxLength}
+        minLength={minLength}
+        autoComplete={autoComplete}
         onChange={onChange}
+        className={classNames({
+          [moduleStyles.hasError]: errorMessage,
+        })}
+        {...HTMLAttributes}
+        aria-disabled={disabled || HTMLAttributes['aria-disabled']}
       />
+      {!errorMessage && (helperMessage || helperIcon) && (
+        <div className={moduleStyles.textFieldHelperSection}>
+          {helperIcon && <FontAwesomeV6Icon {...helperIcon} />}
+          {helperMessage && <span>{helperMessage}</span>}
+        </div>
+      )}
+      {errorMessage && (
+        <div
+          className={classNames(
+            moduleStyles.textFieldHelperSection,
+            moduleStyles.textFieldErrorSection
+          )}
+        >
+          <FontAwesomeV6Icon iconName={'circle-exclamation'} />
+          <span>{errorMessage}</span>
+        </div>
+      )}
     </label>
   );
 };

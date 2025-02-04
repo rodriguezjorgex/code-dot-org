@@ -1,5 +1,6 @@
 require 'clients/cache_client'
 require 'clients/lti_dynamic_registration_client'
+require 'metrics/events'
 
 module Lti
   module V1
@@ -32,6 +33,7 @@ module Lti
           issuer: openid_config['issuer'],
           lms_account_name: openid_config.dig(Policies::Lti::LTI_PLATFORM_CONFIGURATION, Policies::Lti::CANVAS_ACCOUNT_NAME),
         }
+        @lms_name = Policies::Lti.issuer_name(openid_config['issuer'])
         # Expire cache in 1 hour to match expiration of registration token
         @cache.write(@registration_id, registration_data, 1.hour)
         render 'lti/v1/dynamic_registration', layout: false
@@ -55,6 +57,7 @@ module Lti
         return unauthorized_status if registration_data.nil?
 
         platform = Policies::Lti.find_platform_by_issuer(registration_data[:issuer])
+        platform_name = Policies::Lti.find_platform_name_by_issuer(registration_data[:issuer])
         if platform.nil?
           message = "Unsupported issuer: #{registration_data[:issuer]}"
           Honeybadger.notify(
@@ -67,7 +70,7 @@ module Lti
         end
 
         begin
-          dynamic_registration_client = Lti::DynamicRegistration.new(registration_data[:registration_token], registration_data[:registration_endpoint])
+          dynamic_registration_client = LtiDynamicRegistrationClient.new(registration_data[:registration_token], registration_data[:registration_endpoint])
           registration_response = dynamic_registration_client.make_registration_request
         rescue => exception
           message = 'Error creating registration'
@@ -81,12 +84,13 @@ module Lti
             name: registration_data[:lms_account_name],
             client_id: registration_response[:client_id],
             issuer: platform[:issuer],
-            platform_name: platform[:name],
+            platform_name: platform_name,
             auth_redirect_url: platform[:auth_redirect_url],
             jwks_url: platform[:jwks_url],
             access_token_url: platform[:access_token_url],
             admin_email: admin_email,
           )
+
           return render status: :created, json: {}
         else
           return render status: :conflict, json: {error: I18n.t('lti.integration.exists_error')}

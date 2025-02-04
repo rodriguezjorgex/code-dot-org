@@ -67,6 +67,14 @@ Given(/^I delete the program manager, regional partner, teacher, and application
   )
 end
 
+Given(/^I delete the workshop$/) do
+  browser_request(
+    url: '/api/test/delete_workshop',
+    method: 'POST',
+    body: {workshop_id: @workshop_id}
+  )
+end
+
 Given /^there is a facilitator named "([^"]+)" for course "([^"]+)"$/ do |name, course|
   require_rails_env
 
@@ -119,13 +127,11 @@ Given(/^I am an organizer with started and completed courses$/) do
   GHERKIN
 end
 
-Given(/^I am a program manager with started and completed courses$/) do
+Given(/^I am a program manager with a started course$/) do
   random_name = "TestProgramManager" + SecureRandom.hex[0..9]
   steps <<~GHERKIN
     And I am a program manager named "#{random_name}" for regional partner "Test Partner"
     And I create a workshop for course "CS Fundamentals" organized by "#{random_name}" with 5 people and start it
-    And I create a workshop for course "CS Fundamentals" organized by "#{random_name}" with 5 people and end it
-    And I create a workshop for course "CS Fundamentals" organized by "#{random_name}" with 5 people
   GHERKIN
 end
 
@@ -260,6 +266,16 @@ And(/^I am viewing a workshop with fake survey results$/) do
   create_fake_daily_survey_results workshop
 
   steps "And I am on \"http://studio.code.org/pd/workshop_dashboard/daily_survey_results/#{workshop.id}\""
+end
+
+Given(/^I am a teacher enrolling in "([^"]*)"$/) do |course|
+  workshop = FactoryBot.create(:workshop, course: course)
+  @workshop_id = workshop.id
+  random_teacher_name = "Test Teacher" + SecureRandom.hex[0..9]
+  steps <<~GHERKIN
+    And I create a teacher named "#{random_teacher_name}"
+    And I am on "http://studio.code.org/pd/workshops/#{@workshop_id}/enroll"
+  GHERKIN
 end
 
 def create_fake_survey_questions(workshop)
@@ -533,6 +549,8 @@ And(/^I create a workshop for course "([^"]*)" ([a-z]+) by "([^"]*)" with (\d+) 
       enrolled_and_attending_users: number_type == 'people' ? number.to_i : 0
     )
   end
+
+  @workshop_id = workshop.id
 
   # Facilitators
   if number_type == 'facilitators'

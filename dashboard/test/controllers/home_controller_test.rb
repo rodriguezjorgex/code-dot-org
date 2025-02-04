@@ -196,9 +196,7 @@ class HomeControllerTest < ActionController::TestCase
 
     get :set_locale, params: {user_return_to: "/blahblah", locale: "es-ES"}
 
-    assert_equal "es-ES", cookies[:language_]
-    assert_match "language_=es-ES; domain=.code.org; path=/; expires=#{10.years.from_now.rfc2822}"[0..-15], @response.headers["Set-Cookie"]
-    assert_redirected_to 'http://studio.code.org/blahblah?lang=es-ES'
+    assert_redirected_to 'http://studio.code.org/blahblah?set_locale=es-ES&lang=es-ES'
   end
 
   test "handle nonsense in user_return_to by returning to home" do
@@ -217,13 +215,13 @@ class HomeControllerTest < ActionController::TestCase
       user_return_to: "http://blah.com/blerg",
       locale: "es-ES"
     }
-    assert_redirected_to 'http://studio.code.org/blerg?lang=es-ES'
+    assert_redirected_to 'http://studio.code.org/blerg?set_locale=es-ES&lang=es-ES'
   end
 
   test "if user_return_to in set_locale is nil redirects to homepage" do
     request.host = "studio.code.org"
     get :set_locale, params: {user_return_to: nil, locale: "es-ES"}
-    assert_redirected_to 'http://studio.code.org?lang=es-ES'
+    assert_redirected_to 'http://studio.code.org?set_locale=es-ES&lang=es-ES'
   end
 
   test "should get index with edmodo header" do
@@ -341,7 +339,6 @@ class HomeControllerTest < ActionController::TestCase
     refute student.us_state, "user should not have us_state, but value was #{student.us_state}"
     request.env['HTTP_CLOUDFRONT_VIEWER_COUNTRY'] = 'US'
     sign_in student
-    Policies::ChildAccount.stubs(:show_cap_state_modal?).with(student).returns(true)
     get :home
 
     assert_select '#student-information-modal', true
@@ -360,7 +357,6 @@ class HomeControllerTest < ActionController::TestCase
     assert student.age, 12
 
     sign_in student
-    Policies::ChildAccount.stubs(:show_cap_state_modal?).with(student).returns(true)
     get :home
 
     assert_select '#student-information-modal', true
@@ -377,7 +373,6 @@ class HomeControllerTest < ActionController::TestCase
     assert student.age, 12
 
     sign_in student
-    Policies::ChildAccount.stubs(:show_cap_state_modal?).with(student).returns(true)
     get :home
 
     assert_select '#student-information-modal', true
@@ -414,7 +409,6 @@ class HomeControllerTest < ActionController::TestCase
     student.update_attribute(:age, 11)
     request.env['HTTP_CLOUDFRONT_VIEWER_COUNTRY'] = 'US'
     sign_in student
-    Policies::ChildAccount.stubs(:show_cap_state_modal?).with(student).returns(true)
     get :home
     assert_select '#student-information-modal', false
   end
@@ -456,87 +450,5 @@ class HomeControllerTest < ActionController::TestCase
     assert_raises ActionController::UrlGenerationError do
       get :debug
     end
-  end
-
-  test 'workshop organizers see dashboard links' do
-    sign_in create(:workshop_organizer, :with_terms_of_service, :not_first_sign_in)
-    query_count = 17
-    assert_queries query_count do
-      get :home
-    end
-    assert_select 'h1', count: 1, text: 'Workshop Dashboard'
-  end
-
-  test 'program managers see dashboard links' do
-    sign_in create(:program_manager, :with_terms_of_service, :not_first_sign_in)
-    query_count = 18
-    assert_queries query_count do
-      get :home
-    end
-    assert_select 'h1', count: 1, text: 'Workshop Dashboard'
-  end
-
-  test 'workshop admins see dashboard links' do
-    sign_in create(:workshop_admin, :with_terms_of_service, :not_first_sign_in)
-    query_count = 16
-    assert_queries query_count do
-      get :home
-    end
-    assert_select 'h1', count: 1, text: 'Workshop Dashboard'
-  end
-
-  test 'facilitators see dashboard links' do
-    facilitator = create(:facilitator, :with_terms_of_service, :not_first_sign_in)
-    sign_in facilitator
-    query_count = 17
-    assert_queries query_count do
-      get :home
-    end
-    assert_select 'h1', count: 1, text: 'Workshop Dashboard'
-  end
-
-  test 'teachers cannot see dashboard links' do
-    sign_in create(:terms_of_service_teacher, :not_first_sign_in)
-    query_count = 15
-    assert_queries query_count do
-      get :home
-    end
-    assert_select 'h1', count: 0, text: 'Workshop Dashboard'
-  end
-
-  test 'workshop admins see application dashboard links' do
-    sign_in create(:workshop_admin, :with_terms_of_service, :not_first_sign_in)
-    query_count = 16
-    assert_queries query_count do
-      get :home
-    end
-    assert_select 'h1', count: 1, text: 'Application Dashboard'
-  end
-
-  test 'workshop organizers who are regional partner program managers see application dashboard links' do
-    sign_in create(:workshop_organizer, :as_regional_partner_program_manager, :with_terms_of_service, :not_first_sign_in)
-    query_count = 18
-    assert_queries query_count do
-      get :home
-    end
-    assert_select 'h1', count: 1, text: 'Application Dashboard'
-  end
-
-  test 'program managers see application dashboard links' do
-    sign_in create(:program_manager, :with_terms_of_service, :not_first_sign_in)
-    query_count = 18
-    assert_queries query_count do
-      get :home
-    end
-    assert_select 'h1', count: 1, text: 'Application Dashboard'
-  end
-
-  test 'workshop organizers who are not regional partner program managers do not see application dashboard links' do
-    sign_in create(:workshop_organizer, :with_terms_of_service, :not_first_sign_in)
-    query_count = 17
-    assert_queries query_count do
-      get :home
-    end
-    assert_select 'h1', count: 0, text: 'Application Dashboard'
   end
 end

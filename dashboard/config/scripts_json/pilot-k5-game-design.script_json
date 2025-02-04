@@ -4,6 +4,7 @@
     "wrapup_video_id": null,
     "login_required": false,
     "properties": {
+      "content_area": "curriculum_k_5",
       "curriculum_umbrella": "CSF",
       "hideable_lessons": true,
       "is_course": true,
@@ -13,7 +14,7 @@
     },
     "new_name": null,
     "family_name": "pilot-k5-game-design",
-    "serialized_at": "2024-05-06 23:06:55 UTC",
+    "serialized_at": "2024-11-19 01:19:17 UTC",
     "published_state": "pilot",
     "instruction_type": "teacher_led",
     "instructor_audience": "teacher",

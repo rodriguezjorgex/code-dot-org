@@ -66,6 +66,7 @@ class Lesson < ApplicationRecord
     student_overview
     unplugged
     creative_commons_license
+    background
     assessment
     purpose
     preparation
@@ -87,9 +88,11 @@ class Lesson < ApplicationRecord
   # absolute_position of 3 but a relative_position of 1
   acts_as_list scope: :script, column: :absolute_position
 
-  validates_uniqueness_of :key, scope: :script_id, case_sensitive: true, message: ->(object, _data) do
-    "lesson with key #{object.key.inspect} is already taken within unit #{object.script&.name.inspect}"
-  end
+  validates_uniqueness_of(
+    :key, scope: :script_id, case_sensitive: true, message: lambda do |object, _data|
+      "lesson with key #{object.key.inspect} is already taken within unit #{object.script&.name.inspect}"
+    end
+  )
 
   include CodespanOnlyMarkdownHelper
 
@@ -168,7 +171,7 @@ class Lesson < ApplicationRecord
   end
 
   def has_lesson_pdf?
-    return false if Unit.unit_in_category?('csf', script.name) && ['2017', '2018'].include?(script.version_year)
+    return false if script.csf? && ['2017', '2018'].include?(script.version_year)
 
     !!has_lesson_plan
   end
@@ -298,7 +301,9 @@ class Lesson < ApplicationRecord
         description_teacher: description_teacher,
         unplugged: unplugged,
         lessonEditPath: get_uncached_edit_path,
-        lessonStartUrl: start_url
+        lessonStartUrl: start_url,
+        duration: total_lesson_duration,
+        background: background,
       }
       # Use to_a here so that we get access to the cached script_levels.
       # Without it, script_levels.last goes back to the database.
@@ -420,6 +425,7 @@ class Lesson < ApplicationRecord
       lockable: lockable,
       hasLessonPlan: has_lesson_plan,
       creativeCommonsLicense: creative_commons_license,
+      background: background,
       purpose: purpose,
       preparation: preparation,
       announcements: announcements,
@@ -478,6 +484,24 @@ class Lesson < ApplicationRecord
       objectives: objectives.sort_by(&:description).map(&:summarize_for_lesson_show),
       standards: standards.map(&:summarize_for_lesson_show),
       link: script_lesson_path(script, self)
+    }
+  end
+
+  def summarize_for_lesson_materials(user)
+    {
+      id: id,
+      unit: script.summarize_for_lesson_show,
+      position: relative_position,
+      key: key,
+      name: localized_name,
+      resources: resources_for_lesson_plan(user&.verified_instructor?),
+      lessonPlanPdfUrl: lesson_plan_pdf_url,
+      lessonPlanHtmlUrl: lesson_plan_html_url,
+      scriptResourcesPdfUrl: script.get_unit_resources_pdf_url,
+      standardsUrl: standards_script_path(script),
+      vocabularyUrl: vocab_script_path(script),
+      hasLessonPlan: has_lesson_plan,
+      isLockable: lockable?,
     }
   end
 

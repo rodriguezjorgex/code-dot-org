@@ -29,7 +29,7 @@ We use automated tests to maintain quality in our codebase. Here's an overview o
 |                        | ruby lint                 | scss lint                         | haml lint          | stylelint                | JavaScript eslint (everywhere) | apps test          | dashboard unit tests | UI tests (Chrome)  | UI tests (all browsers) | eyes UI tests      | pegasus unit tests | shared and lib unit tests  |
 |------------------------|---------------------------|-----------------------------------|--------------------|--------------------------|--------------------------------|--------------------|----------------------|--------------------|-------------------------|--------------------|--------------------|--------------------|
 | pre-commit hook        | changed `*.rb and #!ruby` | changed `dashboard/app/**/*.scss` | changed `*.haml`   | changed `apps/**/*.scss` / changed `*.js`                 |
-| circle CI (via github) |                           |                                   |                    |                          | :white_check_mark:             | :white_check_mark: | :white_check_mark:   | :white_check_mark: |                         |                    | :white_check_mark: | :white_check_mark: |
+| CI (via github) |                           |                                   |                    |                          | :white_check_mark:             | :white_check_mark: | :white_check_mark:   | :white_check_mark: |                         |                    | :white_check_mark: | :white_check_mark: |
 | staging build          | :white_check_mark:        |                                   | :white_check_mark: |                          |                                | :white_check_mark: |                      |                    |                         |                    |                    |                    |
 | test build             |                           |                                   |                    |                          |                                |                    | :white_check_mark:   | :white_check_mark: | :white_check_mark:      | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
@@ -58,11 +58,9 @@ It's also possible to run a subset of tests:
 * `yarn lint`
 * `yarn test:unit`
 * `yarn test:integration`
-* `yarn test:unit --entry=./test/unit/gridUtilsTest.js`
+* `yarn test:unit test/unit/gridUtilsTest.js`
 
-To debug tests in Chrome, append `--browser=Chrome --watchTests` to any test command.
-
-For more details, see [apps/README.md](./apps/README.md#running-tests).
+For more details, see [apps/README.md](./apps/README.md#testing).
 
 ### Dashboard Tests
 
@@ -111,7 +109,14 @@ To run a test file in either directory, `cd` into it before running the tests.
 ```bash
 cd shared
 bundle exec ruby -Itest ./test/path/to/your/test.rb
-``` 
+bundle exec ruby -Itest ./test/test_html_parser.rb
+```
+
+```bash
+cd lib
+bundle exec ruby -Itest ./test/path/to/your/test.rb
+bundle exec ruby -Itest ./test/cdo/aws/test_cloudwatch_logs.rb
+```
 
 ### Pegasus Tests
 `cd pegasus && rake test` will run all of our pegasus Ruby tests. This usually takes ~20 seconds to run.

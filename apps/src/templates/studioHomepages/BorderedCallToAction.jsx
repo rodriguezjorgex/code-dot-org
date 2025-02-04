@@ -1,7 +1,7 @@
+import {Button} from '@code-dot-org/component-library/button';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {Button} from '@cdo/apps/componentLibrary/button';
 import {Heading3, BodyThreeText} from '@cdo/apps/componentLibrary/typography';
 
 import styles from './borderedCallToAction.module.scss';
@@ -15,6 +15,7 @@ const BorderedCallToAction = ({
   buttonUrl,
   buttonClass,
   buttonColor,
+  buttonDisabled = false,
   onClick,
   solidBorder,
 }) => {
@@ -39,6 +40,7 @@ const BorderedCallToAction = ({
         text={buttonText}
         href={buttonUrl}
         useAsLink={!!buttonUrl}
+        disabled={buttonDisabled}
       />
     </div>
   );
@@ -55,6 +57,7 @@ BorderedCallToAction.propTypes = {
   buttonColor: PropTypes.string,
   onClick: PropTypes.func,
   solidBorder: PropTypes.bool,
+  buttonDisabled: PropTypes.bool,
 };
 
 export default BorderedCallToAction;

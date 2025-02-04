@@ -145,12 +145,28 @@ class CourseVersion < ApplicationRecord
     end
   end
 
+  def latest_stable_version(family_name, locale_code: 'en-us')
+    latest_stable_unit = Unit.latest_stable_version(family_name, locale: locale_code)
+    latest_stable_unitgroup = UnitGroup.latest_stable_version(family_name, locale: locale_code)
+
+    if latest_stable_unit && !latest_stable_unitgroup
+      return latest_stable_unit
+    elsif !latest_stable_unit && latest_stable_unitgroup
+      return latest_stable_unitgroup
+    elsif latest_stable_unit && latest_stable_unitgroup
+      return latest_stable_unit.version_year >= latest_stable_unitgroup.version_year ? latest_stable_unit : latest_stable_unitgroup
+    end
+
+    nil
+  end
+
   def recommended?(locale_code = 'en-us')
     return false unless stable?
     return true if course_offering.course_versions.length == 1
 
     family_name = course_offering.key
-    latest_stable_version = content_root_type == 'UnitGroup' ? UnitGroup.latest_stable_version(family_name, locale: locale_code) : Unit.latest_stable_version(family_name, locale: locale_code)
+
+    latest_stable_version = latest_stable_version(family_name, locale_code: locale_code)
 
     latest_stable_version == content_root
   end
@@ -164,7 +180,11 @@ class CourseVersion < ApplicationRecord
   # See fakeCoursesWithProgress in teacherDashboardTestHelpers.js for an example of what
   # the resulting data looks like
   def self.courses_for_unit_selector(unit_ids)
-    CourseOffering.single_unit_course_offerings_containing_units_info(unit_ids).concat(CourseVersion.unit_group_course_versions_with_units_info(unit_ids)).sort_by {|c| c[:display_name]}
+    standalone_units = Unit.joins(:course_version).where(id: unit_ids).map {|u| u.course_version.course_offering&.summarize_for_unit_selector(unit_ids)}.compact.uniq
+
+    unit_groups =  Unit.joins(unit_groups: :course_version).where(id: unit_ids).where(course_version: {content_root_type: 'UnitGroup'}).flat_map {|u| u.unit_groups.map(&:course_version)}.map(&:summarize_for_unit_selector).uniq
+
+    standalone_units.concat(unit_groups).sort_by {|c| c[:display_name]}
   end
 
   def summarize_for_assignment_dropdown(user, locale_code)
@@ -181,17 +201,10 @@ class CourseVersion < ApplicationRecord
         is_stable: stable?,
         is_recommended: recommended?(locale_code),
         locales: content_root.supported_locale_names,
+        locale_codes: content_root.supported_locale_codes,
         units: units.select {|u| u.course_assignable?(user)}.map(&:summarize_for_assignment_dropdown).to_h
       }
     ]
-  end
-
-  def self.unit_group_course_versions_with_units(unit_ids)
-    CourseVersion.where(content_root_type: 'UnitGroup').all.select {|cv| cv.included_in_units?(unit_ids)}
-  end
-
-  def self.unit_group_course_versions_with_units_info(unit_ids)
-    unit_group_course_versions_with_units(unit_ids).map(&:summarize_for_unit_selector)
   end
 
   def summarize_for_unit_selector

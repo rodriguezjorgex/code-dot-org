@@ -168,6 +168,15 @@ class Api::V1::Pd::WorkshopsController < ApplicationController
   def update
     adjust_facilitators
 
+    if params[:pd_workshop][:course] == Pd::Workshop::COURSE_BUILD_YOUR_OWN
+      supplied_course_offering_ids = params[:pd_workshop].delete(:course_offerings)
+      if supplied_course_offering_ids.blank?
+        return render json: {error: "Cannot create a Build Your Own workshop without PL topics"}, status: :bad_request
+      else
+        @workshop.course_offerings = supplied_course_offering_ids.filter_map {|id| CourseOffering.find_by(id: id)}
+      end
+    end
+
     # The below user types have permission to set the regional partner. CSF Facilitators
     # can initially set the regional partner, but cannot edit it once it is set.
     can_update_regional_partner = current_user.permission?(UserPermission::WORKSHOP_ORGANIZER) ||
@@ -192,6 +201,15 @@ class Api::V1::Pd::WorkshopsController < ApplicationController
   def create
     @workshop.organizer = current_user
     adjust_facilitators
+
+    if params[:pd_workshop][:course] == Pd::Workshop::COURSE_BUILD_YOUR_OWN
+      supplied_course_offering_ids = params[:pd_workshop].delete(:course_offerings)
+      if supplied_course_offering_ids.blank?
+        return render json: {error: "Cannot create a Build Your Own workshop without PL topics"}, status: :bad_request
+      else
+        @workshop.course_offerings = supplied_course_offering_ids.filter_map {|id| CourseOffering.find_by(id: id)}
+      end
+    end
 
     if @workshop.virtual && user_cannot_freely_edit_virtual(@workshop.course, @workshop.subject, @workshop.workshop_starting_date)
       render json: {error: "non-workshop-admin cannot create a virtual CSP/CSA Summer Workshop within a month of it starting."}, status: :bad_request
@@ -271,6 +289,15 @@ class Api::V1::Pd::WorkshopsController < ApplicationController
   private def notify
     @workshop.enrollments.each do |enrollment|
       Pd::WorkshopMailer.detail_change_notification(enrollment).deliver_now
+
+      # Also send to the user's alternate summer email if they entered it in their application and it's
+      # for a summer workshop.
+      if enrollment.workshop&.subject == Pd::Workshop::SUBJECT_SUMMER_WORKSHOP
+        alt_summer_email = enrollment.user&.alternate_email
+        if alt_summer_email.present?
+          Pd::WorkshopMailer.detail_change_notification(enrollment, to_email: alt_summer_email).deliver_now
+        end
+      end
     end
     @workshop.facilitators.each do |facilitator|
       Pd::WorkshopMailer.facilitator_detail_change_notification(facilitator, @workshop).deliver_now
@@ -302,6 +329,7 @@ class Api::V1::Pd::WorkshopsController < ApplicationController
 
   private def workshop_params(can_update_regional_partner = true)
     allowed_params = [
+      :name,
       :location_name,
       :location_address,
       :capacity,
@@ -317,8 +345,9 @@ class Api::V1::Pd::WorkshopsController < ApplicationController
       :virtual,
       :suppress_email,
       :third_party_provider,
-      {sessions_attributes: [:id, :start, :end, :_destroy]},
+      {sessions_attributes: [:id, :start, :end, :session_format, :_destroy]},
       :module,
+      :participant_group_type
     ]
 
     allowed_params.delete :regional_partner_id unless can_update_regional_partner

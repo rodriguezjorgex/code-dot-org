@@ -10,7 +10,7 @@ $default-spacing: 2px;
   background-color: $dark_black;
   width: 100%;
   height: 100%;
-  padding: 0;
+  padding: 2px 0;
   box-sizing: border-box;
   border-radius: $default-border-radius;
   overflow: hidden;
@@ -27,6 +27,9 @@ $default-spacing: 2px;
   max-height: calc(100% - $timeline-area-height);
   gap: $default-spacing;
   overflow: hidden;
+  &.toolboxMode {
+    max-height: 100%; // Allow the work area to take full height
+  }
 }
 
 .playArea {
@@ -86,4 +89,12 @@ $default-spacing: 2px;
   position: absolute;
   right: 10px;
   bottom: 0;
+}
+
+.warningBanner {
+  display: flex;
+  z-index: 99;
+  background-color: $light_yellow;
+  padding: 5px;
+  color: $black;
 }

@@ -1,15 +1,15 @@
 // Making sure that css is first so that it is imported for other classes.
 // This might not be necessary.
-import './styles/Weblab2View.css'; // eslint-disable-line import/order
+import './styles/Weblab2View.css';
 
 import {Codebridge} from '@codebridge/Codebridge';
-import {ConfigType, ProjectType} from '@codebridge/types';
+import {ConfigType} from '@codebridge/types';
 import {css} from '@codemirror/lang-css';
 import {html} from '@codemirror/lang-html';
 import {LanguageSupport} from '@codemirror/language';
 import React, {useState} from 'react';
 
-import {ProjectSources} from '@cdo/apps/lab2/types';
+import {MultiFileSource, ProjectSources} from '@cdo/apps/lab2/types';
 
 import {useSource} from '../codebridge/hooks/useSource';
 
@@ -20,19 +20,21 @@ const weblabLangMapping: {[key: string]: LanguageSupport} = {
   css: css(),
 };
 
-const horizontalLayout = {
-  gridLayoutRows: '300px minmax(0, 1fr)',
-  gridLayoutColumns: '300px minmax(0, 1fr) 1fr',
-  gridLayout: `    "info-panel workspace preview-container"
-      "file-browser workspace preview-container"`,
-};
-
-const verticalLayout = {
-  gridLayoutRows: '300px 1fr 1fr',
-  gridLayoutColumns: '300px minmax(0, 1fr)',
-  gridLayout: `    "info-panel workspace workspace"
-      "file-browser workspace workspace"
-      "file-browser preview-container preview-container"`,
+const labeledGridLayouts = {
+  horizontal: {
+    gridLayoutRows: '1fr',
+    gridLayoutColumns: '300px minmax(0, 1fr) 1fr',
+    gridLayout: `
+    "info-panel workspace file-preview"
+    `,
+  },
+  vertical: {
+    gridLayoutRows: '1fr 1fr',
+    gridLayoutColumns: '300px minmax(0, 1fr) 1fr',
+    gridLayout: `
+    "info-panel workspace workspace"
+    "info-panel file-preview file-preview"`,
+  },
 };
 
 const defaultConfig: ConfigType = {
@@ -65,10 +67,13 @@ const defaultConfig: ConfigType = {
       action: () => window.alert('You are already on the file browser'),
     },
   ],
-  ...horizontalLayout,
+
+  labeledGridLayouts,
+  activeGridLayout: 'horizontal',
+  showFileBrowser: true,
 };
 
-const defaultSource: ProjectType = {
+const defaultSource: MultiFileSource = {
   // folders: {},
   folders: {
     '1': {id: '1', name: 'foo', parentId: '0'},
@@ -147,7 +152,8 @@ const defaultProject: ProjectSources = {source: defaultSource};
 
 const Weblab2View = () => {
   const [config, setConfig] = useState<ConfigType>(defaultConfig);
-  const {source, setSource, resetToStartSource} = useSource(defaultProject);
+  const {source, setProject, startSources, projectVersion} =
+    useSource(defaultProject);
   const [showConfig, setShowConfig] = useState<
     'project' | 'config' | 'layout' | ''
   >('');
@@ -170,27 +176,16 @@ const Weblab2View = () => {
         <button type="button" onClick={() => setShowConfig('layout')}>
           Edit layout
         </button>
-        <button
-          type="button"
-          onClick={() => setConfig({...config, ...horizontalLayout})}
-        >
-          Use horizontal layout
-        </button>
-        <button
-          type="button"
-          onClick={() => setConfig({...config, ...verticalLayout})}
-        >
-          Use vertical layout
-        </button>
       </div>
       <div className="app-ide">
         {source && (
           <Codebridge
-            project={source}
+            source={source}
             config={config}
-            setProject={setSource}
+            setProject={setProject}
             setConfig={setConfig}
-            resetProject={resetToStartSource}
+            startSources={startSources}
+            projectVersion={projectVersion}
           />
         )}
 
@@ -199,10 +194,10 @@ const Weblab2View = () => {
             config={configKey[showConfig]}
             setConfig={(
               configName: string,
-              newConfig: ProjectType | ConfigType | string
+              newConfig: MultiFileSource | ConfigType | string
             ) => {
               if (configName === 'project') {
-                setSource(newConfig as ProjectType);
+                setProject({source: newConfig as MultiFileSource});
               } else if (configName === 'config' || configName === 'layout') {
                 setConfig(newConfig as ConfigType);
               }

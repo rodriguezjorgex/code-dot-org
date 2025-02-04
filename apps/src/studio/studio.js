@@ -117,15 +117,6 @@ const EdgeClassNames = ['top', 'left', 'bottom', 'right'];
 let level;
 let skin;
 
-// These skins can be published as projects.
-const PUBLISHABLE_SKINS = [
-  'gumball',
-  'studio',
-  'iceage',
-  'infinity',
-  'hoc2015',
-];
-
 //TODO: Make configurable.
 studioApp().setCheckForEmptyBlocks(true);
 
@@ -425,7 +416,6 @@ Studio.loadLevel = function () {
         staticPlayer: true,
       });
   }
-  blocks.registerCustomGameLogic(Studio.customLogic);
 
   // Custom game logic doesn't work yet in the interpreter.
   Studio.legacyRuntime = !!Studio.customLogic;
@@ -2291,12 +2281,6 @@ Studio.init = function (config) {
       Blockly.HSV_SATURATION = 0.6;
 
       Blockly.SNAP_RADIUS *= Studio.scale.snapRadius;
-
-      if (Blockly.contractEditor) {
-        Blockly.contractEditor.registerTestHandler(
-          Studio.getStudioExampleFailure
-        );
-      }
     }
 
     drawMap();
@@ -2944,45 +2928,6 @@ Studio.getGoalAssetFromSkin = function () {
 };
 
 /**
- * Runs test of a given example
- * @param exampleBlock
- * @returns {string} string to display after example execution
- */
-Studio.getStudioExampleFailure = function (exampleBlock) {
-  try {
-    var actualBlock = exampleBlock.getInputTargetBlock('ACTUAL');
-    var expectedBlock = exampleBlock.getInputTargetBlock('EXPECTED');
-
-    studioApp().feedback_.throwOnInvalidExampleBlocks(
-      actualBlock,
-      expectedBlock
-    );
-
-    var defCode = Blockly.Generator.blockSpaceToCode('JavaScript', [
-      'functional_definition',
-    ]);
-    var exampleCode = Blockly.Generator.blocksToCode('JavaScript', [
-      exampleBlock,
-    ]);
-    if (exampleCode) {
-      var resultBoolean = CustomMarshalingInterpreter.evalWith(
-        defCode + '; return' + exampleCode,
-        {
-          Studio: api,
-          Globals: Studio.Globals,
-        },
-        {legacy: true}
-      );
-      return resultBoolean ? null : 'Does not match definition.';
-    } else {
-      return 'No example code.';
-    }
-  } catch (error) {
-    return 'Execution error: ' + error.message;
-  }
-};
-
-/**
  * Click the run button.  Start the program.
  */
 // XXX This is the only method used by the templates!
@@ -3081,7 +3026,6 @@ Studio.displayFeedback = function () {
   };
 
   if (!Studio.waitingForReport) {
-    const saveToProjectGallery = PUBLISHABLE_SKINS.includes(skin.id);
     const isSignedIn =
       getStore().getState().currentUser.signInState === SignInState.SignedIn;
     studioApp().displayFeedback({
@@ -3098,12 +3042,13 @@ Studio.displayFeedback = function () {
         !level.projectTemplateLevelName,
       feedbackImage: Studio.feedbackImage,
       twitter: skin.twitterOptions || twitterOptions,
-      // save to the project gallery
-      saveToProjectGallery: saveToProjectGallery,
+      // Do not allow saving to the project gallery because converting from level to standalone
+      // project is problematic.
+      saveToProjectGallery: false,
       disableSaveToGallery: !isSignedIn,
       message: Studio.message,
       appStrings: appStrings,
-      // Currently only true for Artist levels
+      // Currently only true for Artist levels.
       enablePrinting: level.enablePrinting,
     });
   }
@@ -3170,17 +3115,32 @@ var registerHandlers = function (
   matchParam2Val,
   argNames
 ) {
-  var blocks = Blockly.mainBlockSpace.getTopBlocks();
-  for (var x = 0; blocks[x]; x++) {
-    var block = blocks[x];
-    // default title values to '0' for case when there is only one sprite
-    // and no title value is set through a dropdown
-    var titleVal1 = block.getFieldValue(nameParam1) || '0';
-    var titleVal2 = block.getFieldValue(nameParam2) || '0';
+  const blocks = [...Blockly.mainBlockSpace.getTopBlocks()];
+
+  // Account for hidden blocks, e.g. function definitions or blocks from
+  // legacy levels that were set as invisible to the user.
+  const hiddenWorkspace = Blockly.getHiddenDefinitionWorkspace();
+  if (hiddenWorkspace) {
+    blocks.push(...hiddenWorkspace.getTopBlocks());
+  }
+
+  for (let x = 0; blocks[x]; x++) {
+    const block = blocks[x];
+    // default field values to '0' for case when there is only one sprite
+    // and no field value is set through a dropdown
+    const fieldVal1 =
+      typeof nameParam1 !== 'string'
+        ? '0'
+        : block.getFieldValue(nameParam1) || '0';
+    const fieldVal2 =
+      typeof nameParam2 !== 'string'
+        ? '0'
+        : block.getFieldValue(nameParam2) || '0';
+
     if (
       block.type === blockName &&
-      (!nameParam1 || matchParam1Val === titleVal1) &&
-      (!nameParam2 || matchParam2Val === titleVal2)
+      (!nameParam1 || matchParam1Val === fieldVal1) &&
+      (!nameParam2 || matchParam2Val === fieldVal2)
     ) {
       var code = Blockly.Generator.blocksToCode('JavaScript', [block]);
       if (code) {
@@ -3369,19 +3329,6 @@ var defineProcedures = function (blockType) {
  * @returns {boolean} True if we have a pre-execution failure
  */
 Studio.checkForBlocklyPreExecutionFailure = function () {
-  if (studioApp().hasUnfilledFunctionalBlock()) {
-    Studio.result = false;
-    Studio.testResults = TestResults.EMPTY_FUNCTIONAL_BLOCK;
-    // Some of our levels (i.e. big game) have a different top level block, but
-    // those should be undeletable/unmovable and not hit this. If they do,
-    // they'll still get the generic unfilled block message
-    Studio.message = studioApp().getUnfilledFunctionalBlockError(
-      'functional_start_setValue'
-    );
-    Studio.preExecutionFailure = true;
-    return true;
-  }
-
   if (studioApp().hasUnwantedExtraTopBlocks()) {
     Studio.result = false;
     Studio.testResults = TestResults.EXTRA_TOP_BLOCKS_FAIL;
@@ -3389,71 +3336,7 @@ Studio.checkForBlocklyPreExecutionFailure = function () {
     return true;
   }
 
-  if (studioApp().hasEmptyFunctionOrVariableName()) {
-    Studio.result = false;
-    Studio.testResults = TestResults.EMPTY_FUNCTION_NAME;
-    Studio.message = commonMsg.unnamedFunction();
-    Studio.preExecutionFailure = true;
-    return true;
-  }
-
-  var outcome = Studio.checkExamples_();
-  if (outcome.result !== undefined) {
-    Object.assign(Studio, outcome);
-    Studio.preExecutionFailure = true;
-    return true;
-  }
-
   return false;
-};
-
-/**
- * @returns {Object} outcome
- * @returns {boolean} outcome.result
- * @returns {number} outcome.testResults
- * @returns {string} outcome.message
- */
-Studio.checkExamples_ = function () {
-  var outcome = {};
-  if (!level.examplesRequired) {
-    return outcome;
-  }
-
-  var exampleless = studioApp().getFunctionWithoutTwoExamples();
-  if (exampleless) {
-    outcome.result = ResultType.FAILURE;
-    outcome.testResults = TestResults.EXAMPLE_FAILED;
-    outcome.message = commonMsg.emptyExampleBlockErrorMsg({
-      functionName: exampleless,
-    });
-    return outcome;
-  }
-
-  var unfilled = studioApp().getUnfilledFunctionalExample();
-  if (unfilled) {
-    outcome.result = ResultType.FAILURE;
-    outcome.testResults = TestResults.EXAMPLE_FAILED;
-
-    var name = unfilled
-      .getRootBlock()
-      .getInputTargetBlock('ACTUAL')
-      .getFieldValue('NAME');
-    outcome.message = commonMsg.emptyExampleBlockErrorMsg({functionName: name});
-    return outcome;
-  }
-
-  var failingBlockName = studioApp().checkForFailingExamples(
-    Studio.getStudioExampleFailure
-  );
-  if (failingBlockName) {
-    outcome.result = false;
-    outcome.testResults = TestResults.EXAMPLE_FAILED;
-    outcome.message = commonMsg.exampleErrorMessage({
-      functionName: failingBlockName,
-    });
-  }
-
-  return outcome;
 };
 
 /**
@@ -3570,14 +3453,6 @@ Studio.execute = function () {
     }
 
     registerHandlers(handlers, 'when_run', 'whenGameStarts');
-    registerHandlers(handlers, 'functional_start_setSpeeds', 'whenGameStarts');
-    registerHandlers(
-      handlers,
-      'functional_start_setBackgroundAndSpeeds',
-      'whenGameStarts'
-    );
-    registerHandlers(handlers, 'functional_start_setFuncs', 'whenGameStarts');
-    registerHandlers(handlers, 'functional_start_setValue', 'whenGameStarts');
     registerHandlers(handlers, 'studio_whenLeft', 'when-left');
     registerHandlers(handlers, 'studio_whenRight', 'when-right');
     registerHandlers(handlers, 'studio_whenUp', 'when-up');
@@ -3687,17 +3562,12 @@ Studio.execute = function () {
     if (Studio.legacyRuntime) {
       defineProcedures('procedures_defreturn');
       defineProcedures('procedures_defnoreturn');
-      defineProcedures('functional_definition');
     } else {
       const generator = Blockly.Generator.blockSpaceToCode.bind(
         Blockly.Generator,
         'JavaScript'
       );
-      const code = [
-        'procedures_defreturn',
-        'procedures_defnoreturn',
-        'functional_definition',
-      ]
+      const code = ['procedures_defreturn', 'procedures_defnoreturn']
         .map(generator)
         .join(';');
 
@@ -5435,6 +5305,9 @@ Studio.paramAsNumber = function (value) {
 };
 
 Studio.adjustScore = function (value) {
+  // Resetting the scoreText ensures the new score player score
+  // is used when displayScore updates the play area.
+  Studio.scoreText = null;
   Studio.playerScore += value;
 
   Studio.displayFloatingScore(value);

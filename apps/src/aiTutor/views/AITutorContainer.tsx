@@ -1,13 +1,14 @@
+import Button from '@code-dot-org/component-library/button';
 import classnames from 'classnames';
 import React, {useState} from 'react';
 import Draggable, {DraggableEventHandler} from 'react-draggable';
-import Button from '@cdo/apps/componentLibrary/button';
 
 import {useAppSelector} from '@cdo/apps/util/reduxHooks';
 import aiBotOutlineIcon from '@cdo/static/ai-bot-outline.png';
 
 import AITutorChatWorkspace from './AITutorChatWorkspace';
 import AITutorFooter from './AITutorFooter';
+
 import style from './ai-tutor.module.scss';
 
 interface AITutorContainerProps {

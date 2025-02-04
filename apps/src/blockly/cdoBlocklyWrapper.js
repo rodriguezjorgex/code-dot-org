@@ -3,7 +3,7 @@ import {
   CLAMPED_NUMBER_REGEX,
   stringIsXml,
 } from '@cdo/apps/blockly/constants';
-import {MetricEvent} from '@cdo/apps/lib/metrics/events';
+import {MetricEvent} from '@cdo/apps/metrics/events';
 import {APP_HEIGHT} from '@cdo/apps/p5lab/constants';
 import {getStore} from '@cdo/apps/redux';
 import {
@@ -18,7 +18,9 @@ import customBlocks from './customBlocks/cdoBlockly/index.js';
 import {
   INFINITE_LOOP_TRAP,
   LOOP_HIGHLIGHT,
+  getCodeBlocks,
   handleCodeGenerationFailure,
+  reportCdoBlocklyUsage,
   strip,
 } from './utils';
 
@@ -31,6 +33,7 @@ import {
  */
 const BlocklyWrapper = function (blocklyInstance) {
   this.version = BlocklyVersion.CDO;
+  reportCdoBlocklyUsage(MetricEvent.CDO_BLOCKLY_INITIALIZED);
   this.blockly_ = blocklyInstance;
   this.wrapReadOnlyProperty = function (propertyName) {
     Object.defineProperty(this, propertyName, {
@@ -138,6 +141,7 @@ function initializeBlocklyWrapper(blocklyInstance) {
   blocklyWrapper.wrapReadOnlyProperty('useContractEditor');
   blocklyWrapper.wrapReadOnlyProperty('useModalFunctionEditor');
   blocklyWrapper.wrapReadOnlyProperty('Variables');
+  blocklyWrapper.wrapReadOnlyProperty('varsInGlobals');
   blocklyWrapper.wrapReadOnlyProperty('WidgetDiv');
   blocklyWrapper.wrapReadOnlyProperty('weblab_locale');
   blocklyWrapper.wrapReadOnlyProperty('Xml');
@@ -290,6 +294,12 @@ function initializeBlocklyWrapper(blocklyInstance) {
     bindBrowserEvent: function (element, name, thisObject, func, useCapture) {
       return Blockly.bindEvent_(element, name, thisObject, func, useCapture);
     },
+    nonnegativeIntegerValidator: function (text) {
+      return Blockly.FieldTextInput.nonnegativeIntegerValidator(text);
+    },
+    numberValidator: function (text) {
+      return Blockly.FieldTextInput.numberValidator(text);
+    },
     getField: function (type) {
       return new Blockly.FieldTextInput('', getFieldInputChangeHandler(type));
     },
@@ -353,6 +363,17 @@ function initializeBlocklyWrapper(blocklyInstance) {
     },
     highlightBlock(id, spotlight) {
       Blockly.mainBlockSpace.highlightBlock(id, spotlight);
+    },
+    getAllGeneratedCode(extraCode) {
+      const studentCode = Blockly.Generator.blocksToCode(
+        'JavaScript',
+        getCodeBlocks()
+      );
+      return (extraCode || '') + studentCode;
+    },
+    getCodeFromBlockXmlSource(xmlString) {
+      const domBlocks = Blockly.Xml.textToDom(xmlString);
+      return Blockly.Generator.xmlToCode('JavaScript', domBlocks);
     },
   };
   blocklyWrapper.customBlocks = customBlocks;

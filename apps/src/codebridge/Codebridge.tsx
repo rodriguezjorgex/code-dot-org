@@ -1,81 +1,138 @@
-import {CodebridgeContextProvider} from '@codebridge/codebridgeContext';
+import {
+  CodebridgeContextProvider,
+  sourceReducer,
+  SOURCE_REDUCER_ACTIONS,
+  useSourceUtilities,
+} from '@codebridge/codebridgeContext';
 import {FileBrowser} from '@codebridge/FileBrowser';
-import {useSynchronizedProject} from '@codebridge/hooks';
+import {useReducerWithCallback} from '@codebridge/hooks';
 import {InfoPanel} from '@codebridge/InfoPanel';
-import {PreviewContainer} from '@codebridge/PreviewContainer';
 import {SideBar} from '@codebridge/SideBar';
 import {
-  ProjectType,
   ConfigType,
   SetProjectFunction,
   SetConfigFunction,
   OnRunFunction,
-  ResetProjectFunction,
+  SendConsoleInputFunction,
 } from '@codebridge/types';
-import React from 'react';
+import React, {useEffect, useReducer, useRef} from 'react';
 
-import './styles/cdoIDE.scss';
-import Console from './Console';
-import ControlButtons from './ControlButtons';
+import {FilePreview} from '@cdo/apps/codebridge/FilePreview';
+import {LabConfig, MultiFileSource, ProjectSources} from '@cdo/apps/lab2/types';
+
 import Workspace from './Workspace';
+import Output from './Workspace/Output';
+import WorkspaceAndOutput from './Workspace/WorkspaceAndOutput';
+
+import moduleStyles from './styles/cdoIDE.module.scss';
+import './styles/codebridge.scss';
 
 type CodebridgeProps = {
-  project: ProjectType;
+  source: MultiFileSource;
   config: ConfigType;
   setProject: SetProjectFunction;
   setConfig: SetConfigFunction;
-  resetProject: ResetProjectFunction;
+  startSources: ProjectSources;
   onRun?: OnRunFunction;
+  onStop?: () => void;
+  projectVersion: number;
+  labConfig?: LabConfig;
+  sendConsoleInput?: SendConsoleInputFunction;
 };
 
 export const Codebridge = React.memo(
   ({
-    project,
+    source,
     config,
     setProject,
     setConfig,
-    resetProject,
+    startSources,
     onRun,
+    onStop,
+    projectVersion,
+    labConfig,
+    sendConsoleInput,
   }: CodebridgeProps) => {
-    // keep our internal reducer backed copy synced up with our external whatever backed copy
-    // see useSynchronizedProject for more info.
-    const [internalProject, projectUtilities] = useSynchronizedProject(
-      project,
-      setProject
+    const reducerWithCallback = useReducerWithCallback(
+      sourceReducer,
+      (source: MultiFileSource) => setProject({source, labConfig}),
+      new Set(SOURCE_REDUCER_ACTIONS.REPLACE_SOURCE)
     );
+    const [internalSource, dispatch] = useReducer(reducerWithCallback, source);
+
+    const sourceUtilities = useSourceUtilities(dispatch);
+
+    const currentProjectVersion = useRef(projectVersion);
+    useEffect(() => {
+      if (projectVersion !== currentProjectVersion.current) {
+        sourceUtilities.replaceSource(source);
+        currentProjectVersion.current = projectVersion;
+      }
+    }, [currentProjectVersion, sourceUtilities, projectVersion, source]);
 
     const ComponentMap = {
       'file-browser': FileBrowser,
       'side-bar': SideBar,
-      'preview-container': PreviewContainer,
+      'file-preview': FilePreview,
       'info-panel': config.Instructions || InfoPanel,
       workspace: Workspace,
-      console: Console,
-      'control-buttons': ControlButtons,
+      output: Output,
+      'workspace-and-output': WorkspaceAndOutput,
     };
+
+    let gridLayout: string;
+    let gridLayoutRows: string;
+    let gridLayoutColumns: string;
+    if (
+      config.gridLayout &&
+      config.gridLayoutRows &&
+      config.gridLayoutColumns
+    ) {
+      gridLayout = config.gridLayout;
+      gridLayoutRows = config.gridLayoutRows;
+      gridLayoutColumns = config.gridLayoutColumns;
+    } else if (config.labeledGridLayouts && config.activeGridLayout) {
+      const labeledLayout = config.labeledGridLayouts[config.activeGridLayout];
+      gridLayout = labeledLayout.gridLayout;
+      gridLayoutRows = labeledLayout.gridLayoutRows;
+      gridLayoutColumns = labeledLayout.gridLayoutColumns;
+    } else {
+      throw new Error('Cannot render codebridge - no layout provided');
+    }
+    // gridLayout is a css string that defines the components in the grid layout.
+    // In order to find which components are in the grid layout, we remove all quotes
+    // from the string and tokenize it.
+    const gridLayoutKeys = gridLayout
+      .trim()
+      .replaceAll(`"`, '')
+      .split(' ')
+      .map(key => key.trim());
 
     return (
       <CodebridgeContextProvider
         value={{
-          project: internalProject,
+          source: internalSource,
           config,
           setProject,
           setConfig,
-          resetProject,
+          startSources,
           onRun,
-          ...projectUtilities,
+          onStop,
+          ...sourceUtilities,
+          labConfig,
+          sendConsoleInput,
         }}
       >
         <div
-          className="cdoide-container"
+          className={moduleStyles['cdoide-container']}
           style={{
-            gridTemplateAreas: config.gridLayout,
-            gridTemplateRows: config.gridLayoutRows,
-            gridTemplateColumns: config.gridLayoutColumns,
+            gridTemplateAreas: gridLayout,
+            gridTemplateRows: gridLayoutRows,
+            gridTemplateColumns: gridLayoutColumns,
           }}
         >
           {(Object.keys(ComponentMap) as Array<keyof typeof ComponentMap>)
-            .filter(key => config.gridLayout.match(key))
+            .filter(key => gridLayoutKeys.includes(key))
             .map(key => {
               const Component = ComponentMap[key];
               return <Component key={key} />;

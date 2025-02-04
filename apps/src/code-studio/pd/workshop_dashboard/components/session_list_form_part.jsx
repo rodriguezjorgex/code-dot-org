@@ -1,12 +1,14 @@
 /**
  * Dynamic list of session inputs for creating and editing workshops.
  */
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
-import moment from 'moment';
 import {Row, Col} from 'react-bootstrap'; // eslint-disable-line no-restricted-imports
-import SessionFormPart from './session_form_part';
+
 import {DATE_FORMAT, MAX_SESSIONS} from '../workshopConstants';
+
+import SessionFormPart from './session_form_part';
 
 export default class SessionListFormPart extends React.Component {
   static propTypes = {
@@ -71,14 +73,17 @@ export default class SessionListFormPart extends React.Component {
     return (
       <div>
         <Row>
-          <Col sm={4}>
+          <Col sm={3}>
             <label className="control-label">Date</label>
           </Col>
-          <Col sm={3}>
+          <Col sm={2}>
             <label className="control-label">Start Time</label>
           </Col>
-          <Col sm={3}>
+          <Col sm={2}>
             <label className="control-label">End Time</label>
+          </Col>
+          <Col sm={3}>
+            <label className="control-label">Format</label>
           </Col>
         </Row>
         {sessionForms}

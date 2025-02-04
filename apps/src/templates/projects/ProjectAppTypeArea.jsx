@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
 
+import {Button, LinkButton} from '@cdo/apps/componentLibrary/button';
 import fontConstants from '@cdo/apps/fontConstants';
 import i18n from '@cdo/locale';
 
 import styleConstants from '../../styleConstants';
 import color from '../../util/color';
-import Button from '../Button';
 
 import ProjectCardRow from './ProjectCardRow';
 import {
@@ -86,7 +86,6 @@ class ProjectAppTypeArea extends React.Component {
         projects={filteredList}
         galleryType={this.props.galleryType}
         isDetailView={this.props.isDetailView}
-        showReportAbuseHeader
       />
     );
   }
@@ -162,20 +161,22 @@ class ProjectAppTypeArea extends React.Component {
       <div style={styles.viewMoreButtons}>
         {showViewMore && (
           <Button
-            __useDeprecatedTag
-            onClick={this.loadMore}
-            color={Button.ButtonColor.neutralDark}
-            icon="plus-circle"
             text={i18n.viewMore()}
+            onClick={this.loadMore}
+            size="s"
+            type="secondary"
+            color="black"
+            iconLeft={{iconStyle: 'solid', iconName: 'plus-circle'}}
             style={styles.buttonRightMargin}
           />
         )}
-        <Button
-          __useDeprecatedTag
-          href="#top"
-          color={Button.ButtonColor.neutralDark}
-          icon="chevron-circle-up"
+        <LinkButton
           text={i18n.backToTop()}
+          href="#top"
+          size="s"
+          type="secondary"
+          color="black"
+          iconLeft={{iconStyle: 'solid', iconName: 'chevron-circle-up'}}
         />
       </div>
     );
@@ -237,10 +238,12 @@ const styles = {
   },
   viewMoreButtons: {
     float: 'right',
-    marginRight: 22,
+    marginInlineEnd: 22,
+    display: 'flex',
+    alignItems: 'center',
   },
   buttonRightMargin: {
-    marginRight: 20,
+    marginInlineEnd: 20,
   },
   iconPaddingLeft: {
     paddingLeft: 6,

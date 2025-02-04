@@ -1,11 +1,10 @@
+import FontAwesomeV6Icon, {
+  FontAwesomeV6IconProps,
+} from '@code-dot-org/component-library/fontAwesomeV6Icon';
 import classnames from 'classnames';
 import React, {useCallback} from 'react';
 
-import FontAwesomeV6Icon, {
-  FontAwesomeV6IconProps,
-} from '@cdo/apps/componentLibrary/fontAwesomeV6Icon';
-
-import moduleStyles from '@cdo/apps/componentLibrary/segmentedButtons/segmentedButtons.module.scss';
+import moduleStyles from './segmentedButtons.module.scss';
 
 export type SegmentButtonType = 'withLabel' | 'iconOnly' | 'number';
 
@@ -31,6 +30,8 @@ export interface SegmentedButtonModel {
   iconRight?: FontAwesomeV6IconProps;
   /** Icon for IconOnly button type */
   icon?: FontAwesomeV6IconProps;
+  /** Button unique id */
+  id?: string;
 }
 
 interface SegmentedButtonProps extends SegmentedButtonModel {
@@ -48,11 +49,13 @@ const SegmentedButton: React.FunctionComponent<SegmentedButtonProps> = ({
   icon,
   value,
   onChange,
+  id,
 }) => {
   const handleClick = useCallback(() => onChange(value), [onChange, value]);
 
   return (
     <button
+      id={id}
       type="button"
       disabled={disabled}
       onClick={handleClick}

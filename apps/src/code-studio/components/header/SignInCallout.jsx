@@ -1,6 +1,9 @@
-import React from 'react';
-import i18n from '@cdo/locale';
 import PropTypes from 'prop-types';
+import React from 'react';
+
+import {EVENTS} from '@cdo/apps/metrics/AnalyticsConstants';
+import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
+import i18n from '@cdo/locale';
 
 const CALLOUT_COLOR = '#454545';
 const TRIANGLE_BASE = 30;
@@ -9,8 +12,8 @@ const CALLOUT_Z_INDEX = 1040;
 const CALLOUT_TOP = 30;
 
 /*
- * This is a callout attached to the sign-in button that's used on CSF level
- * pages to remind the user to sign-in.  Note that the sign-in button is
+ * This is a callout attached to the sign-in button that's used on CSF and CSC
+ * levels pages to remind the user to sign-in.  Note that the sign-in button is
  * defined in shared/haml/user_header.haml and is not a React component.
  * This component is injected into the page by src/code-studio/header.js.
  */
@@ -23,6 +26,10 @@ export default class SignInCallout extends React.Component {
     super(props);
 
     this.renderContent = this.renderContent.bind(this);
+  }
+
+  componentDidMount() {
+    analyticsReporter.sendEvent(EVENTS.LEVEL_SIGN_IN_CALLOUT_SHOWN);
   }
 
   renderContent() {
@@ -66,7 +73,7 @@ const styles = {
   content: {
     position: 'absolute',
     top: CALLOUT_TOP,
-    right: -90,
+    right: -118,
     zIndex: CALLOUT_Z_INDEX,
     backgroundColor: CALLOUT_COLOR,
     borderRadius: 3,
@@ -82,7 +89,7 @@ const styles = {
   upTriangle: {
     position: 'absolute',
     top: CALLOUT_TOP - TRIANGLE_HEIGHT,
-    left: -(TRIANGLE_HEIGHT / 2.0),
+    left: 20,
     width: 0,
     height: 0,
     borderStyle: 'solid',
@@ -109,8 +116,11 @@ const styles = {
     width: 400,
     textAlign: 'left',
     whiteSpace: 'normal',
+    color: 'white',
+    fontWeight: '400',
   },
   textHeader: {
     marginTop: 0,
+    color: 'white',
   },
 };

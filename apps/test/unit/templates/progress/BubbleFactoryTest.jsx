@@ -1,6 +1,5 @@
 import {shallow, mount} from 'enzyme'; // eslint-disable-line no-restricted-imports
 import React from 'react';
-import sinon from 'sinon';
 
 import {
   BasicBubble,
@@ -18,7 +17,7 @@ import {currentLocation} from '@cdo/apps/utils';
 import i18n from '@cdo/locale';
 
 import {updateQueryParam} from '../../../../src/code-studio/utils';
-import {expect} from '../../../util/reconfiguredChai';
+import {expect} from '../../../util/reconfiguredChai'; // eslint-disable-line no-restricted-imports
 
 describe('BubbleFactory', () => {
   describe('BasicBubble', () => {
@@ -125,14 +124,17 @@ describe('BubbleFactory', () => {
     });
 
     it('passes icon for the level to TooltipWithIcon', () => {
-      const getIconStub = sinon.stub(progressHelpers, 'getIconForLevel');
+      const getIconStub = jest
+        .spyOn(progressHelpers, 'getIconForLevel')
+        .mockClear()
+        .mockImplementation();
       const icon = 'test-icon';
-      getIconStub.returns(icon);
+      getIconStub.mockReturnValue(icon);
 
       const wrapper = setUp();
       expect(wrapper.find('TooltipWithIcon').props().icon).to.equal(icon);
 
-      getIconStub.restore();
+      getIconStub.mockRestore();
     });
   });
 
@@ -234,6 +236,17 @@ describe('BubbleFactory', () => {
     it('if there is a sectionId append the section_id to the url', () => {
       const bubbleUrl = getBubbleUrl('a-url', 1, 2);
       expect(bubbleUrl).to.equal('a-url?section_id=2&user_id=1');
+    });
+
+    it('if input url has levelname as a query parameter', () => {
+      const bubbleUrl = getBubbleUrl(
+        '//localhost-studio.code.org:3000/s/coursec-2024/lessons/3/extras?level_name=courseC_maze_programming_challenge2_2024',
+        1,
+        2
+      );
+      expect(bubbleUrl).to.equal(
+        '//localhost-studio.code.org:3000/s/coursec-2024/lessons/3/extras?level_name=courseC_maze_programming_challenge2_2024&section_id=2&user_id=1'
+      );
     });
 
     it('removes version param if it exists even if other params are preserved', () => {
