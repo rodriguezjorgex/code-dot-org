@@ -157,7 +157,7 @@ interface TimelineSimple2EventsProps {
   paddingOffset: number;
   barWidth: number;
   getEventHeight: (numUniqueRows: number, availableHeight?: number) => number;
-  getEventVerticalSpace: (numUniqueRows: number) => number;
+  getEventVerticalSpace: (eventHeight: number) => number;
 }
 
 const TimelineSimple2Events: React.FunctionComponent<

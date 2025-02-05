@@ -32,8 +32,7 @@ const playheadScrollThreshold = 0.75;
 // How many extra measures to show at the end.
 const extraMeasures = 8;
 
-// Get the height that each event should occupy.  This is inclusive of empty space at the bottom which
-// serves as a gap before the below event.
+// Get the height that each event should occupy.  This is inclusive of empty vertical space at the bottom.
 const getEventHeight = (
   numUniqueRows: number,
   availableHeight = timelineHeight
@@ -55,7 +54,7 @@ const getEventHeight = (
   return Math.floor(availableHeight / numSoundsToShow);
 };
 
-// How how much of the event height should be left empty, at the bottom, as a gap.
+// How how much of the event height should be left as empty vertical space at the bottom.
 const getEventVerticalSpace = (eventHeight: number) => {
   return eventHeight > 8 ? 3 : eventHeight > 6 ? 2 : 1;
 };
