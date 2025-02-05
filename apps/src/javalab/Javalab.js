@@ -11,7 +11,8 @@ import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
 import Neighborhood from '@cdo/apps/miniApps/neighborhood/Neighborhood';
 import {getStore, registerReducers} from '@cdo/apps/redux';
 import javalabMsg from '@cdo/javalab/locale';
-
+import {logUserLevelInteraction} from '@cdo/apps/userLevelInteractionsLogger/userLevelInteractionsApi';
+import {UserLevelInteractions} from '@cdo/generated-scripts/sharedConstants';
 import BackpackClientApi from '../code-studio/components/backpack/BackpackClientApi';
 import {
   getContainedLevelResultInfo,
@@ -102,6 +103,7 @@ Javalab.prototype.init = function (config) {
   this.skin = config.skin;
   this.level = config.level;
   this.levelIdForAnalytics = config.serverLevelId;
+  this.scriptIdForAnalytics = config.serverScriptId;
   // Sets display theme based on displayTheme user preference
   this.displayTheme = getDisplayThemeFromString(config.displayTheme);
   this.isStartMode = !!config.level.editBlocks;
@@ -367,6 +369,11 @@ Javalab.prototype.onRun = function () {
   }
 
   this.miniApp?.reset?.();
+  logUserLevelInteraction({
+    levelId: this.levelIdForAnalytics,
+    scriptId: this.scriptIdForAnalytics,
+    interaction: UserLevelInteractions.click_run,
+  });
   analyticsReporter.sendEvent(EVENTS.JAVALAB_RUN_BUTTON_CLICK, {
     levelId: this.levelIdForAnalytics,
   });
