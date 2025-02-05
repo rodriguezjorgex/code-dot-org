@@ -43,7 +43,7 @@ const getEventHeight = (
   // this many to be shown at once.
   const minVisible = 5;
 
-  const maxVisible = 34;
+  const maxVisible = 45;
 
   // We might not actually have this many rows to show, but
   // we will size the bars so that this many rows would show.
