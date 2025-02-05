@@ -10,9 +10,10 @@ import {EVENTS} from '@cdo/apps/metrics/AnalyticsConstants';
 import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
 import Neighborhood from '@cdo/apps/miniApps/neighborhood/Neighborhood';
 import {getStore, registerReducers} from '@cdo/apps/redux';
-import javalabMsg from '@cdo/javalab/locale';
 import {logUserLevelInteraction} from '@cdo/apps/userLevelInteractionsLogger/userLevelInteractionsApi';
 import {UserLevelInteractions} from '@cdo/generated-scripts/sharedConstants';
+import javalabMsg from '@cdo/javalab/locale';
+
 import BackpackClientApi from '../code-studio/components/backpack/BackpackClientApi';
 import {
   getContainedLevelResultInfo,
@@ -383,6 +384,11 @@ Javalab.prototype.onRun = function () {
 Javalab.prototype.onTest = function () {
   const validation = this.level.validation;
   const validated = !!validation && Object.keys(validation).length !== 0;
+  logUserLevelInteraction({
+    levelId: this.levelIdForAnalytics,
+    scriptId: this.scriptIdForAnalytics,
+    interaction: UserLevelInteractions.click_validate,
+  });
   analyticsReporter.sendEvent(EVENTS.JAVALAB_TEST_BUTTON_CLICK, {
     levelId: this.levelIdForAnalytics,
     validated: validated,
