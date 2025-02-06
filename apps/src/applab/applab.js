@@ -15,7 +15,9 @@ import autogenerateML from '@cdo/apps/applab/ai';
 import * as aiConfig from '@cdo/apps/applab/ai/dropletConfig';
 import SmallFooter from '@cdo/apps/code-studio/components/SmallFooter';
 import {userAlreadyReportedAbuse} from '@cdo/apps/reportAbuse';
+import {logUserLevelInteraction} from '@cdo/apps/userLevelInteractionsLogger/userLevelInteractionsApi';
 import {workspace_running_background, white} from '@cdo/apps/util/color';
+import {UserLevelInteractions} from '@cdo/generated-scripts/sharedConstants';
 import commonMsg from '@cdo/locale';
 
 import annotationList from '../acemode/annotationList';
@@ -1069,6 +1071,7 @@ Applab.reset = function () {
  * @param callback {Function}
  */
 function runButtonClickWrapper(callback) {
+  console.log('App Lab run button clicked');
   $(window).trigger('run_button_pressed');
 
   const defaultScreenId = elementUtils.getDefaultScreenId();
@@ -1106,6 +1109,12 @@ Applab.runButtonClick = function () {
     Blockly.mainBlockSpace.traceOn(true);
   }
   Applab.execute();
+  const analyticsData = studioApp().analyticsData();
+  logUserLevelInteraction({
+    levelId: analyticsData.levelId,
+    scriptId: analyticsData.scriptId,
+    interaction: UserLevelInteractions.click_run,
+  });
 
   // Enable the Finish button if is present:
   var shareCell = document.getElementById('share-cell');
@@ -1290,6 +1299,12 @@ function onInterfaceModeChange(mode) {
 }
 
 Applab.onPuzzleFinish = function () {
+  const analyticsData = studioApp().analyticsData();
+  logUserLevelInteraction({
+    levelId: analyticsData.levelId,
+    scriptId: analyticsData.scriptId,
+    interaction: UserLevelInteractions.click_finish,
+  });
   Applab.onPuzzleComplete(false); // complete without submitting
 };
 
