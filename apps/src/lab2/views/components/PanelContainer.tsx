@@ -57,17 +57,16 @@ const PanelContainer: React.FunctionComponent<PanelContainerProps> = ({
             headerClassName
           )}
         >
-          {leftHeaderContent && (
-            <div
-              className={classNames(
-                'panelContainerHeaderItemLeft',
-                moduleStyles.panelContainerHeaderItem,
-                moduleStyles.panelContainerHeaderItemLeft
-              )}
-            >
-              {leftHeaderContent}
-            </div>
-          )}
+          <div
+            className={classNames(
+              'panelContainerHeaderItemLeft',
+              moduleStyles.panelContainerHeaderItem,
+              moduleStyles.panelContainerHeaderItemLeft
+            )}
+          >
+            {leftHeaderContent}
+          </div>
+
           <Heading2
             className={classNames(
               'panelContainerHeaderItemText',
@@ -85,17 +84,15 @@ const PanelContainer: React.FunctionComponent<PanelContainerProps> = ({
               {headerContent}
             </span>
           </Heading2>
-          {rightHeaderContent && (
-            <div
-              className={classNames(
-                'panelContainerHeaderItemRight',
-                moduleStyles.panelContainerHeaderItem,
-                moduleStyles.panelContainerHeaderItemRight
-              )}
-            >
-              {rightHeaderContent}
-            </div>
-          )}
+          <div
+            className={classNames(
+              'panelContainerHeaderItemRight',
+              moduleStyles.panelContainerHeaderItem,
+              moduleStyles.panelContainerHeaderItemRight
+            )}
+          >
+            {rightHeaderContent}
+          </div>
         </div>
       )}
       {children}
