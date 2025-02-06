@@ -1071,7 +1071,6 @@ Applab.reset = function () {
  * @param callback {Function}
  */
 function runButtonClickWrapper(callback) {
-  console.log('App Lab run button clicked');
   $(window).trigger('run_button_pressed');
 
   const defaultScreenId = elementUtils.getDefaultScreenId();
