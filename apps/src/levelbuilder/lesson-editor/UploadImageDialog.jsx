@@ -13,6 +13,8 @@ export default function UploadImageDialog({
   handleClose,
   uploadImage,
   allowExpandable = true,
+  dimensions,
+  fileTypes,
 }) {
   const [imgUrl, setImgUrl] = useState(undefined);
   const [expandable, setExpandable] = useState(false);
@@ -78,6 +80,12 @@ export default function UploadImageDialog({
     handleDialogClose();
   };
 
+  const dimensionsText = dimensions
+    ? `Max dimensions: ${dimensions.width} x ${dimensions.height}`
+    : '';
+  const fileTypesText = fileTypes
+    ? `Supported file types: ${fileTypes.join(', ')}`
+    : '';
   return (
     <LessonEditorDialog isOpen={isOpen} handleClose={handleDialogClose}>
       <h2>Upload Image</h2>
@@ -85,6 +93,9 @@ export default function UploadImageDialog({
         // TODO: A11y279 (https://codedotorg.atlassian.net/browse/A11Y-279)
         // Verify or update this alt-text as necessary
       }
+      {dimensionsText && <p>{dimensionsText}</p>}
+      {fileTypesText && <p>{fileTypesText}</p>}
+      {<p>Images must be no larger than 2MB</p>}
       {imgUrl && <img src={imgUrl} alt="" />}
       <input
         type="file"
@@ -140,6 +151,8 @@ UploadImageDialog.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   uploadImage: PropTypes.func.isRequired,
+  dimensions: PropTypes.obj,
+  fileTypes: PropTypes.string,
 };
 
 const styles = {
