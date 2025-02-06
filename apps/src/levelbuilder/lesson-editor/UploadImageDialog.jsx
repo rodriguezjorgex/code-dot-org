@@ -151,8 +151,8 @@ UploadImageDialog.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   uploadImage: PropTypes.func.isRequired,
-  dimensions: PropTypes.obj,
-  fileTypes: PropTypes.string,
+  dimensions: PropTypes.object,
+  fileTypes: PropTypes.arrayOf(PropTypes.string),
 };
 
 const styles = {
