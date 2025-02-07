@@ -24,7 +24,8 @@ $default-spacing: 2px;
     &Dark {
       background-color: $light_gray_900;
       color: $light_white;
-      gap: $default-spacing;
+      _gap: $default-spacing;
+      _margin-bottom: $default-spacing;
     }
 
     &Light {
