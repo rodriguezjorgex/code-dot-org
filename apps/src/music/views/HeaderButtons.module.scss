@@ -3,10 +3,10 @@
 
 .container {
   display: flex;
-  width: 100%;
+  _width: 100%;
   min-width: 190px;
   max-width: calc(100vw - 300px);
-  justify-content: end;
+  _justify-content: end;
 }
 
 .button {
