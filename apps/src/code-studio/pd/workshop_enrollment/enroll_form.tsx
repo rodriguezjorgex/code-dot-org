@@ -7,10 +7,10 @@ import Checkbox from '@code-dot-org/component-library/checkbox';
 import SimpleDropdown from '@code-dot-org/component-library/dropdown/simpleDropdown';
 import FontAwesomeV6Icon from '@code-dot-org/component-library/fontAwesomeV6Icon';
 import {RadioButtonsGroup} from '@code-dot-org/component-library/radioButton';
+import TextField from '@code-dot-org/component-library/textField';
 import classNames from 'classnames';
 import React, {Fragment, ReactNode, useMemo, useState} from 'react';
 
-import TextField from '@cdo/apps/componentLibrary/textField/TextField';
 import Typography from '@cdo/apps/componentLibrary/typography/Typography';
 import {SubjectNames} from '@cdo/apps/generated/pd/sharedWorkshopConstants';
 import {useSchoolInfo} from '@cdo/apps/schoolInfo/hooks/useSchoolInfo';
