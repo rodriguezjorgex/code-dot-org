@@ -17,8 +17,8 @@ jobs:
             - uses: actions/checkout@v4
               with:
                 sparse-checkout: |
-                  'frontend'
-                  'apps/fonts'
+                  frontend
+                  apps/fonts
             
             - name: Enable Corepack before setting up Node
               run: corepack enable
