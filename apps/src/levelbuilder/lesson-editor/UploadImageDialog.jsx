@@ -8,6 +8,7 @@ import i18n from '@cdo/locale';
 
 import LessonEditorDialog from './LessonEditorDialog';
 
+const MAX_FILE_SIZE = 2;
 export default function UploadImageDialog({
   isOpen,
   handleClose,
@@ -86,6 +87,8 @@ export default function UploadImageDialog({
   const fileTypesText = fileTypes
     ? `Supported file types: ${fileTypes.join(', ')}`
     : '';
+  const fileSizeText = `Max file size: ${MAX_FILE_SIZE}MB`;
+
   return (
     <LessonEditorDialog isOpen={isOpen} handleClose={handleDialogClose}>
       <h2>Upload Image</h2>
@@ -95,7 +98,7 @@ export default function UploadImageDialog({
       }
       {dimensionsText && <p>{dimensionsText}</p>}
       {fileTypesText && <p>{fileTypesText}</p>}
-      {<p>Images must be no larger than 2MB</p>}
+      {<p>{fileSizeText}</p>}
       {imgUrl && <img src={imgUrl} alt="" />}
       <input
         type="file"
