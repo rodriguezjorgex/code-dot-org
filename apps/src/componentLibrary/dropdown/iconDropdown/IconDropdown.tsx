@@ -1,19 +1,18 @@
+import {dropdownColors} from '@code-dot-org/component-library/common/constants';
+import {
+  DropdownProviderWrapper,
+  useDropdownContext,
+} from '@code-dot-org/component-library/common/contexts';
+import {
+  ComponentSizeXSToL,
+  DropdownColor,
+  DropdownFormFieldRelatedProps,
+} from '@code-dot-org/component-library/common/types';
 import FontAwesomeV6Icon, {
   FontAwesomeV6IconProps,
 } from '@code-dot-org/component-library/fontAwesomeV6Icon';
 import classNames from 'classnames';
 import React, {useCallback, memo, AriaAttributes} from 'react';
-
-import {dropdownColors} from '@cdo/apps/componentLibrary/common/constants';
-import {
-  DropdownProviderWrapper,
-  useDropdownContext,
-} from '@cdo/apps/componentLibrary/common/contexts/DropdownContext';
-import {
-  ComponentSizeXSToL,
-  DropdownColor,
-  DropdownFormFieldRelatedProps,
-} from '@cdo/apps/componentLibrary/common/types';
 
 import CustomDropdown, {_CustomDropdownOption} from './../_CustomDropdown';
 

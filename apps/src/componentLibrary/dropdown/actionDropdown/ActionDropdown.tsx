@@ -1,15 +1,14 @@
 import {ButtonProps} from '@code-dot-org/component-library/button';
+import {
+  DropdownProviderWrapper,
+  useDropdownContext,
+} from '@code-dot-org/component-library/common/contexts';
+import {ComponentSizeXSToL} from '@code-dot-org/component-library/common/types';
 import FontAwesomeV6Icon, {
   FontAwesomeV6IconProps,
 } from '@code-dot-org/component-library/fontAwesomeV6Icon';
 import classNames from 'classnames';
 import React, {useCallback, memo, AriaAttributes} from 'react';
-
-import {
-  DropdownProviderWrapper,
-  useDropdownContext,
-} from '@cdo/apps/componentLibrary/common/contexts/DropdownContext';
-import {ComponentSizeXSToL} from '@cdo/apps/componentLibrary/common/types';
 
 import CustomDropdown, {_CustomDropdownOption} from './../_CustomDropdown';
 
