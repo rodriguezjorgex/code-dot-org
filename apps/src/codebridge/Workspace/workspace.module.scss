@@ -6,7 +6,6 @@
   color: $white;
   overflow: visible;
   z-index: 2;
-  gap: 0;
 }
 
 .workspaceContainer {
@@ -78,5 +77,4 @@
   display: flex;
   justify-content: flex-end;
   gap: 4px;
-  _margin: 4px;
 }
