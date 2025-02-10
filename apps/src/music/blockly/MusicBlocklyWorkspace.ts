@@ -597,9 +597,7 @@ export default class MusicBlocklyWorkspace {
     }
 
     const selectedBlock = blockId
-      ? ((this.workspace as GoogleBlockly.WorkspaceSvg).getBlockById(
-          blockId
-        ) as GoogleBlockly.Block)
+      ? (this.workspace as GoogleBlockly.WorkspaceSvg).getBlockById(blockId)
       : null;
 
     (this.workspace as GoogleBlockly.WorkspaceSvg)
