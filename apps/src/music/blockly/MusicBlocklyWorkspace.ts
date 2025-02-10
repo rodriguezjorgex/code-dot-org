@@ -596,14 +596,10 @@ export default class MusicBlocklyWorkspace {
       return;
     }
 
-    const selectedBlock = blockId
-      ? (this.workspace as GoogleBlockly.WorkspaceSvg).getBlockById(blockId)
-      : null;
-
     (this.workspace as GoogleBlockly.WorkspaceSvg)
       .getAllBlocks()
       .forEach(block => {
-        block === selectedBlock ? block.select() : block.unselect();
+        block.id === blockId ? block.select() : block.unselect();
       });
   }
 
