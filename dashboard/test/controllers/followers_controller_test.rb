@@ -44,21 +44,22 @@ class FollowersControllerTest < ActionController::TestCase
     assert_redirected_to controller: 'sections', action: 'show', id: @picture_section.code
   end
 
-  test "student_user_new when not signed in" do
+  test "student_user_new when signed out with section code sends user to signup flow" do
     get :student_user_new, params: {section_code: @chris_section.code}
 
-    assert_response :success
-    assert assigns(:user)
+    assert_response :redirect
+    assert @response.headers['Location'].ends_with? "/users/new_sign_up/login_type?user_type=student&user_return_to=/join/#{@chris_section.code}"
 
-    refute assigns(:user).persisted?
+    refute assigns(:user)
   end
 
-  test "student_user_new without section code" do
+  test "student_user_new when signed out without section code sends user to signup flow" do
     get :student_user_new
 
-    assert_response :success
-    # form to type in section code
-    assert_select 'input#section_code'
+    assert_response :redirect
+    assert @response.headers['Location'].ends_with? "/users/new_sign_up/login_type?user_type=student&user_return_to=/join"
+
+    refute assigns(:user)
   end
 
   test "student_user_new when signed in" do
@@ -276,8 +277,8 @@ class FollowersControllerTest < ActionController::TestCase
       post :student_register, params: {section_code: @chris_section.code}
     end
 
-    assert_template 'followers/student_user_new'
-    assert_select '#signup'
+    assert_response :redirect
+    assert @response.headers['Location'].ends_with? "/users/new_sign_up/login_type?user_type=student&user_return_to=/join/#{@chris_section.code}"
   end
 
   test "student_register with no section when signed in" do
@@ -295,8 +296,8 @@ class FollowersControllerTest < ActionController::TestCase
       post :student_register, params: {section_code: ''}
     end
 
-    assert_template 'followers/student_user_new'
-    assert_select 'input#section_code'
+    assert_response :redirect
+    assert @response.headers['Location'].ends_with? "/users/new_sign_up/login_type?user_type=student&user_return_to=/join"
   end
 
   test "student_register in section with script" do

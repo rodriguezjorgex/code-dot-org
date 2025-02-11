@@ -12,9 +12,9 @@ class FollowersController < ApplicationController
   # GET /join/:section_code (section_code is optional)
   def student_user_new
     if current_user.blank?
-      base_student_signup_url = "/users/new_sign_up/login_type?user_type=student"
-      user_return_to_url_param = @section.present? ? "&user_return_to=/join/#{@section.code}" : ''
-      redirect_to CDO.studio_url(base_student_signup_url + user_return_to_url_param)
+      base_student_signup_url = "/users/new_sign_up/login_type?user_type=student&user_return_to=/join"
+      section_code_url_param = @section.present? ? "/#{@section.code}" : ''
+      redirect_to CDO.studio_url(base_student_signup_url + section_code_url_param)
     end
   end
 
@@ -28,7 +28,10 @@ class FollowersController < ApplicationController
       @user = User.new(followers_params(user_type))
       @user.user_type = user_type
     else
-      redirect_to CDO.studio_url(`/users/new_sign_up/login_type?user_type=student&user_return_to=/join/#{@section.code}`)
+      base_student_signup_url = "/users/new_sign_up/login_type?user_type=student&user_return_to=/join"
+      section_code_url_param = @section.present? ? "/#{@section.code}" : ''
+      redirect_to CDO.studio_url(base_student_signup_url + section_code_url_param)
+      return
     end
 
     # Create boolean to confirm if a user already actively exists on a section roster
