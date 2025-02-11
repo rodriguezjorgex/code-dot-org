@@ -3,7 +3,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import {ViewType} from '@cdo/apps/code-studio/viewAsRedux';
-import Button from '@cdo/apps/legacySharedComponents/Button';
+// import Button from '@cdo/apps/legacySharedComponents/Button';
+import {Button, buttonColors} from '@code-dot-org/component-library/button';
 import i18n from '@cdo/locale';
 
 import styles from './summary-entry-point.module.scss';
@@ -30,11 +31,13 @@ const SummaryEntryPoint = ({scriptData, students, selectedSection}) => {
   return (
     <div className={className}>
       <Button
-        color={Button.ButtonColor.neutralDark}
+        color={buttonColors.black}
+        type={'secondary'}
+        size={'s'}
         text={i18n.viewStudentResponses()}
         href={summaryUrl}
+        useAsLink={true}
         className={styles.button}
-        __useDeprecatedTag
       />
 
       {selectedSection && (
