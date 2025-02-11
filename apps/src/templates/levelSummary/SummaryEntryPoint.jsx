@@ -1,10 +1,9 @@
+import {Button, buttonColors} from '@code-dot-org/component-library/button';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
 
 import {ViewType} from '@cdo/apps/code-studio/viewAsRedux';
-// import Button from '@cdo/apps/legacySharedComponents/Button';
-import {Button, buttonColors} from '@code-dot-org/component-library/button';
 import i18n from '@cdo/locale';
 
 import styles from './summary-entry-point.module.scss';
