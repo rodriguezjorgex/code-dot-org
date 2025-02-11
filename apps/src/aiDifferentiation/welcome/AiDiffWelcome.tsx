@@ -41,8 +41,9 @@ const WelcomeStates: {[key in WelcomeState]: WelcomeState} = {
 
 interface AiDiffWelcomeProps {
   setShowWelcomeExperience: (show: boolean) => void;
-  lessonId: number;
-  lessonName: string;
+  context: string;
+  scriptId: number;
+  scriptName: string;
   unitDisplayName: string;
 }
 
@@ -122,8 +123,9 @@ const getStartedPage = (onClick: () => void) => {
 
 const AiDiffWelcome: React.FC<AiDiffWelcomeProps> = ({
   setShowWelcomeExperience,
-  lessonId,
-  lessonName,
+  context,
+  scriptId,
+  scriptName,
   unitDisplayName,
 }) => {
   const [currentWelcomeState, setCurrentWelcomeState] =
@@ -255,8 +257,9 @@ const AiDiffWelcome: React.FC<AiDiffWelcomeProps> = ({
     return (
       <div className={style.practicePage}>
         <AiDiffChat
-          lessonId={lessonId}
-          lessonName={lessonName}
+          context={context}
+          scriptId={scriptId}
+          scriptName={scriptName}
           chatResponseCallback={() => setChatContinueButtonDisabled(false)}
           unitDisplayName={unitDisplayName}
           initialChatMessage={initialMessage}
@@ -271,8 +274,9 @@ const AiDiffWelcome: React.FC<AiDiffWelcomeProps> = ({
     );
   }, [
     selectedOption,
-    lessonId,
-    lessonName,
+    context,
+    scriptId,
+    scriptName,
     unitDisplayName,
     continueAndSkipButtons,
     chatContinueButtonDisabled,
