@@ -5,6 +5,7 @@
   display: flex;
   min-width: 190px;
   max-width: calc(100vw - 270px);
+  justify-content: end;
 }
 
 .button {
