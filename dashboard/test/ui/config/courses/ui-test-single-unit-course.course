@@ -1,7 +1,7 @@
 {
-  "name": "ui-test-single-unit-course-2026",
+  "name": "ui-test-single-unit-course",
   "script_names": [
-    "ui-test-single-unit-2026"
+    "ui-test-single-unit"
   ],
   "published_state": "stable",
   "instruction_type": "teacher_led",
@@ -9,6 +9,13 @@
   "instructor_audience": "teacher",
   "properties": {
     "family_name": "ui-test-single-unit-course",
-    "version_year": "2026"
-  }
+    "has_numbered_units": true,
+    "version_year": "unversioned"
+  },
+  "resources": [
+
+  ],
+  "student_resources": [
+
+  ]
 }
