@@ -1,41 +1,53 @@
 require 'test_helper'
 
 class JoinTest < ActionDispatch::IntegrationTest
-  test '/join with code in query param renders followers#student_user_new with section_code' do
+  test 'signed out /join with code in query param sends user to sign up' do
     section = create :section
 
-    join_url = "http://#{CDO.dashboard_hostname}/join?utf8=%E2%9C%93&section_code=#{section.code}&commit=Go"
-    assert_recognizes(
-      {controller: 'followers', action: 'student_user_new', section_code: section.code},
-      join_url,
-      {section_code: section.code}
-    )
-    get join_url
-    assert_response :success
+    get "http://#{CDO.dashboard_hostname}/join?utf8=%E2%9C%93&section_code=#{section.code}&commit=Go"
 
-    # not logged in, page contains new user form
-    assert_select 'form#new_user'
+    assert_response :redirect
+    assert @response.headers['Location'].ends_with? "/users/new_sign_up/login_type?user_type=student&user_return_to=/join/#{section.code}"
   end
 
-  test '/join with code in url renders followers#student_user_new with section_code' do
+  test 'signed out /join with code in url sends user to sign up' do
     section = create :section
 
-    join_url = "http://#{CDO.dashboard_hostname}/join/#{section.code}"
-    assert_recognizes(
-      {controller: 'followers', action: 'student_user_new', section_code: section.code},
-      join_url
-    )
-    get join_url
+    get "http://#{CDO.dashboard_hostname}/join/#{section.code}"
+
+    assert_response :redirect
+    assert @response.headers['Location'].ends_with? "/users/new_sign_up/login_type?user_type=student&user_return_to=/join/#{section.code}"
+  end
+
+  test 'signed out /join without code sends user to sign up' do
+    get "http://#{CDO.dashboard_hostname}/join"
+
+    assert_response :redirect
+    assert @response.headers['Location'].ends_with? "/users/new_sign_up/login_type?user_type=student&user_return_to=/join"
+  end
+
+  test 'signed in /join with code in query param successfully loads join page' do
+    sign_in create :student
+    section = create :section
+
+    get "http://#{CDO.dashboard_hostname}/join?utf8=%E2%9C%93&section_code=#{section.code}&commit=Go"
+
     assert_response :success
   end
 
-  test '/join without code renders followers#student_user_new' do
-    join_url = "http://#{CDO.dashboard_hostname}/join"
-    assert_recognizes(
-      {controller: 'followers', action: 'student_user_new'},
-      join_url
-    )
-    get join_url
+  test 'signed in /join with code in url successfully loads join page' do
+    sign_in create :student
+    section = create :section
+
+    get "http://#{CDO.dashboard_hostname}/join/#{section.code}"
+
+    assert_response :success
+  end
+
+  test 'signed in /join without code successfully loads join page' do
+    sign_in create :student
+    get "http://#{CDO.dashboard_hostname}/join"
+
     assert_response :success
   end
 end

@@ -2,7 +2,7 @@
 # Users see sign up form when they attempt to join section without being signed in
 Feature: Using the join section page while not signed in
 
-  Scenario: Join section while not signed in with invalid form inputs
+  Scenario: Attempt to join section while signed out
     Given I am a teacher
     And I create a new student section and go home
     And I save the student section url
@@ -10,18 +10,15 @@ Feature: Using the join section page while not signed in
     # Have new user join section with invalid password
     Given I sign out
     And I attempt to join the section
-    And I see "#student-terms"
-    And I fill in the sign up form with invalid values for "Bob"
-    Then I wait until element "#error_explanation" is visible
+    Then I see I am sent to the signup flow as a student trying to join a section
 
-  Scenario: Join section while not signed in with valid form inputs
+  Scenario: Attempt to join section while signed in
     Given I am a teacher
     And I create a new student section and go home
     And I save the student section url
 
     # Have new user join section with valid form inputs
     Given I sign out
-    And I attempt to join the section
-    And I see "#student-terms"
-    And I fill in the sign up form with valid values for "ValidUser"
+    Given I am a student
+    And I join the section
     Then I wait until I am on "http://studio.code.org/home"
