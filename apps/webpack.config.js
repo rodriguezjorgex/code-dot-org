@@ -279,7 +279,10 @@ const WEBPACK_BASE_CONFIG = {
             options: {
               implementation: sass,
               sassOptions: {
-                includePaths: [p('../shared/css')],
+                includePaths: [
+                  p('../shared/css'),
+                  p('node_modules/@code-dot-org/component-library-styles'),
+                ],
                 outputStyle: 'compressed',
               },
             },
