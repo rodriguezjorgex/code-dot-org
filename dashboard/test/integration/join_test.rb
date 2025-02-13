@@ -7,7 +7,7 @@ class JoinTest < ActionDispatch::IntegrationTest
     get "http://#{CDO.dashboard_hostname}/join?utf8=%E2%9C%93&section_code=#{section.code}&commit=Go"
 
     assert_response :redirect
-    assert @response.headers['Location'].ends_with? "/users/new_sign_up/login_type?user_type=student&user_return_to=/join/#{section.code}"
+    assert @response.headers['Location'].ends_with? "/users/sign_up/login_type?user_type=student&user_return_to=/join/#{section.code}"
   end
 
   test 'signed out /join with code in url sends user to sign up' do
@@ -16,14 +16,14 @@ class JoinTest < ActionDispatch::IntegrationTest
     get "http://#{CDO.dashboard_hostname}/join/#{section.code}"
 
     assert_response :redirect
-    assert @response.headers['Location'].ends_with? "/users/new_sign_up/login_type?user_type=student&user_return_to=/join/#{section.code}"
+    assert @response.headers['Location'].ends_with? "/users/sign_up/login_type?user_type=student&user_return_to=/join/#{section.code}"
   end
 
   test 'signed out /join without code sends user to sign up' do
     get "http://#{CDO.dashboard_hostname}/join"
 
     assert_response :redirect
-    assert @response.headers['Location'].ends_with? "/users/new_sign_up/login_type?user_type=student&user_return_to=/join"
+    assert @response.headers['Location'].ends_with? "/users/sign_up/login_type?user_type=student&user_return_to=/join"
   end
 
   test 'signed in /join with code in query param successfully loads join page' do

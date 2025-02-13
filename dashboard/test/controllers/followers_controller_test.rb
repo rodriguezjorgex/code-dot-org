@@ -48,7 +48,7 @@ class FollowersControllerTest < ActionController::TestCase
     get :student_user_new, params: {section_code: @chris_section.code}
 
     assert_response :redirect
-    assert @response.headers['Location'].ends_with? "/users/new_sign_up/login_type?user_type=student&user_return_to=/join/#{@chris_section.code}"
+    assert @response.headers['Location'].ends_with? "/users/sign_up/login_type?user_type=student&user_return_to=/join/#{@chris_section.code}"
 
     refute assigns(:user)
   end
@@ -57,7 +57,7 @@ class FollowersControllerTest < ActionController::TestCase
     get :student_user_new
 
     assert_response :redirect
-    assert @response.headers['Location'].ends_with? "/users/new_sign_up/login_type?user_type=student&user_return_to=/join"
+    assert @response.headers['Location'].ends_with? "/users/sign_up/login_type?user_type=student&user_return_to=/join"
 
     refute assigns(:user)
   end
@@ -278,7 +278,7 @@ class FollowersControllerTest < ActionController::TestCase
     end
 
     assert_response :redirect
-    assert @response.headers['Location'].ends_with? "/users/new_sign_up/login_type?user_type=student&user_return_to=/join/#{@chris_section.code}"
+    assert @response.headers['Location'].ends_with? "/users/sign_up/login_type?user_type=student&user_return_to=/join/#{@chris_section.code}"
   end
 
   test "student_register with no section when signed in" do
@@ -297,7 +297,7 @@ class FollowersControllerTest < ActionController::TestCase
     end
 
     assert_response :redirect
-    assert @response.headers['Location'].ends_with? "/users/new_sign_up/login_type?user_type=student&user_return_to=/join"
+    assert @response.headers['Location'].ends_with? "/users/sign_up/login_type?user_type=student&user_return_to=/join"
   end
 
   test "student_register in section with script" do

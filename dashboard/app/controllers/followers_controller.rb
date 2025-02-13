@@ -12,7 +12,7 @@ class FollowersController < ApplicationController
   # GET /join/:section_code (section_code is optional)
   def student_user_new
     if current_user.blank?
-      base_student_signup_url = "/users/new_sign_up/login_type?user_type=student&user_return_to=/join"
+      base_student_signup_url = "/users/sign_up/login_type?user_type=student&user_return_to=/join"
       section_code_url_param = @section.present? ? "/#{@section.code}" : ''
       redirect_to CDO.studio_url(base_student_signup_url + section_code_url_param)
     end
@@ -28,7 +28,7 @@ class FollowersController < ApplicationController
       @user = User.new(followers_params(user_type))
       @user.user_type = user_type
     else
-      base_student_signup_url = "/users/new_sign_up/login_type?user_type=student&user_return_to=/join"
+      base_student_signup_url = "/users/sign_up/login_type?user_type=student&user_return_to=/join"
       section_code_url_param = @section.present? ? "/#{@section.code}" : ''
       redirect_to CDO.studio_url(base_student_signup_url + section_code_url_param)
       return

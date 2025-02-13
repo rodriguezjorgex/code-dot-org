@@ -170,7 +170,7 @@ end
 And(/^I see I am sent to the signup flow as a student trying to join a section$/) do
   section_code = @section_url.split('/').last
   steps %{
-    Then I wait until I am on "http://studio.code.org/users/new_sign_up?user_type=student&user_return_to=/join/#{section_code}"
+    Then I wait until I am on "http://studio.code.org/users/sign_up/login_type?user_type=student&user_return_to=/join/#{section_code}"
   }
 end
 
