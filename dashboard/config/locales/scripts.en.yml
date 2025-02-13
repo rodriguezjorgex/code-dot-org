@@ -20026,3 +20026,14 @@ en:
           description_short: This is the short overview for Single Unit 2026.
           description: This is the teacher overview for Single Unit 2026.
           student_description: This is the student overview for Single Unit 2026.
+        sandbox-teaching-getting-started1:
+          lessons:
+            lesson-1:
+              name: Welcome to Code.org
+          lesson_groups: {}
+          name: sandbox-teaching-getting-started1
+          title: Getting Started Sandbox (Updated)
+          description_audience: ''
+          description_short: ''
+          description: ''
+          student_description: ''
