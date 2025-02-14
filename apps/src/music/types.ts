@@ -1,6 +1,6 @@
 import * as GoogleBlockly from 'blockly/core';
 
-import {ProjectLevelData, Source} from '../lab2/types';
+import {ProjectLevelData} from '../lab2/types';
 import {ValueOf} from '../types/utils';
 
 import {ToolboxData} from './blockly/toolbox/types';
@@ -19,7 +19,6 @@ export interface MusicLevelData extends ProjectLevelData {
   showAiGenerateAgainHelp?: boolean;
   allowChangeStartingPlayheadPosition?: boolean;
   toolboxDefinition?: GoogleBlockly.utils.toolbox.ToolboxInfo;
-  exemplarSources?: Source;
 }
 
 export type LoadFinishedCallback = (
