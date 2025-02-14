@@ -569,29 +569,31 @@ export default function EnrollForm(props: EnrollFormProps) {
             errorMessage={formErrors.last_name}
             className={getRequiredStyles('last_name')}
           />
-          <TextField
-            id="email"
-            name="email"
-            label="Email Address"
-            onChange={() => {}}
-            value={props.email}
-            disabled={true}
-          />
-          <Typography
-            semanticTag="p"
-            visualAppearance="body-three"
-            className={styles.no_margin}
-          >
-            If you need to change your account email,{' '}
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={studio('/users/edit')}
+          <div>
+            <TextField
+              id="email"
+              name="email"
+              label="Email Address"
+              onChange={() => {}}
+              value={props.email}
+              disabled={true}
+            />
+            <Typography
+              semanticTag="p"
+              visualAppearance="body-three"
+              className={styles.no_margin}
             >
-              click here
-            </a>
-            .
-          </Typography>
+              If you need to change your account email,{' '}
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={studio('/users/edit')}
+              >
+                click here
+              </a>
+              .
+            </Typography>
+          </div>
           <div className={styles.school_info_container}>
             <SchoolDataInputs
               includeHeaders={false}
