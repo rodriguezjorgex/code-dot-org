@@ -44,6 +44,9 @@ class Pd::WorkshopEnrollmentController < ApplicationController
       render :missing_application
     elsif current_user.teacher? && current_user.email.blank?
       render '/pd/application/teacher_application/no_teacher_email'
+    elsif @workshop.enrollments.any? {|enrollment| enrollment.user_id == current_user.id}
+      @user_email = current_user.email
+      render :already_enrolled
     else
       @enrollment = ::Pd::Enrollment.new workshop: @workshop
       @enrollment.full_name = current_user.name
@@ -81,6 +84,7 @@ class Pd::WorkshopEnrollmentController < ApplicationController
       @script_data = {
         props: {
           user_id: current_user.id,
+          email: current_user.email,
           workshop: @workshop.attributes.merge(
             {
               organizer: @workshop.organizer,

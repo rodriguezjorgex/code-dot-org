@@ -13,6 +13,7 @@ import React, {Fragment, ReactNode, useMemo, useState} from 'react';
 
 import Typography from '@cdo/apps/componentLibrary/typography/Typography';
 import {SubjectNames} from '@cdo/apps/generated/pd/sharedWorkshopConstants';
+import {studio} from '@cdo/apps/lib/util/urlHelpers';
 import {useSchoolInfo} from '@cdo/apps/schoolInfo/hooks/useSchoolInfo';
 import {buildSchoolData} from '@cdo/apps/schoolInfo/utils/buildSchoolData';
 import {schoolInfoInvalid} from '@cdo/apps/schoolInfo/utils/schoolInfoInvalid';
@@ -20,7 +21,6 @@ import SchoolDataInputs, {
   SCHOOL_INFO_ID,
 } from '@cdo/apps/templates/SchoolDataInputs.jsx';
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
-import {isEmail} from '@cdo/apps/util/formatValidation';
 
 import QuestionsTable from '../form_components/QuestionsTable';
 import {COURSE_BUILD_YOUR_OWN} from '../workshop_dashboard/workshopConstants';
@@ -57,13 +57,11 @@ interface SchoolInfoProps {
 
 interface EnrollFormState {
   attended_csf_intro_workshop: keyof typeof ATTENDED_CSF_COURSES_OPTIONS;
-  confirm_email: string;
   csf_course_experience: Partial<typeof CSF_COURSES>;
   csf_courses_planned: string[];
   csf_intro_intent: string;
   csf_intro_other_factors: string[];
   describe_role: string;
-  email: string;
   explain_csf_course_other: string;
   explain_not_teaching: string;
   explain_teaching_other: string;
@@ -95,7 +93,7 @@ type EnrollmentResponse = {
  */
 type EnrollFormProps = {
   collect_demographics?: boolean;
-  email?: string;
+  email: string;
   first_name?: string;
   last_name?: string;
   role?: string;
@@ -173,13 +171,11 @@ export default function EnrollForm(props: EnrollFormProps) {
 
   const [formState, setFormState] = useState<EnrollFormState>({
     attended_csf_intro_workshop: props.attended_csf_intro_workshop ?? '',
-    confirm_email: '',
     csf_course_experience: {},
     csf_courses_planned: [],
     csf_intro_intent: props.csf_intro_intent ?? '',
     csf_intro_other_factors: [],
     describe_role: '',
-    email: props.email ?? '',
     explain_csf_course_other: '',
     explain_not_teaching: '',
     explain_teaching_other: '',
@@ -335,7 +331,7 @@ export default function EnrollForm(props: EnrollFormProps) {
       user_id: props.user_id,
       first_name: formState.first_name,
       last_name: formState.last_name,
-      email: formState.email,
+      email: props.email,
       school_info: buildSchoolData({
         schoolId: schoolInfo.schoolId,
         country: schoolInfo.country,
@@ -392,15 +388,6 @@ export default function EnrollForm(props: EnrollFormProps) {
   const getAllErrors = () => {
     const errors: FormErrors = {};
 
-    if (formState.email) {
-      if (!isEmail(formState.email)) {
-        errors.email = 'Must be a valid email address';
-      }
-      if (!props.email && formState.email !== formState.confirm_email) {
-        errors.confirm_email = 'Email addresses do not match';
-      }
-    }
-
     if (
       schoolInfoInvalid({
         country: schoolInfo.country,
@@ -428,15 +415,7 @@ export default function EnrollForm(props: EnrollFormProps) {
   };
 
   const requiredFields: Array<keyof EnrollFormState> = useMemo(() => {
-    const fields: Array<keyof EnrollFormState> = [
-      'first_name',
-      'last_name',
-      'email',
-    ];
-
-    if (!props.email) {
-      fields.push('confirm_email');
-    }
+    const fields: Array<keyof EnrollFormState> = ['first_name', 'last_name'];
 
     if (props.workshop_course === CSF) {
       fields.push('role', 'grades_teaching');
@@ -489,7 +468,6 @@ export default function EnrollForm(props: EnrollFormProps) {
     formState.grades_teaching,
     formState.explain_teaching_other,
     formState.explain_not_teaching,
-    props.email,
     props.workshop_course,
     props.workshop_subject,
   ]);
@@ -562,7 +540,8 @@ export default function EnrollForm(props: EnrollFormProps) {
             className={styles.no_margin}
           >
             Fields marked with a<span className="form-required-field"> * </span>
-            are required.
+            are required. Make sure you are enrolling with the Code.org account
+            you will be using during the workshop.
           </Typography>
           <TextField
             id="first_name"
@@ -594,33 +573,25 @@ export default function EnrollForm(props: EnrollFormProps) {
             id="email"
             name="email"
             label="Email Address"
-            onChange={e =>
-              handleChange({
-                email: e.target.value,
-              })
-            }
-            value={formState.email}
-            title={
-              props.email ? 'Email can be changed in account settings' : ''
-            }
-            errorMessage={formErrors.email}
-            className={getRequiredStyles('email')}
+            onChange={() => {}}
+            value={props.email}
+            disabled={true}
           />
-          {!props.email && (
-            <TextField
-              id="confirm_email"
-              name="confirm_email"
-              label="Confirm Email Address"
-              onChange={e =>
-                handleChange({
-                  confirm_email: e.target.value,
-                })
-              }
-              value={formState.confirm_email}
-              errorMessage={formErrors.confirm_email}
-              className={getRequiredStyles('confirm_email')}
-            />
-          )}
+          <Typography
+            semanticTag="p"
+            visualAppearance="body-three"
+            className={styles.no_margin}
+          >
+            If you need to change your account email,{' '}
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={studio('/users/edit')}
+            >
+              click here
+            </a>
+            .
+          </Typography>
           <div className={styles.school_info_container}>
             <SchoolDataInputs
               includeHeaders={false}
