@@ -2,7 +2,7 @@ import FontAwesomeV6Icon from '@code-dot-org/component-library/fontAwesomeV6Icon
 import React, {useCallback, useContext} from 'react';
 
 import Typography from '@cdo/apps/componentLibrary/typography/Typography';
-import codeLogo from '@cdo/apps/templates/images/codeLogo.svg';
+import codeLogo from '@cdo/apps/templates/images/codeLogo.png';
 import i18n from '@cdo/locale';
 
 import canvas from '../../../assets/canvas.svg';
