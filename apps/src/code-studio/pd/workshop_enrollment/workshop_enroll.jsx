@@ -15,7 +15,6 @@ import WorkshopDetails from './workshop_details';
 export default class WorkshopEnroll extends React.Component {
   static propTypes = {
     user_id: PropTypes.number.isRequired,
-    email: PropTypes.string.isRequired,
     workshop: WorkshopPropType,
     workshop_location_for_calendar: PropTypes.string,
     session_dates: PropTypes.arrayOf(PropTypes.string),
@@ -27,6 +26,7 @@ export default class WorkshopEnroll extends React.Component {
       })
     ),
     enrollment: PropTypes.shape({
+      email: PropTypes.string,
       first_name: PropTypes.string,
       last_name: PropTypes.string,
     }),
@@ -216,7 +216,7 @@ export default class WorkshopEnroll extends React.Component {
                         workshop_course={this.props.workshop.course}
                         first_name={this.props.enrollment.first_name}
                         last_name={this.props.enrollment.last_name}
-                        email={this.props.email}
+                        email={this.props.enrollment.email}
                         onSubmissionComplete={this.onSubmissionComplete}
                         workshop_subject={this.props.workshop.subject}
                         previous_courses={this.props.previous_courses}

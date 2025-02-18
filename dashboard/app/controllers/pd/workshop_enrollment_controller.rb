@@ -51,7 +51,6 @@ class Pd::WorkshopEnrollmentController < ApplicationController
       @enrollment = ::Pd::Enrollment.new workshop: @workshop
       @enrollment.full_name = current_user.name
       @enrollment.email = current_user.email
-      @enrollment.email_confirmation = current_user.email
 
       session_dates = @workshop.sessions.map(&:formatted_date_with_start_and_end_times)
       session_info_for_calendar = @workshop.sessions.map(&:session_info_for_calendar)
@@ -84,7 +83,6 @@ class Pd::WorkshopEnrollmentController < ApplicationController
       @script_data = {
         props: {
           user_id: current_user.id,
-          email: current_user.email,
           workshop: @workshop.attributes.merge(
             {
               organizer: @workshop.organizer,

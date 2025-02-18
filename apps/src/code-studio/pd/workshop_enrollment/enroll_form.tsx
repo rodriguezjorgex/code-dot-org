@@ -62,6 +62,7 @@ interface EnrollFormState {
   csf_intro_intent: string;
   csf_intro_other_factors: string[];
   describe_role: string;
+  email: string;
   explain_csf_course_other: string;
   explain_not_teaching: string;
   explain_teaching_other: string;
@@ -93,7 +94,7 @@ type EnrollmentResponse = {
  */
 type EnrollFormProps = {
   collect_demographics?: boolean;
-  email: string;
+  email?: string;
   first_name?: string;
   last_name?: string;
   role?: string;
@@ -176,6 +177,7 @@ export default function EnrollForm(props: EnrollFormProps) {
     csf_intro_intent: props.csf_intro_intent ?? '',
     csf_intro_other_factors: [],
     describe_role: '',
+    email: props.email ?? '',
     explain_csf_course_other: '',
     explain_not_teaching: '',
     explain_teaching_other: '',
@@ -331,7 +333,7 @@ export default function EnrollForm(props: EnrollFormProps) {
       user_id: props.user_id,
       first_name: formState.first_name,
       last_name: formState.last_name,
-      email: props.email,
+      email: formState.email,
       school_info: buildSchoolData({
         schoolId: schoolInfo.schoolId,
         country: schoolInfo.country,
@@ -415,7 +417,11 @@ export default function EnrollForm(props: EnrollFormProps) {
   };
 
   const requiredFields: Array<keyof EnrollFormState> = useMemo(() => {
-    const fields: Array<keyof EnrollFormState> = ['first_name', 'last_name'];
+    const fields: Array<keyof EnrollFormState> = [
+      'first_name',
+      'last_name',
+      'email',
+    ];
 
     if (props.workshop_course === CSF) {
       fields.push('role', 'grades_teaching');
@@ -575,7 +581,7 @@ export default function EnrollForm(props: EnrollFormProps) {
               name="email"
               label="Email Address"
               onChange={() => {}}
-              value={props.email}
+              value={formState.email}
               disabled={true}
             />
             <Typography
