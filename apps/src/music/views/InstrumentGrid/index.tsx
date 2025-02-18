@@ -1,3 +1,4 @@
+import {SimpleDropdown} from '@code-dot-org/component-library/dropdown';
 import classNames from 'classnames';
 import React, {
   Fragment,
@@ -7,7 +8,6 @@ import React, {
   useState,
 } from 'react';
 
-import {SimpleDropdown} from '@cdo/apps/componentLibrary/dropdown';
 import SegmentedButtons from '@cdo/apps/componentLibrary/segmentedButtons/SegmentedButtons';
 
 import MusicRegistry from '../../MusicRegistry';
