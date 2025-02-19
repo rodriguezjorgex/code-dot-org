@@ -1296,3 +1296,15 @@ en:
 
             #### **Pick your content:** The content is organized in the suggested progression for teachers new to both Code.org and the Data Science unit. However, you can engage with the content in the order that best meets your needs.
           version_title: ''
+        ui-test-single-unit-course-2025:
+          title: Single Unit Course 2025
+          description_short: This is the short description for Single-Unit Course 2025.
+          description_student: This is the student description for Single-Unit Course 2025.
+          description_teacher: This is the teacher description for Single-Unit Course 2025.
+          version_title: '2025'
+        ui-test-single-unit-course-2026:
+          title: Single-Unit Course 2026
+          description_short: This is the short description for Single-Unit Course 2026.
+          description_student: This is the student description for Single-Unit Course 2026.
+          description_teacher: This is the teacher description for Single-Unit Course 2026.
+          version_title: '2026'
