@@ -2,15 +2,22 @@
   "script": {
     "name": "nati-pilot-content-2024",
     "wrapup_video_id": null,
-    "login_required": false,
+    "login_required": true,
     "properties": {
       "content_area": "curriculum_9_12",
       "curriculum_umbrella": "Foundations of CS and AI",
-      "is_migrated": true
+      "has_verified_resources": true,
+      "hideable_lessons": true,
+      "include_student_lesson_plans": true,
+      "is_migrated": true,
+      "show_calendar": true,
+      "student_detail_progress_view": true,
+      "version_year": "2024",
+      "weekly_instructional_minutes": 225
     },
     "new_name": null,
     "family_name": null,
-    "serialized_at": "2025-02-18 20:59:35 UTC",
+    "serialized_at": "2025-02-19 22:58:08 UTC",
     "published_state": null,
     "instruction_type": null,
     "instructor_audience": null,
@@ -33,13 +40,905 @@
     }
   ],
   "lessons": [
-
+    {
+      "key": "lesson-1",
+      "name": "Introduction to the Internet",
+      "absolute_position": 1,
+      "lockable": false,
+      "has_lesson_plan": true,
+      "relative_position": 1,
+      "properties": {
+        "overview": "**How does the Internet connect billions of devices across the globe?**\n\nStudents are introduced to the ways in which physical components like routers, switches and servers work with physical and wireless connections in order to transmit data globally. Students use an AI chatbot to simulate what it is like for devices to send and receive data reliably over the Internet. Finally, students are introduced to a new widget: The Internet Simulator, which they will use throughout this unit to explore the inner workings of the Internet.",
+        "preparation": "- Test out the Internet Simulator. If you open up the level on two different tabs, you can use it by yourself.\n- Print copies of the AI Networks Chat activity guide (one for each student).",
+        "student_overview": "**How does the Internet connect billions of devices across the globe?**\n\nThe Internet is made up of many physical components—routers, switches, servers, and more—that work together to send information all over the world. Some connections are wired, and some are wireless; they all work to help data travel quickly and reliably.\n\nIn this lesson, you’ll chat with an AI to explore how devices send and receive data. Then, you’ll get to use the Internet Simulator, a tool that helps you see how the Internet really works!"
+      },
+      "seeding_key": {
+        "lesson.key": "lesson-1",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    },
+    {
+      "key": "lesson-2",
+      "name": "Sending Bits",
+      "absolute_position": 2,
+      "lockable": false,
+      "has_lesson_plan": true,
+      "relative_position": 2,
+      "properties": {
+        "overview": "**How are messages broken into bits and sent across networks?**\n\nThis lesson engages students in a hands-on simulation of network communication, where they act as network devices to explore how data is transmitted efficiently and accurately. Through two structured challenges, students construct and optimize networks using strings, transmit binary messages using hand signals and cards, and experience challenges like delays, congestion, and errors in transmission. The lesson concludes with a discussion on how real-world networks address these challenges using protocols like TCP to ensure reliable data transfer.",
+        "preparation": "- Print and cut out binary message cards (ensure they are in the correct order)\n- Prepare strings for each group (refer to the group size chart for correct amounts)\n- Ensure students have scratch paper and pencils for recording bits\n- Review the Teaching Guide Handout to understand student roles and key takeaways",
+        "student_overview": "**How are messages broken into bits and sent across networks?**\n\nIn this lesson, you act as network devices to explore how data is sent across a network. By building different network structures and transmitting binary messages, you experience challenges like delays, errors, and congestion, then discuss how real networks solve these problems using protocols like TCP."
+      },
+      "seeding_key": {
+        "lesson.key": "lesson-2",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    },
+    {
+      "key": "lesson-3",
+      "name": "IP Addresses",
+      "absolute_position": 3,
+      "lockable": false,
+      "has_lesson_plan": true,
+      "relative_position": 3,
+      "properties": {
+      },
+      "seeding_key": {
+        "lesson.key": "lesson-3",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    },
+    {
+      "key": "lesson-4",
+      "name": "Routers and Redundancy",
+      "absolute_position": 4,
+      "lockable": false,
+      "has_lesson_plan": true,
+      "relative_position": 4,
+      "properties": {
+        "overview": "**How does data find its way across the Internet and how does redundancy improve reliability?**\n\nThis lesson engages students in hands-on exploration of how routers direct data and how redundancy ensures network reliability. Through using an Internet Simulator and diagramming network paths, students analyze router logs and participate in discussions that connect real-world detours to data transmission, deepening their understanding of network resilience.",
+        "preparation": "- Print copies of the Network Diagram Analysis activity guide (one for each student).",
+        "student_overview": "**How does data find its way across the Internet and how does redundancy improve reliability?**\n\nToday, you'll use an Internet Simulator to see how data travels across different routers and how messages sometimes take alternate routes. You'll create a network diagram, analyze logs, and discuss why having extra, backup paths is important for keeping the Internet running smoothly—just like finding a detour when your usual road is blocked."
+      },
+      "seeding_key": {
+        "lesson.key": "lesson-4",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    },
+    {
+      "key": "lesson-5",
+      "name": "Packets",
+      "absolute_position": 5,
+      "lockable": false,
+      "has_lesson_plan": true,
+      "relative_position": 5,
+      "properties": {
+      },
+      "seeding_key": {
+        "lesson.key": "lesson-5",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    },
+    {
+      "key": "lesson-6",
+      "name": "HTTP and DNS",
+      "absolute_position": 6,
+      "lockable": false,
+      "has_lesson_plan": true,
+      "relative_position": 6,
+      "properties": {
+      },
+      "seeding_key": {
+        "lesson.key": "lesson-6",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    },
+    {
+      "key": "lesson-7",
+      "name": "The Internet's Hidden Barriers",
+      "absolute_position": 7,
+      "lockable": false,
+      "has_lesson_plan": true,
+      "relative_position": 7,
+      "properties": {
+      },
+      "seeding_key": {
+        "lesson.key": "lesson-7",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    },
+    {
+      "key": "lesson-8",
+      "name": "Internet Access Advocacy Campaign Project",
+      "absolute_position": 8,
+      "lockable": false,
+      "has_lesson_plan": true,
+      "relative_position": 8,
+      "properties": {
+      },
+      "seeding_key": {
+        "lesson.key": "lesson-8",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    },
+    {
+      "key": "lesson-9",
+      "name": "Network Security",
+      "absolute_position": 9,
+      "lockable": false,
+      "has_lesson_plan": true,
+      "relative_position": 9,
+      "properties": {
+      },
+      "seeding_key": {
+        "lesson.key": "lesson-9",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    },
+    {
+      "key": "lesson-10",
+      "name": "Emerging Technologies",
+      "absolute_position": 10,
+      "lockable": false,
+      "has_lesson_plan": true,
+      "relative_position": 10,
+      "properties": {
+      },
+      "seeding_key": {
+        "lesson.key": "lesson-10",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    },
+    {
+      "key": "lesson-11",
+      "name": "Network Security Risk Assessment Project",
+      "absolute_position": 11,
+      "lockable": false,
+      "has_lesson_plan": true,
+      "relative_position": 11,
+      "properties": {
+      },
+      "seeding_key": {
+        "lesson.key": "lesson-11",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    }
   ],
   "lesson_activities": [
-
+    {
+      "key": "05976db8-6d9e-4adf-8615-78f68c81cc9f",
+      "position": 1,
+      "properties": {
+        "duration": 10,
+        "name": "Warm Up"
+      },
+      "seeding_key": {
+        "lesson_activity.key": "05976db8-6d9e-4adf-8615-78f68c81cc9f",
+        "lesson.key": "lesson-1",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    },
+    {
+      "key": "d76f2de1-3774-4361-9cb3-fed0f8108e6e",
+      "position": 2,
+      "properties": {
+        "duration": 30,
+        "name": "Activity"
+      },
+      "seeding_key": {
+        "lesson_activity.key": "d76f2de1-3774-4361-9cb3-fed0f8108e6e",
+        "lesson.key": "lesson-1",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    },
+    {
+      "key": "ce36416b-55b5-4ade-b623-4ba88626a8c9",
+      "position": 3,
+      "properties": {
+        "duration": 5,
+        "name": "Wrap Up"
+      },
+      "seeding_key": {
+        "lesson_activity.key": "ce36416b-55b5-4ade-b623-4ba88626a8c9",
+        "lesson.key": "lesson-1",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    },
+    {
+      "key": "e4bd57ae-b77c-4b72-96a0-5dedd3788df3",
+      "position": 1,
+      "properties": {
+        "duration": 5,
+        "name": "Warm Up"
+      },
+      "seeding_key": {
+        "lesson_activity.key": "e4bd57ae-b77c-4b72-96a0-5dedd3788df3",
+        "lesson.key": "lesson-2",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    },
+    {
+      "key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621",
+      "position": 2,
+      "properties": {
+        "duration": 35,
+        "name": "Activity"
+      },
+      "seeding_key": {
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621",
+        "lesson.key": "lesson-2",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    },
+    {
+      "key": "e0201c42-f401-4730-8b0c-ac8998a0ccee",
+      "position": 3,
+      "properties": {
+        "duration": 5,
+        "name": "Wrap Up"
+      },
+      "seeding_key": {
+        "lesson_activity.key": "e0201c42-f401-4730-8b0c-ac8998a0ccee",
+        "lesson.key": "lesson-2",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    },
+    {
+      "key": "a10e9b9c-71f3-4fa0-a10a-95318f72405e",
+      "position": 1,
+      "properties": {
+        "duration": 5,
+        "name": "Warm Up"
+      },
+      "seeding_key": {
+        "lesson_activity.key": "a10e9b9c-71f3-4fa0-a10a-95318f72405e",
+        "lesson.key": "lesson-4",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    },
+    {
+      "key": "b5f9e655-62fd-4e07-9cc4-db72717adfb2",
+      "position": 2,
+      "properties": {
+        "duration": 35,
+        "name": "Activity"
+      },
+      "seeding_key": {
+        "lesson_activity.key": "b5f9e655-62fd-4e07-9cc4-db72717adfb2",
+        "lesson.key": "lesson-4",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    },
+    {
+      "key": "b98946cd-5f30-4f4e-a303-b7f817d8687f",
+      "position": 3,
+      "properties": {
+        "duration": 5,
+        "name": "Wrap Up"
+      },
+      "seeding_key": {
+        "lesson_activity.key": "b98946cd-5f30-4f4e-a303-b7f817d8687f",
+        "lesson.key": "lesson-4",
+        "lesson_group.key": "",
+        "script.name": "nati-pilot-content-2024"
+      }
+    }
   ],
   "activity_sections": [
-
+    {
+      "key": "4dee76c2-bf50-4347-8377-29e2c0b80504",
+      "position": 1,
+      "properties": {
+        "description": "<i class=\"fa fa-comments\" aria-hidden=\"true\"></i> **Discuss:** *What components might be needed to connect two devices across the world?*\n\n<i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\"></i> **Discussion Goal:** Students should draw on their prior knowledge and ideas about technology to brainstorm potential tools or systems needed for global communication. The goal is to get them thinking about the overall infrastructure (e.g., \"a connection,\" \"a way to direct messages\") that enables communication between devices. Students might identify components such as a WiFi or a cell tour, or even a satellite as ones needed to connect two devices. \n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Define *router* and *switch*.\n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Define *internet towers* and *servers*.\n\n<i class=\"fa fa-comments\" aria-hidden=\"true\"></i> **Discuss:** Click through the animated slide to display the prompts.\n- *How might these components (routers, switches, servers) work together to connect devices across the world?*\n- *What might happen if one of these components fails during communication?*\n\n<i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\"></i> **Discussion Goal:** Students identify experiences with using networking components like routers to connect to the internet, and by extension, to other devices. They also likely make connections to at least one of those components failing and subsequently losing their connection. Making these connections, and introducing the names of the components, will create a shared vocabulary and understanding as the foundation for the lesson. \n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Introduce the lesson objectives.\n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Introduce the Question of the Day."
+      },
+      "seeding_key": {
+        "activity_section.key": "4dee76c2-bf50-4347-8377-29e2c0b80504",
+        "lesson_activity.key": "05976db8-6d9e-4adf-8615-78f68c81cc9f"
+      }
+    },
+    {
+      "key": "28c8e3f0-e30b-4c3b-945a-8c3bfcf2e537",
+      "position": 1,
+      "properties": {
+        "description": "<i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i> **Distribute:** Give each student a copy of the *AI Networks Chat* activity guide.\n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Group students into pairs.\n\n<i class=\"fa fa-desktop\" aria-hidden=\"true\"></i> **Transition:** Direct students to Lesson 1, Level 1.\n- **Level 1:** Students interact with an AI Chatbot to complete their activity guide. \n- **Level 2:** Students complete a check for understanding.",
+        "duration": "20",
+        "name": "AI Networks Chat"
+      },
+      "seeding_key": {
+        "activity_section.key": "28c8e3f0-e30b-4c3b-945a-8c3bfcf2e537",
+        "lesson_activity.key": "d76f2de1-3774-4361-9cb3-fed0f8108e6e"
+      }
+    },
+    {
+      "key": "22795042-75ab-4d92-9573-ff9cc74fa057",
+      "position": 2,
+      "properties": {
+        "description": "<i class=\"fa fa-refresh\" aria-hidden=\"true\"></i> **Circulate:** As students are interacting with the chatbot and completing their activity guides, ask them questions about the responses they are getting and checking for understanding. ",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "Encourage curiosity in students! If students get vague answers, or answers they don’t understand, have them rephrase their questions to get better results. "
+          },
+          {
+            "type": "assessmentOpportunity",
+            "markdown": "Students’ answers in Level 2 can be used as a formative assessment of their understanding of the function of each network component.\n\nActivity guides can also be collected and used to formatively assess student understanding of network components. "
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "22795042-75ab-4d92-9573-ff9cc74fa057",
+        "lesson_activity.key": "d76f2de1-3774-4361-9cb3-fed0f8108e6e"
+      }
+    },
+    {
+      "key": "92f6a6b7-9c6c-4184-ac7f-0ae9213068c8",
+      "position": 3,
+      "properties": {
+      },
+      "seeding_key": {
+        "activity_section.key": "92f6a6b7-9c6c-4184-ac7f-0ae9213068c8",
+        "lesson_activity.key": "d76f2de1-3774-4361-9cb3-fed0f8108e6e"
+      }
+    },
+    {
+      "key": "d2de015d-cb01-4067-ba5d-44561cb79d0a",
+      "position": 4,
+      "properties": {
+        "description": "<i class=\"fa fa-desktop\" aria-hidden=\"true\"></i> **Transition:** Prepare students to explore The Internet Simulator.\n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Show students how to make a connection with their partner.",
+        "duration": "10",
+        "name": "Explore the Internet Simulator",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "Keep it quick! Give a ***brief*** demo using the next two slides, then let students explore on their own. Bring them back for a discussion after they have explored for a few minutes."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "d2de015d-cb01-4067-ba5d-44561cb79d0a",
+        "lesson_activity.key": "d76f2de1-3774-4361-9cb3-fed0f8108e6e"
+      }
+    },
+    {
+      "key": "2bfaa669-f0cc-4e14-ba21-32b37b71f769",
+      "position": 5,
+      "properties": {
+      },
+      "seeding_key": {
+        "activity_section.key": "2bfaa669-f0cc-4e14-ba21-32b37b71f769",
+        "lesson_activity.key": "d76f2de1-3774-4361-9cb3-fed0f8108e6e"
+      }
+    },
+    {
+      "key": "7258c1d6-6206-457f-acbf-2e519d108278",
+      "position": 6,
+      "properties": {
+        "description": "When you connect, you’ll see a visual representation of the direct connection between you and your partner. You’ll also see some options for changing how data is represented in the My Device tab.",
+        "remarks": true
+      },
+      "seeding_key": {
+        "activity_section.key": "7258c1d6-6206-457f-acbf-2e519d108278",
+        "lesson_activity.key": "d76f2de1-3774-4361-9cb3-fed0f8108e6e"
+      }
+    },
+    {
+      "key": "66687984-58fa-4120-bb62-cbb4d7a19cfb",
+      "position": 7,
+      "properties": {
+        "description": "<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Show students the \"My Device\" tab and demonstrate how you can turn on or off the different representations of data (binary, decimal, ASCII).\n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Introduce the different sections of the Internet Simulator widget for sending messages and reviewing message logs. \n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Direct students to join their partners on Level 3 in order to explore the Internet Simulator tool."
+      },
+      "seeding_key": {
+        "activity_section.key": "66687984-58fa-4120-bb62-cbb4d7a19cfb",
+        "lesson_activity.key": "d76f2de1-3774-4361-9cb3-fed0f8108e6e"
+      }
+    },
+    {
+      "key": "e618015e-71d8-4d24-b40d-d6546063c729",
+      "position": 8,
+      "properties": {
+        "description": "<i class=\"fa fa-refresh\" aria-hidden=\"true\"></i> **Circulate:** Check that students are sending and receiving messages, and ask them to describe what they notice in the logs. Get students to start thinking about how the Internet Simulator compares to the real thing by asking questions such as, “What happens when you try to send a message?” or “How does the simulator compare to the real Internet?”",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "Keep this exploration around five minutes long. Students have more chances to explore and interact in later lessons—this is just a first look!"
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "e618015e-71d8-4d24-b40d-d6546063c729",
+        "lesson_activity.key": "d76f2de1-3774-4361-9cb3-fed0f8108e6e"
+      }
+    },
+    {
+      "key": "278700ad-919b-48b0-b620-83803d640d9f",
+      "position": 9,
+      "properties": {
+      },
+      "seeding_key": {
+        "activity_section.key": "278700ad-919b-48b0-b620-83803d640d9f",
+        "lesson_activity.key": "d76f2de1-3774-4361-9cb3-fed0f8108e6e"
+      }
+    },
+    {
+      "key": "9c7464bf-2684-4ebf-9e6b-c776f52204ed",
+      "position": 10,
+      "properties": {
+        "description": "<i class=\"fa fa-comments\" aria-hidden=\"true\"></i> **Discuss:** *How is the Internet Simulator similar to the Internet? How is it different?*\n\n<i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\"></i> **Discussion Goal:** Encourage students to speak from their own experience of using the Internet. Students might suggest that it is similar to the Internet because they can send information to another person and it all comes back to zeroes and ones. They might suggest it is different from the Internet because it can only send text and it takes a couple seconds to send a text instead of instantly."
+      },
+      "seeding_key": {
+        "activity_section.key": "9c7464bf-2684-4ebf-9e6b-c776f52204ed",
+        "lesson_activity.key": "d76f2de1-3774-4361-9cb3-fed0f8108e6e"
+      }
+    },
+    {
+      "key": "d18a8908-9da2-4e44-8db9-2816fd101e0b",
+      "position": 1,
+      "properties": {
+        "description": "<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Review the learning objectives.\n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Place students in pairs or small groups of three.\n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Direct students to briefly share their thoughts about how the Internet connects devices across the globe before individually writing their own response to the Question of the Day in their Unit Guide.",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "Encourage students to go beyond basic definitions by making connections to today’s activities."
+          },
+          {
+            "type": "assessmentOpportunity",
+            "markdown": "The Question of the Day effectively assesses the lesson objectives if students provide responses that explain:\n- The basic infrastructure of the Internet, including key components like routers, switches, servers, and physical / wireless connections\n- An example from the lesson such as how a request for a website travels from a user’s device to a server and back"
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "d18a8908-9da2-4e44-8db9-2816fd101e0b",
+        "lesson_activity.key": "ce36416b-55b5-4ade-b623-4ba88626a8c9"
+      }
+    },
+    {
+      "key": "c95c4c6b-b1a5-4c28-96a2-7f3193b8de97",
+      "position": 2,
+      "properties": {
+      },
+      "seeding_key": {
+        "activity_section.key": "c95c4c6b-b1a5-4c28-96a2-7f3193b8de97",
+        "lesson_activity.key": "ce36416b-55b5-4ade-b623-4ba88626a8c9"
+      }
+    },
+    {
+      "key": "6709f07b-ca7b-4ad3-bc9c-fcf709cbf12e",
+      "position": 3,
+      "properties": {
+        "description": "<i class=\"fa fa-comments\" aria-hidden=\"true\"></i> **Discuss:** *How does the Internet connect billions of devices across the globe?*\n\n<i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\"></i> **Discussion Goal:** Students should recognize that the Internet connects devices through a global network of routers, switches, and servers that direct and transmit data across wired and wireless connections. They should also recognize that data takes different forms (ASCII, decimal, binary).  "
+      },
+      "seeding_key": {
+        "activity_section.key": "6709f07b-ca7b-4ad3-bc9c-fcf709cbf12e",
+        "lesson_activity.key": "ce36416b-55b5-4ade-b623-4ba88626a8c9"
+      }
+    },
+    {
+      "key": "9d4a5cfa-cd8e-4f03-8709-c0eefd6025a5",
+      "position": 1,
+      "properties": {
+        "description": "<i class=\"fa fa-video-camera\" aria-hidden=\"true\"></i> **Video:** Show the video \"The Internet: Wires, Cables, & Wifi”. Encourage students to think about how computers convert data into signals as they watch the video.",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "The video will stop at 2:53. As students watch the video, encourage them to think about how computers convert data into signals. After watching the video, students should recognize that computers convert digital data into signals for transmission. Encourage students to think about the ways in which devices are able to communicate accurately, and the complexity of global communication."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "9d4a5cfa-cd8e-4f03-8709-c0eefd6025a5",
+        "lesson_activity.key": "e4bd57ae-b77c-4b72-96a0-5dedd3788df3"
+      }
+    },
+    {
+      "key": "eb4e3370-743b-4bca-a72e-894222dd9aa5",
+      "position": 2,
+      "properties": {
+      },
+      "seeding_key": {
+        "activity_section.key": "eb4e3370-743b-4bca-a72e-894222dd9aa5",
+        "lesson_activity.key": "e4bd57ae-b77c-4b72-96a0-5dedd3788df3"
+      }
+    },
+    {
+      "key": "8b18c1ba-5c4a-4730-9b4f-09a76810b77c",
+      "position": 3,
+      "properties": {
+        "description": "<i class=\"fa fa-comments\" aria-hidden=\"true\"></i> **Discuss:** *Why is binary such an effective way for computers to send and receive information?*\n- Use Think-Pair-Share to facilitate this discussion.\n\n<i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\"></i> **Discussion Goal:** Help students to recognize that binary aligns with physical states (simple on/off, light/dark) that are easy to detect reliably. Students may mention that binary transmission reduces complexity, minimizes errors, and can be universally adopted for data transmission.",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "If students struggle to respond, ask guiding questions, such as \"What happens if a signal is weak or noisy? Why is binary better in these cases?\" or \"Can you think of other systems that use only two states (like light switches, Morse code)?\""
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "8b18c1ba-5c4a-4730-9b4f-09a76810b77c",
+        "lesson_activity.key": "e4bd57ae-b77c-4b72-96a0-5dedd3788df3"
+      }
+    },
+    {
+      "key": "0b295e01-c9fd-485b-bb81-83a02ce73072",
+      "position": 4,
+      "properties": {
+      },
+      "seeding_key": {
+        "activity_section.key": "0b295e01-c9fd-485b-bb81-83a02ce73072",
+        "lesson_activity.key": "e4bd57ae-b77c-4b72-96a0-5dedd3788df3"
+      }
+    },
+    {
+      "key": "7dbe14aa-62f7-4d4a-a7a9-ec7ed1370bcb",
+      "position": 5,
+      "properties": {
+        "description": "<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Introduce the lesson objectives.\n\n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Introduce the Question of the Day."
+      },
+      "seeding_key": {
+        "activity_section.key": "7dbe14aa-62f7-4d4a-a7a9-ec7ed1370bcb",
+        "lesson_activity.key": "e4bd57ae-b77c-4b72-96a0-5dedd3788df3"
+      }
+    },
+    {
+      "key": "f645dbf9-7970-45af-bc39-ec8f26ba0198",
+      "position": 1,
+      "properties": {
+        "description": "<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Put students into groups of 5-7.\n\n<i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i> **Distribute:** Give each group of students a set of data cards (to be set aside and used with Network Challenge 2) and string according to the following chart:\n- Groups of 5: 10 strings\n- Groups of 6: 15 strings\n- Groups of 7: 21 strings",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "String Calculation: The number of strings per group is determined by adding up all numbers less than the group size.\n\nExample:\n- Group of 5: Needs 4+3+2+1 = 10 strings\n- Group of 8: Needs 7+6+5+4+3+2+1 = 28 strings"
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "f645dbf9-7970-45af-bc39-ec8f26ba0198",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "752e8774-eeee-494f-8024-fc7be76556f9",
+      "position": 2,
+      "properties": {
+      },
+      "seeding_key": {
+        "activity_section.key": "752e8774-eeee-494f-8024-fc7be76556f9",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "e2bcc3ea-179e-47ca-9986-0cdda72fd553",
+      "position": 3,
+      "properties": {
+        "description": "<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Introduce the activity by explaining that students will act as network devices to simulate how bits (1s and 0s) are transmitted over a network. Emphasize that they must follow the instructions carefully to ensure accurate transmission.",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "Refer to the Teaching Guide - Human Network Bit Transmission Challenge handout to gain a complete understanding of how the Network and Transmission Challenges should work, how to set them up, and key takeaways. "
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "e2bcc3ea-179e-47ca-9986-0cdda72fd553",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "2943c331-4949-4c7e-9f9a-28cc99bcf669",
+      "position": 4,
+      "properties": {
+      },
+      "seeding_key": {
+        "activity_section.key": "2943c331-4949-4c7e-9f9a-28cc99bcf669",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "050990c0-323c-47bb-ac29-c8cc4102dd09",
+      "position": 5,
+      "properties": {
+        "description": "<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Explain that each string represents a direct connection between two devices. Each student can have multiple connections but can only be directly linked to another person through one string at a time.\n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Have students create a fully connected network by linking every person to every other person with strings.\n\n<i class=\"fa fa-refresh\" aria-hidden=\"true\"></i> **Circulate:** Ensure each student has direct connections to everyone else in the group. Look for students noticing inefficiencies and encourage them to share observations.",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "Allow students to talk and work together to discover what their fully connected network should look like. Provide guidance to any groups who are struggling. See the Teaching Guide - Human Network Bit Transmission Challenge handout for an example of what this should look like.  "
+          },
+          {
+            "type": "assessmentOpportunity",
+            "markdown": "Observe if students recognize that having direct connections to everyone is inefficient. Listen for discussions about how difficult it would be to scale this model to a large network."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "050990c0-323c-47bb-ac29-c8cc4102dd09",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "24688766-7c28-4439-b4e8-3a20cfc6c9ea",
+      "position": 6,
+      "properties": {
+      },
+      "seeding_key": {
+        "activity_section.key": "24688766-7c28-4439-b4e8-3a20cfc6c9ea",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "b0ddcb13-7300-42c9-8b6f-d3ef84a85803",
+      "position": 7,
+      "properties": {
+        "description": "<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Once groups have their fully connected network, instruct them to assign roles. Explain what each role involves and provide the Sender with the Transmission Challenge 1 card so they know what bits they need to send. ",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "Encourage students to use the metronome on the slide to keep transmission time consistent, transmitting one bit by holding up a 1 or 0 every second. If students miss a bit or get confused, don’t correct them right away—this will help highlight the need for protocols like TCP later."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "b0ddcb13-7300-42c9-8b6f-d3ef84a85803",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "16673e0e-4fbb-4e3a-a444-0ab8164b0452",
+      "position": 8,
+      "properties": {
+      },
+      "seeding_key": {
+        "activity_section.key": "16673e0e-4fbb-4e3a-a444-0ab8164b0452",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "c9d0ac15-6ce3-47f4-8482-1956d72b1da2",
+      "position": 9,
+      "properties": {
+        "description": "<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Have the sender transmit a full message (HEY) using binary while the receiver writes it down.\n\n<i class=\"fa fa-refresh\" aria-hidden=\"true\"></i> **Circulate:** Encourage Network Monitors to be actively engaged—they should note if a bit is dropped, arrives late, or is recorded incorrectly. Observe whether students fall behind or misinterpret bits. If errors occur, discuss why protocols are needed to correct mistakes.\n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Have groups translate their binary message to ASCII using the table.\n\n<i class=\"fa fa-refresh\" aria-hidden=\"true\"></i> **Circulate:** Look for groups who get the wrong translation and ask them where the error occurred in transmission.",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "If students notice errors in their message, have them reflect: How could an automated system detect and correct errors? This sets up the need for protocols like TCP."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "c9d0ac15-6ce3-47f4-8482-1956d72b1da2",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "e2441c5b-8005-4702-bcc3-5b04945550af",
+      "position": 10,
+      "properties": {
+      },
+      "seeding_key": {
+        "activity_section.key": "e2441c5b-8005-4702-bcc3-5b04945550af",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "d7420042-c06e-42ad-847c-7017a1064a18",
+      "position": 11,
+      "properties": {
+        "description": "<i class=\"fa fa-comments\" aria-hidden=\"true\"></i> **Discuss:** Click through the animated slide to display the prompts.\n- *What did you notice about this fully connected network?*\n- *Would it be realistic for the Internet to work this way?*\n\n<i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\"></i> **Discussion Goal:** Students should recognize:\n- **Advantage:** Transmission was **quick** and **direct** since every device was connected.\n- **Disadvantages:**\n   - **Not scalable**—too many direct connections make large networks impractical.\n   - **Still prone to errors**—even with direct paths, mistakes in transmission can still occur.\n   - **Real networks don’t work like this**—instead of every device connecting directly, **the Internet relies on routers and paths to relay messages efficiently**.\n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Explain that in this second challenge, the same rules apply: each string represents a direct connection between two devices. Each student can have multiple connections but can only be directly linked to another person through one string at a time.\n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Explain that in this second challenge, students must remove unnecessary connections while still ensuring that everyone can communicate indirectly. Have students reduce their connections, ensuring that even if one string is cut, all students can still communicate.\n\n<i class=\"fa fa-refresh\" aria-hidden=\"true\"></i> **Circulate:** Look for groups struggling to maintain connectivity. Ask: If you remove too many connections, will everyone still receive data?",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "Emphasize that this reflects how real networks work—we don’t connect every device directly; instead, we rely on routers and pathways. Encourage students to strategically place their connections."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "d7420042-c06e-42ad-847c-7017a1064a18",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "0a278d2c-b176-4760-afad-e6ae1ef5ebac",
+      "position": 12,
+      "properties": {
+      },
+      "seeding_key": {
+        "activity_section.key": "0a278d2c-b176-4760-afad-e6ae1ef5ebac",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "70a02e66-05b4-4f1f-a7f7-ab7fa3e35f33",
+      "position": 13,
+      "properties": {
+        "description": "<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Once groups have their more efficient network, instruct them to assign roles. Explain what each role involves and provide the Sender with the Transmission Challenge 2 cards that need to be sent to the Receiver. ",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "Encourage students to use the metronome on the slide to keep transmission time consistent, transmitting one card every second. Remind students to only hold one card at a time, however, it is okay to allow students (routers) to hold too many bits as this creates network congestion and is fin for students to experience this firsthand. "
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "70a02e66-05b4-4f1f-a7f7-ab7fa3e35f33",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "3f4f9df5-5105-4fda-9a0f-f19a2bbb9252",
+      "position": 14,
+      "properties": {
+      },
+      "seeding_key": {
+        "activity_section.key": "3f4f9df5-5105-4fda-9a0f-f19a2bbb9252",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "33327270-7f37-4f3e-b0e2-29ba883ab441",
+      "position": 15,
+      "properties": {
+        "description": "<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Instruct students to send the binary message through the network using the \"not busy\" rule for routers. Ensure each bit card is passed at a rate of one per second using the metronome for pacing.\n\n<i class=\"fa fa-refresh\" aria-hidden=\"true\"></i> **Circulate:** Observe if routers get backed up (this mimics real-world Internet congestion) so that you can discuss this during the activity discussion debrief.\n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Have groups check if they successfully transmitted the message by translating the binary to ASCII using the table.\n\n<i class=\"fa fa-refresh\" aria-hidden=\"true\"></i> **Circulate:** Look for groups who get the wrong translation and encourage them to reflect on where the error occurred in transmission.",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "If errors occur, have students identify where the transmission failed—did a router delay a bit? Did packets arrive out of order? Relate this to real-world network errors—like when a video buffers or an image loads slowly on a website."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "33327270-7f37-4f3e-b0e2-29ba883ab441",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "b163a99f-0fbd-42bf-821e-ad005aec801f",
+      "position": 16,
+      "properties": {
+      },
+      "seeding_key": {
+        "activity_section.key": "b163a99f-0fbd-42bf-821e-ad005aec801f",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "28bec49f-05b7-433c-bf74-fc6197797067",
+      "position": 17,
+      "properties": {
+        "description": "<i class=\"fa fa-comments\" aria-hidden=\"true\"></i> **Discuss:** Click through the animated slide to display the discussion prompts.\n- *How does the network setup compare to the real Internet?*\n- *What delays occurred? How does this reflect real-world networks?*\n\n<i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\"></i> **Discussion Goal:** Students should understand:\n- Real networks face delays, congestion, and packet loss.\n- Messages may arrive out of order, requiring reassembly (similar to how TCP works).\n- More efficient networks still experience bottlenecks.\n\n<i class=\"fa fa-comments\" aria-hidden=\"true\"></i> **Discuss:** *What is one way we might check if some bits were missing or not received in the right order?*\n- Use Think-Pair-Share to facilitate this discussion.\n\n<i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\"></i> **Discussion Goal:** Students should identify error-checking methods (like sequence numbers), resending messing data if a bit is lost, or confirming receipt before moving on (acknowledgements in networking). ",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "If students struggle to suggest solutions, prompt them to think about how online services fix errors (e.g., file downloads that resume from where they left off)."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "28bec49f-05b7-433c-bf74-fc6197797067",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "5728e67d-9ec5-4e65-b0ce-d6fd14c2f66d",
+      "position": 18,
+      "properties": {
+      },
+      "seeding_key": {
+        "activity_section.key": "5728e67d-9ec5-4e65-b0ce-d6fd14c2f66d",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "24d9a1d4-76dd-4cd7-ab6d-bb97eb716305",
+      "position": 19,
+      "properties": {
+        "description": "<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Define *Transmission Control Protocol (TCP)*. ",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "It’s okay to briefly introduce TCP here, but there’s no need to go into full detail. In an upcoming lesson, students will create their own TCP-like protocol using the Internet Simulator, where they will develop a deeper understanding of how TCP ensures reliable data transmission. This introduction should simply help them recognize that there are rules in place to correct errors and organize data."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "24d9a1d4-76dd-4cd7-ab6d-bb97eb716305",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "045b3c9c-7b25-4e4f-8d8a-9f927a873865",
+      "position": 20,
+      "properties": {
+      },
+      "seeding_key": {
+        "activity_section.key": "045b3c9c-7b25-4e4f-8d8a-9f927a873865",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "b78a84ed-7b32-46c9-89ee-737e97ac7192",
+      "position": 21,
+      "properties": {
+        "description": "<i class=\"fa fa-video-camera\" aria-hidden=\"true\"></i> **Video:** Show the second half of the video \"The Internet: Wire, Cables, & WiFi\" .\n\n<i class=\"fa fa-comments\" aria-hidden=\"true\"></i> **Discuss:** *Why might we use one transmission method over another in different situations?*\n\n<i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\"></i> **Discussion Goal:** Students should recognize that different transmission methods (electricity, light, and radio waves) have trade-offs in speed, range, and reliability. The internet choose transmission methods based on the situation (e.g., WiFi for mobility, fiber optics for speed)."
+      },
+      "seeding_key": {
+        "activity_section.key": "b78a84ed-7b32-46c9-89ee-737e97ac7192",
+        "lesson_activity.key": "58b697ee-0333-4fd8-abb3-50d3f2c7a621"
+      }
+    },
+    {
+      "key": "c2cdecc4-2ccd-43c3-97c1-97fa3cd2c86f",
+      "position": 1,
+      "properties": {
+        "description": "<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Review the learning objectives.\n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Place students in groups of three or four.\n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Direct students to briefly share their thoughts about how messages are broken into bits and sent across networks before individually writing their own response to the Question of the Day in their Unit Guide.",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "Encourage students to build on each other’s ideas instead of just repeating the same answer. When writing their individual responses in the Unit Guide, students should include at least one specific example from today’s activity."
+          },
+          {
+            "type": "assessmentOpportunity",
+            "markdown": "The Question of the Day effectively assesses the lesson objectives if students provide responses that explain:\n- how binary data is transmitted across a network.\n- how network structure and protocols improve the reliability of data transmission."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "c2cdecc4-2ccd-43c3-97c1-97fa3cd2c86f",
+        "lesson_activity.key": "e0201c42-f401-4730-8b0c-ac8998a0ccee"
+      }
+    },
+    {
+      "key": "bf656100-3e07-4b81-9257-9e78b64f0109",
+      "position": 1,
+      "properties": {
+      },
+      "seeding_key": {
+        "activity_section.key": "bf656100-3e07-4b81-9257-9e78b64f0109",
+        "lesson_activity.key": "a10e9b9c-71f3-4fa0-a10a-95318f72405e"
+      }
+    },
+    {
+      "key": "39486bb4-2029-4d09-9289-88b48a786503",
+      "position": 1,
+      "properties": {
+      },
+      "seeding_key": {
+        "activity_section.key": "39486bb4-2029-4d09-9289-88b48a786503",
+        "lesson_activity.key": "b5f9e655-62fd-4e07-9cc4-db72717adfb2"
+      }
+    },
+    {
+      "key": "246cd4e4-f9aa-4552-adb7-ef72f007de25",
+      "position": 1,
+      "properties": {
+        "description": "<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Review the learning objectives.\n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Have students write down idea for how data finds its way across the internet and one idea for how redundancy improves reliability. Instruct students to jot their ideas down in bullet points rather than complete sentences to allow time for them to share their ideas with a Give One, Get One protocol. \n\n<i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> **Do This:** Play the music clip to cue the Give One, Get One activity and direct students to participate in a Give One, Get One to share their ideas to the Question of the Day.",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "Using music to cue transitions helps create routines in the classroom. When students hear cues, they know it is time to transition to a specific activity. Emphasize to students what the music clip means, and be consistent with the use of the music clip to cue the activity. Click the blue play icon on the slide to play the music cue.\n\nGive One, Get One encourages students to seek and share ideas and information. Students circulate the classroom and pair up with a partner when prompted by the teacher. Each student \"gives\" or shares one of their ideas as the other student \"gets\" or listens and writes it down. The teacher then prompts students to find new partners and repeat the process."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "246cd4e4-f9aa-4552-adb7-ef72f007de25",
+        "lesson_activity.key": "b98946cd-5f30-4f4e-a303-b7f817d8687f"
+      }
+    }
   ],
   "script_levels": [
 
@@ -48,10 +947,190 @@
 
   ],
   "resources": [
-
+    {
+      "name": "[KEY] AI Networks Chat",
+      "url": "https://docs.google.com/document/d/16CuO8QmWyk8-ARN--1S2znGx4KDn10GEf3HjN82D5-g/edit?usp=sharing",
+      "key": "_key_ai_networks_chat",
+      "properties": {
+        "audience": "Verified Teacher",
+        "type": "Answer Key"
+      },
+      "seeding_key": {
+        "resource.key": "_key_ai_networks_chat"
+      }
+    },
+    {
+      "name": "AI Networks Chat",
+      "url": "https://docs.google.com/document/d/1aZKiP8iWpEHYO8y19GfwrbGsV7xQkm4P5khDwrhrrjo/edit?usp=sharing",
+      "key": "ai_networks_chat",
+      "properties": {
+        "audience": "Student",
+        "include_in_pdf": true,
+        "type": "Activity Guide"
+      },
+      "seeding_key": {
+        "resource.key": "ai_networks_chat"
+      }
+    },
+    {
+      "name": "Challenge 1 Binary Cards",
+      "url": "https://docs.google.com/document/d/12tegCZRYEi9D3sE-JYBvy3T0Kaa_DLS4KZ1wivFVPlc/edit?tab=t.0",
+      "key": "challenge_1_binary_cards",
+      "properties": {
+        "audience": "Verified Teacher",
+        "type": "Resource"
+      },
+      "seeding_key": {
+        "resource.key": "challenge_1_binary_cards"
+      }
+    },
+    {
+      "name": "Challenge 2 Binary Cards",
+      "url": "https://docs.google.com/document/d/1wPqqwDgwfTRlAdtP2o2jQ46UdxPWWksbwzom3TtMKfc/edit?tab=t.0",
+      "key": "challenge_2_binary_cards",
+      "properties": {
+        "audience": "Verified Teacher",
+        "type": "Resource"
+      },
+      "seeding_key": {
+        "resource.key": "challenge_2_binary_cards"
+      }
+    },
+    {
+      "name": "Introduction to the Internet",
+      "url": "https://docs.google.com/presentation/d/1QFSZUiEc4s5ad9AqK-h2py41grOD3C7QfQFMm3a2-xc/preview?slide=id.gca418c6afa_0_1070",
+      "key": "introduction_to_the_internet",
+      "properties": {
+        "audience": "Verified Teacher",
+        "type": "Slides"
+      },
+      "seeding_key": {
+        "resource.key": "introduction_to_the_internet"
+      }
+    },
+    {
+      "name": "Network Diagram Analysis",
+      "url": "https://docs.google.com/document/d/1QVGtMnSYeBE_fhsWKsbkw5q1gM7ZAyCtA8ip3xF-F4E/edit?usp=sharing",
+      "key": "network_diagram_analysis",
+      "properties": {
+        "audience": "Student",
+        "include_in_pdf": true,
+        "type": "Activity Guide"
+      },
+      "seeding_key": {
+        "resource.key": "network_diagram_analysis"
+      }
+    },
+    {
+      "name": "Routers and Redundancy",
+      "url": "https://docs.google.com/presentation/d/1hCYLx0XdBCgBmr6yxpnsXwDO-yiD2JdnYZ-FYCsTd5U/preview?slide=id.gca418c6afa_0_1070",
+      "key": "routers_and_redundancy",
+      "properties": {
+        "audience": "Verified Teacher",
+        "type": "Slides"
+      },
+      "seeding_key": {
+        "resource.key": "routers_and_redundancy"
+      }
+    },
+    {
+      "name": "Sending Bits",
+      "url": "https://docs.google.com/presentation/d/1RUE_8CTlRQTZMuF2M-DA7z67IM9qRurvd7al9fAblJA/preview?slide=id.gca418c6afa_0_1070",
+      "key": "sending_bits",
+      "properties": {
+        "audience": "Verified Teacher",
+        "type": "Slides"
+      },
+      "seeding_key": {
+        "resource.key": "sending_bits"
+      }
+    },
+    {
+      "name": "Teaching Guide: Human Network Bit Transmission Challenge",
+      "url": "https://docs.google.com/document/d/1duJnaaklwB8OEnGcLeqxCFzZxSgARKcElcjekD8RQYk/edit?tab=t.0",
+      "key": "teaching_guide_human_network_bit_transmission_challenge",
+      "properties": {
+        "audience": "Verified Teacher",
+        "type": "Resource"
+      },
+      "seeding_key": {
+        "resource.key": "teaching_guide_human_network_bit_transmission_challenge"
+      }
+    },
+    {
+      "name": "The Internet: Wires, Cables, and WiFi",
+      "url": "https://www.youtube.com/watch?v=ZhEf7e4kopM&themeRefresh=1",
+      "key": "the_internet_wires_cables_and_wifi",
+      "properties": {
+        "audience": "Student",
+        "type": "Video"
+      },
+      "seeding_key": {
+        "resource.key": "the_internet_wires_cables_and_wifi"
+      }
+    }
   ],
   "lessons_resources": [
-
+    {
+      "seeding_key": {
+        "lesson.key": "lesson-1",
+        "resource.key": "_key_ai_networks_chat"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "lesson-1",
+        "resource.key": "ai_networks_chat"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "lesson-1",
+        "resource.key": "introduction_to_the_internet"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "lesson-2",
+        "resource.key": "challenge_1_binary_cards"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "lesson-2",
+        "resource.key": "challenge_2_binary_cards"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "lesson-2",
+        "resource.key": "sending_bits"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "lesson-2",
+        "resource.key": "teaching_guide_human_network_bit_transmission_challenge"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "lesson-2",
+        "resource.key": "the_internet_wires_cables_and_wifi"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "lesson-4",
+        "resource.key": "network_diagram_analysis"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "lesson-4",
+        "resource.key": "routers_and_redundancy"
+      }
+    }
   ],
   "scripts_resources": [
 
@@ -60,16 +1139,153 @@
 
   ],
   "vocabularies": [
-
+    {
+      "key": "internet_tower",
+      "word": "Internet tower",
+      "definition": "a piece of infrastructure that sends and receives wireless signals",
+      "properties": {
+      },
+      "seeding_key": {
+        "vocabulary.key": "internet_tower"
+      }
+    },
+    {
+      "key": "router",
+      "word": "router",
+      "definition": "a type of computer that forwards data across a network",
+      "properties": {
+      },
+      "seeding_key": {
+        "vocabulary.key": "router"
+      }
+    },
+    {
+      "key": "server",
+      "word": "server",
+      "definition": "a powerful computer that stores and delivers websites, files, and messages when requested by a user",
+      "properties": {
+      },
+      "seeding_key": {
+        "vocabulary.key": "server"
+      }
+    },
+    {
+      "key": "switch",
+      "word": "switch",
+      "definition": "a component that helps send data to the right place inside a local network",
+      "properties": {
+      },
+      "seeding_key": {
+        "vocabulary.key": "switch"
+      }
+    },
+    {
+      "key": "transmission_control_protocol_tcp_",
+      "word": "Transmission Control Protocol (TCP)",
+      "definition": "a protocol that ensures that all parts of a message are received and ordered correctly",
+      "properties": {
+      },
+      "seeding_key": {
+        "vocabulary.key": "transmission_control_protocol_tcp_"
+      }
+    }
   ],
   "lessons_vocabularies": [
-
+    {
+      "seeding_key": {
+        "lesson.key": "lesson-1",
+        "vocabulary.key": "internet_tower"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "lesson-1",
+        "vocabulary.key": "router"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "lesson-1",
+        "vocabulary.key": "server"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "lesson-1",
+        "vocabulary.key": "switch"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "lesson-2",
+        "vocabulary.key": "transmission_control_protocol_tcp_"
+      }
+    }
   ],
   "lessons_programming_expressions": [
 
   ],
   "objectives": [
-
+    {
+      "key": "0c22fbaf-9cec-40b6-84c9-ac25ca68a186",
+      "properties": {
+        "description": "Evaluate how redundancy improves the reliability of the Internet"
+      },
+      "seeding_key": {
+        "lesson.key": "lesson-4",
+        "objective.key": "0c22fbaf-9cec-40b6-84c9-ac25ca68a186"
+      }
+    },
+    {
+      "key": "1496c98c-ff10-425a-85aa-809c2efdca77",
+      "properties": {
+        "description": "Explain how network structure and protocols improve the reliability of data transmission"
+      },
+      "seeding_key": {
+        "lesson.key": "lesson-2",
+        "objective.key": "1496c98c-ff10-425a-85aa-809c2efdca77"
+      }
+    },
+    {
+      "key": "4ee0db4c-071c-4ce7-845d-69e6a30e2a4e",
+      "properties": {
+        "description": "Analyze how routers help direct data across networks"
+      },
+      "seeding_key": {
+        "lesson.key": "lesson-4",
+        "objective.key": "4ee0db4c-071c-4ce7-845d-69e6a30e2a4e"
+      }
+    },
+    {
+      "key": "85200660-9ccb-40c6-a8cf-f67c8397674f",
+      "properties": {
+        "description": "Describe how binary data is transmitted across a network"
+      },
+      "seeding_key": {
+        "lesson.key": "lesson-2",
+        "objective.key": "85200660-9ccb-40c6-a8cf-f67c8397674f"
+      }
+    },
+    {
+      "key": "aae04b79-ce98-40fc-8737-531db7fed3de",
+      "properties": {
+        "description": "Explain how devices communicate over the Internet"
+      },
+      "seeding_key": {
+        "lesson.key": "lesson-1",
+        "objective.key": "aae04b79-ce98-40fc-8737-531db7fed3de"
+      }
+    },
+    {
+      "key": "eaf62bc8-2762-42e7-95e9-1f51f00385bb",
+      "properties": {
+        "description": "Describe the basic infrastructure of the Internet"
+      },
+      "seeding_key": {
+        "lesson.key": "lesson-1",
+        "objective.key": "eaf62bc8-2762-42e7-95e9-1f51f00385bb"
+      }
+    }
   ],
   "lessons_standards": [
 

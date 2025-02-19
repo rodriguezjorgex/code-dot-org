@@ -1,0 +1,23 @@
+<StandaloneVideo>
+  <config><![CDATA[{
+  "game_id": 54,
+  "created_at": "2025-02-19T23:20:36.000Z",
+  "level_num": "custom",
+  "user_id": 63,
+  "properties": {
+    "video_key": "CSF_collector_repeat_loops",
+    "instructions_important": "false",
+    "skip_dialog": true,
+    "skip_sound": true,
+    "parent_level_id": 28494,
+    "name_suffix": "_1",
+    "encrypted": "false",
+    "long_instructions": "## Game Streamer \r\nExplore how GPU improve gaming performance\r\n\r\n\r\n\r\n",
+    "display_name": "Game Streamer",
+    "bubble_choice_description": "Explore how "
+  },
+  "published": true,
+  "notes": "",
+  "audit_log": "[{\"changed_at\":\"2025-02-19T23:20:36.907+00:00\",\"changed\":[\"cloned from \\\"computer-systems-lesson2-career-exploration_A\\\"\"],\"cloned_from\":\"computer-systems-lesson2-career-exploration_A\"},{\"changed_at\":\"2025-02-19 23:22:25 +0000\",\"changed\":[\"bubble_choice_description\"],\"changed_by_id\":18605,\"changed_by_email\":\"katie.frank+levelbuilder@code.org\"}]"
+}]]></config>
+</StandaloneVideo>
