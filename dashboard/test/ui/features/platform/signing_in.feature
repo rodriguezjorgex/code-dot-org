@@ -61,4 +61,4 @@ Scenario: Joining non-picture non-word section from sign in page goes to link ac
   And I type the section code into "#section_code"
   And I click ".section-sign-in button" to load a new page
   And I am shown the link account page
-  Then I can navigate to the signup flow as a student trying to join a section
+  And I can navigate to the signup flow as a student trying to join a section

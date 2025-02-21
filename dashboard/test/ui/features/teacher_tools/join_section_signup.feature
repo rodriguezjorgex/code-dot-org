@@ -11,7 +11,7 @@ Feature: Using the join section page while not signed in
     Given I sign out
     And I attempt to join the section
     And I am shown the link account page
-    Then I can navigate to the signup flow as a student trying to join a section
+    And I can navigate to the signup flow as a student trying to join a section
 
   Scenario: Attempt to join section while signed in
     Given I am a teacher
