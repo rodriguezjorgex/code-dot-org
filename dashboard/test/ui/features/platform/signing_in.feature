@@ -60,5 +60,6 @@ Scenario: Joining non-picture non-word section from sign in page goes to link ac
   Given I am on "http://studio.code.org/users/sign_in/"
   And I type the section code into "#section_code"
   And I click ".section-sign-in button" to load a new page
-  And I am shown the link account page
-  And I can navigate to the signup flow as a student trying to join a section
+  And I wait until element "#new-account-card" is visible
+  Then I click selector "button:contains(Create an account)"
+  And I wait until I am on "http://studio.code.org/users/new_sign_up/login_type?user_type=student&user_return_to=/join/#{section_code}"

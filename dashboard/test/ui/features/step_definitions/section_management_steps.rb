@@ -167,20 +167,6 @@ And(/^I attempt to join the section$/) do
   steps "Given I am on \"#{@section_url}\""
 end
 
-And(/^I am shown the link account page^/) do
-  individual_steps <<~GHERKIN
-    And I wait until element "#new-account-card" is visible
-  GHERKIN
-end
-
-And(/^I can navigate to the signup flow as a student trying to join a section$/) do
-  section_code = @section_url.split('/').last
-  steps %{
-    Then I click selector "button:contains(Create an account)"
-    And I wait until I am on "http://studio.code.org/users/new_sign_up/login_type?user_type=student&user_return_to=/join/#{section_code}"
-  }
-end
-
 And /^I click the "([^"]*)" checkbox in the dialog$/ do |section_name|
   @browser.execute_script("return $(\"span:contains(#{section_name})\").siblings()[0].click();")
 end
