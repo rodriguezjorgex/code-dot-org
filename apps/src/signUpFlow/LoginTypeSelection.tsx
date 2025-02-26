@@ -1,5 +1,6 @@
 import Button from '@code-dot-org/component-library/button';
 import FontAwesomeV6Icon from '@code-dot-org/component-library/fontAwesomeV6Icon';
+import TextField from '@code-dot-org/component-library/textField';
 import {
   Heading3,
   BodyThreeText,
@@ -8,7 +9,6 @@ import cookies from 'js-cookie';
 import React, {useState, useEffect} from 'react';
 
 import {queryParams} from '@cdo/apps/code-studio/utils';
-import TextField from '@cdo/apps/componentLibrary/textField/TextField';
 import OldButton from '@cdo/apps/legacySharedComponents/Button';
 import {studio} from '@cdo/apps/lib/util/urlHelpers';
 import {EVENTS, PLATFORMS} from '@cdo/apps/metrics/AnalyticsConstants';
@@ -66,8 +66,14 @@ const LoginTypeSelection: React.FunctionComponent = () => {
     if (sessionStorage.getItem(ACCOUNT_TYPE_SESSION_KEY) === null) {
       const userType = queryParams('user_type');
       if (userType) {
-        // If the user type is set as a URL parameter (e.g. being redirected from section signup), then set
-        // the user type (and URL to return the user to after signup if provided) in sessionStorage.
+        // If the user type is set as a URL parameter (e.g. being redirected from section signup and skipping
+        // the first signup page), then set the user type (and URL to return the user to after signup if
+        // provided) in sessionStorage.
+        analyticsReporter.sendEvent(
+          EVENTS.SIGN_UP_STARTED_EVENT,
+          {},
+          PLATFORMS.BOTH
+        );
         setUserReturnToUrl();
         sessionStorage.setItem(ACCOUNT_TYPE_SESSION_KEY, userType as string);
       } else {
