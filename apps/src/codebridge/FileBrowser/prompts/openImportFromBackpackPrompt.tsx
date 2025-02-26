@@ -8,7 +8,10 @@ import {
   isDuplicateFileName,
   DuplicateFileError,
 } from '@codebridge/utils';
+import React from 'react';
 
+import BackpackErrorAlertBody from '@cdo/apps/codebridge/FileBrowser/BackpackErrorAlertBody';
+import codebridgeI18n from '@cdo/apps/codebridge/locale';
 import {MultiFileSource, ProjectFile} from '@cdo/apps/lab2/types';
 import {
   DialogType,
@@ -35,34 +38,49 @@ export const openImportFromBackpackPrompt = async ({
   projectFiles,
   validationFile,
 }: OpenImportFromBackpackPromptArgsType) => {
-  const handleError = (message: string) => () => {
+  const handleError = (title: string, message: string) => () => {
     // TODO: send analytics / add logging.
-    console.error(message);
+    const bodyComponent = <BackpackErrorAlertBody message={message} />;
+    dialogControl?.showDialog({
+      type: DialogType.GenericAlert,
+      title,
+      bodyComponent,
+    });
   };
   // Delete a file from the backpack.
-  const handleDelete = async (filename: string) => {
+  const handleDelete = async (selectedFileName: string) => {
     backpackApi.deleteFiles(
-      [filename],
-      handleError(`Error in deleting file ${filename}`),
-      () => console.log(`Deleted file ${filename}`)
+      [selectedFileName],
+      handleError(
+        codebridgeI18n.deleteFromBackpackTitle(),
+        codebridgeI18n.deleteFromBackpackError({selectedFileName}) +
+          ' ' +
+          codebridgeI18n.closeWindowTryAgain()
+      ),
+      () => {}
     );
   };
 
   // Fetch file content from backpack and then update or create a project file.
   const fetchFileContentAndProcess = (
-    fileName: string,
+    selectedFileName: string,
     newFileName?: string
   ) => {
     backpackApi.fetchFile(
-      fileName,
-      handleError(`Error in fetching file ${fileName}`),
+      selectedFileName,
+      handleError(
+        codebridgeI18n.importFromBackpackTitle(),
+        codebridgeI18n.getBackpackFileError({selectedFileName}) +
+          ' ' +
+          codebridgeI18n.closeWindowTryAgain()
+      ),
       (fileContent: string) => {
         if (newFileName) {
           newFile({fileName: newFileName, contents: fileContent});
         } else {
           const fileId = Object.keys(projectFiles).find(
             id =>
-              projectFiles[id].name === fileName &&
+              projectFiles[id].name === selectedFileName &&
               projectFiles[id].folderId === DEFAULT_FOLDER_ID
           );
           if (fileId) saveFile(fileId, fileContent);
@@ -71,15 +89,21 @@ export const openImportFromBackpackPrompt = async ({
     );
   };
 
-  // TODO: Adding a waiting UI (spinner) while waiting for backpack list retrieval.
+  dialogControl?.showDialog({
+    type: DialogType.PendingDialog,
+    title: codebridgeI18n.filesInBackpackTitle(),
+  });
   backpackApi.getFileList(
-    handleError('Error in getting backpack file list.'),
+    handleError(
+      codebridgeI18n.filesInBackpackTitle(),
+      `${codebridgeI18n.getBackpackFileListError()} ${codebridgeI18n.closeWindowTryAgain()}`
+    ),
     async (filenames: string[]) => {
       if (filenames.length === 0) {
         dialogControl?.showDialog({
           type: DialogType.GenericAlert,
-          title: 'Files Saved in Backpack',
-          message: 'Files saved to your backpack will appear here.',
+          title: codebridgeI18n.filesInBackpackTitle(),
+          message: codebridgeI18n.filesInBackpackMessage(),
         });
       } else {
         const savedFilesInBackpack: GenericDropdownProps['items'] =
@@ -87,12 +111,12 @@ export const openImportFromBackpackPrompt = async ({
 
         const results = await dialogControl?.showDialog({
           type: DialogType.GenericDropdown,
-          title: 'Files Saved in Backpack',
+          title: codebridgeI18n.filesInBackpackTitle(),
           dropdownLabel: '',
-          confirmText: 'Import to project',
+          confirmText: codebridgeI18n.importToProject(),
           items: savedFilesInBackpack,
           selectedValue: savedFilesInBackpack[0].value,
-          neutralText: 'Delete file from backpack',
+          neutralText: codebridgeI18n.deleteFileBackpack(),
         });
 
         if (results.type === 'cancel') return;
@@ -122,9 +146,22 @@ export const openImportFromBackpackPrompt = async ({
           }
           if (isSupportFileName) {
             // The user wants to import a file that has the same name as a hidden support file.
-            // Automatically import file renamed with numeric suffix.
-            // TODO: display message that file was renamed because it duplicated a support file.
-            fetchFileContentAndProcess(selectedBackpackFileName, newFileName);
+            // Give the user a choice to import with a new name or cancel the import.
+            dialogControl?.showDialog({
+              type: DialogType.GenericConfirmation,
+              title: codebridgeI18n.importFromBackpackTitle(),
+              message: codebridgeI18n.importFromBackpackDuplicateSupportMessage(
+                {
+                  newFileName,
+                }
+              ),
+              confirmText: codebridgeI18n.importAsNewName({newFileName}),
+              handleConfirm: () =>
+                fetchFileContentAndProcess(
+                  selectedBackpackFileName,
+                  newFileName
+                ), // Fetch backpack file content and import new file with numeric suffix.
+            });
             return;
           }
           // If the backpack file has the same name as an existing project file, show a second
@@ -133,10 +170,12 @@ export const openImportFromBackpackPrompt = async ({
           if (newFileName !== selectedBackpackFileName) {
             dialogControl?.showDialog({
               type: DialogType.GenericConfirmation,
-              title: 'Import from backpack',
-              message: `Would you like to replace the current file with this file or import this file as ${newFileName}?`,
-              confirmText: 'Replace existing file',
-              neutralText: `Import as ${newFileName}`,
+              title: codebridgeI18n.importFromBackpackTitle(),
+              message: codebridgeI18n.importFromBackpackDuplicateMessage({
+                newFileName,
+              }),
+              confirmText: codebridgeI18n.replaceFile(),
+              neutralText: codebridgeI18n.importAsNewName({newFileName}),
               handleConfirm: () =>
                 fetchFileContentAndProcess(selectedBackpackFileName), // Update existing project file.
               handleNeutral: () =>
@@ -156,10 +195,13 @@ export const openImportFromBackpackPrompt = async ({
           // User selects to delete file from backpack. Open confirm delete dialog.
           dialogControl?.showDialog({
             type: DialogType.GenericConfirmation,
-            title: 'Delete from backpack',
-            message: `You are about to delete ${selectedBackpackFileName} from your backpack.`,
-            confirmText: 'Delete',
+            title: codebridgeI18n.deleteFromBackpackTitle(),
+            message: codebridgeI18n.deleteFromBackpackConfirm({
+              selectedBackpackFileName,
+            }),
+            confirmText: codebridgeI18n.delete(),
             handleConfirm: () => handleDelete(selectedBackpackFileName),
+            destructive: true,
           });
         }
       }
