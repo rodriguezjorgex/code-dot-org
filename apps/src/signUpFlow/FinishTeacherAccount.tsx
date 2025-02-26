@@ -73,7 +73,7 @@ const FinishTeacherAccount: React.FunctionComponent<{
   const [userReturnTo, setUserReturnTo] = useState('/home');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorCreatingAccountMessage, setErrorCreatingAccountMessage] =
-    useState(null);
+    useState('');
 
   const showEducatorRole = statsigReporter.getIsInExperiment(
     'educator_role',
@@ -174,7 +174,7 @@ const FinishTeacherAccount: React.FunctionComponent<{
     }
     setIsSubmitting(true);
     sendFinishEvent();
-    setErrorCreatingAccountMessage(null);
+    setErrorCreatingAccountMessage('');
 
     const signUpParams = {
       new_sign_up: true,
@@ -272,7 +272,7 @@ const FinishTeacherAccount: React.FunctionComponent<{
               />
             </div>
             <CloseButton
-              onClick={() => setErrorCreatingAccountMessage(null)}
+              onClick={() => setErrorCreatingAccountMessage('')}
               aria-label={locale.error_signing_up_message_aria_label()}
             />
           </div>

@@ -64,7 +64,7 @@ const FinishStudentAccount: React.FunctionComponent<{
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorCreatingAccountMessage, setErrorCreatingAccountMessage] =
-    useState(null);
+    useState('');
 
   // Remove oauth user_type cookie if it exists
   cookies.remove(NEW_SIGN_UP_USER_TYPE);
@@ -216,7 +216,7 @@ const FinishStudentAccount: React.FunctionComponent<{
     }
     setIsSubmitting(true);
     sendFinishEvent();
-    setErrorCreatingAccountMessage(null);
+    setErrorCreatingAccountMessage('');
 
     const signUpParams = {
       new_sign_up: true,
@@ -276,7 +276,7 @@ const FinishStudentAccount: React.FunctionComponent<{
               </BodyThreeText>
             </div>
             <CloseButton
-              onClick={() => setErrorCreatingAccountMessage(null)}
+              onClick={() => setErrorCreatingAccountMessage('')}
               aria-label={locale.error_signing_up_message_aria_label()}
             />
           </div>
