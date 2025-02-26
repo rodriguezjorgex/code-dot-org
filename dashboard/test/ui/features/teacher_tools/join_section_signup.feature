@@ -3,15 +3,10 @@
 Feature: Using the join section page while not signed in
 
   Scenario: Attempt to join section while signed out
-    Given I am a teacher
-    And I create a new student section and go home
-    And I save the student section url
-
-    # Have new user join section with invalid password
-    Given I sign out
-    And I attempt to join the section
-    And I am shown the link account page
-    Then I can navigate to the signup flow as a student trying to join a section
+    Given I am on "http://studio.code.org/join"
+    And I wait until element "a:contains(Create an account)" is visible
+    Then I click selector "a:contains(Create an account)"
+    And I wait until I am on "http://studio.code.org/users/new_sign_up/login_type?user_type=student&user_return_to=/join"
 
   Scenario: Attempt to join section while signed in
     Given I am a teacher
