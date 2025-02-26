@@ -1,29 +1,29 @@
 require 'test_helper'
 
 class JoinTest < ActionDispatch::IntegrationTest
-  test 'signed out /join with code in query param sends user to sign up' do
+  test 'signed out /join with code in query param shows link account view' do
     section = create :section
 
     get "http://#{CDO.dashboard_hostname}/join?utf8=%E2%9C%93&section_code=#{section.code}&commit=Go"
 
-    assert_response :redirect
-    assert @response.headers['Location'].ends_with? "/users/sign_up/login_type?user_type=student&user_return_to=/join/#{section.code}"
+    assert_response :success
+    assert_template :join_logged_out
   end
 
-  test 'signed out /join with code in url sends user to sign up' do
+  test 'signed out /join with code in url shows link account view' do
     section = create :section
 
     get "http://#{CDO.dashboard_hostname}/join/#{section.code}"
 
-    assert_response :redirect
-    assert @response.headers['Location'].ends_with? "/users/sign_up/login_type?user_type=student&user_return_to=/join/#{section.code}"
+    assert_response :success
+    assert_template :join_logged_out
   end
 
-  test 'signed out /join without code sends user to sign up' do
+  test 'signed out /join without code shows link account view' do
     get "http://#{CDO.dashboard_hostname}/join"
 
-    assert_response :redirect
-    assert @response.headers['Location'].ends_with? "/users/sign_up/login_type?user_type=student&user_return_to=/join"
+    assert_response :success
+    assert_template :join_logged_out
   end
 
   test 'signed in /join with code in query param successfully loads join page' do

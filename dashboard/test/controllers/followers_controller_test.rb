@@ -44,20 +44,20 @@ class FollowersControllerTest < ActionController::TestCase
     assert_redirected_to controller: 'sections', action: 'show', id: @picture_section.code
   end
 
-  test "student_user_new when signed out with section code sends user to signup flow" do
+  test "student_user_new when signed out with section code shows link account view" do
     get :student_user_new, params: {section_code: @chris_section.code}
 
-    assert_response :redirect
-    assert @response.headers['Location'].ends_with? "/users/sign_up/login_type?user_type=student&user_return_to=/join/#{@chris_section.code}"
+    assert_response :success
+    assert_template :join_logged_out
 
     refute assigns(:user)
   end
 
-  test "student_user_new when signed out without section code sends user to signup flow" do
+  test "student_user_new when signed out without section code shows link account view" do
     get :student_user_new
 
-    assert_response :redirect
-    assert @response.headers['Location'].ends_with? "/users/sign_up/login_type?user_type=student&user_return_to=/join"
+    assert_response :success
+    assert_template :join_logged_out
 
     refute assigns(:user)
   end
@@ -272,13 +272,13 @@ class FollowersControllerTest < ActionController::TestCase
     assert_includes(@chris_section.students, @student)
   end
 
-  test "student_register prompts user to create an account if not signed in" do
+  test "student_register shows link account view when signed out" do
     assert_does_not_create(User, Follower) do
       post :student_register, params: {section_code: @chris_section.code}
     end
 
-    assert_response :redirect
-    assert @response.headers['Location'].ends_with? "/users/sign_up/login_type?user_type=student&user_return_to=/join/#{@chris_section.code}"
+    assert_response :success
+    assert_template :join_logged_out
   end
 
   test "student_register with no section when signed in" do
@@ -291,13 +291,13 @@ class FollowersControllerTest < ActionController::TestCase
     assert_select 'input#section_code'
   end
 
-  test "student_register with no section when not signed in" do
+  test "student_register with no section shows link account view when not signed in" do
     assert_does_not_create(User, Follower) do
       post :student_register, params: {section_code: ''}
     end
 
-    assert_response :redirect
-    assert @response.headers['Location'].ends_with? "/users/sign_up/login_type?user_type=student&user_return_to=/join"
+    assert_response :success
+    assert_template :join_logged_out
   end
 
   test "student_register in section with script" do
