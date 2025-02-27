@@ -13,6 +13,7 @@ import {getFullName} from '@cdo/apps/templates/manageStudents/utils.ts';
 import i18n from '@cdo/locale';
 
 import styles from './summary.module.scss';
+import FreeResponseAIEvaluation from './FreeResponseAIEvaluation';
 
 const FreeResponseResponses = ({responses, showStudentNames, eventData}) => {
   const constructStudentName = response =>
@@ -205,6 +206,7 @@ const FreeResponseResponses = ({responses, showStudentNames, eventData}) => {
           type="gray"
         />
       )}
+      <FreeResponseAIEvaluation responses={responses} />
     </div>
   );
 };
