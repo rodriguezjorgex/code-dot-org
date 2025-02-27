@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 import {getChatCompletionMessage} from '@cdo/apps/aiTutor/chatApi';
-import Button from '@cdo/apps/componentLibrary/button';
+import {Button} from '@cdo/apps/componentLibrary/button';
 import CollapsibleSection from '@cdo/apps/templates/CollapsibleSection';
 
 import SafeMarkdown from '../SafeMarkdown';
