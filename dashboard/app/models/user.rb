@@ -1416,6 +1416,7 @@ class User < ApplicationRecord
   end
 
   def valid_secret_words?(words)
+    return false unless secret_words
     words.delete(' ') == secret_words.delete(' ')
   end
 
