@@ -10,10 +10,12 @@ import {Heading3} from '@cdo/apps/componentLibrary/typography';
 import {EVENTS, PLATFORMS} from '@cdo/apps/metrics/AnalyticsConstants';
 import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
 import {getFullName} from '@cdo/apps/templates/manageStudents/utils.ts';
+import experiments from '@cdo/apps/util/experiments';
 import i18n from '@cdo/locale';
 
-import styles from './summary.module.scss';
 import FreeResponseAIEvaluation from './FreeResponseAIEvaluation';
+
+import styles from './summary.module.scss';
 
 const FreeResponseResponses = ({responses, showStudentNames, eventData}) => {
   const constructStudentName = response =>
@@ -206,7 +208,9 @@ const FreeResponseResponses = ({responses, showStudentNames, eventData}) => {
           type="gray"
         />
       )}
-      <FreeResponseAIEvaluation responses={responses} />
+      {experiments.isEnabled(experiments.FREE_RESPONSE_AI_ANALYSIS) && (
+        <FreeResponseAIEvaluation responses={responses} />
+      )}
     </div>
   );
 };

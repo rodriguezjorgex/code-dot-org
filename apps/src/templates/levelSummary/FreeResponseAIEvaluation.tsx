@@ -1,17 +1,12 @@
-import {getChatCompletionMessage} from '@cdo/apps/aiTutor/chatApi';
-import Button from '@cdo/apps/componentLibrary/button';
-import style from '@cdo/apps/levelbuilder/ai-iteration-tools/ai-tutor/ai-tutor-tester.module.scss';
 import React, {useEffect, useState} from 'react';
 
-// Add responses as a prop
-// define response type shape
-// write function that sends free reponses to AI
-// import all the stuff we need to manage in state
-// call function in useEffect
-// display the AI's response
-// hide this component behind a feature flag
-// make this collapsible ?
-// TBD: store the AI's summary somewhere?
+import {getChatCompletionMessage} from '@cdo/apps/aiTutor/chatApi';
+import Button from '@cdo/apps/componentLibrary/button';
+import CollapsibleSection from '@cdo/apps/templates/CollapsibleSection';
+
+import SafeMarkdown from '../SafeMarkdown';
+
+import style from '@cdo/apps/levelbuilder/ai-iteration-tools/ai-tutor/ai-tutor-tester.module.scss';
 
 interface StudentResponse {
   user_id: number;
@@ -29,38 +24,38 @@ const FreeResponseAIEvaluation: React.FunctionComponent<
   const [evaluationsPending, setEvaluationsPending] = useState<boolean>(false);
   const [evaluations, setEvaluations] = useState<StudentResponse[]>([]);
   const [evaluationCount, setEvaluationCount] = useState<number>(0);
+  const [aiSummary, setAiSummary] = useState<string>('');
   const evaluationComplete = responses.length === evaluationCount;
-
-  // useEffect(() => {
-  //   setStudentResponses(responses);
-  // }, [responses]);
 
   useEffect(() => {
     if (evaluationComplete) {
       setEvaluationsPending(false);
+      summarizeStudentEvaluations(evaluations);
     }
-  }, [evaluationComplete]);
+  }, [evaluations, evaluationComplete]);
 
-  // TODO: Pass these in as a prop or pull from state somewhere.
+  // TODO: Pass these in as a prop (or pull from state somewhere?).
   const levelInstructions =
     'When creating an if-else-if statement you should always make your first condition the most specific. Write a short paragraph responding to the questions below. What does it mean to put the most specific case first? Why is it important to put the most specific case first? What types of errors does it help avoid?';
-  const basePrompt = `You are a teaching assistant for a high school AP Computer Science class where the students are learniing JavaScript. Please review the student's response to the the instructions and indicate whether the response is "great", "ok", or "needs revision" with a one sentence explanation. The student's instructions are: ${levelInstructions}.`;
+  const basePrompt =
+    'You are a teaching assistant for a high school AP Computer Science class where the students are learniing JavaScript.';
 
   const getAIEvaluations = async () => {
     setEvaluationsPending(true);
     const responsePromises = responses.map(async studentResponse => {
-      return askAITutor(studentResponse);
+      return evaluateStudentResponse(studentResponse);
     });
 
     await Promise.allSettled(responsePromises);
   };
 
-  const askAITutor = async (studentResponse: StudentResponse) => {
+  const evaluateStudentResponse = async (studentResponse: StudentResponse) => {
+    const studentPrompt = `${basePrompt} Please review the student's responses and indicate whether the response is "great", "ok", or "needs revision". Provide one sentence with your reasoning. The student's instructions are: ${levelInstructions}.`;
     const studentResponseString = `${studentResponse.student_display_name} replied ${studentResponse.text}`;
     const chatApiResponse = await getChatCompletionMessage(
       studentResponseString,
       [],
-      basePrompt
+      studentPrompt
     );
     const aiEvaluation = chatApiResponse.assistantResponse;
     if (aiEvaluation) {
@@ -73,33 +68,60 @@ const FreeResponseAIEvaluation: React.FunctionComponent<
     }
   };
 
+  const summarizeStudentEvaluations = async (
+    evaluations: StudentResponse[]
+  ) => {
+    const sectionPrompt = `${basePrompt} Please review the evaluations of the student responses and based on the results indicate whether the teacher should "review the concept" or "move on to the next lesson". Provide one sentence with your reasoning.`;
+    const chatApiResponse = await getChatCompletionMessage(
+      evaluations.map(evaluation => evaluation.aiEvaluation).join(' '),
+      [],
+      sectionPrompt
+    );
+    const summary = chatApiResponse.assistantResponse;
+    if (summary) {
+      setAiSummary(summary);
+    } else {
+      setAiSummary('Uh oh!');
+    }
+  };
+
   return (
     <div>
-      <h3>AI Analysis (beta)</h3>
+      <h2>AI Analysis (prototype)</h2>
       <Button
-        text="Evaluate individual student responses"
+        text="Evaluate student responses"
         onClick={getAIEvaluations}
         disabled={!responses.length || evaluationsPending}
         isPending={evaluationsPending}
       />
-      {evaluationComplete && (
-        <table>
-          <thead>
-            {evaluations.map(evaluation => (
-              <tr key={evaluation.user_id} className={style.row}>
-                <td className={style.cell}>
-                  <div>{evaluation.student_display_name}</div>
-                </td>
-                <td className={style.cell}>
-                  <div>{evaluation.text}</div>
-                </td>
-                <td className={style.cell}>
-                  <div>{evaluation.aiEvaluation}</div>
-                </td>
-              </tr>
-            ))}
-          </thead>
-        </table>
+      {evaluationComplete && aiSummary && (
+        <div>
+          <br />
+          <SafeMarkdown markdown={aiSummary} />
+          <CollapsibleSection
+            headerContent={
+              <h3>AI Evaluations of Individual Student Responses</h3>
+            }
+          >
+            <table>
+              <thead>
+                {evaluations.map(evaluation => (
+                  <tr key={evaluation.user_id} className={style.row}>
+                    <td className={style.cell}>
+                      <div>{evaluation.student_display_name}</div>
+                    </td>
+                    <td className={style.cell}>
+                      <div>{evaluation.text}</div>
+                    </td>
+                    <td className={style.cell}>
+                      <div>{evaluation.aiEvaluation}</div>
+                    </td>
+                  </tr>
+                ))}
+              </thead>
+            </table>
+          </CollapsibleSection>
+        </div>
       )}
     </div>
   );
