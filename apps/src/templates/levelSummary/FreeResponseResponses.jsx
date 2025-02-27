@@ -17,7 +17,12 @@ import FreeResponseAIEvaluation from './FreeResponseAIEvaluation';
 
 import styles from './summary.module.scss';
 
-const FreeResponseResponses = ({responses, showStudentNames, eventData}) => {
+const FreeResponseResponses = ({
+  responses,
+  showStudentNames,
+  eventData,
+  levelInstructions,
+}) => {
   const constructStudentName = response =>
     getFullName(response.student_display_name, response.student_family_name);
 
@@ -209,7 +214,10 @@ const FreeResponseResponses = ({responses, showStudentNames, eventData}) => {
         />
       )}
       {experiments.isEnabled(experiments.FREE_RESPONSE_AI_ANALYSIS) && (
-        <FreeResponseAIEvaluation responses={responses} />
+        <FreeResponseAIEvaluation
+          responses={responses}
+          levelInstructions={levelInstructions}
+        />
       )}
     </div>
   );
@@ -219,6 +227,7 @@ FreeResponseResponses.propTypes = {
   responses: PropTypes.arrayOf(PropTypes.object),
   showStudentNames: PropTypes.bool,
   eventData: PropTypes.object,
+  levelInstructions: PropTypes.string,
 };
 
 export default FreeResponseResponses;

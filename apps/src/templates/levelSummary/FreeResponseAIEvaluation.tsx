@@ -17,10 +17,11 @@ interface StudentResponse {
 
 interface FreeResponseAIEvaluationProps {
   responses: StudentResponse[];
+  levelInstructions: string;
 }
 const FreeResponseAIEvaluation: React.FunctionComponent<
   FreeResponseAIEvaluationProps
-> = ({responses}) => {
+> = ({responses, levelInstructions}) => {
   const [evaluationsPending, setEvaluationsPending] = useState<boolean>(false);
   const [evaluations, setEvaluations] = useState<StudentResponse[]>([]);
   const [evaluationCount, setEvaluationCount] = useState<number>(0);
@@ -34,9 +35,6 @@ const FreeResponseAIEvaluation: React.FunctionComponent<
     }
   }, [evaluations, evaluationComplete]);
 
-  // TODO: Pass these in as a prop (or pull from state somewhere?).
-  const levelInstructions =
-    'When creating an if-else-if statement you should always make your first condition the most specific. Write a short paragraph responding to the questions below. What does it mean to put the most specific case first? Why is it important to put the most specific case first? What types of errors does it help avoid?';
   const basePrompt =
     'You are a teaching assistant for a high school AP Computer Science class where the students are learniing JavaScript.';
 
