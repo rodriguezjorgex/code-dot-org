@@ -12,6 +12,12 @@ Dashboard::Application.routes.draw do
   # Redirect old sign up flow to new sign up flow
   get "/users/sign_up", to: redirect("/users/sign_up/account_type")
 
+  # Redirect uses of "new_sign_up" to "sign_up"
+  get "/users/new_sign_up/account_type", to: redirect("/users/sign_up/account_type")
+  get "/users/new_sign_up/login_type", to: redirect("/users/sign_up/login_type")
+  get "/users/new_sign_up/finish_student_account", to: redirect("/users/sign_up/finish_student_account")
+  get "/users/new_sign_up/finish_teacher_account", to: redirect("/users/sign_up/finish_teacher_account")
+
   # Redirect studio.code.org/sections/teacher_dashboard/first_section/*location to the teacher's most recent section
   # on teacher dashboard, where *location is one of the following: courses, calendar, progress, or materials.
   get '/teacher_dashboard/sections/first_section/*location', to: "teacher_dashboard#redirect_to_newest_section"
