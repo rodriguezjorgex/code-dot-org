@@ -36,7 +36,7 @@ const FreeResponseAIEvaluation: React.FunctionComponent<
   }, [evaluations, evaluationComplete]);
 
   const basePrompt =
-    'You are a teaching assistant for a high school AP Computer Science class where the students are learniing JavaScript.';
+    'You are a teaching assistant for a high school AP Computer Science class where the students are learning JavaScript.';
 
   const getAIEvaluations = async () => {
     setEvaluationsPending(true);
