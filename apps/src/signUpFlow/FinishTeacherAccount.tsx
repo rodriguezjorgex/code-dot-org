@@ -4,16 +4,16 @@ import CloseButton from '@code-dot-org/component-library/closeButton';
 import {SimpleDropdown} from '@code-dot-org/component-library/dropdown';
 import FontAwesomeV6Icon from '@code-dot-org/component-library/fontAwesomeV6Icon';
 import TextField from '@code-dot-org/component-library/textField';
-import classNames from 'classnames';
-import cookies from 'js-cookie';
-import React, {useState, useEffect, useMemo} from 'react';
-
 import {
   BodyThreeText,
   BodyFourText,
   BodyTwoText,
   Heading2,
-} from '@cdo/apps/componentLibrary/typography';
+} from '@code-dot-org/component-library/typography';
+import classNames from 'classnames';
+import cookies from 'js-cookie';
+import React, {useState, useEffect, useMemo} from 'react';
+
 import {EVENTS, PLATFORMS} from '@cdo/apps/metrics/AnalyticsConstants';
 import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
 import statsigReporter from '@cdo/apps/metrics/StatsigReporter';
@@ -93,12 +93,12 @@ const FinishTeacherAccount: React.FunctionComponent<{
   useEffect(() => {
     // If the user hasn't selected a user type or login type, redirect them back to the incomplete step of signup.
     if (sessionStorage.getItem(ACCOUNT_TYPE_SESSION_KEY) === null) {
-      navigateToHref('/users/new_sign_up/account_type');
+      navigateToHref('/users/sign_up/account_type');
     } else if (
       sessionStorage.getItem(EMAIL_SESSION_KEY) === null &&
       sessionStorage.getItem(OAUTH_LOGIN_TYPE_SESSION_KEY) === null
     ) {
-      navigateToHref('/users/new_sign_up/login_type');
+      navigateToHref('/users/sign_up/login_type');
     }
 
     analyticsReporter.sendEvent(
