@@ -173,7 +173,6 @@ class RegistrationsController < Devise::RegistrationsController
       end
 
       if ActiveModel::Type::Boolean.new.cast(params[:new_sign_up])
-        session[:user_return_to] ||= params[:user_return_to]
         begin
           @user = Services::PartialRegistration::UserBuilder.call(request: request)
         rescue ActiveRecord::RecordInvalid => exception
