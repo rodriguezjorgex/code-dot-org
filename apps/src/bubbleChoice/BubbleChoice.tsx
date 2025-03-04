@@ -1,0 +1,72 @@
+// BubbleChoice
+//
+// This is a React client for a bubble_choice level.  Note that this is
+// only used for levels that use Lab2.  For levels that don't use Lab2,
+// they will get an older-style level implemented with a HAML page and some
+// non-React JS code.
+
+import React, {useEffect} from 'react';
+import {useSelector} from 'react-redux';
+
+import {
+  sendSuccessReport,
+  navigateToNextLevel,
+} from '@cdo/apps/code-studio/progressRedux';
+import {LabState} from '@cdo/apps/lab2/lab2Redux';
+import {LabProps, BubbleChoiceLevelData} from '@cdo/apps/lab2/types';
+import {useAppDispatch} from '@cdo/apps/util/reduxHooks';
+
+//import bubbleChoiceLocale from './locale';
+
+//import styles from './bubbleChoice.module.scss';
+
+const BubbleChoice: React.FunctionComponent<LabProps> = () => {
+  const dispatch = useAppDispatch();
+  const levelData = useSelector(
+    (state: {lab: LabState}) => state.lab.levelProperties?.levelData
+  );
+  const currentAppName = useSelector(
+    (state: {lab: LabState}) => state.lab.levelProperties?.appName
+  );
+
+  const [levelBubbleChoice, setLevelBubbleChoice] =
+    React.useState<BubbleChoiceLevelData | null>(null);
+
+  useEffect(() => {
+    if (currentAppName === 'bubble_choice' && levelData) {
+      setLevelBubbleChoice(levelData as BubbleChoiceLevelData);
+    }
+  }, [currentAppName, levelData]);
+
+  /*
+  const nextButtonPressed = () => {
+    const appType = 'standalone_video';
+    dispatch(sendSuccessReport(appType));
+    dispatch(navigateToNextLevel());
+  };
+  */
+
+  return (
+    <div id="bubble-choice">
+      {levelBubbleChoice?.sublevels.map(sublevel => sublevel.display_name)}
+      {/*
+      <Video
+        src={levelVideo?.src}
+        download={levelVideo?.download}
+        thumbnail={levelVideo?.thumbnail}
+      >
+        <button
+          id="standalone-video-continue-button"
+          type="button"
+          onClick={() => nextButtonPressed()}
+          className={styles.buttonNext}
+        >
+          {standaloneVideoLocale.continue()}
+        </button>
+      </Video>
+      */}
+    </div>
+  );
+};
+
+export default BubbleChoice;

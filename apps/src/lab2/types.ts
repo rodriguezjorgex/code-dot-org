@@ -230,6 +230,13 @@ export interface VideoLevelData {
   thumbnail: string;
 }
 
+// The level data for a bubble_choice level that doesn't require
+// reloads between levels.
+export interface BubbleChoiceLevelData {
+  finishUrl: string;
+  sublevels: BubbleChoiceSublevel[];
+}
+
 // Addtional fields for videos that are linked as references in the
 // Help & Tips tab of Instructions.
 interface VideoData extends VideoLevelData {
@@ -244,6 +251,12 @@ export interface MazeCell {
   tileType: number;
   value: number;
   assetId: number;
+}
+
+// Bubble Choice specific property
+export interface BubbleChoiceSublevel {
+  display_name: string;
+  level_id: string;
 }
 
 // Configuration for how a Lab should be rendered
@@ -262,7 +275,10 @@ export interface Lab2EntryPoint {
   theme?: Theme;
 }
 
-export type LevelData = ProjectLevelData | VideoLevelData;
+export type LevelData =
+  | ProjectLevelData
+  | VideoLevelData
+  | BubbleChoiceLevelData;
 
 export type ProjectType =
   | AppName
