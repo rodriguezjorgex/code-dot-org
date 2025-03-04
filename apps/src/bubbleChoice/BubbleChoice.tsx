@@ -18,7 +18,7 @@ import {useAppDispatch} from '@cdo/apps/util/reduxHooks';
 
 //import bubbleChoiceLocale from './locale';
 
-//import styles from './bubbleChoice.module.scss';
+import styles from './BubbleChoice.module.scss';
 
 const BubbleChoice: React.FunctionComponent<LabProps> = () => {
   const dispatch = useAppDispatch();
@@ -47,8 +47,19 @@ const BubbleChoice: React.FunctionComponent<LabProps> = () => {
   */
 
   return (
-    <div id="bubble-choice">
-      {levelBubbleChoice?.sublevels.map(sublevel => sublevel.display_name)}
+    <div id="bubble-choice" className={styles.bubbleChoiceContainer}>
+      <div className={styles.sublevelsContainer}>
+        {levelBubbleChoice?.sublevels.map((sublevel, index) => (
+          <div key={index} className={styles.sublevelContainer}>
+            <img
+              alt=""
+              src={sublevel.thumbnail_url}
+              className={styles.sublevelImage}
+            />
+            <div className={styles.sublevelText}>{sublevel.display_name}</div>
+          </div>
+        ))}
+      </div>
       {/*
       <Video
         src={levelVideo?.src}

@@ -257,6 +257,7 @@ export interface MazeCell {
 export interface BubbleChoiceSublevel {
   display_name: string;
   level_id: string;
+  thumbnail_url: string;
 }
 
 // Configuration for how a Lab should be rendered

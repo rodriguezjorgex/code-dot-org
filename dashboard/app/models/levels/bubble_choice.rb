@@ -79,6 +79,11 @@ class BubbleChoice < DSLDefined
     uses_lab2
   end
 
+  def enable_scrolling?
+    # ensures we have the small footer
+    true
+  end
+
   def summarize_for_lab2_properties(script, script_level = nil, current_user = nil)
     level_properties = super
     summary = summarize(script_level: @script_level, user: @view_as_user, should_localize: true)
