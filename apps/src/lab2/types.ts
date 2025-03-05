@@ -17,6 +17,14 @@ import {lab2EntryPoints} from '../../lab2EntryPoints';
 
 export {Theme};
 
+/// ------ USER APP OPTIONS ------ ///
+
+// Partial definition of the UserAppOptions structure, only defining the
+// pieces we need at the moment.
+export interface PartialUserAppOptions {
+  isInstructor: boolean;
+}
+
 /// ------ PROJECTS ------ ///
 
 /** Identifies a project. Corresponds to the "value" JSON column for the entry in the projects table. */
@@ -44,6 +52,7 @@ export interface ProjectAndSources {
   // When projects are loaded for the first time, sources may not be present
   sources?: ProjectSources;
   channel: Channel;
+  abuseScore?: number;
 }
 
 /// ------ SOURCES ------ ///
@@ -53,9 +62,11 @@ export interface ProjectSources {
   // Source code can either be a string or a nested JSON object (for multi-file).
   source: string | MultiFileSource;
   // Optional lab-specific configuration for this project
-  labConfig?: {[key: string]: {[key: string]: string}};
+  labConfig?: LabConfig;
   // Add other properties (animations, html, etc) as needed.
 }
+
+export type LabConfig = {[key: string]: {[key: string]: string}};
 
 // We will eventually make this a union type to include other source types.
 export type Source = BlocklySource | MultiFileSource;
@@ -123,11 +134,23 @@ export interface ProjectFile {
   type?: ProjectFileType;
 }
 
+/**
+ * Project file types are as follows:
+ * Starter: Files that come from level start code that are editable by the user.
+ * Support: Files that come from level start code that are hidden and not editable by the user.
+ * Validation: The file that contain the level's validation code, which is a code file that will be
+ * run by the lab. This file is hidden from users.
+ * Locked Starter: Files that come from level start code that are editable by the user, but cannot be
+ *  deleted or renamed.
+ * System Support: Files that are used for running code and for share/remix, but are hidden from the user.
+ *  For example, the serialized maze for a neighborhood level.
+ */
 export enum ProjectFileType {
   STARTER = 'starter',
   SUPPORT = 'support',
   VALIDATION = 'validation',
   LOCKED_STARTER = 'locked_starter',
+  SYSTEM_SUPPORT = 'system_support',
 }
 
 export interface ProjectFolder {
@@ -160,6 +183,7 @@ export interface LevelProperties {
   templateSources?: MultiFileSource;
   sharedBlocks?: BlockDefinition[];
   validations?: Validation[];
+  baseAssetUrl?: string;
   // An optional URL that allows the user to skip the progression.
   skipUrl?: string;
   // Project Template level name for the level if it exists.
@@ -182,8 +206,14 @@ export interface LevelProperties {
   // Python Lab/Codebridge specific properties
   validationFile?: ProjectFile;
   enableMicroBit?: boolean;
+  miniApp?: string;
   serializedMaze?: MazeCell[][];
   startDirection?: number;
+  // Properties added for parity with non-lab2 AI Tutor levels
+  aiTutorAvailable?: boolean;
+  isAssessment?: boolean;
+  progressionType?: string;
+  type?: string;
 }
 
 // Level configuration data used by project-backed labs that don't require
@@ -216,45 +246,14 @@ export interface MazeCell {
   assetId: number;
 }
 
-export enum OptionsToAvoid {
-  /**
-   * @deprecated: using this option will result in hardcoding this lab into the
-   * downloaded bundle for ALL other lab2 labs, slowing down their loading and
-   * consuming excessive school internet bandwidth.
-   *
-   * See `pythonlab/entrypoint.tsx` for an example that doesn't use this option.
-   *
-   * Please only use this option if there's a good reason you can't lazy load
-   * your lab. With this option set, you must also specify `hardcodedEntryPoint`.
-   */
-  UseHardcodedView_WARNING_Bloats_Lab2_Bundle,
-}
-
 // Configuration for how a Lab should be rendered
 export interface Lab2EntryPoint {
-  /**
-   * Whether this lab should remain rendered in the background once mounted.
-   * If true, the lab will always be present in the tree, but will be hidden
-   * via visibility: hidden when not active. If false, the lab will only
-   * be rendered in the tree when active.
-   */
-  backgroundMode: boolean;
   /**
    * A lazy loaded view for the lab. This should be a lazy-loaded react
    * component using a dynamic import. See `pythonlab/entrypoint.tsx` for an
    * example.
    */
-  view: LazyExoticComponent<ComponentType> | OptionsToAvoid;
-  /**
-   * Using this option will result in hardcoding this lab into the downloaded
-   * bundle for ALL other lab2 labs, slowing down their loading and consuming
-   * excessive school internet bandwidth. Please use `view` instead,
-   * which lazy loads you lab on demand, unless you have a really good reason
-   * you can't lazy load.
-   *
-   * See `pythonlab/entrypoint.tsx` for an example that doesn't use this option.
-   */
-  hardcodedView?: ComponentType;
+  view: LazyExoticComponent<ComponentType<LabProps>>;
   /**
    * Display theme for this lab. This will likely be configured by user
    * preferences eventually, but for now this is fixed for each lab. Defaults
@@ -333,10 +332,8 @@ export interface ExtraLinksLevelData {
   can_clone: boolean;
   can_delete: boolean;
   level_name: string;
-  script_level_path_links: {
-    script: string;
-    path: string;
-  }[];
+  script_level_path_links: ScriptLevelPathLink[];
+  parent_level_path_links: ParentLevelPathLink[];
   is_standalone_project: boolean;
 }
 export interface ExtraLinksProjectData {
@@ -357,4 +354,24 @@ export interface ProjectVersion {
   versionId: string;
   lastModified: string;
   isLatest: boolean;
+}
+
+export interface ScriptLevelPathLink {
+  script: string;
+  path: string;
+}
+
+export interface ParentLevelPathLink {
+  level_name: string;
+  path: string;
+  kind: string;
+  position: string;
+}
+
+export interface LabProps<
+  T extends LevelProperties = LevelProperties,
+  U extends ProjectSources = ProjectSources
+> {
+  levelProperties: T;
+  initialSources?: U;
 }

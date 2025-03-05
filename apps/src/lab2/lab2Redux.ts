@@ -13,12 +13,18 @@ import {
 } from '@reduxjs/toolkit';
 
 import {
+  getPublicCaching,
   getAppOptionsEditBlocks,
   getAppOptionsEditingExemplar,
   getAppOptionsViewingExemplar,
 } from '@cdo/apps/lab2/projects/utils';
+import {
+  setUserRoleInCourse,
+  CourseRoles,
+} from '@cdo/apps/templates/currentUserRedux';
 import {LevelStatus} from '@cdo/generated-scripts/sharedConstants';
 
+import {setLevel} from '../aiTutor/redux/aiTutorRedux';
 import {getCurrentLevel} from '../code-studio/progressReduxSelectors';
 import {
   setProjectUpdatedAt,
@@ -31,7 +37,6 @@ import {RootState} from '../types/redux';
 import HttpClient, {NetworkError} from '../util/HttpClient';
 import {AppDispatch} from '../util/reduxHooks';
 
-import {START_SOURCES} from './constants';
 import Lab2Registry from './Lab2Registry';
 import {
   getInitialValidationState,
@@ -47,9 +52,22 @@ import {
   LevelProperties,
   ProjectManagerStorageType,
   ProjectSources,
+  PartialUserAppOptions,
   Validation,
 } from './types';
 import {LifecycleEvent} from './utils/LifecycleNotifier';
+
+const mapLevelPropertiesToAITutorLevel = (
+  levelProperties: LevelProperties
+) => ({
+  id: levelProperties.id,
+  type: levelProperties.type || '',
+  aiTutorAvailable: !!levelProperties.aiTutorAvailable,
+  hasValidation:
+    !!levelProperties.validations && levelProperties.validations.length > 0,
+  isAssessment: !!levelProperties.isAssessment,
+  progressionType: levelProperties.progressionType || '',
+});
 
 interface PageError {
   errorMessage: string;
@@ -75,9 +93,14 @@ export interface LabState {
   validationState: ValidationState;
   // Level properties for the current level.
   levelProperties: LevelProperties | undefined;
+  // Script id for the current level.
+  scriptId: number | undefined;
   // If this lab should presented in a "share" or "play-only" view, which may hide certain UI elements.
   isShareView: boolean | undefined;
+  // If this lab is blocked because abuse score >= 15.
+  isBlocked: boolean | undefined;
   overrideValidations: Validation[] | undefined;
+  permissions: string[];
 }
 
 const initialState: LabState = {
@@ -88,8 +111,11 @@ const initialState: LabState = {
   initialSources: undefined,
   validationState: getInitialValidationState(),
   levelProperties: undefined,
+  scriptId: undefined,
   isShareView: undefined,
+  isBlocked: undefined,
   overrideValidations: undefined,
+  permissions: [],
 };
 
 // Thunks
@@ -105,6 +131,7 @@ export const setUpWithLevel = createAsyncThunk<
     levelId: number;
     scriptId?: number;
     levelPropertiesPath: string;
+    userAppOptionsPath?: string;
     channelId?: string;
     userId?: number;
     scriptLevelId?: string;
@@ -130,6 +157,11 @@ export const setUpWithLevel = createAsyncThunk<
     const levelProperties = await loadLevelProperties(
       payload.levelPropertiesPath
     );
+    thunkAPI.dispatch(setScriptId(payload.scriptId));
+
+    // Massage levelProperties to match aiTutor's format
+    const aiTutorLevel = mapLevelPropertiesToAITutorLevel(levelProperties);
+    thunkAPI.dispatch(setLevel(aiTutorLevel));
 
     Lab2Registry.getInstance()
       .getMetricsReporter()
@@ -138,6 +170,20 @@ export const setUpWithLevel = createAsyncThunk<
     const {isProjectLevel, usesProjects} = levelProperties;
 
     Lab2Registry.getInstance().setAppName(levelProperties.appName);
+
+    // If we are cached, and there is a user app options path because we are in a script
+    // level, then make an async call to the server to find out whether the user is an
+    // instructor, and if they are, then update the user role.  This is needed for the
+    // teacher panel to appear in cached levels.
+    if (getPublicCaching()) {
+      if (payload.userAppOptionsPath) {
+        loadUserAppOptions(payload.userAppOptionsPath).then(result => {
+          if (result.isInstructor) {
+            thunkAPI.dispatch(setUserRoleInCourse(CourseRoles.Instructor));
+          }
+        });
+      }
+    }
 
     if (!usesProjects) {
       // If projects are disabled on this level, we can skip loading projects data.
@@ -150,11 +196,11 @@ export const setUpWithLevel = createAsyncThunk<
       return;
     }
 
-    // If we are in start mode or are editing or viewing exemplars,
+    // If we are in a block edit mode or are editing or viewing exemplars,
     // we don't use a channel id.
     // We can skip creating a project manager and just set the level data.
-    const isStartMode = getAppOptionsEditBlocks() === START_SOURCES;
-    if (isStartMode || isViewingExemplar || isEditingExemplar) {
+    const isEditMode = !!getAppOptionsEditBlocks();
+    if (isEditMode || isViewingExemplar || isEditingExemplar) {
       setProjectAndLevelData(
         {levelProperties},
         thunkAPI.signal.aborted,
@@ -219,12 +265,12 @@ export const setUpWithLevel = createAsyncThunk<
 
     Lab2Registry.getInstance().setProjectManager(projectManager);
     // Load channel and source.
-    const {sources, channel} = await setUpAndLoadProject(
+    const {sources, channel, abuseScore} = await setUpAndLoadProject(
       projectManager,
       thunkAPI.dispatch
     );
     setProjectAndLevelData(
-      {initialSources: sources, channel, levelProperties},
+      {initialSources: sources, channel, levelProperties, abuseScore},
       thunkAPI.signal.aborted,
       thunkAPI.dispatch,
       thunkAPI.getState
@@ -290,15 +336,16 @@ export const isLabLoading = (state: {lab: LabState}) =>
 
 // This may depend on more factors, such as share.
 export const isReadOnlyWorkspace = (state: RootState) => {
-  const isStartMode = getAppOptionsEditBlocks() === START_SOURCES;
-  const isEditingExemplarMode = getAppOptionsEditingExemplar();
+  const isEditMode = !!getAppOptionsEditBlocks();
+  const isEditingExemplar = getAppOptionsEditingExemplar();
+  const isViewingExemplar = getAppOptionsViewingExemplar();
 
-  // We are always in edit mode if we are in start or editing exemplar mode.
-  // Both of these modes have no channel.
-  if (isStartMode || isEditingExemplarMode) {
+  // Exemplar and block edit modes do not have a channel.
+  if (isEditMode || isEditingExemplar) {
     return false;
+  } else if (isViewingExemplar) {
+    return true;
   }
-
   // Otherwise, we are in read only mode if we are not the owner of the channel,
   // the level is frozen, the level is a read only predict level, the level has been submitted.
   // or this is a lab that should be read only while running and the code is currently running.
@@ -361,6 +408,9 @@ const labSlice = createSlice({
     setChannel(state, action: PayloadAction<Channel | undefined>) {
       state.channel = action.payload;
     },
+    setScriptId(state, action: PayloadAction<number | undefined>) {
+      state.scriptId = action.payload;
+    },
     setValidationState(state, action: PayloadAction<ValidationState>) {
       state.validationState = {...action.payload};
     },
@@ -372,11 +422,15 @@ const labSlice = createSlice({
         channel?: Channel;
         levelProperties: LevelProperties;
         initialSources?: ProjectSources;
+        abuseScore?: number;
       }>
     ) {
       state.channel = action.payload.channel;
       state.levelProperties = action.payload.levelProperties;
       state.initialSources = action.payload.initialSources;
+      if (typeof action.payload.abuseScore === 'number') {
+        state.isBlocked = action.payload.abuseScore >= 15 ? true : false;
+      }
     },
     setIsShareView(state, action: PayloadAction<boolean>) {
       state.isShareView = action.payload;
@@ -386,6 +440,9 @@ const labSlice = createSlice({
       action: PayloadAction<Validation[] | undefined>
     ) {
       state.overrideValidations = action.payload;
+    },
+    setPermissions(state, action: PayloadAction<string[]>) {
+      state.permissions = action.payload;
     },
   },
   extraReducers: builder => {
@@ -514,6 +571,7 @@ function setProjectAndLevelData(
     levelProperties: LevelProperties;
     channel?: Channel;
     initialSources?: ProjectSources;
+    abuseScore?: number;
   },
   aborted: boolean,
   dispatch: ThunkDispatch<unknown, unknown, AnyAction>,
@@ -533,6 +591,7 @@ function setProjectAndLevelData(
       data.levelProperties,
       data.channel,
       data.initialSources,
+      data.abuseScore,
       isReadOnlyWorkspace(getState())
     );
 }
@@ -544,6 +603,15 @@ async function loadLevelProperties(
     levelPropertiesPath,
     {},
     LevelPropertiesValidator
+  );
+  return response.value;
+}
+
+async function loadUserAppOptions(
+  userAppOptionsPath: string
+): Promise<PartialUserAppOptions> {
+  const response = await HttpClient.fetchJson<PartialUserAppOptions>(
+    userAppOptionsPath
   );
   return response.value;
 }
@@ -594,10 +662,10 @@ export const {
   setValidationState,
   setIsShareView,
   setOverrideValidations,
+  setScriptId,
   onLevelChange,
+  setPermissions,
+  setChannel,
 } = labSlice.actions;
-
-// These should not be set outside of the lab slice.
-const {setChannel} = labSlice.actions;
 
 export default labSlice.reducer;

@@ -17,8 +17,10 @@ import {
   BLOCKLY_THEME,
   NAVIGATION_CURSOR_TYPES,
   DARK_THEME_SUFFIX,
+  BLOCK_TYPES,
 } from '../constants';
-import {getBaseName} from '../utils';
+import {ExtendedBlockSvg} from '../types';
+import {getBaseName, isDarkTheme} from '../utils';
 
 // Some options are only available to levelbuilders via start mode.
 // Literal strings are used for display text instead of translatable strings
@@ -59,9 +61,17 @@ const registerMovable = function (weight: number) {
         ? 'Make Immovable to Users'
         : 'Make Movable to Users';
     },
-    preconditionFn: function () {
+    preconditionFn: function (scope: GoogleBlockly.ContextMenuRegistry.Scope) {
       if (Blockly.isStartMode) {
         return MenuOptionStates.ENABLED;
+      }
+      if (Blockly.isToolboxMode) {
+        // Only child blocks should be immovable.
+        if (scope.block !== scope.block?.getRootBlock()) {
+          return MenuOptionStates.ENABLED;
+        } else {
+          return MenuOptionStates.DISABLED;
+        }
       }
       return MenuOptionStates.HIDDEN;
     },
@@ -77,6 +87,42 @@ const registerMovable = function (weight: number) {
   GoogleBlockly.ContextMenuRegistry.registry.register(movableOption);
 };
 
+const registerNextConnection = function (weight: number) {
+  const nextConnectionOption = {
+    displayText: function (scope: GoogleBlockly.ContextMenuRegistry.Scope) {
+      const block = scope.block;
+      if (!block) {
+        return '';
+      }
+      const displayText = `${
+        block.nextConnection ? 'Disable' : 'Enable'
+      } Next Connection`;
+      return displayText;
+    },
+    preconditionFn: function (scope: GoogleBlockly.ContextMenuRegistry.Scope) {
+      const block = scope.block as ExtendedBlockSvg;
+
+      // This option requires a custom mutator in order to serialize the disabled connection.
+      if (Blockly.isStartMode && block?.canSerializeNextConnection) {
+        return MenuOptionStates.ENABLED;
+      }
+      return MenuOptionStates.HIDDEN;
+    },
+    callback: function (scope: GoogleBlockly.ContextMenuRegistry.Scope) {
+      const block = scope.block;
+      if (!block) {
+        return;
+      }
+      block.nextConnection?.disconnect();
+      block.setNextStatement(!block.nextConnection);
+    },
+    scopeType: GoogleBlockly.ContextMenuRegistry.ScopeType.BLOCK,
+    id: 'nextConnection',
+    weight,
+  };
+  GoogleBlockly.ContextMenuRegistry.registry.register(nextConnectionOption);
+};
+
 const registerEditable = function (weight: number) {
   const editableOption = {
     displayText: function (scope: GoogleBlockly.ContextMenuRegistry.Scope) {
@@ -87,7 +133,7 @@ const registerEditable = function (weight: number) {
         : 'Make Editable to Users';
     },
     preconditionFn: function () {
-      if (Blockly.isStartMode) {
+      if (Blockly.isStartMode || Blockly.isToolboxMode) {
         return MenuOptionStates.ENABLED;
       }
       return MenuOptionStates.HIDDEN;
@@ -108,7 +154,11 @@ const registerShadow = function (weight: number) {
   const shadowOption = {
     displayText: () => 'Make Shadow',
     preconditionFn: function (scope: GoogleBlockly.ContextMenuRegistry.Scope) {
-      if (Blockly.isStartMode && scope.block && canBeShadow(scope.block)) {
+      if (
+        (Blockly.isStartMode || Blockly.isToolboxMode) &&
+        scope.block &&
+        canBeShadow(scope.block)
+      ) {
         // isShadow is a built in Blockly function that checks whether the block
         // is a shadow or not.
         return MenuOptionStates.ENABLED;
@@ -124,6 +174,7 @@ const registerShadow = function (weight: number) {
   };
   GoogleBlockly.ContextMenuRegistry.registry.register(shadowOption);
 };
+
 const registerUnshadow = function (weight: number) {
   const unshadowOption = {
     // If there's 1 child, text should be 'Make Child Block Non-Shadow'
@@ -141,7 +192,7 @@ const registerUnshadow = function (weight: number) {
     },
     preconditionFn: function (scope: GoogleBlockly.ContextMenuRegistry.Scope) {
       if (
-        Blockly.isStartMode &&
+        (Blockly.isStartMode || Blockly.isToolboxMode) &&
         scope.block &&
         hasShadowChildren(scope.block)
       ) {
@@ -192,6 +243,77 @@ const registerAllBlocksUndeletable = function (weight: number) {
   };
   GoogleBlockly.ContextMenuRegistry.registry.register(
     workspaceBlocksUndeletableOption
+  );
+};
+
+const registerAllBlocksUneditable = function (weight: number) {
+  const workspaceBlocksUneditableOption = {
+    displayText: function (scope: GoogleBlockly.ContextMenuRegistry.Scope) {
+      return 'Make ALL Blocks Uneditable';
+    },
+    preconditionFn: function (scope: GoogleBlockly.ContextMenuRegistry.Scope) {
+      if (Blockly.isStartMode || Blockly.isToolboxMode) {
+        if (
+          scope.workspace?.getAllBlocks().every(block => !block.isEditable())
+        ) {
+          return MenuOptionStates.DISABLED;
+        }
+        return MenuOptionStates.ENABLED;
+      }
+      return MenuOptionStates.HIDDEN;
+    },
+    callback: function (scope: GoogleBlockly.ContextMenuRegistry.Scope) {
+      if (scope.workspace) {
+        scope.workspace
+          .getAllBlocks()
+          // In toolbox mode, category blocks should remain editable.
+          .filter(
+            b =>
+              !(
+                [BLOCK_TYPES.category, BLOCK_TYPES.categoryDynamic] as string[]
+              ).includes(b.type)
+          )
+          .forEach(block => block.setEditable(false));
+      }
+    },
+    scopeType: GoogleBlockly.ContextMenuRegistry.ScopeType.WORKSPACE,
+    id: 'workspaceBlocksUneditable',
+    weight,
+  };
+  GoogleBlockly.ContextMenuRegistry.registry.register(
+    workspaceBlocksUneditableOption
+  );
+};
+
+const registerAllBlocksUnmovable = function (weight: number) {
+  const workspaceBlocksUnmovableOption = {
+    displayText: function (scope: GoogleBlockly.ContextMenuRegistry.Scope) {
+      return 'Make ALL Blocks Unmovable';
+    },
+    preconditionFn: function (scope: GoogleBlockly.ContextMenuRegistry.Scope) {
+      if (Blockly.isStartMode) {
+        if (
+          scope.workspace?.getAllBlocks().every(block => !block.isMovable())
+        ) {
+          return MenuOptionStates.DISABLED;
+        }
+        return MenuOptionStates.ENABLED;
+      }
+      return MenuOptionStates.HIDDEN;
+    },
+    callback: function (scope: GoogleBlockly.ContextMenuRegistry.Scope) {
+      if (scope.workspace) {
+        scope.workspace
+          .getAllBlocks()
+          .forEach(block => block.setMovable(false));
+      }
+    },
+    scopeType: GoogleBlockly.ContextMenuRegistry.ScopeType.WORKSPACE,
+    id: 'workspaceBlocksUnMovable',
+    weight,
+  };
+  GoogleBlockly.ContextMenuRegistry.registry.register(
+    workspaceBlocksUnmovableOption
   );
 };
 
@@ -456,10 +578,6 @@ function isCurrentTheme(
   );
 }
 
-function isDarkTheme(theme: GoogleBlockly.Theme | undefined) {
-  return theme?.name.includes(DARK_THEME_SUFFIX);
-}
-
 function setAllWorkspacesTheme(
   newTheme: GoogleBlockly.Theme,
   previousTheme: GoogleBlockly.Theme | undefined
@@ -526,6 +644,7 @@ function registerCustomBlockOptions() {
   registerHelp(nextWeight++);
   registerDeletable(nextWeight++);
   registerMovable(nextWeight++);
+  registerNextConnection(nextWeight++);
   registerEditable(nextWeight++);
   registerShadow(nextWeight++);
   registerUnshadow(nextWeight++);
@@ -549,4 +668,6 @@ function registerCustomWorkspaceOptions() {
   registerAllCursors(nextWeight++, NAVIGATION_CURSOR_TYPES);
   registerThemes(nextWeight++, themes);
   registerAllBlocksUndeletable(nextWeight++);
+  registerAllBlocksUneditable(nextWeight++);
+  registerAllBlocksUnmovable(nextWeight++);
 }

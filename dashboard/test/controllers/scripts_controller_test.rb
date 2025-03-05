@@ -62,6 +62,41 @@ class ScriptsControllerTest < ActionController::TestCase
     end
   end
 
+  test 'show includes correct SEO data' do
+    get :show, params: {
+      id: Unit::TWENTY_HOUR_NAME,
+    }
+    assert_response :ok
+    assert_includes(@response.body, "<title>Unit: Accelerated Intro to CS Course - Code.org [test]</title>")
+    assert_includes(@response.body, "<meta property=\"description\" content=\"This 20-hour course covers the core computer science and programming concepts in courses 2-4. The course is designed for use with ages 10-18. Check out courses 2-4 for a more complete experience!\" />")
+  end
+
+  test 'canonical url is added if it is a single unit course' do
+    course = create :unit_group, published_state: Curriculum::SharedCourseConstants::PUBLISHED_STATE.stable
+    unit = create :script, published_state: nil, family_name: 'my-script'
+    create :unit_group_unit, unit_group: course, script: unit, position: 1
+
+    get :show, params: {
+      id: unit.name,
+    }
+    assert_response :ok
+    assert_includes(@response.body, "<link rel=\"canonical\" href=\"//test-studio.code.org/s/bogus-script")
+  end
+
+  test 'canonical url is not added if is not single unit course' do
+    course = create :unit_group, published_state: Curriculum::SharedCourseConstants::PUBLISHED_STATE.stable
+    unit = create :script, published_state: nil
+    create :unit_group_unit, unit_group: course, script: unit, position: 1
+    unit2 = create :script, published_state: nil
+    create :unit_group_unit, unit_group: course, script: unit2, position: 2
+
+    get :show, params: {
+      id: unit.name,
+    }
+    assert_response :ok
+    refute_includes(@response.body, "<link rel=\"canonical\"")
+  end
+
   test "should get show of hoc" do
     get :show, params: {id: Unit::HOC_NAME}
     assert_response :success
@@ -283,6 +318,30 @@ class ScriptsControllerTest < ActionController::TestCase
     sign_in create(:facilitator)
     get :show, params: {id: @pl_coursez_2017.name}
     assert_response :ok
+  end
+
+  test "show: teacher in teacher-local-nav-v2 experiment is redirected to teacher dashboard if unit is in a section" do
+    experiment_course = create :unit_group, name: 'experiment-course'
+    experiment_script = create :script, name: 'experiment-script'
+    create :unit_group_unit, unit_group: experiment_course, script: experiment_script, position: 1
+    experiment_teacher = create :teacher
+    experiment_section = create :section, user: experiment_teacher, unit_group: experiment_course
+    SingleUserExperiment.find_or_create_by!(min_user_id: experiment_teacher.id, name: 'teacher-local-nav-v2')
+
+    sign_in experiment_teacher
+
+    get :show, params: {id: experiment_script.name}
+    assert_redirected_to "/teacher_dashboard/sections/#{experiment_section.id}/unit/#{experiment_script.name}"
+  end
+
+  test "show: should remove user_id url param from non-dashboard unit overview when teacher local nav v2 experiment enabled" do
+    experiment_teacher = create :teacher
+    SingleUserExperiment.find_or_create_by!(min_user_id: experiment_teacher.id, name: 'teacher-local-nav-v2')
+
+    sign_in experiment_teacher
+
+    get :show, params: {id: @coursez_2019.name, user_id: 1}
+    assert_redirected_to "/s/#{@coursez_2019.name}"
   end
 
   test "should not get edit on production" do

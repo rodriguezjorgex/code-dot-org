@@ -4,19 +4,9 @@ class AichatRequestChatCompletionJobTest < ActiveJob::TestCase
   setup do
     @locale = 'en'
     @student = create :student
-    @model_customizations = {temperature: 0.5, retrievalContexts: ["test"], systemPrompt: "test"}
+    @model_customizations = {temperature: 0.5, retrievalContexts: ["test"], systemPrompt: "test", selectedModelId: SharedConstants::AI_CHAT_MODEL_IDS[:MISTRAL]}
     @new_message = {chatMessageText: 'hello', role: 'user', status: 'unknown', timestamp: Time.now.to_i}
-    @toxic_response = {
-      text: 'toxic',
-      blocked_by: 'comprehend',
-      details: {
-        flagged_segment: 'toxic',
-        max_category: {
-          score: 0.7,
-          name: 'INSULT'
-        }
-      }
-    }
+    @toxic_response = {text: 'profane text', blocked_by: 'openai', details: {evaluation: 'INAPPROPRIATE'}}
     @test_env = 'unit-test-env'
     @metrics_model_id = 'metrics-test-model-id'
     CDO.stubs(:rack_env).returns(@test_env)
@@ -32,8 +22,9 @@ class AichatRequestChatCompletionJobTest < ActiveJob::TestCase
 
   test "execution status is set to USER_PROFANITY if toxicity detected in user input" do
     request = create :aichat_request
-    user_message = JSON.parse(request.new_message, symbolize_names: true)[:chatMessageText]
-    AichatSafetyHelper.expects(:find_toxicity).with('user', user_message, @locale).returns(@toxic_response)
+
+    user_message = request.new_message['chatMessageText']
+    AichatSafetyHelper.expects(:find_toxicity).with('user', user_message, @locale, request.level_id).returns(@toxic_response)
 
     perform_enqueued_jobs do
       AichatRequestChatCompletionJob.perform_later(request: request, locale: @locale)
@@ -44,9 +35,9 @@ class AichatRequestChatCompletionJobTest < ActiveJob::TestCase
   end
 
   test "execution status is set to MODEL_PROFANITY if toxicity detected in model output" do
-    AichatSafetyHelper.stubs(:find_toxicity).with('user', anything, anything).returns(nil)
+    AichatSafetyHelper.stubs(:find_toxicity).with('user', anything, anything, anything).returns(nil)
     AichatSagemakerHelper.stubs(:get_sagemaker_assistant_response).returns('response')
-    AichatSafetyHelper.stubs(:find_toxicity).with('assistant', anything, anything).returns(@toxic_response)
+    AichatSafetyHelper.stubs(:find_toxicity).with('assistant', anything, anything, anything).returns(@toxic_response)
 
     request = create :aichat_request
 
@@ -63,6 +54,20 @@ class AichatRequestChatCompletionJobTest < ActiveJob::TestCase
     AichatSagemakerHelper.stubs(:get_sagemaker_assistant_response).returns(model_response)
 
     request = create :aichat_request
+    perform_enqueued_jobs do
+      AichatRequestChatCompletionJob.perform_later(request: request, locale: 'en')
+    end
+
+    assert_equal SharedConstants::AI_REQUEST_EXECUTION_STATUS[:SUCCESS], request.reload.execution_status
+    assert_equal model_response, request.response
+  end
+
+  test 'execution status is set to SUCCESS if no profanity is detected using gpt-4o-mini' do
+    model_response = 'response'
+    AichatOpenaiHelper.expects(:get_openai_assistant_response).once.returns(model_response)
+    chatgpt_model_customizations = @model_customizations.merge({selectedModelId: SharedConstants::AI_CHAT_MODEL_IDS[:CHATGPT]})
+
+    request = create :aichat_request, model_customizations: chatgpt_model_customizations
     perform_enqueued_jobs do
       AichatRequestChatCompletionJob.perform_later(request: request, locale: 'en')
     end
@@ -104,7 +109,7 @@ class AichatRequestChatCompletionJobTest < ActiveJob::TestCase
   end
 
   test 'reports metrics for successful job' do
-    customizations = {temperature: 0.5, retrievalContexts: ["test"], systemPrompt: "test", selectedModelId: @metrics_model_id}.to_json
+    customizations = {temperature: 0.5, retrievalContexts: ["test"], systemPrompt: "test", selectedModelId: @metrics_model_id}
     request = create :aichat_request, model_customizations: customizations
 
     reported_metrics = []
@@ -155,7 +160,7 @@ class AichatRequestChatCompletionJobTest < ActiveJob::TestCase
   end
 
   test 'reports metrics for failed job' do
-    customizations = {temperature: 0.5, retrievalContexts: ["test"], systemPrompt: "test", selectedModelId: @metrics_model_id}.to_json
+    customizations = {temperature: 0.5, retrievalContexts: ["test"], systemPrompt: "test", selectedModelId: @metrics_model_id}
     request = create :aichat_request, model_customizations: customizations
 
     reported_metrics = []

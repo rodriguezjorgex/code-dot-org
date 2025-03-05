@@ -1,10 +1,13 @@
+import {Button} from '@code-dot-org/component-library/button';
+import {SimpleDropdown} from '@code-dot-org/component-library/dropdown';
+import {
+  BodyTwoText,
+  Heading2,
+} from '@code-dot-org/component-library/typography';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, {useMemo} from 'react';
 
-import {Button} from '@cdo/apps/componentLibrary/button';
-import {SimpleDropdown} from '@cdo/apps/componentLibrary/dropdown';
-import {BodyTwoText, Heading2} from '@cdo/apps/componentLibrary/typography';
 import {
   SELECT_COUNTRY,
   US_COUNTRY_CODE,
@@ -26,6 +29,8 @@ const SEARCH_DEFAULTS = [
 
 const COUNTRIES_US_FIRST = getCountriesUsFirst();
 
+export const SCHOOL_INFO_ID = 'school_info';
+
 export default function SchoolDataInputs({
   schoolId,
   country,
@@ -37,8 +42,8 @@ export default function SchoolDataInputs({
   setSchoolName,
   setSchoolZip,
   usIp,
+  containerClassName,
   includeHeaders = true,
-  markFieldsAsRequired = false,
   fieldNames = {
     country: 'user[school_info_attributes][country]',
     ncesSchoolId: 'user[school_info_attributes][school_id]',
@@ -89,12 +94,13 @@ export default function SchoolDataInputs({
 
   const labelClassName = schoolZipIsValid ? '' : style.disabledLabel;
 
-  const computedStyleClass = classNames(style.schoolAssociationWrapper, {
-    [style.requiredLabel]: markFieldsAsRequired,
-  });
+  const computedStyleClass = classNames(
+    style.schoolAssociationWrapper,
+    containerClassName
+  );
 
   return (
-    <div className={computedStyleClass}>
+    <div id={SCHOOL_INFO_ID} className={computedStyleClass}>
       {includeHeaders && (
         <div className={style.headerContainer}>
           <Heading2>{i18n.censusHeading()}</Heading2>
@@ -210,8 +216,8 @@ export default function SchoolDataInputs({
 
 SchoolDataInputs.propTypes = {
   includeHeaders: PropTypes.bool,
-  markFieldsAsRequired: PropTypes.bool,
   fieldNames: PropTypes.object,
+  containerClassName: PropTypes.string,
   schoolId: PropTypes.string.isRequired,
   country: PropTypes.string.isRequired,
   schoolName: PropTypes.string.isRequired,

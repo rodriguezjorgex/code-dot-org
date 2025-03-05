@@ -3,13 +3,22 @@ import React, {useCallback, useContext, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 
 import header from '@cdo/apps/code-studio/header';
-import {START_SOURCES, WARNING_BANNER_MESSAGES} from '@cdo/apps/lab2/constants';
+import {
+  START_SOURCES,
+  TOOLBOX_BLOCKS,
+  WARNING_BANNER_MESSAGES,
+} from '@cdo/apps/lab2/constants';
 import {isProjectTemplateLevel} from '@cdo/apps/lab2/lab2Redux';
 import {ProgressManagerContext} from '@cdo/apps/lab2/progress/ProgressContainer';
-import {getAppOptionsEditBlocks} from '@cdo/apps/lab2/projects/utils';
+import {
+  getAppOptionsEditBlocks,
+  getAppOptionsEditingExemplar,
+  getAppOptionsViewingExemplar,
+} from '@cdo/apps/lab2/projects/utils';
 import Instructions from '@cdo/apps/lab2/views/components/Instructions';
 import PanelContainer from '@cdo/apps/lab2/views/components/PanelContainer';
 import {DialogType, useDialogControl} from '@cdo/apps/lab2/views/dialogs';
+import ProjectTemplateWorkspaceIconV2 from '@cdo/apps/templates/ProjectTemplateWorkspaceIconV2';
 import {useAppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
 
 import AnalyticsReporter from '../analytics/AnalyticsReporter';
@@ -34,14 +43,9 @@ import useUpdateAnalytics from './hooks/useUpdateAnalytics';
 import useUpdatePlayer from './hooks/useUpdatePlayer';
 import MusicPlayView from './MusicPlayView';
 import PackDialog from './PackDialog';
-import PackDialog2 from './PackDialog2';
 import Timeline from './Timeline';
 
 import moduleStyles from './music-view.module.scss';
-
-// Default to using PackDialog2, unless a URL parameter forces the use of
-// the older PackDialog.
-const usePackDialog = AppConfig.getValue('pack-dialog-1') === 'true';
 
 interface MusicLabViewProps {
   blocklyDivId: string;
@@ -80,6 +84,7 @@ const MusicLabView: React.FunctionComponent<MusicLabViewProps> = ({
   useUpdatePlayer(player);
   useUpdateAnalytics(analyticsReporter);
   const dispatch = useAppDispatch();
+  const isPlaying = useAppSelector(state => state.music.isPlaying);
   const showInstructions = useAppSelector(
     state => state.music.showInstructions
   );
@@ -97,13 +102,24 @@ const MusicLabView: React.FunctionComponent<MusicLabViewProps> = ({
   const validationStateCallout = useAppSelector(
     state => state.lab.validationState.callout
   );
+  const currentPlayheadPosition = useAppSelector(
+    state => state.music.currentPlayheadPosition
+  );
+  const startingPlayheadPosition = useAppSelector(
+    state => state.music.startingPlayheadPosition
+  );
+  const lastMeasure = useAppSelector(state => state.music.lastMeasure);
 
   const progressManager = useContext(ProgressManagerContext);
 
   const isStartMode = getAppOptionsEditBlocks() === START_SOURCES;
+  const isToolboxMode = getAppOptionsEditBlocks() === TOOLBOX_BLOCKS;
+  const isEditingExemplar = getAppOptionsEditingExemplar();
+  const isViewingExemplar = getAppOptionsViewingExemplar();
   const projectTemplateLevel = useAppSelector(isProjectTemplateLevel);
   const blockMode = useSelector(getBlockMode);
 
+  const levelId = useAppSelector(state => state.lab.levelProperties?.id);
   // Pass music validator to Progress Manager
   useEffect(() => {
     if (progressManager && appName === 'music') {
@@ -120,8 +136,29 @@ const MusicLabView: React.FunctionComponent<MusicLabViewProps> = ({
         };
         return {level_data: updatedLevelData};
       });
+    } else if (isEditingExemplar) {
+      header.showLevelBuilderSaveButton(
+        () => ({exemplar_sources: blocklyWorkspace.getCode()}),
+        'Levelbuilder: Edit Exemplar',
+        `/levels/${levelId}/update_exemplar_code`
+      );
+    } else if (isToolboxMode) {
+      header.showLevelBuilderSaveButton(() => {
+        const updatedLevelData = {
+          ...levelData,
+          toolboxDefinition: blocklyWorkspace.workspaceToToolboxDefinition(),
+        };
+        return {level_data: updatedLevelData};
+      }, 'Levelbuilder: Edit toolbox blocks');
     }
-  }, [blocklyWorkspace, isStartMode, levelData]);
+  }, [
+    blocklyWorkspace,
+    isStartMode,
+    isEditingExemplar,
+    isToolboxMode,
+    levelData,
+    levelId,
+  ]);
 
   // Use the Lab2 generic prompt for Blockly prompt dialogs.
   const showGenericPrompt = useCallback(
@@ -162,6 +199,37 @@ const MusicLabView: React.FunctionComponent<MusicLabViewProps> = ({
     getCurrentPlayheadPosition,
     updateHighlightedBlocks,
     progressManager,
+  ]);
+
+  // Stop the song if the playhead is past the desired end.
+  useEffect(() => {
+    if (!isPlaying) {
+      return;
+    }
+
+    if (lastMeasure === undefined) {
+      return;
+    }
+
+    // We are done playing once the playhead reaches the end of the last scheduled sound.
+    // But if the starting playhead position has been set beyond that point, we'll use that
+    // instead, so that at least a bit of playback can be shown.
+    const stopMeasure = Math.max(startingPlayheadPosition, lastMeasure);
+
+    // Show a little extra playback.  If there are any triggers, then play for longer in case
+    // the user wants to trigger another sound.
+    const extraMeasures = blocklyWorkspace.hasAnyTriggers() ? 4 : 2;
+
+    if (currentPlayheadPosition >= stopMeasure + extraMeasures) {
+      setPlaying(false);
+    }
+  }, [
+    blocklyWorkspace,
+    currentPlayheadPosition,
+    isPlaying,
+    lastMeasure,
+    setPlaying,
+    startingPlayheadPosition,
   ]);
 
   const resetValidation = useCallback(
@@ -276,19 +344,34 @@ const MusicLabView: React.FunctionComponent<MusicLabViewProps> = ({
     return <MusicPlayView setPlaying={setPlaying} />;
   }
 
-  const CurrentPackDialog = usePackDialog ? PackDialog : PackDialog2;
+  const headerContent = (
+    <div className={moduleStyles.centerHeaderContent}>
+      <div className={moduleStyles.centerHeaderContentText}>
+        {musicI18n.panelHeaderWorkspace()}
+      </div>
+      {projectTemplateLevel && (
+        <ProjectTemplateWorkspaceIconV2 darkMode={true} />
+      )}
+    </div>
+  );
 
   return (
     <div id="music-lab" className={moduleStyles.musicLab}>
-      {allowPackSelection && <CurrentPackDialog player={player} />}
+      {allowPackSelection && <PackDialog player={player} />}
 
       {showInstructions &&
         instructionsPosition === InstructionsPosition.TOP &&
         renderInstructions(InstructionsPosition.TOP)}
 
-      {timelineAtTop && renderPlayArea(true)}
+      {timelineAtTop && !isToolboxMode && renderPlayArea(true)}
 
-      <div id="work-area" className={moduleStyles.workArea}>
+      <div
+        id="work-area"
+        className={classNames(moduleStyles.workArea, {
+          // Allow full height when the play area is hidden.
+          [moduleStyles.toolboxMode]: isToolboxMode,
+        })}
+      >
         {showInstructions &&
           instructionsPosition === InstructionsPosition.LEFT &&
           renderInstructions(InstructionsPosition.LEFT)}
@@ -296,7 +379,7 @@ const MusicLabView: React.FunctionComponent<MusicLabViewProps> = ({
         <div id="blockly-area" className={moduleStyles.blocklyArea}>
           <PanelContainer
             id="workspace-panel"
-            headerContent={musicI18n.panelHeaderWorkspace()}
+            headerContent={headerContent}
             hideHeaders={hideHeaders}
             rightHeaderContent={
               <HeaderButtons
@@ -308,6 +391,7 @@ const MusicLabView: React.FunctionComponent<MusicLabViewProps> = ({
                 hideChaff={hideChaff}
               />
             }
+            headerClassName={moduleStyles.panelContainerHeader}
           >
             {isStartMode && (
               <div
@@ -317,6 +401,30 @@ const MusicLabView: React.FunctionComponent<MusicLabViewProps> = ({
                 {projectTemplateLevel
                   ? WARNING_BANNER_MESSAGES.TEMPLATE
                   : WARNING_BANNER_MESSAGES.STANDARD}
+              </div>
+            )}
+            {isEditingExemplar && (
+              <div
+                id="toolboxModeWarningBanner"
+                className={moduleStyles.warningBanner}
+              >
+                {WARNING_BANNER_MESSAGES.EXEMPLAR_MODE}
+              </div>
+            )}
+            {isViewingExemplar && (
+              <div
+                id="toolboxModeWarningBanner"
+                className={moduleStyles.warningBanner}
+              >
+                {WARNING_BANNER_MESSAGES.VIEWING_EXEMPLAR}
+              </div>
+            )}
+            {isToolboxMode && (
+              <div
+                id="toolboxModeWarningBanner"
+                className={moduleStyles.warningBanner}
+              >
+                {WARNING_BANNER_MESSAGES.TOOLBOX_MODE}
               </div>
             )}
             <div id={blocklyDivId} />
@@ -333,7 +441,7 @@ const MusicLabView: React.FunctionComponent<MusicLabViewProps> = ({
           renderInstructions(InstructionsPosition.RIGHT)}
       </div>
 
-      {!timelineAtTop && renderPlayArea(false)}
+      {!timelineAtTop && !isToolboxMode && renderPlayArea(false)}
     </div>
   );
 };

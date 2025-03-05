@@ -1,7 +1,6 @@
-import {CodebridgeConsoleState} from '@codebridge/redux/consoleRedux';
 import {CodebridgeWorkspaceState} from '@codebridge/redux/workspaceRedux';
 
-import {AichatState} from '@cdo/apps/aichat/redux/aichatRedux';
+import {AichatState} from '@cdo/apps/aichat/redux';
 import {AITutorState} from '@cdo/apps/aiTutor/redux/aiTutorRedux';
 import {CalendarState} from '@cdo/apps/code-studio/calendarRedux';
 import {HeaderReduxState} from '@cdo/apps/code-studio/headerRedux';
@@ -24,6 +23,7 @@ import {CurrentUserState} from '@cdo/apps/templates/CurrentUserState';
 import {TeacherRubricState} from '@cdo/apps/templates/rubrics/teacherRubricRedux';
 import {TeacherSectionState} from '@cdo/apps/templates/teacherDashboard/teacherSectionsRedux';
 
+import {DanceState} from '../dance/danceRedux';
 import {BlocklyState} from '../redux/blockly';
 
 // The type for our global redux store. This is incomplete until we type every slice
@@ -32,13 +32,14 @@ import {BlocklyState} from '../redux/blockly';
 // We cannot infer the type of our store because we programmatically add to the store
 // with registerReducers.
 export interface RootState {
+  manageStudents: ManageStudentsState;
   aiTutor: AITutorState;
   aichat: AichatState;
   blockly: BlocklyState;
   calendar: CalendarState;
-  codebridgeConsole: CodebridgeConsoleState;
   codebridgeWorkspace: CodebridgeWorkspaceState;
   currentUser: CurrentUserState;
+  dance: DanceState;
   header: HeaderReduxState;
   javalab: JavalabState;
   javalabConsole: JavalabConsoleState;
@@ -57,4 +58,39 @@ export interface RootState {
   teacherPanel: TeacherPanelState;
   teacherRubric: TeacherRubricState;
   teacherSections: TeacherSectionState;
+}
+
+// Temporary type definition for the result of
+// manageStudentsRedux.js:convertStudentServerData
+interface Student {
+  id: number;
+  name: string;
+  familyName?: string;
+  username: string;
+  email?: string;
+  age?: string;
+  gender?: string;
+  genderTeacherInput?: string;
+  secretWords: string;
+  secretPicturePath: string;
+  loginType: string;
+  sectionId?: number;
+  sharingDisabled: boolean;
+  hasEverSignedIn: boolean;
+  dependsOnThisSectionForLogin: boolean;
+  isEditing: boolean;
+  isSaving: boolean;
+  rowType: string;
+  userType: string;
+  atRiskAgeGatedDate?: Date;
+  childAccountComplianceState?: string;
+  latestPermissionRequestSentAt?: Date;
+  usState?: string;
+}
+
+// Temporary type definition for manageStudentsRedux.js:initialState
+// `state.manageStudents`
+interface ManageStudentsState {
+  studentData: Student[];
+  isLoadingStudents: boolean;
 }

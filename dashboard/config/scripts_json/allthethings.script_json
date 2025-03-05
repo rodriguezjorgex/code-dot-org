@@ -12,7 +12,7 @@
     },
     "new_name": null,
     "family_name": null,
-    "serialized_at": "2024-11-19 01:13:54 UTC",
+    "serialized_at": "2025-02-27 16:48:34 UTC",
     "published_state": null,
     "instruction_type": null,
     "instructor_audience": null,
@@ -6292,6 +6292,48 @@
     },
     {
       "chapter": 170,
+      "position": 6,
+      "activity_section_position": 6,
+      "assessment": false,
+      "properties": {
+      },
+      "bonus": false,
+      "seeding_key": {
+        "script_level.level_keys": [
+          "Music Project Level 1"
+        ],
+        "lesson.key": "lesson-49",
+        "lesson_group.key": "",
+        "script.name": "allthethings",
+        "activity_section.key": "f9c9c7a9-9f2c-48e1-867b-94d010f2795a"
+      },
+      "level_keys": [
+        "Music Project Level 1"
+      ]
+    },
+    {
+      "chapter": 171,
+      "position": 7,
+      "activity_section_position": 7,
+      "assessment": false,
+      "properties": {
+      },
+      "bonus": false,
+      "seeding_key": {
+        "script_level.level_keys": [
+          "Music Project Level 2"
+        ],
+        "lesson.key": "lesson-49",
+        "lesson_group.key": "",
+        "script.name": "allthethings",
+        "activity_section.key": "f9c9c7a9-9f2c-48e1-867b-94d010f2795a"
+      },
+      "level_keys": [
+        "Music Project Level 2"
+      ]
+    },
+    {
+      "chapter": 172,
       "position": 1,
       "activity_section_position": 1,
       "assessment": false,
@@ -6315,7 +6357,7 @@
       ]
     },
     {
-      "chapter": 171,
+      "chapter": 173,
       "position": 2,
       "activity_section_position": 2,
       "assessment": false,
@@ -6339,7 +6381,7 @@
       ]
     },
     {
-      "chapter": 172,
+      "chapter": 174,
       "position": 3,
       "activity_section_position": 3,
       "assessment": false,
@@ -6363,7 +6405,7 @@
       ]
     },
     {
-      "chapter": 173,
+      "chapter": 175,
       "position": 4,
       "activity_section_position": 4,
       "assessment": false,
@@ -6387,7 +6429,7 @@
       ]
     },
     {
-      "chapter": 174,
+      "chapter": 176,
       "position": 5,
       "activity_section_position": 5,
       "assessment": false,
@@ -6411,7 +6453,7 @@
       ]
     },
     {
-      "chapter": 175,
+      "chapter": 177,
       "position": 1,
       "activity_section_position": 1,
       "assessment": false,
@@ -6435,7 +6477,7 @@
       ]
     },
     {
-      "chapter": 176,
+      "chapter": 178,
       "position": 2,
       "activity_section_position": 2,
       "assessment": true,
@@ -6459,7 +6501,7 @@
       ]
     },
     {
-      "chapter": 177,
+      "chapter": 179,
       "position": 1,
       "activity_section_position": 1,
       "assessment": false,
@@ -6483,7 +6525,7 @@
       ]
     },
     {
-      "chapter": 178,
+      "chapter": 180,
       "position": 2,
       "activity_section_position": 2,
       "assessment": false,
@@ -6507,7 +6549,7 @@
       ]
     },
     {
-      "chapter": 179,
+      "chapter": 181,
       "position": 1,
       "activity_section_position": 1,
       "assessment": false,
@@ -6531,7 +6573,7 @@
       ]
     },
     {
-      "chapter": 180,
+      "chapter": 182,
       "position": 2,
       "activity_section_position": 2,
       "assessment": false,
@@ -6555,7 +6597,7 @@
       ]
     },
     {
-      "chapter": 181,
+      "chapter": 183,
       "position": 3,
       "activity_section_position": 3,
       "assessment": false,
@@ -6579,7 +6621,7 @@
       ]
     },
     {
-      "chapter": 182,
+      "chapter": 184,
       "position": 4,
       "activity_section_position": 4,
       "assessment": false,
@@ -6603,7 +6645,7 @@
       ]
     },
     {
-      "chapter": 183,
+      "chapter": 185,
       "position": 5,
       "activity_section_position": 5,
       "assessment": false,
@@ -6627,7 +6669,7 @@
       ]
     },
     {
-      "chapter": 184,
+      "chapter": 186,
       "position": 6,
       "activity_section_position": 6,
       "assessment": false,
@@ -6651,7 +6693,7 @@
       ]
     },
     {
-      "chapter": 185,
+      "chapter": 187,
       "position": 7,
       "activity_section_position": 7,
       "assessment": false,
@@ -6675,7 +6717,7 @@
       ]
     },
     {
-      "chapter": 186,
+      "chapter": 188,
       "position": 1,
       "activity_section_position": 1,
       "assessment": false,
@@ -6699,7 +6741,7 @@
       ]
     },
     {
-      "chapter": 187,
+      "chapter": 189,
       "position": 2,
       "activity_section_position": 2,
       "assessment": false,
@@ -6723,7 +6765,7 @@
       ]
     },
     {
-      "chapter": 188,
+      "chapter": 190,
       "position": 1,
       "activity_section_position": 1,
       "assessment": false,
@@ -6747,7 +6789,7 @@
       ]
     },
     {
-      "chapter": 189,
+      "chapter": 191,
       "position": 2,
       "activity_section_position": 2,
       "assessment": false,
@@ -6771,7 +6813,7 @@
       ]
     },
     {
-      "chapter": 190,
+      "chapter": 192,
       "position": 3,
       "activity_section_position": 3,
       "assessment": false,
@@ -6795,7 +6837,7 @@
       ]
     },
     {
-      "chapter": 191,
+      "chapter": 193,
       "position": 4,
       "activity_section_position": 4,
       "assessment": false,
@@ -6819,7 +6861,7 @@
       ]
     },
     {
-      "chapter": 192,
+      "chapter": 194,
       "position": 5,
       "activity_section_position": 5,
       "assessment": false,
@@ -6843,7 +6885,7 @@
       ]
     },
     {
-      "chapter": 193,
+      "chapter": 195,
       "position": 6,
       "activity_section_position": 6,
       "assessment": false,
@@ -6867,7 +6909,7 @@
       ]
     },
     {
-      "chapter": 194,
+      "chapter": 196,
       "position": 7,
       "activity_section_position": 7,
       "assessment": false,
@@ -6891,7 +6933,7 @@
       ]
     },
     {
-      "chapter": 195,
+      "chapter": 197,
       "position": 8,
       "activity_section_position": 8,
       "assessment": false,
@@ -6915,7 +6957,7 @@
       ]
     },
     {
-      "chapter": 196,
+      "chapter": 198,
       "position": 1,
       "activity_section_position": 1,
       "assessment": false,
@@ -8232,19 +8274,6 @@
     },
     {
       "seeding_key": {
-        "level.key": "2-3 Artist 1 new",
-        "script_level.level_keys": [
-          "2-3 Artist 1 new",
-          "ramp_video_artistIntro"
-        ],
-        "lesson.key": "Swapped Levels",
-        "lesson_group.key": "",
-        "script.name": "allthethings",
-        "activity_section.key": "40e74dbd-d44a-468e-9e17-a710d06bc3d3"
-      }
-    },
-    {
-      "seeding_key": {
         "level.key": "ramp_video_artistIntro",
         "script_level.level_keys": [
           "2-3 Artist 1 new",
@@ -8258,7 +8287,20 @@
     },
     {
       "seeding_key": {
-        "level.key": "2-3 Artist Loops 2",
+        "level.key": "2-3 Artist 1 new",
+        "script_level.level_keys": [
+          "2-3 Artist 1 new",
+          "ramp_video_artistIntro"
+        ],
+        "lesson.key": "Swapped Levels",
+        "lesson_group.key": "",
+        "script.name": "allthethings",
+        "activity_section.key": "40e74dbd-d44a-468e-9e17-a710d06bc3d3"
+      }
+    },
+    {
+      "seeding_key": {
+        "level.key": "ramp_video_loopsArtist",
         "script_level.level_keys": [
           "2-3 Artist Loops 2",
           "ramp_video_loopsArtist"
@@ -8271,7 +8313,7 @@
     },
     {
       "seeding_key": {
-        "level.key": "ramp_video_loopsArtist",
+        "level.key": "2-3 Artist Loops 2",
         "script_level.level_keys": [
           "2-3 Artist Loops 2",
           "ramp_video_loopsArtist"
@@ -8362,7 +8404,7 @@
     },
     {
       "seeding_key": {
-        "level.key": "4-5 Maze 3",
+        "level.key": "4-5 Maze 6",
         "script_level.level_keys": [
           "4-5 Maze 3",
           "4-5 Maze 6"
@@ -8375,7 +8417,7 @@
     },
     {
       "seeding_key": {
-        "level.key": "4-5 Maze 6",
+        "level.key": "4-5 Maze 3",
         "script_level.level_keys": [
           "4-5 Maze 3",
           "4-5 Maze 6"
@@ -9087,6 +9129,30 @@
         "level.key": "Advanced Music Level 1",
         "script_level.level_keys": [
           "Advanced Music Level 1"
+        ],
+        "lesson.key": "lesson-49",
+        "lesson_group.key": "",
+        "script.name": "allthethings",
+        "activity_section.key": "f9c9c7a9-9f2c-48e1-867b-94d010f2795a"
+      }
+    },
+    {
+      "seeding_key": {
+        "level.key": "Music Project Level 1",
+        "script_level.level_keys": [
+          "Music Project Level 1"
+        ],
+        "lesson.key": "lesson-49",
+        "lesson_group.key": "",
+        "script.name": "allthethings",
+        "activity_section.key": "f9c9c7a9-9f2c-48e1-867b-94d010f2795a"
+      }
+    },
+    {
+      "seeding_key": {
+        "level.key": "Music Project Level 2",
+        "script_level.level_keys": [
+          "Music Project Level 2"
         ],
         "lesson.key": "lesson-49",
         "lesson_group.key": "",

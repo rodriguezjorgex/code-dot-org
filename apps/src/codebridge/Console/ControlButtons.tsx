@@ -1,8 +1,12 @@
+import Button from '@code-dot-org/component-library/button';
+import {useCodebridgeContext} from '@codebridge/codebridgeContext';
+import CodebridgeRegistry from '@codebridge/CodebridgeRegistry';
+import WithConditionalTooltip from '@codebridge/components/WithConditionalTooltip';
+import {sendCodebridgeAnalyticsEvent} from '@codebridge/utils/analyticsReporterHelper';
 import classNames from 'classnames';
 import React, {useCallback} from 'react';
 
 import codebridgeI18n from '@cdo/apps/codebridge/locale';
-import Button from '@cdo/apps/componentLibrary/button';
 import {START_SOURCES} from '@cdo/apps/lab2/constants';
 import useLifecycleNotifier from '@cdo/apps/lab2/hooks/useLifecycleNotifier';
 import {getAppOptionsEditBlocks} from '@cdo/apps/lab2/projects/utils';
@@ -10,16 +14,15 @@ import {
   setHasRun,
   setIsRunning,
   setIsValidating,
+  setHasValidated,
+  setHasError,
 } from '@cdo/apps/lab2/redux/systemRedux';
 import {MultiFileSource} from '@cdo/apps/lab2/types';
 import {LifecycleEvent} from '@cdo/apps/lab2/utils/LifecycleNotifier';
 import {EVENTS} from '@cdo/apps/metrics/AnalyticsConstants';
+import {logUserLevelInteraction} from '@cdo/apps/userLevelInteractionsLogger/userLevelInteractionsApi';
 import {useAppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
-
-import {useCodebridgeContext} from '../codebridgeContext';
-import WithConditionalTooltip from '../components/WithConditionalTooltip';
-import {appendSystemMessage} from '../redux/consoleRedux';
-import {sendCodebridgeAnalyticsEvent} from '../utils/analyticsReporterHelper';
+import {UserLevelInteractions} from '@cdo/generated-scripts/sharedConstants';
 
 import moduleStyles from './console.module.scss';
 import darkModeStyles from '@cdo/apps/lab2/styles/dark-mode.module.scss';
@@ -30,8 +33,10 @@ const ControlButtons: React.FunctionComponent = () => {
   const dispatch = useAppDispatch();
   const {onRun, onStop} = useCodebridgeContext();
 
+  const levelId = useAppSelector(state => state.lab.levelProperties?.id);
+  const scriptId = useAppSelector(state => state.lab.scriptId);
   const source = useAppSelector(
-    state => state.lab2Project.projectSource?.source
+    state => state.lab2Project.projectSources?.source
   ) as MultiFileSource | undefined;
   const hasPredictResponse = useAppSelector(
     state => !!state.predictLevel.response
@@ -55,6 +60,8 @@ const ControlButtons: React.FunctionComponent = () => {
     dispatch(setHasRun(false));
     dispatch(setIsRunning(false));
     dispatch(setIsValidating(false));
+    dispatch(setHasValidated(false));
+    dispatch(setHasError(false));
   }, [dispatch]);
 
   useLifecycleNotifier(LifecycleEvent.LevelLoadCompleted, resetStatus);
@@ -63,12 +70,19 @@ const ControlButtons: React.FunctionComponent = () => {
     if (onRun) {
       dispatch(setIsRunning(true));
       sendCodebridgeAnalyticsEvent(EVENTS.CODEBRIDGE_RUN_CLICK, appName);
+      logUserLevelInteraction({
+        levelId: levelId,
+        scriptId: scriptId,
+        interaction: UserLevelInteractions.click_run,
+      });
       onRun(/*runTests*/ false, dispatch, source).finally(() =>
         dispatch(setIsRunning(false))
       );
       dispatch(setHasRun(true));
     } else {
-      dispatch(appendSystemMessage("We don't know how to run your code."));
+      CodebridgeRegistry.getInstance()
+        .getConsoleManager()
+        ?.writeSystemMessage("We don't know how to run your code.", appName);
     }
   };
 
@@ -77,7 +91,9 @@ const ControlButtons: React.FunctionComponent = () => {
       onStop();
       dispatch(setIsRunning(false));
     } else {
-      dispatch(appendSystemMessage("We don't know how to stop your code."));
+      CodebridgeRegistry.getInstance()
+        .getConsoleManager()
+        ?.writeSystemMessage("We don't know how to stop your code.", appName);
       dispatch(setIsRunning(false));
     }
   };

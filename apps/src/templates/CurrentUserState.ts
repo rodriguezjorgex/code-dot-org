@@ -13,8 +13,10 @@ enum SignInState {
 }
 
 export interface CurrentUserState {
+  countryCode: string;
   userId: number;
   userName: string;
+  displayName?: string;
   userType: 'unknown' | 'teacher' | 'student';
   userRoleInCourse: CourseRole;
   signInState: SignInState;
@@ -31,4 +33,6 @@ export interface CurrentUserState {
   usStateCode: string | null;
   uuid: string;
   isLti: boolean;
+  aiDifferentiationEnabled: boolean;
+  hasCompletedAiDifferentiationWelcome: boolean;
 }

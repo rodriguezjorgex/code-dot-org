@@ -18,15 +18,20 @@ import Lab2Registry from '@cdo/apps/lab2/Lab2Registry';
 import {ProgressManagerContext} from '@cdo/apps/lab2/progress/ProgressContainer';
 import {getAppOptionsEditBlocks} from '@cdo/apps/lab2/projects/utils';
 import {isPredictAnswerLocked} from '@cdo/apps/lab2/redux/predictLevelRedux';
-import {MultiFileSource, ProjectSources} from '@cdo/apps/lab2/types';
+import {LabProps, MultiFileSource, ProjectSources} from '@cdo/apps/lab2/types';
 import {LifecycleEvent} from '@cdo/apps/lab2/utils/LifecycleNotifier';
 import {AppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
 import {LevelStatus} from '@cdo/generated-scripts/sharedConstants';
 
+import HorizontalLayout from './layout/HorizontalLayout';
+import VerticalLayout from './layout/VerticalLayout';
 import PythonValidationTracker from './progress/PythonValidationTracker';
 import PythonValidator from './progress/PythonValidator';
 import {handleRunClick, stopPythonCode} from './pyodideRunner';
-import {restartPyodideIfProgramIsRunning} from './pyodideWorkerManager';
+import {
+  restartPyodideIfProgramIsRunning,
+  sendInput,
+} from './pyodideWorkerManager';
 
 import moduleStyles from './pythonlab-view.module.scss';
 
@@ -51,22 +56,6 @@ const defaultProject: ProjectSources = {
   },
 };
 
-const labeledGridLayouts = {
-  horizontal: {
-    gridLayoutRows: '1fr',
-    gridLayoutColumns: '340px minmax(0, 1fr)',
-    gridLayout: `
-  "info-panel workspace-and-console"
-  `,
-  },
-  vertical: {
-    gridLayoutRows: '1fr',
-    gridLayoutColumns: '340px minmax(0, 1fr) 400px',
-    gridLayout: `
-    "info-panel workspace console"
-    `,
-  },
-};
 const defaultConfig: ConfigType = {
   activeLeftNav: 'Files',
   languageMapping: pythonlabLangMapping,
@@ -98,16 +87,25 @@ const defaultConfig: ConfigType = {
     },
   ],
 
-  labeledGridLayouts,
-  activeGridLayout: 'horizontal',
+  activeLayout: 'horizontal',
   showFileBrowser: true,
   validMimeTypes: ['text/'],
+  layoutComponents: {
+    horizontal: <HorizontalLayout />,
+    vertical: <VerticalLayout />,
+  },
 };
 
-const PythonlabView: React.FunctionComponent = () => {
+const PythonlabView: React.FunctionComponent<LabProps> = () => {
   const [config, setConfig] = useState<ConfigType>(defaultConfig);
-  const {source, setSource, startSource, projectVersion, validationFile} =
-    useSource(defaultProject);
+  const {
+    source,
+    setProject,
+    startSources,
+    projectVersion,
+    validationFile,
+    labConfig,
+  } = useSource(defaultProject);
   const isPredictLevel = useAppSelector(
     state => state.lab.levelProperties?.predictSettings?.isPredictLevel
   );
@@ -176,14 +174,16 @@ const PythonlabView: React.FunctionComponent = () => {
     <div className={moduleStyles.pythonlab}>
       {source && (
         <Codebridge
-          project={source}
+          source={source}
           config={config}
-          setProject={setSource}
+          setProject={setProject}
           setConfig={setConfig}
-          startSource={startSource}
+          startSources={startSources}
           onRun={onRun}
           onStop={stopPythonCode}
           projectVersion={projectVersion}
+          labConfig={labConfig}
+          sendConsoleInput={sendInput}
         />
       )}
     </div>
