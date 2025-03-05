@@ -1,0 +1,28 @@
+@import '@code-dot-org/component-library-styles/primitiveColors';
+@import '@code-dot-org/component-library-styles/colors';
+@import 'breakpoints';
+
+.popover {
+  width: 50%;
+  background-color: #454545;
+  margin-top: 4rem;
+  right: 1rem;
+
+  @media screen and (min-width: $width-sm) {
+    flex-direction: row !important;
+  }
+
+  @media screen and (max-width: $width-sm) {
+    align-items: center;
+  }
+
+  h5, p {
+    margin-top: 0;
+    color: var(--neutral-base-white);
+  }
+
+  img {
+    max-width: 7.25rem !important;
+    max-height: 7.25rem;
+  }
+}
