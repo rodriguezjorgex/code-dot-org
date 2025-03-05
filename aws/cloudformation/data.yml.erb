@@ -637,11 +637,9 @@ Resources:
         Status: "Enabled"
       LifecycleConfiguration:
         Rules:
-          - Id: "Move old logs to Standard-IA"
+          - Id: "Expire old Versions after 15 months"
+            NoncurrentVersionExpirationInDays: 455
             Status: "Enabled"
-            Transitions:
-              - StorageClass: "STANDARD_IA"
-                TransitionInDays: 455
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
         BlockPublicPolicy: true
