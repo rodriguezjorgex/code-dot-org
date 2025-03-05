@@ -8,12 +8,13 @@
 import React, {useEffect} from 'react';
 import {useSelector} from 'react-redux';
 
-import {
-  sendSuccessReport,
-  navigateToNextLevel,
-} from '@cdo/apps/code-studio/progressRedux';
+import {navigateToLevelId} from '@cdo/apps/code-studio/progressRedux';
 import {LabState} from '@cdo/apps/lab2/lab2Redux';
-import {LabProps, BubbleChoiceLevelData} from '@cdo/apps/lab2/types';
+import {
+  LabProps,
+  BubbleChoiceLevelData,
+  BubbleChoiceSublevel,
+} from '@cdo/apps/lab2/types';
 import {useAppDispatch} from '@cdo/apps/util/reduxHooks';
 
 //import bubbleChoiceLocale from './locale';
@@ -38,19 +39,19 @@ const BubbleChoice: React.FunctionComponent<LabProps> = () => {
     }
   }, [currentAppName, levelData]);
 
-  /*
-  const nextButtonPressed = () => {
-    const appType = 'standalone_video';
-    dispatch(sendSuccessReport(appType));
-    dispatch(navigateToNextLevel());
+  const sublevelClicked = (sublevel: BubbleChoiceSublevel) => {
+    dispatch(navigateToLevelId(sublevel.level_id));
   };
-  */
 
   return (
     <div id="bubble-choice" className={styles.bubbleChoiceContainer}>
       <div className={styles.sublevelsContainer}>
         {levelBubbleChoice?.sublevels.map((sublevel, index) => (
-          <div key={index} className={styles.sublevelContainer}>
+          <div
+            key={index}
+            className={styles.sublevelContainer}
+            onClick={() => sublevelClicked(sublevel)}
+          >
             <img
               alt=""
               src={sublevel.thumbnail_url}

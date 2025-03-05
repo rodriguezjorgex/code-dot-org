@@ -1,0 +1,50 @@
+@import 'color.scss';
+
+.bubbleChoiceContainer {
+  height: calc(100% - 60px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  .sublevelsContainer {
+    display: flex;
+    justify-content: space-around;
+    gap: 40px;
+    width: calc(100% - 80px);
+    margin: 0 auto;
+
+    .sublevelContainer {
+      display: flex;
+      flex-direction: column;
+      //align-items: center;
+      align-items: stretch;
+      justify-content: end;
+      gap: 20px;
+      flex-basis: 0;
+      flex-grow: 1;
+      border-radius: 20px;
+      overflow: hidden;
+      border: solid 1px $neutral_dark80;
+      padding-bottom: 20px;
+
+      &:hover {
+        .sublevelImage {
+          transform: scale(1.02, 1.02);
+          transition: 0.1s ease-in-out;
+        }
+      }
+
+      .sublevelText {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .sublevelImage {
+        object-fit: contain;
+        aspect-ratio: 1;
+      }
+    }
+  }
+}
