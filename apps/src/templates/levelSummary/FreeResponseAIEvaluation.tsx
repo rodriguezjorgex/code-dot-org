@@ -7,6 +7,7 @@ import CollapsibleSection from '@cdo/apps/templates/CollapsibleSection';
 import SafeMarkdown from '../SafeMarkdown';
 
 import style from '@cdo/apps/levelbuilder/ai-iteration-tools/ai-tutor/ai-tutor-tester.module.scss';
+import {logUserLevelEvaluation} from '@cdo/apps/userLevelEvaluations/userLevelEvaluationsApi';
 
 interface StudentResponse {
   user_id: number;
@@ -15,13 +16,21 @@ interface StudentResponse {
   aiEvaluation: string;
 }
 
+interface LevelData {
+  levelInstructions: string;
+  levelId: number;
+  scriptId: number;
+  isCSP: boolean;
+}
+
 interface FreeResponseAIEvaluationProps {
   responses: StudentResponse[];
-  levelInstructions: string;
+  levelData: LevelData;
 }
+
 const FreeResponseAIEvaluation: React.FunctionComponent<
   FreeResponseAIEvaluationProps
-> = ({responses, levelInstructions}) => {
+> = ({responses, levelData}) => {
   const [evaluationsPending, setEvaluationsPending] = useState<boolean>(false);
   const [evaluations, setEvaluations] = useState<StudentResponse[]>([]);
   const [evaluationCount, setEvaluationCount] = useState<number>(0);
@@ -48,7 +57,7 @@ const FreeResponseAIEvaluation: React.FunctionComponent<
   };
 
   const evaluateStudentResponse = async (studentResponse: StudentResponse) => {
-    const studentPrompt = `${basePrompt} Please review the student's responses and indicate whether the response is "great", "ok", or "needs revision". Provide one sentence with your reasoning. The student's instructions are: ${levelInstructions}.`;
+    const studentPrompt = `${basePrompt} Please review the student's responses and indicate whether the response is "great", "ok", or "needs revision". Provide one sentence with your reasoning. The student's instructions are: ${levelData.levelInstructions}.`;
     const studentResponseString = `${studentResponse.student_display_name} replied ${studentResponse.text}`;
     const chatApiResponse = await getChatCompletionMessage(
       studentResponseString,
@@ -57,6 +66,15 @@ const FreeResponseAIEvaluation: React.FunctionComponent<
     );
     const aiEvaluation = chatApiResponse.assistantResponse;
     if (aiEvaluation) {
+      logUserLevelEvaluation({
+        userId: studentResponse.user_id,
+        levelId: levelData.levelId,
+        scriptId: levelData.scriptId,
+        evaluationCriteria: studentPrompt,
+        aiEvaluation: aiEvaluation,
+        aiReasoning:
+          'Figure out how to separate the response from the reasoning',
+      });
       const evaluation = {
         ...studentResponse,
         aiEvaluation: aiEvaluation,

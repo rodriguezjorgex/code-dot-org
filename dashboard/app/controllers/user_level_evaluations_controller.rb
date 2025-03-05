@@ -18,14 +18,18 @@ class UserLevelEvaluationsController < ApplicationController
 
   def user_level_evaluation_params
     user_level_evaluation_params = params.transform_keys(&:underscore).permit(
+      :user_id,
       :level_id,
       :script_id,
-      :school_year,
       :evaluation_criteria,
       :ai_evaluation,
       :ai_reasoning,
       :ai_model_version,
     )
+    user_level_evaluation_params[:school_year] = school_year
+    # We're currently 'borrowing' the AI Tutor openAI model implementation.
+    # TODO: update to an EVALUATE_STUDENT_LEARNING_MODEL_VERSION when we settle on a model.
+    user_level_evaluation_params[:ai_model_version] = SharedConstants::AI_TUTOR_CHAT_MODEL_VERSION
     user_level_evaluation_params
   end
 end

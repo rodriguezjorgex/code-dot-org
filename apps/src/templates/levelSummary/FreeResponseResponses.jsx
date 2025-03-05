@@ -23,6 +23,12 @@ const FreeResponseResponses = ({
   eventData,
   levelInstructions,
 }) => {
+  console.log('eventData', eventData);
+  const levelData = {
+    levelInstructions: levelInstructions,
+    levelId: eventData.levelId,
+    scriptId: eventData.unitId,
+  };
   const constructStudentName = response =>
     getFullName(response.student_display_name, response.student_family_name);
 
@@ -214,10 +220,7 @@ const FreeResponseResponses = ({
         />
       )}
       {experiments.isEnabled(experiments.FREE_RESPONSE_AI_ANALYSIS) && (
-        <FreeResponseAIEvaluation
-          responses={responses}
-          levelInstructions={levelInstructions}
-        />
+        <FreeResponseAIEvaluation responses={responses} levelData={levelData} />
       )}
     </div>
   );
