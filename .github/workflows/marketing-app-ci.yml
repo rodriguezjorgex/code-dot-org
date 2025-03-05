@@ -51,6 +51,10 @@ jobs:
         - name: Setup Frontend
           uses: ./.github/actions/frontend/setup
 
+        - name: Build
+          run: yarn build --filter @code-dot-org/marketing
+          working-directory: ./frontend
+
         - name: UI Tests
           uses: ./.github/actions/frontend/marketing/ui-tests
           with:
