@@ -36,6 +36,11 @@ runs:
         APPLITOOLS_API_KEY=${{ inputs.APPLITOOLS_API_KEY }}
         " > .env
 
+    - name: Build
+      shell: bash
+      run: yarn build --filter @code-dot-org/marketing
+      working-directory: ./frontend
+
     - name: UI Tests
       shell: bash
       env:
