@@ -87,7 +87,7 @@ class BubbleChoice < DSLDefined
   def summarize_for_lab2_properties(script, script_level = nil, current_user = nil)
     level_properties = super
     summary = summarize(script_level: @script_level, user: @view_as_user, should_localize: true)
-    level_properties[:levelData] = {sublevels: summary[:sublevels]}
+    level_properties[:levelData] = {sublevels: summary[:sublevels], displayName: summary[:display_name], description: summary[:description]}
 
     level_properties
   end

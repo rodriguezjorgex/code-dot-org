@@ -233,7 +233,8 @@ export interface VideoLevelData {
 // The level data for a bubble_choice level that doesn't require
 // reloads between levels.
 export interface BubbleChoiceLevelData {
-  finishUrl: string;
+  displayName: string;
+  description: string;
   sublevels: BubbleChoiceSublevel[];
 }
 

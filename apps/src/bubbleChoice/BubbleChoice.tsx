@@ -5,18 +5,24 @@
 // they will get an older-style level implemented with a HAML page and some
 // non-React JS code.
 
-import React, {useEffect} from 'react';
+import {Button} from '@code-dot-org/component-library/button';
+import {Heading4} from '@code-dot-org/component-library/typography';
+import React, {useCallback, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 
 import {navigateToLevelId} from '@cdo/apps/code-studio/progressRedux';
 import {LabState} from '@cdo/apps/lab2/lab2Redux';
+import continueOrFinishLesson from '@cdo/apps/lab2/progress/continueOrFinishLesson';
 import {
   LabProps,
   BubbleChoiceLevelData,
   BubbleChoiceSublevel,
 } from '@cdo/apps/lab2/types';
-import {useAppDispatch} from '@cdo/apps/util/reduxHooks';
+import {capitalizeFirstLetter} from '@cdo/apps/util/capitalizeFirstLetter';
+import {useAppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
 
+import {getCurrentLesson} from '../code-studio/progressReduxSelectors';
+import {commonI18n} from '../types/locale';
 //import bubbleChoiceLocale from './locale';
 
 import styles from './BubbleChoice.module.scss';
@@ -29,6 +35,10 @@ const BubbleChoice: React.FunctionComponent<LabProps> = () => {
   const currentAppName = useSelector(
     (state: {lab: LabState}) => state.lab.levelProperties?.appName
   );
+  const background = useAppSelector(
+    state => getCurrentLesson(state)?.background || null
+  );
+  const backgroundSuffix = capitalizeFirstLetter(background || 'dark');
 
   const [levelBubbleChoice, setLevelBubbleChoice] =
     React.useState<BubbleChoiceLevelData | null>(null);
@@ -43,8 +53,20 @@ const BubbleChoice: React.FunctionComponent<LabProps> = () => {
     dispatch(navigateToLevelId(sublevel.level_id));
   };
 
+  const onContinue = useCallback(() => {
+    dispatch(continueOrFinishLesson());
+  }, [dispatch]);
+
   return (
     <div id="bubble-choice" className={styles.bubbleChoiceContainer}>
+      <div>
+        <Heading4 className={styles[`heading${backgroundSuffix}`]}>
+          {levelBubbleChoice?.displayName}
+        </Heading4>
+        <div className={styles[`text${backgroundSuffix}`]}>
+          {levelBubbleChoice?.description}
+        </div>
+      </div>
       <div className={styles.sublevelsContainer}>
         {levelBubbleChoice?.sublevels.map((sublevel, index) => (
           <div
@@ -61,22 +83,14 @@ const BubbleChoice: React.FunctionComponent<LabProps> = () => {
           </div>
         ))}
       </div>
-      {/*
-      <Video
-        src={levelVideo?.src}
-        download={levelVideo?.download}
-        thumbnail={levelVideo?.thumbnail}
-      >
-        <button
-          id="standalone-video-continue-button"
-          type="button"
-          onClick={() => nextButtonPressed()}
-          className={styles.buttonNext}
-        >
-          {standaloneVideoLocale.continue()}
-        </button>
-      </Video>
-      */}
+      <div className={styles.buttonRow}>
+        <Button
+          ariaLabel={commonI18n.continue()}
+          text={commonI18n.continue()}
+          onClick={onContinue}
+          className={styles.continueButton}
+        />
+      </div>
     </div>
   );
 };

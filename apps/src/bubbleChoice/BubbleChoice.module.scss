@@ -1,17 +1,35 @@
 @import 'color.scss';
 
 .bubbleChoiceContainer {
-  height: calc(100% - 60px);
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
+  height: calc(100% - 60px);
+  width: calc(100% - 80px);
+  margin: 0 auto;
+  gap: 15px;
+  position: relative;
+
+  .headingLight, .textLight {
+    color: $neutral_dark;
+  }
+
+  .headingDark, .textDark {
+    color: $neutral_white;
+  }
+
+  .headingLight, .headingDark {
+    margin-top: 15px;
+  }
+
+  .textLight, .textDark {
+    font-size: 14px;
+  }
 
   .sublevelsContainer {
     display: flex;
     justify-content: space-around;
     gap: 40px;
-    width: calc(100% - 80px);
-    margin: 0 auto;
 
     .sublevelContainer {
       display: flex;
@@ -45,6 +63,13 @@
         object-fit: contain;
         aspect-ratio: 1;
       }
+    }
+  }
+
+  .buttonRow {
+    .continueButton {
+      position: absolute;
+      inset-inline-end: 0;
     }
   }
 }
