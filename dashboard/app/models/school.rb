@@ -492,16 +492,6 @@ class School < ApplicationRecord
           }
         end
       end
-      AWS::S3.seed_from_file('cdo-nces', "2023-2024/ccd/locale_public.csv") do |filename|
-        merge_from_csv(filename, {headers: true, quote_char: "\x00", encoding: 'bom|utf-8'}, true, is_dry_run: false) do |row|
-          row = row.to_h.transform_values {|v| sanitize_string_for_db(v)}
-          {
-            school_id:    row['NCESSCH'].to_i.to_s,
-            county_id:    row['CNTY'].to_i.to_s,
-            county_name:  row['NMCNTY']
-          }
-        end
-      end
     end
   end
 
