@@ -1,6 +1,6 @@
 /**
- * A TypeScript wrapper for the StandaloneVideolocale object which casts
- * it to the {@link StandaloneVideoLocale} type.
+ * A TypeScript wrapper for the BubbleChoiceLocale object which casts
+ * it to the {@link BubbleChoiceLocale} type.
  */
 import {BubbleChoiceLocale} from './types';
 

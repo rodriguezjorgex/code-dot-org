@@ -24,7 +24,6 @@ import {useAppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
 
 import {getCurrentLesson} from '../code-studio/progressReduxSelectors';
 import {commonI18n} from '../types/locale';
-//import bubbleChoiceLocale from './locale';
 
 import styles from './BubbleChoice.module.scss';
 
