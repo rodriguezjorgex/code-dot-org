@@ -7,6 +7,7 @@
 
 import {Button} from '@code-dot-org/component-library/button';
 import {Heading4} from '@code-dot-org/component-library/typography';
+import classNames from 'classnames';
 import React, {useCallback, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 
@@ -60,27 +61,37 @@ const BubbleChoice: React.FunctionComponent<LabProps> = () => {
   return (
     <div id="bubble-choice" className={styles.bubbleChoiceContainer}>
       <div>
-        <Heading4 className={styles[`heading${backgroundSuffix}`]}>
-          {levelBubbleChoice?.displayName}
-        </Heading4>
-        <div className={styles[`text${backgroundSuffix}`]}>
-          {levelBubbleChoice?.description}
-        </div>
+        {levelBubbleChoice?.displayName && (
+          <Heading4 className={styles[`heading${backgroundSuffix}`]}>
+            {levelBubbleChoice?.displayName}
+          </Heading4>
+        )}
+        {levelBubbleChoice?.description && (
+          <div className={styles[`text${backgroundSuffix}`]}>
+            {levelBubbleChoice?.description}
+          </div>
+        )}
       </div>
       <div className={styles.sublevelsContainer}>
         {levelBubbleChoice?.sublevels.map((sublevel, index) => (
-          <div
+          <button
+            type="button"
             key={index}
-            className={styles.sublevelContainer}
+            className={classNames(
+              styles.sublevelContainer,
+              styles[`sublevelContainer${backgroundSuffix}`]
+            )}
             onClick={() => sublevelClicked(sublevel)}
           >
-            <img
-              alt=""
-              src={sublevel.thumbnail_url}
-              className={styles.sublevelImage}
-            />
+            <div className={styles.sublevelImageContainer}>
+              <img
+                alt=""
+                src={sublevel.thumbnail_url}
+                className={styles.sublevelImage}
+              />
+            </div>
             <div className={styles.sublevelText}>{sublevel.display_name}</div>
-          </div>
+          </button>
         ))}
       </div>
       <div className={styles.buttonRow}>
