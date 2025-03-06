@@ -72,6 +72,7 @@ const FreeResponseAIEvaluation: React.FunctionComponent<
         scriptId: levelData.scriptId,
         evaluationCriteria: studentPrompt,
         aiEvaluation: aiEvaluation,
+        // TODO: separately return reasoning, disentangle the AI call from aiTutor/chatApi.ts
         aiReasoning:
           'Figure out how to separate the response from the reasoning',
       });
