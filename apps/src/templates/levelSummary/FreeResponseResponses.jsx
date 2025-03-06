@@ -21,6 +21,7 @@ const FreeResponseResponses = ({
   responses,
   showStudentNames,
   eventData,
+  scriptName,
   levelInstructions,
 }) => {
   console.log('eventData', eventData);
@@ -124,6 +125,11 @@ const FreeResponseResponses = ({
     </div>
   );
 
+  const AiEvaluationMVPScripts = ['csp4-2024', 'csp6-2024'];
+  const showAIAnalysis =
+    experiments.isEnabled(experiments.FREE_RESPONSE_AI_ANALYSIS) &&
+    AiEvaluationMVPScripts.includes(scriptName);
+
   return (
     <div className={styles.studentResponsesContent}>
       {pinnedResponses.length > 0 && (
@@ -219,7 +225,7 @@ const FreeResponseResponses = ({
           type="gray"
         />
       )}
-      {experiments.isEnabled(experiments.FREE_RESPONSE_AI_ANALYSIS) && (
+      {showAIAnalysis && (
         <FreeResponseAIEvaluation responses={responses} levelData={levelData} />
       )}
     </div>
@@ -230,6 +236,7 @@ FreeResponseResponses.propTypes = {
   responses: PropTypes.arrayOf(PropTypes.object),
   showStudentNames: PropTypes.bool,
   eventData: PropTypes.object,
+  scriptName: PropTypes.string,
   levelInstructions: PropTypes.string,
 };
 

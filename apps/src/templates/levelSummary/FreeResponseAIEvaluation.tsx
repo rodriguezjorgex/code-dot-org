@@ -3,11 +3,11 @@ import React, {useEffect, useState} from 'react';
 
 import {getChatCompletionMessage} from '@cdo/apps/aiTutor/chatApi';
 import CollapsibleSection from '@cdo/apps/templates/CollapsibleSection';
+import {logUserLevelEvaluation} from '@cdo/apps/userLevelEvaluations/userLevelEvaluationsApi';
 
 import SafeMarkdown from '../SafeMarkdown';
 
 import style from '@cdo/apps/levelbuilder/ai-iteration-tools/ai-tutor/ai-tutor-tester.module.scss';
-import {logUserLevelEvaluation} from '@cdo/apps/userLevelEvaluations/userLevelEvaluationsApi';
 
 interface StudentResponse {
   user_id: number;
@@ -20,7 +20,6 @@ interface LevelData {
   levelInstructions: string;
   levelId: number;
   scriptId: number;
-  isCSP: boolean;
 }
 
 interface FreeResponseAIEvaluationProps {
@@ -35,7 +34,8 @@ const FreeResponseAIEvaluation: React.FunctionComponent<
   const [evaluations, setEvaluations] = useState<StudentResponse[]>([]);
   const [evaluationCount, setEvaluationCount] = useState<number>(0);
   const [aiSummary, setAiSummary] = useState<string>('');
-  const evaluationComplete = responses.length === evaluationCount;
+  const evaluationComplete =
+    evaluationCount > 0 && responses.length === evaluationCount;
 
   useEffect(() => {
     if (evaluationComplete) {

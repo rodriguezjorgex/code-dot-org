@@ -30,6 +30,7 @@ const SummaryResponses = ({
   currentLevelId,
   levels,
 }) => {
+  console.log('scriptData in SummaryResponses', scriptData);
   const currentLevel = levels.find(l => l.activeId === currentLevelId);
   const predictSettings =
     scriptData.levels[levelNumber].properties?.predict_settings;
@@ -181,6 +182,7 @@ const SummaryResponses = ({
           <FreeResponseResponses
             responses={scriptData.responses[levelNumber]}
             levelInstructions={levelInstructions}
+            scriptName={scriptData.reportingData.unitName}
             showStudentNames={showStudentNames}
             eventData={eventData}
           />
