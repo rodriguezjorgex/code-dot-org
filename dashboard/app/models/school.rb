@@ -475,7 +475,7 @@ class School < ApplicationRecord
         merge_from_csv(filename, {headers: true, quote_char: "\x00", encoding: 'bom|utf-8'}, true, is_dry_run: false, ignore_attributes: ['last_known_school_year_open']) do |row|
           row = row.to_h.transform_values {|v| sanitize_string_for_db(v)}
           {
-            id:                           row['School ID - NCES Assigned [Public School] Latest available year'].to_i.to_s,
+            id:                           row['School ID (12-digit) - NCES Assigned [Public School] Latest available year'].to_i.to_s,
             name:                         row['School Name'].upcase,
             address_line1:                row['Location Address 1 [Public School] 2023-24'].to_s.upcase.truncate(50).presence,
             address_line2:                row['Location Address 2 [Public School] 2023-24'].to_s.upcase.truncate(30).presence,
