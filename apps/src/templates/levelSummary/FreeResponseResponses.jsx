@@ -24,7 +24,6 @@ const FreeResponseResponses = ({
   scriptName,
   levelInstructions,
 }) => {
-  console.log('eventData', eventData);
   const levelData = {
     levelInstructions: levelInstructions,
     levelId: eventData.levelId,
