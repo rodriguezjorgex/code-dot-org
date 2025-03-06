@@ -3,32 +3,12 @@
 @import 'breakpoints';
 
 .popover {
-  width: 50%;
-  background-color: #454545;
+  right: 0;
+  top: 3rem;
   white-space: normal;
-  margin-top: 2rem;
-  right: 1rem;
   text-align: start;
+}
 
-  @media screen and (min-width: $width-sm) {
-    flex-direction: row !important;
-
-    img {
-      margin-bottom: 1.5rem;
-    }
-  }
-
-  @media screen and (max-width: $width-sm) {
-    align-items: center;
-  }
-
-  h5, p {
-    margin-top: 0;
-    color: var(--neutral-base-white);
-  }
-
-  img {
-    max-width: 7.25rem !important;
-    max-height: 7.25rem;
-  }
+.calloutIcon {
+  color: var(--brand-purple-50);
 }

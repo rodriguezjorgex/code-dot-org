@@ -63,9 +63,12 @@ export default class SignInCalloutWrapper extends React.Component {
         <div className="uitest-signincallout">
           <Popover
             title={i18n.notSignedInHeader()}
-            image={{src: '/shared/images/user-not-signed-in.png', alt: ''}}
+            icon={{
+              iconName: 'person-circle-question',
+              className: styles.calloutIcon,
+            }}
             content={i18n.notSignedInBody()}
-            direction={'onBottom'}
+            direction={'none'}
             className={styles.popover}
             onClose={this.closeCallout}
           />
