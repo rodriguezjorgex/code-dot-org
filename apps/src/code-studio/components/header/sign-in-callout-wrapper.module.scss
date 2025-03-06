@@ -5,11 +5,17 @@
 .popover {
   width: 50%;
   background-color: #454545;
-  margin-top: 4rem;
+  white-space: normal;
+  margin-top: 2rem;
   right: 1rem;
+  text-align: start;
 
   @media screen and (min-width: $width-sm) {
     flex-direction: row !important;
+
+    img {
+      margin-bottom: 1.5rem;
+    }
   }
 
   @media screen and (max-width: $width-sm) {

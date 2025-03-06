@@ -670,6 +670,7 @@ class TopInstructions extends Component {
         : containerStyle || styles.body,
       isMinecraft && craftStyles.instructionsBody,
       tabSelected === TabType.REVIEW && styles.commitAndReview,
+      !user && styles.noFocusWithZIndex,
     ];
 
     // Only display the help tab when there are one or more videos or
@@ -901,6 +902,9 @@ const styles = {
     left: 0,
     right: 0,
     overflowY: 'auto',
+  },
+  noFocusWithZIndex: {
+    zIndex: 0,
   },
   embedView: {
     height: undefined,

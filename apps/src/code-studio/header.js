@@ -145,7 +145,7 @@ header.build = function (
 
       ReactDOM.render(
         <SignInCalloutWrapper />,
-        document.querySelector('#signin_button')
+        document.querySelector('.signin_callout_wrapper')
       );
     }
   });
