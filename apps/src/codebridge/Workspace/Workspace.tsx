@@ -1,9 +1,9 @@
 import Alert from '@code-dot-org/component-library/alert';
 import {useCodebridgeContext} from '@codebridge/codebridgeContext';
 import ToggleFileBrowserButton from '@codebridge/components/ToggleFileBrowserButton';
-import {Editor} from '@codebridge/Editor';
-import {FileBrowser} from '@codebridge/FileBrowser';
-import {FileTabs} from '@codebridge/FileTabs';
+import {Editor} from '@codebridge/Editor/Editor';
+import {FileBrowser} from '@codebridge/FileBrowser/FileBrowser';
+import {FileTabs} from '@codebridge/FileTabs/FileTabs';
 import classnames from 'classnames';
 import React from 'react';
 
