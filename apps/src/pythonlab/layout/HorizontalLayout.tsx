@@ -1,6 +1,6 @@
-import {InfoPanel} from '@codebridge/InfoPanel';
-import Workspace from '@codebridge/Workspace';
+import {InfoPanel} from '@codebridge/InfoPanel/InfoPanel';
 import Output from '@codebridge/Workspace/Output';
+import Workspace from '@codebridge/Workspace/Workspace';
 import React from 'react';
 
 import {useHorizontalLayout} from '@cdo/apps/lab2/hooks/useHorizontalLayout';
