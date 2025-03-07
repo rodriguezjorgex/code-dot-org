@@ -21,13 +21,13 @@ const FreeResponseResponses = ({
   responses,
   showStudentNames,
   eventData,
-  scriptName,
+  unitName,
   levelInstructions,
 }) => {
   const levelData = {
     levelInstructions: levelInstructions,
     levelId: eventData.levelId,
-    scriptId: eventData.unitId,
+    unitId: eventData.unitId,
   };
   const constructStudentName = response =>
     getFullName(response.student_display_name, response.student_family_name);
@@ -124,10 +124,10 @@ const FreeResponseResponses = ({
     </div>
   );
 
-  const AiEvaluationMVPScripts = ['csp4-2024', 'csp6-2024'];
+  const AiEvaluationMVPUnits = ['csp4-2024', 'csp6-2024'];
   const showAIAnalysis =
     experiments.isEnabled(experiments.FREE_RESPONSE_AI_ANALYSIS) &&
-    AiEvaluationMVPScripts.includes(scriptName);
+    AiEvaluationMVPUnits.includes(unitName);
 
   return (
     <div className={styles.studentResponsesContent}>
@@ -235,7 +235,7 @@ FreeResponseResponses.propTypes = {
   responses: PropTypes.arrayOf(PropTypes.object),
   showStudentNames: PropTypes.bool,
   eventData: PropTypes.object,
-  scriptName: PropTypes.string,
+  unitName: PropTypes.string,
   levelInstructions: PropTypes.string,
 };
 

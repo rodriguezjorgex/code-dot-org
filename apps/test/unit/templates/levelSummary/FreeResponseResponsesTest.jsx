@@ -19,7 +19,7 @@ const DEFAULT_PROPS = {
   responses: RESPONSES,
   showStudentNames: false,
   eventData: {levelId: 1, unitId: 1},
-  scriptName: 'scriptName',
+  unitName: 'unitName',
   levelInstructions: 'Answer the question.',
 };
 

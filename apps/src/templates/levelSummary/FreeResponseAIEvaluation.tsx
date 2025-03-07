@@ -19,7 +19,7 @@ interface StudentResponse {
 interface LevelData {
   levelInstructions: string;
   levelId: number;
-  scriptId: number;
+  unitId: number;
 }
 
 interface FreeResponseAIEvaluationProps {
@@ -69,7 +69,7 @@ const FreeResponseAIEvaluation: React.FunctionComponent<
       logUserLevelEvaluation({
         userId: studentResponse.user_id,
         levelId: levelData.levelId,
-        scriptId: levelData.scriptId,
+        unitId: levelData.unitId,
         evaluationCriteria: studentPrompt,
         aiEvaluation: aiEvaluation,
         // TODO: separately return reasoning, disentangle the AI call from aiTutor/chatApi.ts
