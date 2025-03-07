@@ -492,6 +492,20 @@ class School < ApplicationRecord
           }
         end
       end
+      ActiveRecord::Base.transaction do
+        CSV.read(filename, **{headers: true, quote_char: "\x00", encoding: 'bom|utf-8'}).each do |row|
+          row = row.to_h.transform_values {|v| sanitize_string_for_db(v)}
+          begin
+            school = School.find(row['NCESSCH'].to_i.to_s)
+            school&.update!(
+              county_id:    row['CNTY'].to_i.to_s,
+              county_name:  row['NMCNTY']
+            )
+          rescue ActiveRecord::RecordNotFound
+            CDO.log.info "Could not find school with id: #{row['NCESSCH'].to_i}"
+          end
+        end
+      end
     end
   end
 
