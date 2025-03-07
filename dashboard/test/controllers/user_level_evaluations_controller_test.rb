@@ -25,6 +25,10 @@ class UserLevelEvaluationsControllerTest < ActionController::TestCase
     assert_creates(UserLevelEvaluation) do
       post :create, params: @ule_params
     end
+    created_ule = UserLevelEvaluation.last
+    # Double check that the script_id is set correctly because we are using unitId in the params
+    # for the sake of naming consistency with the frontend.
+    assert_equal @script.id, created_ule.script_id
   end
 
   test "Teacher can create User Level Evaluation for student in their section" do
