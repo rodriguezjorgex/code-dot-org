@@ -4,7 +4,7 @@ class UserLevelEvaluationsController < ApplicationController
   include LevelsHelper
   include Rails.application.routes.url_helpers
   before_action :authenticate_user!
-  load_and_authorize_resource :user_level_interaction
+  load_and_authorize_resource :user_level_evaluation
 
   # POST /user_level_evaluations
   def create
@@ -12,7 +12,7 @@ class UserLevelEvaluationsController < ApplicationController
     if @user_level_evaluation.save
       render(status: :created, json: {message: "Successfully created UserLevelEvaluation.", id: @user_level_evaluation.id})
     else
-      render(status: :not_acceptable, json: {error: 'There was an error creating a new UserLevelEvaluation.'})
+      render(status: :not_acceptable, json: {error: @user_level_evaluation.errors.full_messages})
     end
   end
 
