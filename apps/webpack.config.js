@@ -201,7 +201,6 @@ const LOCALE_ALIASES = {
   ...Object.fromEntries([
     localeDoNotImport('@cdo/aichat/locale'),
     localeDoNotImport('@cdo/applab/locale'),
-    localeDoNotImport('@cdo/bubbleChoice/locale'),
     localeDoNotImport('@cdo/codebridge/locale'),
     localeDoNotImport('@cdo/javalab/locale'),
     localeDoNotImport('@cdo/lab2/locale'),

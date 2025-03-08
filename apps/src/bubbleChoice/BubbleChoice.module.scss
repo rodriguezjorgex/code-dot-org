@@ -3,7 +3,7 @@
 .bubbleChoiceContainer {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   height: calc(100% - 60px);
   width: calc(100% - 80px);
   margin: 0 auto;
@@ -27,11 +27,16 @@
   }
 
   .sublevelsContainer {
-    display: flex;
+    display: grid;
     justify-content: space-around;
-    gap: 40px;
+    gap: 15px;
+    max-height: 100%;
+    overflow: hidden;
+    flex-grow: 1;
+    justify-items: center;
+    align-items: center;
 
-    .sublevelContainer {
+    .sublevelButton {
       display: flex;
       flex-direction: column;
       flex-basis: 0;
@@ -43,6 +48,9 @@
       font-size: 16px;
       padding: inherit;
       margin: 0;
+      aspect-ratio: 1;
+      max-width: 100%;
+      max-height: 100%;
 
       &Light {
         border: solid 1px $neutral_dark60;
@@ -71,6 +79,7 @@
         overflow: hidden;
 
         .sublevelImage {
+          width: 800px;
           object-fit: contain;
           aspect-ratio: 1;
           opacity: 1;
