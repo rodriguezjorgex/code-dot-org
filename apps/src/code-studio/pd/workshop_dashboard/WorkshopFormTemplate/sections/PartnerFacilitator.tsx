@@ -14,6 +14,7 @@ export const PartnerFacilitator: FC<SectionProps> = ({
   state,
   handleChange,
   regionalPartners,
+  facilitators,
 }) => {
   const regionalPartnerOptions = useMemo(() => {
     const options = [{value: '', text: 'None'}];
@@ -27,6 +28,15 @@ export const PartnerFacilitator: FC<SectionProps> = ({
 
     return options;
   }, [regionalPartners]);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const facilitatorOptions = useMemo(() => {
+    return facilitators?.map(({id, name, email}) => ({
+      value: id.toString(),
+      text: `${name} ${email}`,
+    }));
+  }, [facilitators]);
+
   return (
     <>
       <Heading2 visualAppearance="heading-sm">

@@ -108,6 +108,12 @@ export interface RegionalPartner {
   name: string;
 }
 
+export interface Facilitator {
+  id: number;
+  name: string;
+  email: string;
+}
+
 export interface WorkshopFormState {
   id?: number;
   course: string;
@@ -139,6 +145,7 @@ export interface SectionProps {
   config: WorkshopCourseConfig;
   courseOfferings?: CourseOffering[] | null;
   regionalPartners?: RegionalPartner[] | null;
+  facilitators?: Facilitator[] | null;
 }
 
 export interface ScheduleProps {
