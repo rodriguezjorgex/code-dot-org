@@ -1174,7 +1174,7 @@ end
 And /^I dismiss the login reminder$/ do
   steps <<~GHERKIN
     And I click selector ".modal-backdrop" if I see it
-    And I wait until I don't see selector ".uitest-login-callout"
+    And I wait until I don't see selector ".uitest-signincallout"
   GHERKIN
 end
 
