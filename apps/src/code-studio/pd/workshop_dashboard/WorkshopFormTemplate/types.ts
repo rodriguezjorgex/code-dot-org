@@ -103,6 +103,11 @@ export interface CourseOffering {
   display_name: string;
 }
 
+export interface RegionalPartner {
+  id: number;
+  name: string;
+}
+
 export interface WorkshopFormState {
   id?: number;
   course: string;
@@ -133,6 +138,7 @@ export interface SectionProps {
   ) => void;
   config: WorkshopCourseConfig;
   courseOfferings?: CourseOffering[] | null;
+  regionalPartners?: RegionalPartner[] | null;
 }
 
 export interface ScheduleProps {

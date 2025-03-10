@@ -15,6 +15,7 @@ import {PublishSettings} from './sections/PublishSettings';
 import {Schedule} from './sections/Schedule';
 import {
   CourseOffering,
+  RegionalPartner,
   Session,
   SessionFormState,
   Workshop,
@@ -74,6 +75,11 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
   const {data: courseOfferings} =
     useFetch<CourseOffering[]>(courseOfferingsUrl);
 
+  const regionalPartnersUrl = '/api/v1/regional_partners';
+
+  const {data: regionalPartners} =
+    useFetch<RegionalPartner[]>(regionalPartnersUrl);
+
   const [workshopFormState, setWorkshopFormState] = useState<WorkshopFormState>(
     {
       course: '',
@@ -132,6 +138,7 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
       <Schedule state={sessionFormState} />
       <PartnerFacilitator
         state={workshopFormState}
+        regionalPartners={regionalPartners}
         handleChange={handleChange}
         config={config}
       />
