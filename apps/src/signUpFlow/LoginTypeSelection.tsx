@@ -42,18 +42,14 @@ const EXCLAMATION_ICON = 'circle-exclamation';
 
 const getUserType = () => {
   const sessionUserType = sessionStorage.getItem(ACCOUNT_TYPE_SESSION_KEY);
-  switch (sessionUserType) {
-    case UserTypes.TEACHER:
-      return UserTypes.TEACHER;
-    case UserTypes.STUDENT:
-      return UserTypes.STUDENT;
-    default:
-      return '';
-  }
+  return sessionUserType === UserTypes.TEACHER ||
+    sessionUserType === UserTypes.STUDENT
+    ? sessionUserType
+    : '';
 };
 
 const LoginTypeSelection: React.FunctionComponent = () => {
-  const [userType, setUserType] = useState(getUserType);
+  const [userType, setUserType] = useState(getUserType());
   const [password, setPassword] = useState('');
   const [passwordIcon, setPasswordIcon] = useState(X_ICON);
   const [passwordIconClass, setPasswordIconClass] = useState(style.lightGray);
@@ -96,7 +92,7 @@ const LoginTypeSelection: React.FunctionComponent = () => {
           PLATFORMS.BOTH
         );
         sessionStorage.setItem(ACCOUNT_TYPE_SESSION_KEY, urlUserType as string);
-        setUserType(getUserType());
+        setUserType(urlUserType);
       } else {
         // If the user hasn't selected a user type and it's not a URL parameter, redirect them back to the
         // first step of signup to select their user type.
