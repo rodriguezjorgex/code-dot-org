@@ -41,7 +41,7 @@ const X_ICON = 'circle-xmark';
 const EXCLAMATION_ICON = 'circle-exclamation';
 
 const LoginTypeSelection: React.FunctionComponent<{
-  isSignedOut?: boolean;
+  isSignedOut: boolean;
 }> = ({isSignedOut}) => {
   const [password, setPassword] = useState('');
   const [passwordIcon, setPasswordIcon] = useState(X_ICON);

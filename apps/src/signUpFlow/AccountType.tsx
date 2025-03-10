@@ -22,7 +22,7 @@ import {
 import style from './signUpFlowStyles.module.scss';
 
 const AccountType: React.FunctionComponent<{
-  isSignedOut?: boolean;
+  isSignedOut: boolean;
 }> = ({isSignedOut}) => {
   const [loginTypeAlreadySelected, setLoginTypeAlreadySelected] =
     useState(false);
