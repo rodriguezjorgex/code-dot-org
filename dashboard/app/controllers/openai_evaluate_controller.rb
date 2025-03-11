@@ -1,14 +1,13 @@
 class OpenaiEvaluateController < ApplicationController
   authorize_resource class: false
 
-  API_KEY = CDO.openai_student_learning_api_key
+  API_KEY = CDO.openai_measures_of_learning_api_key
   MODEL = SharedConstants::EVALUATE_STUDENT_LEARNING_MODEL_VERSION
 
   # POST /openai/evaluate
   def evaluate
     system_prompt = params[:systemPrompt]
     student_work = prepend_system_prompt(system_prompt, params[:studentWork])
-    puts "student_work: #{student_work}"
     response = client.request_evaluation(student_work)
     response_body = JSON.parse(response.body)
     response_body = response_body['choices'][0]['message'] if response.code == 200
