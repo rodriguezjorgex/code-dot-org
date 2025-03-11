@@ -37,10 +37,6 @@ class RegistrationsController < Devise::RegistrationsController
     @user = User.new(begin_sign_up_params)
     @user.validate_for_finish_sign_up
 
-    SignUpTracking.begin_sign_up_tracking session
-    SignUpTracking.log_load_sign_up request
-    SignUpTracking.log_begin_sign_up(@user, request)
-
     if @user.errors.blank?
       PartialRegistration.persist_attributes(session, @user)
     else
@@ -106,10 +102,6 @@ class RegistrationsController < Devise::RegistrationsController
   # Cancels the in-progress partial user registration and redirects to sign-up page.
   #
   def cancel
-    provider = PartialRegistration.get_provider(session) || 'email'
-    SignUpTracking.log_cancel_finish_sign_up(request, provider)
-    SignUpTracking.end_sign_up_tracking(session)
-
     PartialRegistration.delete(session)
     redirect_to new_user_registration_path
   end
@@ -159,7 +151,6 @@ class RegistrationsController < Devise::RegistrationsController
           error: exception
         }, status: :bad_request
       end
-      SignUpTracking.log_load_finish_sign_up request, (@user.providers&.first || 'email')
       sign_in @user
     end
 
@@ -209,8 +200,6 @@ class RegistrationsController < Devise::RegistrationsController
         get_enabled_experiments: true,
       )
     end
-
-    SignUpTracking.log_sign_up_result resource, request
   end
 
   #

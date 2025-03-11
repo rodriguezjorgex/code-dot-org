@@ -2412,7 +2412,6 @@ class User < ApplicationRecord
       omniauth_user = create
       initialize_new_oauth_user(omniauth_user, auth, params)
       omniauth_user.save
-      SignUpTracking.log_sign_up_result(omniauth_user, request)
     end
 
     omniauth_user.update_oauth_credential_tokens(auth)

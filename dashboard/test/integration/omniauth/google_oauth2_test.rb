@@ -10,9 +10,6 @@ module OmniauthCallbacksControllerTests
 
     setup do
       stub_firehose
-
-      # Force split-test to control group (override in tests over experiment)
-      SignUpTracking.stubs(:split_test_percentage).returns(0)
     end
 
     test "student sign up for newest sign up flow" do
@@ -29,15 +26,6 @@ module OmniauthCallbacksControllerTests
       created_user = User.find signed_in_user_id
       assert_valid_student created_user, expected_email: auth_hash.info.email
       assert_credentials auth_hash, created_user
-
-      assert_sign_up_tracking(
-        SignUpTracking::CONTROL_GROUP,
-        %w(
-          google_oauth2-callback
-          google_oauth2-load-finish-sign-up-page
-          google_oauth2-sign-up-success
-        )
-      )
     ensure
       created_user&.destroy!
     end
@@ -56,15 +44,6 @@ module OmniauthCallbacksControllerTests
       created_user = User.find signed_in_user_id
       assert_valid_teacher created_user, expected_email: auth_hash.info.email
       assert_credentials auth_hash, created_user
-
-      assert_sign_up_tracking(
-        SignUpTracking::CONTROL_GROUP,
-        %w(
-          google_oauth2-callback
-          google_oauth2-load-finish-sign-up-page
-          google_oauth2-sign-up-success
-        )
-      )
     ensure
       created_user&.destroy!
     end
@@ -116,8 +95,6 @@ module OmniauthCallbacksControllerTests
       assert_equal student.id, signed_in_user_id
       student.reload
       assert_credentials auth_hash, student
-
-      refute_sign_up_tracking
     end
 
     test "teacher sign-in" do
@@ -133,8 +110,6 @@ module OmniauthCallbacksControllerTests
       assert_equal teacher.id, signed_in_user_id
       teacher.reload
       assert_credentials auth_hash, teacher
-
-      refute_sign_up_tracking
     end
 
     test "sign-in from sign-up page" do

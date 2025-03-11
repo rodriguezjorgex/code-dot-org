@@ -10,9 +10,6 @@ module RegistrationsControllerTests
 
     setup do
       stub_firehose
-
-      # Force split-test to control group (override in tests over experiment)
-      SignUpTracking.stubs(:split_test_percentage).returns(100)
     end
 
     test "student in new sign-up" do
@@ -33,16 +30,6 @@ module RegistrationsControllerTests
 
       created_user = User.find signed_in_user_id
       assert_equal User.hash_email(email), created_user.hashed_email
-
-      assert_sign_up_tracking(
-        SignUpTracking::NOT_IN_STUDY_GROUP,
-        %w(
-          load-sign-up-page
-          begin-sign-up-success
-          email-load-finish-sign-up-page
-          email-sign-up-success
-        )
-      )
     ensure
       created_user&.destroy!
     end
@@ -65,16 +52,6 @@ module RegistrationsControllerTests
 
       created_user = User.find signed_in_user_id
       assert_equal email, created_user.email
-
-      assert_sign_up_tracking(
-        SignUpTracking::NOT_IN_STUDY_GROUP,
-        %w(
-          load-sign-up-page
-          begin-sign-up-success
-          email-load-finish-sign-up-page
-          email-sign-up-success
-        )
-      )
     ensure
       created_user&.destroy!
     end
