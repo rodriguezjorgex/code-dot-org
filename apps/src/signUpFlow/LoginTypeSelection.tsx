@@ -40,9 +40,18 @@ const CHECK_ICON = 'circle-check';
 const X_ICON = 'circle-xmark';
 const EXCLAMATION_ICON = 'circle-exclamation';
 
+const getUserType = () => {
+  const sessionUserType = sessionStorage.getItem(ACCOUNT_TYPE_SESSION_KEY);
+  return sessionUserType === UserTypes.TEACHER ||
+    sessionUserType === UserTypes.STUDENT
+    ? sessionUserType
+    : '';
+};
+
 const LoginTypeSelection: React.FunctionComponent<{
   isSignedOut: boolean;
 }> = ({isSignedOut}) => {
+  const [userType, setUserType] = useState(getUserType());
   const [password, setPassword] = useState('');
   const [passwordIcon, setPasswordIcon] = useState(X_ICON);
   const [passwordIconClass, setPasswordIconClass] = useState(style.lightGray);
@@ -55,13 +64,11 @@ const LoginTypeSelection: React.FunctionComponent<{
   const [authToken, setAuthToken] = useState('');
   const [createAccountButtonDisabled, setCreateAccountButtonDisabled] =
     useState(true);
-  const isTeacher =
-    sessionStorage.getItem(ACCOUNT_TYPE_SESSION_KEY) === 'teacher';
 
+  const isTeacher = userType === UserTypes.TEACHER;
   const finishAccountUrl = isTeacher
     ? studio('/users/sign_up/finish_teacher_account')
     : studio('/users/sign_up/finish_student_account');
-  const userType = isTeacher ? UserTypes.TEACHER : UserTypes.STUDENT;
   cookies.set(NEW_SIGN_UP_USER_TYPE, userType, {path: '/'});
 
   useEffect(() => {
@@ -72,8 +79,12 @@ const LoginTypeSelection: React.FunctionComponent<{
     if (isSignedOut) {
       // Handle if the user type is not currently set in sessionStorage.
       if (sessionStorage.getItem(ACCOUNT_TYPE_SESSION_KEY) === null) {
-        const userType = queryParams('user_type');
-        if (userType) {
+        const urlUserType = queryParams('user_type');
+        if (
+          urlUserType &&
+          (urlUserType === UserTypes.TEACHER ||
+            urlUserType === UserTypes.STUDENT)
+        ) {
           // If the user type is set as a URL parameter (e.g. being redirected from section signup and skipping
           // the first signup page), then set the user type (and URL to return the user to after signup if
           // provided) in sessionStorage.
@@ -88,7 +99,11 @@ const LoginTypeSelection: React.FunctionComponent<{
             sourceParam,
             PLATFORMS.BOTH
           );
-          sessionStorage.setItem(ACCOUNT_TYPE_SESSION_KEY, userType as string);
+          sessionStorage.setItem(
+            ACCOUNT_TYPE_SESSION_KEY,
+            urlUserType as string
+          );
+          setUserType(urlUserType);
         } else {
           // If the user hasn't selected a user type and it's not a URL parameter, redirect them back to the
           // first step of signup to select their user type.
