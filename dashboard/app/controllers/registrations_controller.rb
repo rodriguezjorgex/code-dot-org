@@ -28,18 +28,6 @@ class RegistrationsController < Devise::RegistrationsController
     redirect_to sign_up_path
   end
 
-  # If the user[user_type] queryparam is provided and valid, save its value
-  # into the session so we can use it as a default on the finish_sign_up page.
-  # If not, clear it from the session so we don't use a misleading default.
-  def save_default_sign_up_user_type
-    requested_user_type = params.dig(:user, :user_type)
-    if User::USER_TYPE_OPTIONS.include? requested_user_type
-      session[:default_sign_up_user_type] = requested_user_type
-    else
-      session.delete(:default_sign_up_user_type)
-    end
-  end
-
   #
   # POST /users/begin_sign_up
   #
@@ -49,20 +37,16 @@ class RegistrationsController < Devise::RegistrationsController
     @user = User.new(begin_sign_up_params)
     @user.validate_for_finish_sign_up
 
-    if params[:new_sign_up].present?
-      SignUpTracking.begin_sign_up_tracking session
-      SignUpTracking.log_load_sign_up request
-    end
+    SignUpTracking.begin_sign_up_tracking session
+    SignUpTracking.log_load_sign_up request
     SignUpTracking.log_begin_sign_up(@user, request)
 
     if @user.errors.blank?
       PartialRegistration.persist_attributes(session, @user)
     else
-      if params[:new_sign_up].present?
-        render json: {
-          error: @user.errors.as_json(full_messages: true)
-        }, status: :bad_request
-      end
+      render json: {
+        error: @user.errors.as_json(full_messages: true)
+      }, status: :bad_request
     end
   end
 
@@ -168,19 +152,15 @@ class RegistrationsController < Devise::RegistrationsController
         )
       end
 
-      if ActiveModel::Type::Boolean.new.cast(params[:new_sign_up])
-        begin
-          @user = Services::PartialRegistration::UserBuilder.call(request: request)
-        rescue ActiveRecord::RecordInvalid => exception
-          return render json: {
-            error: exception
-          }, status: :bad_request
-        end
-        SignUpTracking.log_load_finish_sign_up request, (@user.providers&.first || 'email')
-        sign_in @user
-      else
-        super
+      begin
+        @user = Services::PartialRegistration::UserBuilder.call(request: request)
+      rescue ActiveRecord::RecordInvalid => exception
+        return render json: {
+          error: exception
+        }, status: :bad_request
       end
+      SignUpTracking.log_load_finish_sign_up request, (@user.providers&.first || 'email')
+      sign_in @user
     end
 
     if current_user && current_user.errors.blank?
