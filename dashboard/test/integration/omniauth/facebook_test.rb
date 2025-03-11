@@ -126,7 +126,7 @@ module OmniauthCallbacksControllerTests
     end
 
     # The user signs in through Facebook, which hits the oauth callback
-    # and redirects to something else: homepage, finish_sign_up, etc.
+    # and redirects to something else: homepage, finish_teacher_account, etc.
     private def sign_in_through_facebook
       sign_in_through AuthenticationOption::FACEBOOK
     end

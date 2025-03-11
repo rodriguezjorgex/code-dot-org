@@ -35,7 +35,7 @@ module OmniauthCallbacksControllerTests
 
     # The user signs in through OAuth
     # The oauth endpoint (which is mocked) redirects to the oauth callback,
-    # which in turn does some work and redirects to something else: homepage, finish_sign_up, etc.
+    # which in turn does some work and redirects to something else: homepage, finish_teacher_account, etc.
     # @param [String] provider
     def sign_in_through(provider)
       post "/users/auth/#{provider}"
@@ -44,7 +44,7 @@ module OmniauthCallbacksControllerTests
     end
 
     # The user signs in through Google, which hits the oauth callback
-    # and redirects to something else: homepage, finish_sign_up, etc.
+    # and redirects to something else: homepage, finish_teacher_account, etc.
     def sign_in_through_google
       sign_in_through AuthenticationOption::GOOGLE
     end

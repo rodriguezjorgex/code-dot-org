@@ -128,7 +128,7 @@ module OmniauthCallbacksControllerTests
     end
 
     # The user signs in through Clever, which hits the oauth callback
-    # and redirects to something else: homepage, finish_sign_up, etc.
+    # and redirects to something else: homepage, finish_teacher_account, etc.
     private def sign_in_through_clever
       sign_in_through AuthenticationOption::CLEVER
     end
