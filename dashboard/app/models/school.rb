@@ -471,8 +471,12 @@ class School < ApplicationRecord
 
       # Some of this data has #- appended to the front, so we strip that off with .to_s.slice(2) (it's always a single digit)
       CDO.log.info "Seeding 2023-2024 public school data."
+      puts 'Start seeding new data'
+      count = 0
       AWS::S3.seed_from_file('cdo-nces', "2023-2024/ccd/schools_public.csv") do |filename|
+        puts filename
         merge_from_csv(filename, {headers: true, quote_char: "\x00", encoding: 'bom|utf-8'}, true, is_dry_run: false, ignore_attributes: ['last_known_school_year_open']) do |row|
+          count += 1
           row = row.to_h.transform_values {|v| sanitize_string_for_db(v)}
           {
             id:                           row['School ID (12-digit) - NCES Assigned [Public School] Latest available year'].to_i.to_s,
@@ -491,21 +495,23 @@ class School < ApplicationRecord
             last_known_school_year_open:  OPEN_SCHOOL_STATUSES.include?(row['Updated Status [Public School] 2023-24']) ? '2023-2024' : nil
           }
         end
+        puts "Total rows processed in new file: #{count}"
       end
-      ActiveRecord::Base.transaction do
-        CSV.read(filename, **{headers: true, quote_char: "\x00", encoding: 'bom|utf-8'}).each do |row|
-          row = row.to_h.transform_values {|v| sanitize_string_for_db(v)}
-          begin
-            school = School.find(row['NCESSCH'].to_i.to_s)
-            school&.update!(
-              county_id:    row['CNTY'].to_i.to_s,
-              county_name:  row['NMCNTY']
-            )
-          rescue ActiveRecord::RecordNotFound
-            CDO.log.info "Could not find school with id: #{row['NCESSCH'].to_i}"
-          end
-        end
-      end
+      puts 'End'
+      # ActiveRecord::Base.transaction do
+      #   CSV.read(filename, **{headers: true, quote_char: "\x00", encoding: 'bom|utf-8'}).each do |row|
+      #     row = row.to_h.transform_values {|v| sanitize_string_for_db(v)}
+      #     begin
+      #       school = School.find(row['NCESSCH'].to_i.to_s)
+      #       school&.update!(
+      #         county_id:    row['CNTY'].to_i.to_s,
+      #         county_name:  row['NMCNTY']
+      #       )
+      #     rescue ActiveRecord::RecordNotFound
+      #       CDO.log.info "Could not find school with id: #{row['NCESSCH'].to_i}"
+      #     end
+      #   end
+      # end
     end
   end
 
