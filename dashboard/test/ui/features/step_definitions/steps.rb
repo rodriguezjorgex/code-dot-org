@@ -1173,7 +1173,7 @@ end
 
 And /^I dismiss the login reminder$/ do
   steps <<~GHERKIN
-    And I click selector ".uitest-signincallout > .fa-close" if I see it
+    And I click selector "[aria-label='Close']" if I see it
     And I wait until I don't see selector ".uitest-signincallout"
   GHERKIN
 end
