@@ -64,10 +64,6 @@ class RegistrationsController < Devise::RegistrationsController
         }, status: :bad_request
       end
     end
-
-    if params[:new_sign_up].blank?
-      render 'new'
-    end
   end
 
   #
