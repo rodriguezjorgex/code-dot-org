@@ -294,13 +294,13 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       email: user.email,
       provider: provider
     }
-    new_sign_up_url = determine_sign_up_url(user)
-    render 'omniauth/redirect', layout: false, locals: {new_sign_up_url: new_sign_up_url}
+    sign_up_url = determine_sign_up_url(user)
+    render 'omniauth/redirect', layout: false, locals: {sign_up_url: sign_up_url}
   end
 
   private def determine_sign_up_url(user)
-    user_type = cookies['new_sign_up_user_type']
-    cookies.delete('new_sign_up_user_type')
+    user_type = cookies['sign_up_user_type']
+    cookies.delete('sign_up_user_type')
     if user_type == 'student'
       return users_sign_up_finish_student_account_path
     elsif user_type == 'teacher'

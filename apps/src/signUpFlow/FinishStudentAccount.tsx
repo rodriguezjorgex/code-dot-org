@@ -221,7 +221,6 @@ const FinishStudentAccount: React.FunctionComponent<{
     setErrorCreatingAccountMessage('');
 
     const signUpParams = {
-      new_sign_up: true,
       user: {
         user_type: UserTypes.STUDENT,
         email: sessionStorage.getItem(EMAIL_SESSION_KEY),

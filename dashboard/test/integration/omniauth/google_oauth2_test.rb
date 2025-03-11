@@ -20,7 +20,7 @@ module OmniauthCallbacksControllerTests
       assert_template 'omniauth/redirect'
       assert PartialRegistration.in_progress? session
 
-      assert_creates(User) {finish_sign_up auth_hash, User::TYPE_STUDENT, true}
+      assert_creates(User) {finish_sign_up auth_hash, User::TYPE_STUDENT}
       refute PartialRegistration.in_progress? session
 
       created_user = User.find signed_in_user_id
@@ -38,7 +38,7 @@ module OmniauthCallbacksControllerTests
       assert_template 'omniauth/redirect'
       assert PartialRegistration.in_progress? session
 
-      assert_creates(User) {finish_sign_up auth_hash, User::TYPE_TEACHER, true}
+      assert_creates(User) {finish_sign_up auth_hash, User::TYPE_TEACHER}
       refute PartialRegistration.in_progress? session
 
       created_user = User.find signed_in_user_id

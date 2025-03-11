@@ -162,7 +162,6 @@ const LoginTypeSelection: React.FunctionComponent = () => {
       return;
     }
     const submitLoginTypeParams = {
-      new_sign_up: true,
       user: {
         email: email,
         password: password,

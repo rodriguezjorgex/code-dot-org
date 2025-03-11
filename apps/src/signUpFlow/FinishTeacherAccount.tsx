@@ -179,7 +179,6 @@ const FinishTeacherAccount: React.FunctionComponent<{
     setErrorCreatingAccountMessage('');
 
     const signUpParams = {
-      new_sign_up: true,
       user: {
         user_type: UserTypes.TEACHER,
         email: sessionStorage.getItem(EMAIL_SESSION_KEY),

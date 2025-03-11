@@ -16,7 +16,6 @@ module RegistrationsControllerTests
       email = "student@example.com"
 
       post '/users/begin_sign_up', params: {
-        new_sign_up: true,
         user: {
           email: email,
           password: 'mypassword',
@@ -38,7 +37,6 @@ module RegistrationsControllerTests
       email = "teacher@example.com"
 
       post '/users/begin_sign_up', params: {
-        new_sign_up: true,
         user: {
           email: email,
           password: 'mypassword',
@@ -56,8 +54,8 @@ module RegistrationsControllerTests
       created_user&.destroy!
     end
 
-    private def finish_email_sign_up(user_type, email, new_sign_up = false)
-      params = finish_sign_up_params({user_type: user_type, email: email}, new_sign_up)
+    private def finish_email_sign_up(user_type, email)
+      params = finish_sign_up_params({user_type: user_type, email: email})
       post '/users', params: params
     end
   end
