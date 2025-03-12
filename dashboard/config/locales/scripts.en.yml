@@ -20038,6 +20038,20 @@ en:
               name: Sequences - Explore
             lesson-4:
               name: Sequences - Practice
+            lesson-5:
+              name: Sequences - Synthesis
+            lesson-6:
+              name: Loops - Explore
+            lesson-7:
+              name: Loops - Practice
+            lesson-8:
+              name: Loops - Synthesis
+            lesson-9:
+              name: Functions - Explore
+            lesson-10:
+              name: Functions - Practice
+            lesson-11:
+              name: Functions - Synthesis
           lesson_groups: {}
           name: musiclab-6-12-playground
           title: 6-12 Music Lab Playground

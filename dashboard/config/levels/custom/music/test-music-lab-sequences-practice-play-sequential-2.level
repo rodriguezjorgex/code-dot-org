@@ -178,7 +178,7 @@
               "type": "play_sounds_together",
               "id": "-R3Aid4wH]%@(tW^[l4(",
               "x": 310,
-              "y": 110,
+              "y": 90,
               "disabledReasons": [
                 "MANUALLY_DISABLED"
               ],
@@ -192,6 +192,7 @@
                     "type": "play_sound_at_current_location_simple2",
                     "id": "Tk,Kq~Y2kwe7.Vr51ugB",
                     "deletable": false,
+                    "movable": false,
                     "extraState": {
                       "disableNextConnection": false
                     },
@@ -203,6 +204,7 @@
                         "type": "play_sound_at_current_location_simple2",
                         "id": "b6^%3uLWZAix%_-?Kn]u",
                         "deletable": false,
+                        "movable": false,
                         "extraState": {
                           "disableNextConnection": false
                         },
@@ -214,6 +216,7 @@
                             "type": "play_sound_at_current_location_simple2",
                             "id": "_g-b@~siK}(DGSA,fD`Z",
                             "deletable": false,
+                            "movable": false,
                             "extraState": {
                               "disableNextConnection": true
                             },
@@ -232,7 +235,7 @@
               "type": "play_sounds_together",
               "id": "^2H9wx=)C?s.-3fBy10.",
               "x": 590,
-              "y": 110,
+              "y": 70,
               "disabledReasons": [
                 "MANUALLY_DISABLED"
               ],
@@ -246,6 +249,7 @@
                     "type": "play_sound_at_current_location_simple2",
                     "id": "_vDalYWN[=@#2T3x/K=9",
                     "deletable": false,
+                    "movable": false,
                     "extraState": {
                       "disableNextConnection": false
                     },
@@ -257,6 +261,7 @@
                         "type": "play_sound_at_current_location_simple2",
                         "id": "]a`B)Iqf-:CVe#%)^VA~",
                         "deletable": false,
+                        "movable": false,
                         "extraState": {
                           "disableNextConnection": false
                         },
@@ -268,6 +273,7 @@
                             "type": "play_sound_at_current_location_simple2",
                             "id": "URK)q(P*`dm,?RIKC~2;",
                             "deletable": false,
+                            "movable": false,
                             "extraState": {
                               "disableNextConnection": true
                             },
@@ -300,6 +306,7 @@
                     "type": "play_sound_at_current_location_simple2",
                     "id": "b.D4G#ht9e//$uP-Bd%[",
                     "deletable": false,
+                    "movable": false,
                     "extraState": {
                       "disableNextConnection": false
                     },
@@ -311,6 +318,7 @@
                         "type": "play_sound_at_current_location_simple2",
                         "id": "j{s:~s6sEt%*syanqh}j",
                         "deletable": false,
+                        "movable": false,
                         "extraState": {
                           "disableNextConnection": false
                         },
@@ -322,6 +330,7 @@
                             "type": "play_sound_at_current_location_simple2",
                             "id": "gKd8KwB_i]J68TX#/saH",
                             "deletable": false,
+                            "movable": false,
                             "extraState": {
                               "disableNextConnection": true
                             },
@@ -354,6 +363,7 @@
                     "type": "play_sound_at_current_location_simple2",
                     "id": "waQ`-_9PpEk4T_kV=7(J",
                     "deletable": false,
+                    "movable": false,
                     "extraState": {
                       "disableNextConnection": false
                     },
@@ -365,6 +375,7 @@
                         "type": "play_sound_at_current_location_simple2",
                         "id": "RD%Ty@qw*w*/8Bc1~902",
                         "deletable": false,
+                        "movable": false,
                         "extraState": {
                           "disableNextConnection": false
                         },
@@ -376,6 +387,7 @@
                             "type": "play_sound_at_current_location_simple2",
                             "id": "{!dH(.53iO8+T2Y*8;#L",
                             "deletable": false,
+                            "movable": false,
                             "extraState": {
                               "disableNextConnection": true
                             },
@@ -397,7 +409,7 @@
     "preload_asset_list": null
   },
   "published": true,
-  "audit_log": "[{\"changed_at\":\"2025-03-10 21:29:14 +0000\",\"changed\":[],\"changed_by_id\":1196,\"changed_by_email\":\"amy.woodman@code.org\"},{\"changed_at\":\"2025-03-10 21:31:50 +0000\",\"changed\":[\"level_data\"],\"changed_by_id\":1196,\"changed_by_email\":\"amy.woodman@code.org\"},{\"changed_at\":\"2025-03-10 21:32:47 +0000\",\"changed\":[\"level_data\"],\"changed_by_id\":1196,\"changed_by_email\":\"amy.woodman@code.org\"},{\"changed_at\":\"2025-03-10 21:33:16 +0000\",\"changed\":[\"level_data\"],\"changed_by_id\":1196,\"changed_by_email\":\"amy.woodman@code.org\"},{\"changed_at\":\"2025-03-10 21:40:25 +0000\",\"changed\":[\"level_data\"],\"changed_by_id\":1196,\"changed_by_email\":\"amy.woodman@code.org\"},{\"changed_at\":\"2025-03-11 18:02:47 +0000\",\"changed\":[\"level_data\"],\"changed_by_id\":1196,\"changed_by_email\":\"amy.woodman@code.org\"}]"
+  "audit_log": "[{\"changed_at\":\"2025-03-10 21:29:14 +0000\",\"changed\":[],\"changed_by_id\":1196,\"changed_by_email\":\"amy.woodman@code.org\"},{\"changed_at\":\"2025-03-10 21:31:50 +0000\",\"changed\":[\"level_data\"],\"changed_by_id\":1196,\"changed_by_email\":\"amy.woodman@code.org\"},{\"changed_at\":\"2025-03-10 21:32:47 +0000\",\"changed\":[\"level_data\"],\"changed_by_id\":1196,\"changed_by_email\":\"amy.woodman@code.org\"},{\"changed_at\":\"2025-03-10 21:33:16 +0000\",\"changed\":[\"level_data\"],\"changed_by_id\":1196,\"changed_by_email\":\"amy.woodman@code.org\"},{\"changed_at\":\"2025-03-10 21:40:25 +0000\",\"changed\":[\"level_data\"],\"changed_by_id\":1196,\"changed_by_email\":\"amy.woodman@code.org\"},{\"changed_at\":\"2025-03-11 18:02:47 +0000\",\"changed\":[\"level_data\"],\"changed_by_id\":1196,\"changed_by_email\":\"amy.woodman@code.org\"},{\"changed_at\":\"2025-03-11 21:34:41 +0000\",\"changed\":[\"level_data\"],\"changed_by_id\":1196,\"changed_by_email\":\"amy.woodman@code.org\"}]"
 }]]></config>
   <blocks/>
 </Music>

@@ -18,7 +18,7 @@
     },
     "new_name": null,
     "family_name": null,
-    "serialized_at": "2025-03-11 18:22:40 UTC",
+    "serialized_at": "2025-03-11 21:33:16 UTC",
     "published_state": null,
     "instruction_type": null,
     "instructor_audience": null,
@@ -9548,12 +9548,78 @@
 
   ],
   "rubrics": [
-
+    {
+      "level_name": "U4 L14 Practice PT 2_2025",
+      "seeding_key": {
+        "lesson.key": "Project - Decision Maker App",
+        "lesson_group.key": "csp_project",
+        "script.name": "csp4-2025"
+      }
+    }
   ],
   "learning_goals": [
-
+    {
+      "key": "cbde6ced-4c7f-4b1d-ba5f-9bb616ff5d3d",
+      "position": 1,
+      "learning_goal": "Key Concept #1",
+      "ai_enabled": false,
+      "tips": null,
+      "seeding_key": {
+        "learning_goal.key": "cbde6ced-4c7f-4b1d-ba5f-9bb616ff5d3d",
+        "lesson.key": "Project - Decision Maker App",
+        "lesson_group.key": "csp_project",
+        "script.name": "csp4-2025"
+      }
+    }
   ],
   "learning_goal_evidence_levels": [
-
+    {
+      "understanding": 0,
+      "teacher_description": "Example 4",
+      "ai_prompt": "",
+      "seeding_key": {
+        "understanding": 0,
+        "learning_goal.key": "cbde6ced-4c7f-4b1d-ba5f-9bb616ff5d3d",
+        "lesson.key": "Project - Decision Maker App",
+        "lesson_group.key": "csp_project",
+        "script.name": "csp4-2025"
+      }
+    },
+    {
+      "understanding": 1,
+      "teacher_description": "Example 3",
+      "ai_prompt": "",
+      "seeding_key": {
+        "understanding": 1,
+        "learning_goal.key": "cbde6ced-4c7f-4b1d-ba5f-9bb616ff5d3d",
+        "lesson.key": "Project - Decision Maker App",
+        "lesson_group.key": "csp_project",
+        "script.name": "csp4-2025"
+      }
+    },
+    {
+      "understanding": 2,
+      "teacher_description": "Example 2",
+      "ai_prompt": "",
+      "seeding_key": {
+        "understanding": 2,
+        "learning_goal.key": "cbde6ced-4c7f-4b1d-ba5f-9bb616ff5d3d",
+        "lesson.key": "Project - Decision Maker App",
+        "lesson_group.key": "csp_project",
+        "script.name": "csp4-2025"
+      }
+    },
+    {
+      "understanding": 3,
+      "teacher_description": "Example 1",
+      "ai_prompt": "",
+      "seeding_key": {
+        "understanding": 3,
+        "learning_goal.key": "cbde6ced-4c7f-4b1d-ba5f-9bb616ff5d3d",
+        "lesson.key": "Project - Decision Maker App",
+        "lesson_group.key": "csp_project",
+        "script.name": "csp4-2025"
+      }
+    }
   ]
 }
