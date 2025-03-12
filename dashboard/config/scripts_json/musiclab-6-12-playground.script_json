@@ -9,7 +9,7 @@
     },
     "new_name": null,
     "family_name": null,
-    "serialized_at": "2025-03-12 20:39:57 UTC",
+    "serialized_at": "2025-03-12 20:46:01 UTC",
     "published_state": null,
     "instruction_type": null,
     "instructor_audience": null,
@@ -2708,7 +2708,7 @@
       "bonus": false,
       "seeding_key": {
         "script_level.level_keys": [
-          "test-music-lab-loops-explore-predict"
+          "test-music-lab-loops-explore-match"
         ],
         "lesson.key": "lesson-6",
         "lesson_group.key": "",
@@ -2716,7 +2716,7 @@
         "activity_section.key": "cafe27be-ff82-4a9c-9eb5-a084b6b25144"
       },
       "level_keys": [
-        "test-music-lab-loops-explore-predict"
+        "test-music-lab-loops-explore-match"
       ]
     },
     {
@@ -3680,9 +3680,9 @@
     },
     {
       "seeding_key": {
-        "level.key": "test-music-lab-loops-explore-predict",
+        "level.key": "test-music-lab-loops-explore-match",
         "script_level.level_keys": [
-          "test-music-lab-loops-explore-predict"
+          "test-music-lab-loops-explore-match"
         ],
         "lesson.key": "lesson-6",
         "lesson_group.key": "",
