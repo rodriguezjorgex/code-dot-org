@@ -11,12 +11,12 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 
 import applabMsg from '@cdo/applab/locale';
+import {evaluateStudentWork} from '@cdo/apps/aiEvaluation/evaluationApi';
 import autogenerateML from '@cdo/apps/applab/ai';
 import * as aiConfig from '@cdo/apps/applab/ai/dropletConfig';
 import SmallFooter from '@cdo/apps/code-studio/components/SmallFooter';
 import {userAlreadyReportedAbuse} from '@cdo/apps/reportAbuse';
 import {logUserLevelInteraction} from '@cdo/apps/userLevelInteractionsLogger/userLevelInteractionsApi';
-import {evaluateStudentWork} from '@cdo/apps/aiEvaluation/evaluationApi';
 import {workspace_running_background, white} from '@cdo/apps/util/color';
 import {UserLevelInteractions} from '@cdo/generated-scripts/sharedConstants';
 import commonMsg from '@cdo/locale';
@@ -1129,9 +1129,10 @@ Applab.runButtonClick = function () {
   ];
   const shouldEvaluateStudentCode = aiEvaluationLevels.includes(levelUrl);
   if (shouldEvaluateStudentCode) {
+    const evaluationCriteria = `"Does the code run without errors? Does the code follow best practices?"`;
     const systemPrompt = `Please review the student's work. Respond in correctly formatted JSON.
-    evaluationCriteria should just be a copy of "Is this good code?".
-    aiEvaluation should be your assessment of the student's work. Respond with "great", "ok", or "needs revision".
+    evaluationCriteria should just be a copy of ${evaluationCriteria}.
+    aiEvaluation should be your assessment of the student's work based on the evaluationCriteria. Respond with "great", "ok", or "needs revision".
     aiReasoning should be one sentence with your reasoning.`;
     evaluateStudentWork(
       {
