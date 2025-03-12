@@ -16,6 +16,7 @@ import * as aiConfig from '@cdo/apps/applab/ai/dropletConfig';
 import SmallFooter from '@cdo/apps/code-studio/components/SmallFooter';
 import {userAlreadyReportedAbuse} from '@cdo/apps/reportAbuse';
 import {logUserLevelInteraction} from '@cdo/apps/userLevelInteractionsLogger/userLevelInteractionsApi';
+import {evaluateStudentWork} from '@cdo/apps/aiEvaluation/evaluationApi';
 import {workspace_running_background, white} from '@cdo/apps/util/color';
 import {UserLevelInteractions} from '@cdo/generated-scripts/sharedConstants';
 import commonMsg from '@cdo/locale';
@@ -1114,6 +1115,35 @@ Applab.runButtonClick = function () {
     scriptId: analyticsData.scriptId,
     interaction: UserLevelInteractions.click_run,
   });
+
+  const config = studioApp().config;
+  const levelUrl = config.currentScriptLevelUrl;
+  // These are the hand-selected levels that are eligible for AI code analysis
+  // as part of the initial Evaluate Student Learning pilot. We want to tightly
+  // scope which levels we run AI code analysis on in for early testing. If we
+  // gain confidence in the approach and accuracy of AI evaluations, we'll expand,
+  // and ultimately likely store this information as a property of the level itself.
+  const aiEvaluationLevels = [
+    '/s/csp4-2024/lessons/3/levels/2',
+    '/s/csp4-2024/lessons/3/levels/6',
+  ];
+  const shouldEvaluateStudentCode = aiEvaluationLevels.includes(levelUrl);
+  if (shouldEvaluateStudentCode) {
+    const systemPrompt = `Please review the student's work. Respond in correctly formatted JSON.
+    evaluationCriteria should just be a copy of "Is this good code?".
+    aiEvaluation should be your assessment of the student's work. Respond with "great", "ok", or "needs revision".
+    aiReasoning should be one sentence with your reasoning.`;
+    evaluateStudentWork(
+      {
+        studentId: config.userId,
+        studentDisplayName: config.codeOwnersName,
+        studentWork: config.getCode(),
+      },
+      analyticsData.levelId,
+      analyticsData.scriptId,
+      systemPrompt
+    );
+  }
 
   // Enable the Finish button if is present:
   var shareCell = document.getElementById('share-cell');
