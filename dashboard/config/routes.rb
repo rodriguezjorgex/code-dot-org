@@ -147,6 +147,7 @@ Dashboard::Application.routes.draw do
       end
       collection do
         post 'section_instructors_verified'
+        post 'archive_all'
       end
     end
     # Section API routes (JSON only)
