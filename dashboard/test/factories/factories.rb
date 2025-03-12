@@ -1074,9 +1074,14 @@ FactoryBot.define do
     end
 
     factory :csp_script do
+      is_course {true}
+      sequence(:version_year) {|n| "bogus-csp-version-year-#{n}"}
+      sequence(:family_name) {|n| "bogus-csp-family-name-#{n}"}
       after(:create) do |csp_script|
         csp_script.curriculum_umbrella = Curriculum::SharedCourseConstants::CURRICULUM_UMBRELLA.CSP
         csp_script.save!
+        course_offering = CourseOffering.add_course_offering(csp_script)
+        course_offering.update!(grade_levels: '9,10,11,12')
       end
     end
 

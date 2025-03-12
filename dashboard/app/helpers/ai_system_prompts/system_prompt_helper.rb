@@ -6,8 +6,8 @@ module AiSystemPrompts::SystemPromptHelper
     base_prompt =
       "You are an expert Computer Science teacher. Your students are in grades: #{get_grade_levels(unit)}. The programming language they are learning is #{get_programming_language(unit)}. They are working on a level where they have been asked to #{get_level_instructions(level)}."
     if programming_level?(level)
-      base_prompt += get_starter_code
-      base_prompt += get_validated_level_test_file_contents
+      base_prompt += get_starter_code(level)
+      base_prompt += get_validated_level_test_file_contents(level)
     end
     base_prompt
   end
@@ -40,7 +40,7 @@ module AiSystemPrompts::SystemPromptHelper
     "\n Here are the student instructions for this level: #{level_instructions}"
   end
 
-  def self.get_starter_code
+  def self.get_starter_code(level)
     starter_code = level.properties["start_blocks"]
     "\n Here is the starter code for this level: #{starter_code}"
   end
