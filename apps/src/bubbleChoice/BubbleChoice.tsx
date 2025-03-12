@@ -3,15 +3,17 @@
 // This is a React client for a bubble_choice level.  Note that this is
 // only used for levels that use Lab2.  For levels that don't use Lab2,
 // they will get an older-style level.
-
 import {Button} from '@code-dot-org/component-library/button';
 import {Heading4} from '@code-dot-org/component-library/typography';
 import classNames from 'classnames';
+import _ from 'lodash';
 import React, {useEffect, useRef} from 'react';
 
 import {navigateToLevelId} from '@cdo/apps/code-studio/progressRedux';
+import {levelById} from '@cdo/apps/code-studio/progressReduxSelectors';
 import continueOrFinishLesson from '@cdo/apps/lab2/progress/continueOrFinishLesson';
 import {LabProps, BubbleChoiceLevelData} from '@cdo/apps/lab2/types';
+import ProgressBubble from '@cdo/apps/templates/progress/ProgressBubble';
 import {capitalizeFirstLetter} from '@cdo/apps/util/capitalizeFirstLetter';
 import {useAppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
 
@@ -27,6 +29,16 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
   );
   const backgroundSuffix = capitalizeFirstLetter(background || 'dark');
   const levelBubbleChoice = levelProperties.levelData as BubbleChoiceLevelData;
+  const sublevelsStatus = useAppSelector(state =>
+    levelBubbleChoice?.sublevels.map(
+      sublevel =>
+        levelById(
+          state.progress,
+          state.progress.currentLessonId,
+          sublevel.level_id
+        ).status
+    )
+  );
 
   const [containerWidth, setContainerWidth] = React.useState(0);
   const [containerHeight, setContainerHeight] = React.useState(0);
@@ -78,6 +90,14 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
   const numRows = bestNumRows;
   const numColumns = candidateLayouts.get(bestNumRows);
 
+  const sublevelToProgressBubbleLevel = (index: number) => {
+    const sublevel = levelBubbleChoice?.sublevels[index];
+    const status = sublevelsStatus[index];
+    const level = _.mapKeys(sublevel, (value, key) => _.camelCase(key));
+    level.status = status;
+    return level;
+  };
+
   return (
     <div id="bubble-choice" className={styles.bubbleChoiceContainer}>
       <div>
@@ -117,7 +137,15 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
                 className={styles.sublevelImage}
               />
             </div>
-            <div className={styles.sublevelText}>{sublevel.display_name}</div>
+            <div className={styles.sublevelText}>
+              <ProgressBubble
+                level={sublevelToProgressBubbleLevel(index)}
+                disabled={true}
+                hideToolTips={true}
+                smallBubble={true}
+              />
+              {sublevel.display_name}
+            </div>
           </button>
         ))}
       </div>
