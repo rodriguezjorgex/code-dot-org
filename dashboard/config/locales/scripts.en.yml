@@ -20606,3 +20606,42 @@ en:
           student_description: This unit contains a survey about the CS Principles Course. Your teacher will tell you when it's time to take this survey.
           description_short: ''
           description_audience: ''
+        exploring-gen-ai1-2025:
+          title: Foundations of Generative AI
+          description: |-
+            This unit aims to build a foundational understanding of text-based generative AI models, focusing on core concepts over technical skills. Students will demystify generative AI models by exploring their internal structures through the familiar lens of input, storage, process, and output. They will gain insights into how these models represent language, the impact of training data on model performance, and the potential for bias. Using this knowledge they will be presented with scenarios throughout the unit where they can help educate individuals who feel powerless or lack agency in how AI is impacting their lives, or respond to individuals who have only read the hype headlines and offer feedback or criticism based on their knowledge of how these AI systems work.
+
+            ##Just Starting this Unit?
+
+            We recommend completing the free [**Exploring Generative AI Self-Paced Professional Learning Module**](https://studio.code.org/courses/self-paced-exploring-gen-ai-2024). The module is designed to take 2-3 hours to complete. No previous computer science or AI experience is required.
+
+            We also recommend watching the [5-Part Exploring Generative AI Video Series](https://www.youtube.com/playlist?list=PLzdnOPI1iJNfJLo5nNGPHo0xCd9Xw5lSs) which introduces key concepts for generative AI. The entire video series takes ~15 minutes to watch.
+
+            ## Finished Teaching This Unit?
+            Answer this [**short survey**](https://studio.code.org/form/exploring_with_generative_ai_post_survey?survey_data%5Bunit_number%5D=unit_1) to let the Code.org curriculum team know how the unit went.
+          student_description: Learn how chatbots and large-language models work behind the scenes!
+          description_short: Builds a foundational understanding of text-based generative AI models
+          description_audience: ''
+        exploring-gen-ai2-2025:
+          lesson_groups:
+            lessonGroup-2:
+              display_name: "(Optional) Introduction to Generative AI"
+            lessonGroup-3:
+              display_name: Customizing Language Models
+            lessonGroup-4:
+              display_name: User-Centered Design
+          title: Customizing Language Models
+          description: |-
+            This unit focuses on practical skills for tailoring AI models using techniques like prompt engineering and retrieval, while promoting transparency through model cards. Students explore how to customize AI chatbots to fit specific use-cases, then create their own chatbot to address a problem they care about.
+
+            ##Just Starting this Unit?
+
+            We recommend completing the free [**Exploring Generative AI Self-Paced Professional Learning Module**](https://studio.code.org/courses/self-paced-exploring-gen-ai-2024). The module is designed to take 2-3 hours to complete. No previous computer science or AI experience is required.
+
+            We also recommend watching the [5-Part Exploring Generative AI Video Series](https://www.youtube.com/playlist?list=PLzdnOPI1iJNfJLo5nNGPHo0xCd9Xw5lSs) which introduces key concepts for generative AI. The entire video series takes ~15 minutes to watch.
+
+            ## Finished Teaching This Unit?
+            Answer this [**short survey**](https://studio.code.org/form/exploring_with_generative_ai_post_survey?survey_data%5Bunit_number%5D=unit_2) to let the Code.org curriculum team know how the unit went.
+          student_description: Learn to customize chatbots using AI Chat Lab
+          description_short: Learn to customize chatbots using AI Chat Lab
+          description_audience: ''
