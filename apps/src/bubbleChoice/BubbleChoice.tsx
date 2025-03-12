@@ -7,7 +7,7 @@ import {Button} from '@code-dot-org/component-library/button';
 import {Heading4} from '@code-dot-org/component-library/typography';
 import classNames from 'classnames';
 import _ from 'lodash';
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useMemo, useRef} from 'react';
 
 import {navigateToLevelId} from '@cdo/apps/code-studio/progressRedux';
 import {levelById} from '@cdo/apps/code-studio/progressReduxSelectors';
@@ -64,36 +64,44 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
   // Generate a map of candidate layouts, with each key the number of rows, and each value
   // the corresponding number of columns.  We only store one candidate for each number of
   // rows, and each is the one with the least number of columns that still fit all the sublevels.
-  const candidateLayouts = new Map();
-  for (let numCols = numSubLevels; numCols >= 1; numCols--) {
-    const numRows = Math.ceil(numSubLevels / numCols);
-    candidateLayouts.set(numRows, Math.ceil(numSubLevels / numRows));
-  }
+  const candidateLayouts = useMemo(() => {
+    const candidateLayouts = new Map();
+    for (let numCols = numSubLevels; numCols >= 1; numCols--) {
+      const numRows = Math.ceil(numSubLevels / numCols);
+      candidateLayouts.set(numRows, Math.ceil(numSubLevels / numRows));
+    }
+    return candidateLayouts;
+  }, [numSubLevels]);
 
   // Go through the candidates and find which will deliver the largest sublevel buttons, given
   // the current size of the container.
-  let bestSize = -1;
-  let bestNumRows = -1;
-  for (const [
-    candidateLayoutRows,
-    candidateLayoutColumns,
-  ] of candidateLayouts.entries()) {
-    const size = Math.min(
-      containerWidth / candidateLayoutColumns,
-      containerHeight / candidateLayoutRows
-    );
-    if (size > bestSize) {
-      bestSize = size;
-      bestNumRows = candidateLayoutRows;
+  const [numRows, numColumns] = useMemo(() => {
+    let bestSize = -1;
+    let bestNumRows = -1;
+    for (const [
+      candidateLayoutRows,
+      candidateLayoutColumns,
+    ] of candidateLayouts.entries()) {
+      const size = Math.min(
+        containerWidth / candidateLayoutColumns,
+        containerHeight / candidateLayoutRows
+      );
+      if (size > bestSize) {
+        bestSize = size;
+        bestNumRows = candidateLayoutRows;
+      }
     }
-  }
-  const numRows = bestNumRows;
-  const numColumns = candidateLayouts.get(bestNumRows);
+    const numRows = bestNumRows;
+    const numColumns = candidateLayouts.get(bestNumRows);
+    return [numRows, numColumns];
+  }, [candidateLayouts, containerHeight, containerWidth]);
 
   const sublevelToProgressBubbleLevel = (index: number) => {
     const sublevel = levelBubbleChoice.sublevels[index];
     const status = sublevelsStatus[index];
+    // ProgressBubble expects level keys to be camelCase instead of snake_case.
     const level = _.mapKeys(sublevel, (value, key) => _.camelCase(key));
+    // Add status to the level object.
     level.status = status;
     return level;
   };
