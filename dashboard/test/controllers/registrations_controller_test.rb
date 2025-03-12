@@ -523,6 +523,7 @@ class RegistrationsControllerTest < ActionController::TestCase
     Policies::Lti.expects(:lti?).returns(true).at_least(1)
     Services::Lti.expects(:create_lti_user_identity).returns(:lti_user_identity).at_least(1)
     Queries::Lti.expects(:get_lms_name_from_user).returns('test-lms')
+    lti_teacher_params = set_up_partial_registration(lti_teacher_params)
     post :create, params: {user: lti_teacher_params}
 
     assert assigns(:user).verified_teacher?
@@ -533,7 +534,8 @@ class RegistrationsControllerTest < ActionController::TestCase
     Services::Lti.expects(:create_lti_user_identity).returns(:lti_user_identity).at_least(1)
     Queries::Lti.expects(:get_lms_name_from_user).returns('test-lms')
 
-    post :create, params: {user: @default_params}
+    student_params = set_up_partial_registration(@default_params)
+    post :create, params: {user: student_params}
 
     assigns(:user).expects(:verify_teacher!).never
     refute assigns(:user).verified_teacher?

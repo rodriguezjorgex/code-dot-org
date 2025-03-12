@@ -24,7 +24,7 @@ module RegistrationsControllerTests
       }
       assert PartialRegistration.in_progress? session
 
-      assert_creates(User) {finish_email_sign_up(User::TYPE_STUDENT, email, true)}
+      assert_creates(User) {finish_email_sign_up(User::TYPE_STUDENT, email)}
       refute PartialRegistration.in_progress? session
 
       created_user = User.find signed_in_user_id
@@ -45,7 +45,7 @@ module RegistrationsControllerTests
       }
       assert PartialRegistration.in_progress? session
 
-      assert_creates(User) {finish_email_sign_up(User::TYPE_TEACHER, email, true)}
+      assert_creates(User) {finish_email_sign_up(User::TYPE_TEACHER, email)}
       refute PartialRegistration.in_progress? session
 
       created_user = User.find signed_in_user_id
