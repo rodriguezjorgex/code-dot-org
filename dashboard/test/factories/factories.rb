@@ -1226,6 +1226,13 @@ FactoryBot.define do
       end
     end
 
+    factory :csp_script_level do
+      after(:create) do |csp_script_level|
+        csp_script_level.script.curriculum_umbrella = 'CSP'
+        csp_script_level.save
+      end
+    end
+
     factory :csa_script_level do
       after(:create) do |csa_script_level|
         csa_script_level.script.curriculum_umbrella = 'CSA'
