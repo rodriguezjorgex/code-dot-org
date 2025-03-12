@@ -30,7 +30,7 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
   const backgroundSuffix = capitalizeFirstLetter(background || 'dark');
   const levelBubbleChoice = levelProperties.levelData as BubbleChoiceLevelData;
   const sublevelsStatus = useAppSelector(state =>
-    levelBubbleChoice?.sublevels.map(
+    levelBubbleChoice.sublevels.map(
       sublevel =>
         levelById(
           state.progress,
@@ -45,7 +45,7 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const numSubLevels = levelBubbleChoice?.sublevels.length;
+  const numSubLevels = levelBubbleChoice.sublevels.length;
 
   useEffect(() => {
     if (!containerRef.current) {
@@ -91,7 +91,7 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
   const numColumns = candidateLayouts.get(bestNumRows);
 
   const sublevelToProgressBubbleLevel = (index: number) => {
-    const sublevel = levelBubbleChoice?.sublevels[index];
+    const sublevel = levelBubbleChoice.sublevels[index];
     const status = sublevelsStatus[index];
     const level = _.mapKeys(sublevel, (value, key) => _.camelCase(key));
     level.status = status;
@@ -101,14 +101,14 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
   return (
     <div id="bubble-choice" className={styles.bubbleChoiceContainer}>
       <div>
-        {levelBubbleChoice?.displayName && (
+        {levelBubbleChoice.displayName && (
           <Heading4 className={styles[`heading${backgroundSuffix}`]}>
-            {levelBubbleChoice?.displayName}
+            {levelBubbleChoice.displayName}
           </Heading4>
         )}
-        {levelBubbleChoice?.description && (
+        {levelBubbleChoice.description && (
           <div className={styles[`text${backgroundSuffix}`]}>
-            {levelBubbleChoice?.description}
+            {levelBubbleChoice.description}
           </div>
         )}
       </div>
@@ -120,7 +120,7 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
         }}
         ref={containerRef}
       >
-        {levelBubbleChoice?.sublevels.map((sublevel, index) => (
+        {levelBubbleChoice.sublevels.map((sublevel, index) => (
           <button
             type="button"
             key={index}
