@@ -6,6 +6,7 @@ import Button from '@cdo/apps/legacySharedComponents/Button';
 import Dialog, {Body} from '@cdo/apps/legacySharedComponents/Dialog';
 import {EVENTS, PLATFORMS} from '@cdo/apps/metrics/AnalyticsConstants';
 import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
+import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
 import color from '@cdo/apps/util/color';
 import i18n from '@cdo/locale';
 
@@ -86,7 +87,7 @@ class SchoolInfoConfirmationDialog extends Component {
     this.props.onClose();
   };
 
-  handleClickYes = () => {
+  handleClickYes = async () => {
     analyticsReporter.sendEvent(
       EVENTS.CONFIRM_SCHOOL_CLICKED,
       {},
@@ -100,6 +101,9 @@ class SchoolInfoConfirmationDialog extends Component {
       {
         method: 'PATCH',
         body: formData,
+        headers: {
+          'X-CSRF-Token': await getAuthenticityToken(),
+        },
       }
     )
       .then(this.closeModal)
