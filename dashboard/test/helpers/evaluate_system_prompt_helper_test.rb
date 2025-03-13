@@ -4,10 +4,10 @@ class AiSystemPrompts::EvaluateSystemPromptHelperTest < ActionView::TestCase
   include AiSystemPrompts::EvaluateSystemPromptHelper
 
   setup do
-    # Sample Applab level
+    csp_course_offering = create(:csp_course_offering, :with_units)
     @level_instructions = "Write a loop."
     @applab_level = create(:applab, :with_instructions)
-    @csp_unit = create(:csp_script)
+    @csp_unit = csp_course_offering.course_versions.first.content_root
     create(:csp_script_level, levels: [@applab_level])
   end
 
