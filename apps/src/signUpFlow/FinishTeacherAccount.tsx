@@ -243,6 +243,7 @@ const FinishTeacherAccount: React.FunctionComponent<{
         'has school': hasSchool,
         'has marketing value selected': true,
         'has display name': !nameErrorMessage,
+        'educator role': educatorRole,
         country: countryCode,
       },
       PLATFORMS.BOTH
