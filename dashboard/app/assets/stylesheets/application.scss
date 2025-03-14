@@ -79,10 +79,6 @@ body.music-black, body.background-dark {
   color: $neutral_light;
 }
 
-body.background-dark, body.background-light {
-  overscroll-behavior: none;
-}
-
 h1 {
   @include main-font-bold;
   font-size: 32px;
@@ -190,7 +186,7 @@ img.video_thumbnail {
   user-select: none;
 
   .header {
-    position: absolute;
+    position: fixed;
     top: 0;
     width: 100%;
 
