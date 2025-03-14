@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_03_05_163452) do
+ActiveRecord::Schema.define(version: 2025_03_14_144822) do
 
   create_table "activities", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "user_id"
@@ -2296,6 +2296,7 @@ ActiveRecord::Schema.define(version: 2025_03_05_163452) do
     t.string "ai_model_version"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "code_version"
     t.index ["level_id"], name: "index_user_level_evaluations_on_level_id"
     t.index ["user_id"], name: "index_user_level_evaluations_on_user_id"
   end
