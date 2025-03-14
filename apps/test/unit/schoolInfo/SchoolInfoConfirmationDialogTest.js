@@ -122,7 +122,7 @@ describe('SchoolInfoConfirmationDialog', () => {
 
         expect(wrapperInstance.handleClickYes).to.have.been.called;
         await setTimeout(() => {}, 50);
-        expect(onClose).to.have.been.called;
+        expect(await onClose).to.have.been.called;
         await setTimeout(() => {}, 50);
         expect(wrapper.state('showSchoolInterstitial')).to.be.false;
         handleClickYesSpy.restore();
