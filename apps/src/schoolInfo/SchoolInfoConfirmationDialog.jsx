@@ -50,9 +50,7 @@ class SchoolInfoConfirmationDialog extends Component {
   static propTypes = {
     schoolName: PropTypes.string,
     scriptData: PropTypes.shape({
-      formUrl: PropTypes.string.isRequired,
-      authTokenName: PropTypes.string.isRequired,
-      authTokenValue: PropTypes.string.isRequired,
+      usIp: PropTypes.bool.isRequired,
       existingSchoolInfo: PropTypes.shape({
         id: PropTypes.number,
         user_school_info_id: PropTypes.number,
@@ -93,9 +91,7 @@ class SchoolInfoConfirmationDialog extends Component {
       {},
       PLATFORMS.BOTH
     );
-    const {authTokenName, authTokenValue} = this.props.scriptData;
     const formData = new FormData();
-    formData.append(authTokenName, authTokenValue);
     fetch(
       `/api/v1/user_school_infos/${this.props.scriptData.existingSchoolInfo.user_school_info_id}/update_last_confirmation_date`,
       {
