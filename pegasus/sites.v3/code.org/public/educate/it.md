@@ -17,7 +17,7 @@ theme: responsive
 
 ## Minimum Supported Browsers and Platforms
 
-Starting in July 2024, we will update the minimum versions required for browsers and operating systems. While the old versions may still work, we will be unable to support requests for bug fixes in the older versions.
+Each year we will update the minimum versions required for browsers and operating systems. While the old versions may still work, we will be unable to support requests for bug fixes in the older versions.
 
 <table>
   <tr>
