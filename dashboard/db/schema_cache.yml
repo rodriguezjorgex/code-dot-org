@@ -380,86 +380,6 @@ columns:
     default_function: 
     collation: 
     comment: 
-  aichat_message_feedbacks:
-  - *10
-  - !ruby/object:ActiveRecord::ConnectionAdapters::MySQL::Column
-    name: aichat_message_id
-    sql_type_metadata: *18
-    'null': false
-    default: 
-    default_function: 
-    collation: 
-    comment: 
-  - &59 !ruby/object:ActiveRecord::ConnectionAdapters::MySQL::Column
-    name: teacher_id
-    sql_type_metadata: *18
-    'null': false
-    default: 
-    default_function: 
-    collation: 
-    comment: 
-  - !ruby/object:ActiveRecord::ConnectionAdapters::MySQL::Column
-    name: approval
-    sql_type_metadata: *7
-    'null': true
-    default: 
-    default_function: 
-    collation: 
-    comment: 
-  - !ruby/object:ActiveRecord::ConnectionAdapters::MySQL::Column
-    name: flagged
-    sql_type_metadata: *7
-    'null': true
-    default: 
-    default_function: 
-    collation: 
-    comment: 
-  - *14
-  - *15
-  aichat_messages:
-  - *10
-  - !ruby/object:ActiveRecord::ConnectionAdapters::MySQL::Column
-    name: aichat_thread_id
-    sql_type_metadata: *18
-    'null': false
-    default: 
-    default_function: 
-    collation: 
-    comment: 
-  - &21 !ruby/object:ActiveRecord::ConnectionAdapters::MySQL::Column
-    name: external_id
-    sql_type_metadata: *9
-    'null': false
-    default: 
-    default_function: 
-    collation: utf8mb3_unicode_ci
-    comment: 
-  - !ruby/object:ActiveRecord::ConnectionAdapters::MySQL::Column
-    name: role
-    sql_type_metadata: *2
-    'null': false
-    default: 
-    default_function: 
-    collation: 
-    comment: 
-  - !ruby/object:ActiveRecord::ConnectionAdapters::MySQL::Column
-    name: content
-    sql_type_metadata: *9
-    'null': false
-    default: 
-    default_function: 
-    collation: utf8mb3_unicode_ci
-    comment: 
-  - !ruby/object:ActiveRecord::ConnectionAdapters::MySQL::Column
-    name: is_preset
-    sql_type_metadata: *7
-    'null': false
-    default: 
-    default_function: 
-    collation: 
-    comment: 
-  - *14
-  - *15
   aichat_requests:
   - *10
   - *11
@@ -532,7 +452,87 @@ columns:
     comment: 
   - *14
   - *15
-  aichat_threads:
+  aidiff_message_feedbacks:
+  - *10
+  - !ruby/object:ActiveRecord::ConnectionAdapters::MySQL::Column
+    name: aidiff_message_id
+    sql_type_metadata: *18
+    'null': false
+    default: 
+    default_function: 
+    collation: 
+    comment: 
+  - &59 !ruby/object:ActiveRecord::ConnectionAdapters::MySQL::Column
+    name: teacher_id
+    sql_type_metadata: *18
+    'null': false
+    default: 
+    default_function: 
+    collation: 
+    comment: 
+  - !ruby/object:ActiveRecord::ConnectionAdapters::MySQL::Column
+    name: approval
+    sql_type_metadata: *7
+    'null': true
+    default: 
+    default_function: 
+    collation: 
+    comment: 
+  - !ruby/object:ActiveRecord::ConnectionAdapters::MySQL::Column
+    name: flagged
+    sql_type_metadata: *7
+    'null': true
+    default: 
+    default_function: 
+    collation: 
+    comment: 
+  - *14
+  - *15
+  aidiff_messages:
+  - *10
+  - !ruby/object:ActiveRecord::ConnectionAdapters::MySQL::Column
+    name: aidiff_thread_id
+    sql_type_metadata: *18
+    'null': false
+    default: 
+    default_function: 
+    collation: 
+    comment: 
+  - &21 !ruby/object:ActiveRecord::ConnectionAdapters::MySQL::Column
+    name: external_id
+    sql_type_metadata: *9
+    'null': false
+    default: 
+    default_function: 
+    collation: utf8mb3_unicode_ci
+    comment: 
+  - !ruby/object:ActiveRecord::ConnectionAdapters::MySQL::Column
+    name: role
+    sql_type_metadata: *2
+    'null': false
+    default: 
+    default_function: 
+    collation: 
+    comment: 
+  - !ruby/object:ActiveRecord::ConnectionAdapters::MySQL::Column
+    name: content
+    sql_type_metadata: *9
+    'null': false
+    default: 
+    default_function: 
+    collation: utf8mb3_unicode_ci
+    comment: 
+  - !ruby/object:ActiveRecord::ConnectionAdapters::MySQL::Column
+    name: is_preset
+    sql_type_metadata: *7
+    'null': false
+    default: 
+    default_function: 
+    collation: 
+    comment: 
+  - *14
+  - *15
+  aidiff_threads:
   - *10
   - !ruby/object:ActiveRecord::ConnectionAdapters::MySQL::Column
     name: user_id
@@ -8001,11 +8001,11 @@ primary_keys:
   ai_tutor_interaction_feedbacks: id
   ai_tutor_interactions: id
   aichat_events: id
-  aichat_message_feedbacks: id
-  aichat_messages: id
   aichat_requests: id
   aichat_sessions: id
-  aichat_threads: id
+  aidiff_message_feedbacks: id
+  aidiff_messages: id
+  aidiff_threads: id
   ar_internal_metadata: key
   assessment_activities: id
   authentication_options: id
@@ -8215,11 +8215,11 @@ data_sources:
   ai_tutor_interaction_feedbacks: true
   ai_tutor_interactions: true
   aichat_events: true
-  aichat_message_feedbacks: true
-  aichat_messages: true
   aichat_requests: true
   aichat_sessions: true
-  aichat_threads: true
+  aidiff_message_feedbacks: true
+  aidiff_messages: true
+  aidiff_threads: true
   ar_internal_metadata: true
   assessment_activities: true
   authentication_options: true
@@ -8582,34 +8582,6 @@ indexes:
     type: 
     using: :btree
     comment: 
-  aichat_message_feedbacks:
-  - !ruby/object:ActiveRecord::ConnectionAdapters::IndexDefinition
-    table: aichat_message_feedbacks
-    name: index_aichat_message_feedbacks_on_aichat_message_id
-    unique: true
-    columns:
-    - aichat_message_id
-    lengths: {}
-    orders: {}
-    opclasses: {}
-    where: 
-    type: 
-    using: :btree
-    comment: 
-  aichat_messages:
-  - !ruby/object:ActiveRecord::ConnectionAdapters::IndexDefinition
-    table: aichat_messages
-    name: index_aichat_messages_on_aichat_thread_id
-    unique: false
-    columns:
-    - aichat_thread_id
-    lengths: {}
-    orders: {}
-    opclasses: {}
-    where: 
-    type: 
-    using: :btree
-    comment: 
   aichat_requests:
   - !ruby/object:ActiveRecord::ConnectionAdapters::IndexDefinition
     table: aichat_requests
@@ -8640,10 +8612,38 @@ indexes:
     type: 
     using: :btree
     comment: 
-  aichat_threads:
+  aidiff_message_feedbacks:
   - !ruby/object:ActiveRecord::ConnectionAdapters::IndexDefinition
-    table: aichat_threads
-    name: index_aichat_threads_on_user_id
+    table: aidiff_message_feedbacks
+    name: index_aidiff_message_feedbacks_on_aidiff_message_id
+    unique: true
+    columns:
+    - aidiff_message_id
+    lengths: {}
+    orders: {}
+    opclasses: {}
+    where: 
+    type: 
+    using: :btree
+    comment: 
+  aidiff_messages:
+  - !ruby/object:ActiveRecord::ConnectionAdapters::IndexDefinition
+    table: aidiff_messages
+    name: index_aidiff_messages_on_aidiff_thread_id
+    unique: false
+    columns:
+    - aidiff_thread_id
+    lengths: {}
+    orders: {}
+    opclasses: {}
+    where: 
+    type: 
+    using: :btree
+    comment: 
+  aidiff_threads:
+  - !ruby/object:ActiveRecord::ConnectionAdapters::IndexDefinition
+    table: aidiff_threads
+    name: index_aidiff_threads_on_user_id
     unique: false
     columns:
     - user_id
@@ -14105,7 +14105,7 @@ indexes:
     type: :fulltext
     using: 
     comment: 
-version: 20250305163452
+version: 20250313161641
 database_version: !ruby/object:ActiveRecord::ConnectionAdapters::AbstractAdapter::Version
   version:
   - 8
