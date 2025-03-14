@@ -1,0 +1,384 @@
+import CloseButton from '@code-dot-org/component-library/closeButton';
+import FontAwesomeV6Icon from '@code-dot-org/component-library/fontAwesomeV6Icon';
+import FormFieldWrapper from '@code-dot-org/component-library/formFieldWrapper';
+import Tags from '@code-dot-org/component-library/tags';
+import {BodyThreeText} from '@code-dot-org/component-library/typography';
+import classNames from 'classnames';
+import React, {useState, useRef, useEffect, useCallback, useMemo} from 'react';
+
+import styles from './styles.module.scss';
+
+export interface Option {
+  id: string | number;
+  searchText: string[];
+  label: string;
+  secondaryLabel?: string;
+}
+
+export const MultiSelectInput: React.FC<{
+  label: string;
+  options: Option[];
+  selectedOptions: Array<string | number>;
+  setSelectedOptions: (selectedOptions: Array<string | number>) => void;
+  id?: string;
+  placeholder?: string;
+  emptyStateMessage?: string;
+}> = ({
+  label,
+  options,
+  selectedOptions,
+  setSelectedOptions,
+  id = 'multiselect',
+  placeholder = 'Filter options',
+  emptyStateMessage = 'No results found',
+}) => {
+  const [searchText, setSearchText] = useState('');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [focusedOptionId, setFocusedOptionId] = useState<
+    number | string | null
+  >(null);
+  const [hoveredOptionId, setHoveredOptionId] = useState<
+    number | string | null
+  >(null);
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const optionRefs = useRef<Map<string | number, HTMLDivElement>>(new Map());
+
+  const filteredOptions = useMemo(
+    () =>
+      options.filter(option =>
+        option.searchText.some(text =>
+          text.toLowerCase().includes(searchText.toLowerCase())
+        )
+      ),
+    [options, searchText]
+  );
+
+  useEffect(() => {
+    if (focusedOptionId !== null && menuOpen) {
+      const activeOptionId = filteredOptions.find(
+        ({id}) => id === focusedOptionId
+      )?.id;
+      const activeElement = optionRefs.current.get(activeOptionId ?? '');
+      if (activeOptionId && activeElement instanceof HTMLDivElement) {
+        activeElement.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        activeElement.focus();
+      }
+    }
+  }, [focusedOptionId, filteredOptions, menuOpen]);
+
+  useEffect(() => {
+    if (!menuOpen) {
+      setFocusedOptionId(null);
+    }
+  }, [menuOpen]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        closeMenu(true);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+    if (!menuOpen) {
+      setMenuOpen(true);
+    } else if (!e.target.value) {
+      closeMenu();
+    }
+  };
+
+  const handleToggleOption = (optionId: string | number) => {
+    setSelectedOptions(
+      selectedOptions.includes(optionId)
+        ? selectedOptions.filter(id => id !== optionId)
+        : [...selectedOptions, optionId]
+    );
+  };
+
+  const handleRemoveOption = (optionId: string | number) => {
+    setSelectedOptions(selectedOptions.filter(id => id !== optionId));
+  };
+
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    switch (e.key) {
+      case 'Enter':
+        if (menuOpen && searchText && filteredOptions.length > 0) {
+          const option = filteredOptions[0];
+          handleToggleOption(option.id);
+          setSearchText('');
+        }
+        break;
+      case 'ArrowDown':
+        e.preventDefault();
+        setMenuOpen(true);
+        setFocusedOptionId(filteredOptions[0]?.id ?? null);
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setMenuOpen(true);
+        setFocusedOptionId(
+          filteredOptions[filteredOptions.length - 1]?.id ?? null
+        );
+        break;
+      case 'Escape':
+        closeMenu();
+        break;
+      case 'Backspace':
+        if (searchText === '' && selectedOptions[selectedOptions.length - 1]) {
+          handleToggleOption(selectedOptions[selectedOptions.length - 1]);
+        }
+        break;
+    }
+  };
+
+  const handleMenuKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!filteredOptions.length) return;
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setFocusedOptionId(prev =>
+          prev === null
+            ? filteredOptions[0]?.id ?? null
+            : filteredOptions[
+                Math.min(
+                  filteredOptions.findIndex(option => option.id === prev) + 1,
+                  filteredOptions.length - 1
+                )
+              ]?.id ?? null
+        );
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setFocusedOptionId(prev =>
+          prev === null
+            ? filteredOptions[filteredOptions.length - 1]?.id ?? null
+            : filteredOptions[
+                Math.max(
+                  filteredOptions.findIndex(option => option.id === prev) - 1,
+                  0
+                )
+              ]?.id ?? null
+        );
+        break;
+      case 'Enter':
+      case ' ':
+        if (focusedOptionId !== null) {
+          e.preventDefault();
+          handleToggleOption(focusedOptionId);
+        }
+        break;
+      case 'Escape':
+        closeMenu();
+        break;
+    }
+  };
+
+  const closeMenu = (skipFocus = false) => {
+    setMenuOpen(false);
+    setSearchText('');
+    setFocusedOptionId(null);
+    if (!skipFocus) {
+      inputRef.current?.focus();
+    }
+  };
+
+  const handleOptionKeyDown = (
+    e: React.KeyboardEvent<HTMLDivElement>,
+    id: string | number
+  ) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      handleToggleOption(id);
+    }
+  };
+
+  const handleClearAll = () => {
+    setSelectedOptions([]);
+    closeMenu();
+  };
+
+  const isOptionSelected = useCallback(
+    (option: Option) => selectedOptions.includes(option.id),
+    [selectedOptions]
+  );
+
+  const isOptionFocused = useCallback(
+    (option: Option) => focusedOptionId === option.id,
+    [focusedOptionId]
+  );
+
+  const isOptionHovered = useCallback(
+    (option: Option) => hoveredOptionId === option.id,
+    [hoveredOptionId]
+  );
+
+  const anyOptionsSelected = useMemo(
+    () => selectedOptions.length > 0,
+    [selectedOptions]
+  );
+
+  return (
+    <div ref={wrapperRef}>
+      <FormFieldWrapper
+        label={label}
+        className={styles.label}
+        id={`${id}-label`}
+        onClick={e => {
+          // prevent label's native click event and stop propagation
+          e.preventDefault();
+          e.stopPropagation();
+          if (!menuOpen) {
+            inputRef.current?.focus();
+          }
+        }}
+      >
+        <div
+          className={classNames(styles.container, {
+            [styles.focused]: isFocused,
+          })}
+          role="combobox"
+          aria-controls={`${id}-listbox`}
+          aria-expanded={menuOpen}
+          aria-haspopup="listbox"
+        >
+          <div className={styles.multiSelect}>
+            {selectedOptions.map(id => {
+              const option = options.find(option => option.id === id);
+              if (!option) {
+                return null;
+              }
+
+              return (
+                <Tags
+                  key={id}
+                  className={styles.tag}
+                  size="s"
+                  tagsList={[
+                    {
+                      label: option.label,
+                      type: 'closable',
+                      onClose: () => {
+                        handleRemoveOption(option.id);
+                      },
+                      key: option.id,
+                      ariaLabel: `Remove ${option.label}`,
+                    },
+                  ]}
+                />
+              );
+            })}
+            <input
+              className={styles.searchInput}
+              ref={inputRef}
+              type="search"
+              id={id}
+              placeholder={placeholder}
+              value={searchText}
+              onChange={handleInputChange}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              onClick={() => setMenuOpen(true)}
+              onKeyDown={handleInputKeyDown}
+              aria-autocomplete="list"
+              aria-controls={`${id}-listbox`}
+              aria-labelledby={`${id}-label`}
+              aria-label="filter options"
+              autoComplete="off"
+            />
+          </div>
+          {anyOptionsSelected && (
+            <CloseButton
+              className={styles.clearAllButton}
+              onClick={handleClearAll}
+              aria-label="Clear all selected options"
+            />
+          )}
+
+          {menuOpen && (
+            <div
+              className={styles.multiSelectMenu}
+              id={`${id}-listbox`}
+              role="listbox"
+              aria-multiselectable
+              aria-labelledby={`${id}-label`}
+              tabIndex={-1}
+              onKeyDown={handleMenuKeyDown}
+            >
+              {filteredOptions.length > 0 ? (
+                filteredOptions.map((option, i) => {
+                  const selected = isOptionSelected(option);
+                  const optionFocused = isOptionFocused(option);
+                  const optionHovered = isOptionHovered(option);
+                  const optionId = `${id}-option-${option.id}`;
+
+                  return (
+                    <div
+                      key={option.id}
+                      id={optionId}
+                      className={classNames(styles.option, {
+                        [styles.hover]:
+                          /**
+                           * hover styles if any are true:
+                           * - hovered
+                           * - focused and not hovered
+                           * - first option when text search is active
+                           *
+                           * hover takes priority over keyboard focus
+                           */
+                          optionHovered ||
+                          (!hoveredOptionId && optionFocused) ||
+                          (i === 0 && searchText.length),
+                      })}
+                      onClick={() => handleToggleOption(option.id)}
+                      onKeyDown={e => handleOptionKeyDown(e, option.id)}
+                      onMouseEnter={() => setHoveredOptionId(option.id)}
+                      onMouseLeave={() => setHoveredOptionId(null)}
+                      role="option"
+                      aria-selected={selected}
+                      tabIndex={-1}
+                      ref={el =>
+                        el
+                          ? optionRefs.current.set(option.id, el)
+                          : optionRefs.current.delete(option.id)
+                      }
+                    >
+                      <div className={styles.optionLabelText}>
+                        <BodyThreeText>{option.label}</BodyThreeText>
+                        {option.secondaryLabel && (
+                          <BodyThreeText>{option.secondaryLabel}</BodyThreeText>
+                        )}
+                      </div>
+
+                      {selected && (
+                        <FontAwesomeV6Icon
+                          iconName={
+                            optionHovered || optionFocused ? 'close' : 'check'
+                          }
+                          aria-hidden
+                        />
+                      )}
+                    </div>
+                  );
+                })
+              ) : (
+                <BodyThreeText className={styles.emptyState}>
+                  {emptyStateMessage}
+                </BodyThreeText>
+              )}
+            </div>
+          )}
+        </div>
+      </FormFieldWrapper>
+    </div>
+  );
+};

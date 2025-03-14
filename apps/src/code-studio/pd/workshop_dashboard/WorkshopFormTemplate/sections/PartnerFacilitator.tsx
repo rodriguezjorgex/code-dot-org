@@ -3,18 +3,19 @@ import {Heading2} from '@code-dot-org/component-library/typography';
 import classNames from 'classnames';
 import React, {FC, useMemo} from 'react';
 
+import {MultiSelectInput} from '../components/MultiSelectInput';
 import {SectionProps} from '../types';
 
 import commonStyles from '../styles.module.scss';
 
 export const PartnerFacilitator: FC<SectionProps> = ({
   config: {
-    fields: {regional_partner_id},
+    fields: {regional_partner_id, facilitators},
   },
   state,
   handleChange,
   regionalPartners,
-  facilitators,
+  facilitators: fetchedFacilitators,
 }) => {
   const regionalPartnerOptions = useMemo(() => {
     const options = [{value: '', text: 'None'}];
@@ -29,13 +30,14 @@ export const PartnerFacilitator: FC<SectionProps> = ({
     return options;
   }, [regionalPartners]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const facilitatorOptions = useMemo(() => {
-    return facilitators?.map(({id, name, email}) => ({
-      value: id.toString(),
-      text: `${name} ${email}`,
+    return fetchedFacilitators?.map(({id, name, email}) => ({
+      id,
+      label: name,
+      secondaryLabel: email,
+      searchText: [name, email],
     }));
-  }, [facilitators]);
+  }, [fetchedFacilitators]);
 
   return (
     <>
@@ -62,6 +64,21 @@ export const PartnerFacilitator: FC<SectionProps> = ({
             className={classNames(commonStyles.item, {
               [commonStyles.required]: regional_partner_id.required,
             })}
+          />
+        )}
+        {facilitators && (
+          <MultiSelectInput
+            label="Select facilitator(s)"
+            options={facilitatorOptions ?? []}
+            selectedOptions={state.facilitators}
+            setSelectedOptions={newFacilitators =>
+              handleChange({facilitators: newFacilitators.map(Number)})
+            }
+            placeholder={
+              state.facilitators.length
+                ? 'Type to filter'
+                : 'Enter name or email'
+            }
           />
         )}
       </div>
