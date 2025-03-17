@@ -50,6 +50,7 @@ class RegistrationsController < Devise::RegistrationsController
   # Get /users/sign_up/account_type
   #
   def account_type
+    @is_signed_out = current_user.nil?
     view_options(full_width: true, responsive_content: true)
   end
 
@@ -57,6 +58,7 @@ class RegistrationsController < Devise::RegistrationsController
   # Get /users/sign_up/login_type
   #
   def login_type
+    @is_signed_out = current_user.nil?
     view_options(full_width: true, responsive_content: true)
     render 'login_type'
   end
