@@ -8,8 +8,10 @@ import React, {useState, useRef, useEffect, useCallback, useMemo} from 'react';
 
 import styles from './styles.module.scss';
 
+export type OptionId = string | number;
+
 export interface Option {
-  id: string | number;
+  id: OptionId;
   searchText: string[];
   label: string;
   secondaryLabel?: string;
@@ -18,8 +20,8 @@ export interface Option {
 export const MultiSelectInput: React.FC<{
   label: string;
   options: Option[];
-  selectedOptions: Array<string | number>;
-  setSelectedOptions: (selectedOptions: Array<string | number>) => void;
+  selectedOptions: Array<OptionId>;
+  setSelectedOptions: (selectedOptions: Array<OptionId>) => void;
   id?: string;
   placeholder?: string;
   emptyStateMessage?: string;
@@ -35,16 +37,12 @@ export const MultiSelectInput: React.FC<{
   const [searchText, setSearchText] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  const [focusedOptionId, setFocusedOptionId] = useState<
-    number | string | null
-  >(null);
-  const [hoveredOptionId, setHoveredOptionId] = useState<
-    number | string | null
-  >(null);
+  const [focusedOptionId, setFocusedOptionId] = useState<OptionId | null>(null);
+  const [hoveredOptionId, setHoveredOptionId] = useState<OptionId | null>(null);
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const optionRefs = useRef<Map<string | number, HTMLDivElement>>(new Map());
+  const optionRefs = useRef<Map<OptionId, HTMLDivElement>>(new Map());
 
   const filteredOptions = useMemo(
     () =>
@@ -56,13 +54,15 @@ export const MultiSelectInput: React.FC<{
     [options, searchText]
   );
 
+  const optionsMap = useMemo(
+    () => new Map(options.map(option => [option.id, option])),
+    [options]
+  );
+
   useEffect(() => {
     if (focusedOptionId !== null && menuOpen) {
-      const activeOptionId = filteredOptions.find(
-        ({id}) => id === focusedOptionId
-      )?.id;
-      const activeElement = optionRefs.current.get(activeOptionId ?? '');
-      if (activeOptionId && activeElement instanceof HTMLDivElement) {
+      const activeElement = optionRefs.current.get(focusedOptionId ?? '');
+      if (activeElement instanceof HTMLDivElement) {
         activeElement.scrollIntoView({behavior: 'smooth', block: 'nearest'});
         activeElement.focus();
       }
@@ -98,7 +98,7 @@ export const MultiSelectInput: React.FC<{
     }
   };
 
-  const handleToggleOption = (optionId: string | number) => {
+  const handleToggleOption = (optionId: OptionId) => {
     setSelectedOptions(
       selectedOptions.includes(optionId)
         ? selectedOptions.filter(id => id !== optionId)
@@ -106,7 +106,7 @@ export const MultiSelectInput: React.FC<{
     );
   };
 
-  const handleRemoveOption = (optionId: string | number) => {
+  const handleRemoveOption = (optionId: OptionId) => {
     setSelectedOptions(selectedOptions.filter(id => id !== optionId));
   };
 
@@ -195,7 +195,7 @@ export const MultiSelectInput: React.FC<{
 
   const handleOptionKeyDown = (
     e: React.KeyboardEvent<HTMLDivElement>,
-    id: string | number
+    id: OptionId
   ) => {
     if (e.key === 'Enter' || e.key === ' ') {
       handleToggleOption(id);
@@ -208,17 +208,17 @@ export const MultiSelectInput: React.FC<{
   };
 
   const isOptionSelected = useCallback(
-    (option: Option) => selectedOptions.includes(option.id),
+    (id: OptionId) => selectedOptions.includes(id),
     [selectedOptions]
   );
 
   const isOptionFocused = useCallback(
-    (option: Option) => focusedOptionId === option.id,
+    (id: OptionId) => focusedOptionId === id,
     [focusedOptionId]
   );
 
   const isOptionHovered = useCallback(
-    (option: Option) => hoveredOptionId === option.id,
+    (id: OptionId) => hoveredOptionId === id,
     [hoveredOptionId]
   );
 
@@ -253,7 +253,7 @@ export const MultiSelectInput: React.FC<{
         >
           <div className={styles.multiSelect}>
             {selectedOptions.map(id => {
-              const option = options.find(option => option.id === id);
+              const option = optionsMap.get(id);
               if (!option) {
                 return null;
               }
@@ -316,9 +316,9 @@ export const MultiSelectInput: React.FC<{
             >
               {filteredOptions.length > 0 ? (
                 filteredOptions.map((option, i) => {
-                  const selected = isOptionSelected(option);
-                  const optionFocused = isOptionFocused(option);
-                  const optionHovered = isOptionHovered(option);
+                  const selected = isOptionSelected(option.id);
+                  const optionFocused = isOptionFocused(option.id);
+                  const optionHovered = isOptionHovered(option.id);
                   const optionId = `${id}-option-${option.id}`;
 
                   return (
