@@ -251,7 +251,7 @@ export const MultiSelectInput: React.FC<{
           aria-expanded={menuOpen}
           aria-haspopup="listbox"
         >
-          <div className={styles.multiSelect}>
+          <div className={styles.tagsAndSearchContainer}>
             {selectedOptions.map(id => {
               const option = optionsMap.get(id);
               if (!option) {
@@ -326,18 +326,7 @@ export const MultiSelectInput: React.FC<{
                       key={option.id}
                       id={optionId}
                       className={classNames(styles.option, {
-                        [styles.hover]:
-                          /**
-                           * hover styles if any are true:
-                           * - hovered
-                           * - focused and not hovered
-                           * - first option when text search is active
-                           *
-                           * hover takes priority over keyboard focus
-                           */
-                          optionHovered ||
-                          (!hoveredOptionId && optionFocused) ||
-                          (i === 0 && searchText.length),
+                        [styles.hover]: i === 0 && searchText.length,
                       })}
                       onClick={() => handleToggleOption(option.id)}
                       onKeyDown={e => handleOptionKeyDown(e, option.id)}

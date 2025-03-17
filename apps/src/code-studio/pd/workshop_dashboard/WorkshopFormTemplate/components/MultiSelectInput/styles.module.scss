@@ -23,7 +23,7 @@
     margin-right: 0.75rem;
   }
 
-  .multiSelect {
+  .tagsAndSearchContainer {
     flex-wrap: wrap;
     row-gap: 0.5rem;
     column-gap: 0.5rem;
@@ -76,6 +76,7 @@
     max-height: 20rem;
     overflow-y: auto;
     background-color: var(--background-neutral-primary);
+    padding: 0.25rem 0;
 
     .option {
       cursor: pointer;
@@ -83,11 +84,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-radius: $regular-border-radius;
       position: relative;
 
       &:focus-visible {
         @include focus-styles;
+        outline-offset: -2px;
       }
 
       .optionLabelText {
@@ -103,14 +104,9 @@
         }
       }
 
+      &:hover,
       &.hover {
-        &::before {
-          background-color: var(--background-neutral-tertiary);
-          content: '';
-          position: absolute;
-          inset: 0;
-          z-index: -1;
-        }
+        background-color: var(--background-neutral-tertiary);
       }
     }
 
