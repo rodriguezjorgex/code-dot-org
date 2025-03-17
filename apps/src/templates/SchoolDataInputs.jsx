@@ -199,13 +199,6 @@ export default function SchoolDataInputs({
           </div>
         )}
       </div>
-      {schoolId === NonSchoolOptions.NO_SCHOOL_SETTING && (
-        <input
-          readOnly
-          name={fieldNames.schoolType}
-          value={NonSchoolOptions.NO_SCHOOL_SETTING}
-        />
-      )}
     </div>
   );
 }
