@@ -287,6 +287,7 @@ const FinishTeacherAccount: React.FunctionComponent<{
             )}
           </div>
           <SimpleDropdown
+            id="uitest-educator-role"
             className={classNames(style.dropdownContainer, style.requiredLabel)}
             labelText={locale.what_is_your_role()}
             name="educator_role"
