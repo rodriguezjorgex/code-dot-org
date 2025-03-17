@@ -20,7 +20,7 @@
   }
 
   .clearAllButton {
-    margin-right: 1rem;
+    margin-right: 0.75rem;
   }
 
   .multiSelect {
@@ -65,7 +65,7 @@
 
   .multiSelectMenu {
     position: absolute;
-    top: calc(100% + 0.25rem);
+    top: calc(100% + 0.3rem);
     left: 0;
     width: 100%;
     z-index: 10;
@@ -73,6 +73,9 @@
     border-radius: $regular-border-radius;
     box-shadow: 0 4px 18px 0 rgba(0 0 0 / 0.24);
     cursor: default;
+    max-height: 20rem;
+    overflow-y: auto;
+    background-color: var(--background-neutral-primary);
 
     .option {
       cursor: pointer;
