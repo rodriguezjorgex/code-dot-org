@@ -92,20 +92,21 @@ class SchoolInfoConfirmationDialog extends Component {
       PLATFORMS.BOTH
     );
     const formData = new FormData();
-    fetch(
-      `/api/v1/user_school_infos/${this.props.scriptData.existingSchoolInfo.user_school_info_id}/update_last_confirmation_date`,
-      {
-        method: 'PATCH',
-        body: formData,
-        headers: {
-          'X-CSRF-Token': await getAuthenticityToken(),
-        },
-      }
-    )
-      .then(this.closeModal)
-      .catch(error => {
-        this.setState({error});
-      });
+    try {
+      await fetch(
+        `/api/v1/user_school_infos/${this.props.scriptData.existingSchoolInfo.user_school_info_id}/update_last_confirmation_date`,
+        {
+          method: 'PATCH',
+          body: formData,
+          headers: {
+            'X-CSRF-Token': await getAuthenticityToken(),
+          },
+        }
+      );
+      this.closeModal();
+    } catch (error) {
+      this.setState({error});
+    }
   };
 
   handleClickUpdate = () => {
