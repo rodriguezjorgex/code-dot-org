@@ -20,8 +20,8 @@ export interface Option {
 export const MultiSelectInput: React.FC<{
   label: string;
   options: Option[];
-  selectedOptions: Array<OptionId>;
-  setSelectedOptions: (selectedOptions: Array<OptionId>) => void;
+  selectedOptions: OptionId[];
+  setSelectedOptions: (selectedOptions: OptionId[]) => void;
   id?: string;
   placeholder?: string;
   emptyStateMessage?: string;
