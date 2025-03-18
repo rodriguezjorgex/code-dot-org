@@ -54,9 +54,9 @@ class StudentCodeSampleController < ApplicationController
             project_id: student_code[:project_id],
             code_version: student_code[:code_version],
             student_code: student_code[:student_code],
-            evaluation: evaluation.ai_evaluation,
-            reasoning: evaluation.ai_reasoning,
-            criteria: evaluation.evaluation_criteria
+            ai_evaluation: evaluation.ai_evaluation,
+            ai_reasoning: evaluation.ai_reasoning,
+            evaluation_criteria: evaluation.evaluation_criteria
           }
         end
         have_enough_samples = code_samples.length >= num_samples
