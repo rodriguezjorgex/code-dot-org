@@ -67,7 +67,7 @@ export const MultiSelectInput: React.FC<{
         activeElement.focus();
       }
     }
-  }, [focusedOptionId, filteredOptions, menuOpen]);
+  }, [focusedOptionId, menuOpen]);
 
   useEffect(() => {
     if (!menuOpen) {
@@ -81,7 +81,7 @@ export const MultiSelectInput: React.FC<{
         wrapperRef.current &&
         !wrapperRef.current.contains(event.target as Node)
       ) {
-        closeMenu(true);
+        closeMenu({skipFocus: true});
       }
     };
 
@@ -94,7 +94,7 @@ export const MultiSelectInput: React.FC<{
     if (!menuOpen) {
       setMenuOpen(true);
     } else if (!e.target.value) {
-      closeMenu();
+      closeMenu({skipFocus: true});
     }
   };
 
@@ -108,6 +108,11 @@ export const MultiSelectInput: React.FC<{
 
   const handleRemoveOption = (optionId: OptionId) => {
     setSelectedOptions(selectedOptions.filter(id => id !== optionId));
+  };
+
+  const handleClearAll = () => {
+    setSelectedOptions([]);
+    closeMenu();
   };
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -171,6 +176,7 @@ export const MultiSelectInput: React.FC<{
               ]?.id ?? null
         );
         break;
+      // intentional fallthrough case
       case 'Enter':
       case ' ':
         if (focusedOptionId !== null) {
@@ -178,19 +184,11 @@ export const MultiSelectInput: React.FC<{
           handleToggleOption(focusedOptionId);
         }
         break;
+      // intentional fallthrough case
       case 'Escape':
       case 'Tab':
-        closeMenu(e.key === 'Tab');
+        closeMenu({skipFocus: e.key === 'Tab'});
         break;
-    }
-  };
-
-  const closeMenu = (skipFocus = false) => {
-    setMenuOpen(false);
-    setSearchText('');
-    setFocusedOptionId(null);
-    if (!skipFocus) {
-      inputRef.current?.focus();
     }
   };
 
@@ -203,9 +201,13 @@ export const MultiSelectInput: React.FC<{
     }
   };
 
-  const handleClearAll = () => {
-    setSelectedOptions([]);
-    closeMenu();
+  const closeMenu = (options?: {skipFocus?: boolean}) => {
+    setMenuOpen(false);
+    setSearchText('');
+    setFocusedOptionId(null);
+    if (!options?.skipFocus) {
+      inputRef.current?.focus();
+    }
   };
 
   const isOptionSelected = useCallback(
