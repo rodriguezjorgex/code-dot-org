@@ -359,6 +359,22 @@ describe('MultiSelectInput', () => {
       expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
     });
 
+    it('closes dropdown on Tab key if no selected options', async () => {
+      const user = userEvent.setup();
+      render(<MultiSelectInput {...defaultProps} />);
+
+      const input = getInputElement();
+      await user.click(input);
+
+      // Check if dropdown is open
+      expect(getMenuElement()).toBeInTheDocument();
+
+      await user.keyboard('{Tab}');
+
+      // Check if dropdown is closed
+      expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    });
+
     it('removes last selected option on Backspace when input is empty', async () => {
       const mockSetSelectedOptions = jest.fn();
       const user = userEvent.setup();

@@ -136,6 +136,11 @@ export const MultiSelectInput: React.FC<{
           filteredOptions[filteredOptions.length - 1]?.id ?? null
         );
         break;
+      case 'Tab':
+        if (!anyOptionsSelected) {
+          closeMenu({skipFocus: true});
+        }
+        break;
       case 'Escape':
         closeMenu();
         break;
