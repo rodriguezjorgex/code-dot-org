@@ -179,7 +179,8 @@ export const MultiSelectInput: React.FC<{
         }
         break;
       case 'Escape':
-        closeMenu();
+      case 'Tab':
+        closeMenu(e.key === 'Tab');
         break;
     }
   };
