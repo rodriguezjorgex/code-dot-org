@@ -227,6 +227,11 @@ export const MultiSelectInput: React.FC<{
     [selectedOptions]
   );
 
+  const activeDescendant = useMemo(
+    () => (focusedOptionId ? `${id}-option-${focusedOptionId}` : undefined),
+    [focusedOptionId, id]
+  );
+
   return (
     <div ref={wrapperRef}>
       <FormFieldWrapper
@@ -310,6 +315,7 @@ export const MultiSelectInput: React.FC<{
               id={`${id}-listbox`}
               role="listbox"
               aria-multiselectable
+              aria-activedescendant={activeDescendant}
               aria-labelledby={`${id}-label`}
               tabIndex={-1}
               onKeyDown={handleMenuKeyDown}
