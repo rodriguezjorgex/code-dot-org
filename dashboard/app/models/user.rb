@@ -248,6 +248,7 @@ class User < ApplicationRecord
   has_many :user_school_infos
   after_save :update_and_add_users_school_infos, if: -> {saved_change_to_school_info_id? || (school_info_id.present? && user_school_infos.empty?)}
   validate :complete_school_info, if: :school_info_id_changed?, unless: proc {|u| u.purged_at.present?}
+  accepts_nested_attributes_for :school_info, reject_if: :preprocess_school_info
 
   has_many :pd_applications,
     class_name: 'Pd::Application::ApplicationBase',
@@ -409,17 +410,6 @@ class User < ApplicationRecord
 
   before_create :save_show_progress_table_v2
 
-  # NOTE: Order is important here.
-  before_save :make_teachers_21,
-    :normalize_email,
-    :hash_email,
-    :sanitize_race_data_set_urm,
-    :fix_by_user_type
-
-  before_save :remove_cleartext_emails, if: -> {student? && migrated? && user_type_changed?}
-
-  before_save :strip_display_family_names
-
   before_validation :parent_email_preference_setup, if: -> {parent_email_preference_opt_in_required? || parent_email_update_only?}
 
   before_validation :enforce_age_or_state_update, on: :update, if: :should_check_age_or_state_update?
@@ -445,6 +435,17 @@ class User < ApplicationRecord
 
   before_validation :update_share_setting, unless: :under_13?
 
+  # NOTE: Order is important here.
+  before_save :make_teachers_21,
+    :normalize_email,
+    :hash_email,
+    :sanitize_race_data_set_urm,
+    :fix_by_user_type
+
+  before_save :remove_cleartext_emails, if: -> {student? && migrated? && user_type_changed?}
+
+  before_save :strip_display_family_names
+
   before_destroy :soft_delete_channels
 
   after_create :associate_with_potential_pd_enrollments
@@ -466,6 +467,8 @@ class User < ApplicationRecord
   after_save :save_email_reg_partner_preference, if: -> {share_teacher_email_reg_partner_opt_in_radio_choice.present?}
 
   after_destroy :record_soft_delete
+
+  scope :ignore_deleted_at_index, -> {from 'users IGNORE INDEX(index_users_on_deleted_at)'}
   # Include default Devise modules. Others available are:
   # :token_authenticatable, :confirmable, :timeoutable
   devise :invitable, :database_authenticatable, :registerable, :omniauthable,
@@ -477,10 +480,6 @@ class User < ApplicationRecord
   include Devise::Models::ManualSessionExpiration
 
   acts_as_paranoid # use deleted_at column instead of deleting rows
-
-  scope :ignore_deleted_at_index, -> {from 'users IGNORE INDEX(index_users_on_deleted_at)'}
-
-  accepts_nested_attributes_for :school_info, reject_if: :preprocess_school_info
 
   def save_email_preference
     if teacher?
