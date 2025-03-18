@@ -246,8 +246,6 @@ class User < ApplicationRecord
   has_many :user_levels, -> {order(id: :desc)}, inverse_of: :user
 
   has_many :user_school_infos
-  after_save :update_and_add_users_school_infos, if: -> {saved_change_to_school_info_id? || (school_info_id.present? && user_school_infos.empty?)}
-  validate :complete_school_info, if: :school_info_id_changed?, unless: proc {|u| u.purged_at.present?}
   accepts_nested_attributes_for :school_info, reject_if: :preprocess_school_info
 
   has_many :pd_applications,
@@ -305,6 +303,8 @@ class User < ApplicationRecord
   defer_age = proc {|user| %w(google_oauth2 clever).include?(user.provider) || user.sponsored? || Policies::Lti.lti?(user)}
   validates :age, presence: true, on: :create, unless: defer_age # only do this on create to avoid problems with existing users
   validates :age, presence: false, inclusion: {in: AGE_DROPDOWN_OPTIONS}, allow_blank: true
+
+  validate :complete_school_info, if: :school_info_id_changed?, unless: proc {|u| u.purged_at.present?}
 
   validates :data_transfer_agreement_accepted, acceptance: true, if: :data_transfer_agreement_required
   validates_presence_of :data_transfer_agreement_request_ip, if: -> {data_transfer_agreement_accepted.present?}
@@ -465,6 +465,8 @@ class User < ApplicationRecord
   after_save :save_parent_email_preference, if: :parent_email_preference_opt_in_required?
 
   after_save :save_email_reg_partner_preference, if: -> {share_teacher_email_reg_partner_opt_in_radio_choice.present?}
+
+  after_save :update_and_add_users_school_infos, if: -> {saved_change_to_school_info_id? || (school_info_id.present? && user_school_infos.empty?)}
 
   after_destroy :record_soft_delete
 
