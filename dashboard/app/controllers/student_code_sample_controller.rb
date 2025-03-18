@@ -78,7 +78,9 @@ class StudentCodeSampleController < ApplicationController
       token = storage_encrypt_channel_id(storage_id, storage_app_id)
       _owner_storage_id, project_id = storage_decrypt_channel_id(token)
       s3_filename = "#{base_dir}/#{storage_id}/#{project_id}/main.json"
-      body = s3.get_object(bucket: bucket, key: s3_filename, version_id: code_version)[:body].read
+      s3_args = {bucket: bucket, key: s3_filename}
+      s3_args[:version_id] = code_version if code_version
+      body = s3.get_object(s3_args)[:body].read
       student_code = JSON.parse(body)['source'] if body
     end
     {
