@@ -177,14 +177,6 @@ export const MultiSelectInput: React.FC<{
         );
         break;
       // intentional fallthrough case
-      case 'Enter':
-      case ' ':
-        if (focusedOptionId !== null) {
-          e.preventDefault();
-          handleToggleOption(focusedOptionId);
-        }
-        break;
-      // intentional fallthrough case
       case 'Escape':
       case 'Tab':
         closeMenu({skipFocus: e.key === 'Tab'});
