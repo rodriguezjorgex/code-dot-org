@@ -459,14 +459,16 @@ const MusicLabView: React.FunctionComponent<MusicLabViewProps> = ({
                 {WARNING_BANNER_MESSAGES.TOOLBOX_MODE}
               </div>
             )}
-            <CodeEditor
-              darkMode={true}
-              onCodeChange={code => {
-                executeCode(code);
-              }}
-              startCode={''}
-              editorConfigExtensions={[javascript()]}
-            />
+            {AppConfig.getValue('js-editor') === 'true' && (
+              <CodeEditor
+                darkMode={true}
+                onCodeChange={code => {
+                  executeCode(code);
+                }}
+                startCode={''}
+                editorConfigExtensions={[javascript()]}
+              />
+            )}
             <div role="application" id={blocklyDivId} />
             {showAdvancedControls && (
               <div className={moduleStyles.advancedControlsContainer}>

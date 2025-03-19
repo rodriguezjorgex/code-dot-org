@@ -17,6 +17,7 @@ import {ValueOf} from '@cdo/apps/types/utils';
 import {nameComparator} from '@cdo/apps/util/sort';
 
 import CustomMarshalingInterpreter from '../../lib/tools/jsinterpreter/CustomMarshalingInterpreter';
+import AppConfig from '../appConfig';
 import {BlockMode, Triggers} from '../constants';
 import musicI18n from '../locale';
 
@@ -577,8 +578,10 @@ export default class MusicBlocklyWorkspace {
     if (this.headlessMode) {
       return;
     }
-    if (!this.workspace) {
+    if (AppConfig.getValue('js-editor') === 'true') {
       return;
+    }
+    if (!this.workspace) {
       this.metricsReporter.logWarning(
         'updateHighlightedBlocks called before workspace initialized.'
       );

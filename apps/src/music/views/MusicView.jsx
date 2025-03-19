@@ -329,19 +329,19 @@ class UnconnectedMusicView extends React.Component {
     this.props.setPackId(packId);
     this.setExemplarPlaybackEvents();
 
-    /*
-    this.props.isPlayView
-      ? this.musicBlocklyWorkspace.initHeadless()
-      : this.musicBlocklyWorkspace.init(
-          document.getElementById(BLOCKLY_DIV_ID),
-          this.onBlockSpaceChange,
-          this.props.isReadOnlyWorkspace,
-          toolboxAllowList,
-          this.props.isRtl,
-          this.props.blockMode,
-          localizedToolboxDefinition
-        );
-    */
+    if (AppConfig.getValue('js-editor') !== 'true') {
+      this.props.isPlayView
+        ? this.musicBlocklyWorkspace.initHeadless()
+        : this.musicBlocklyWorkspace.init(
+            document.getElementById(BLOCKLY_DIV_ID),
+            this.onBlockSpaceChange,
+            this.props.isReadOnlyWorkspace,
+            toolboxAllowList,
+            this.props.isRtl,
+            this.props.blockMode,
+            localizedToolboxDefinition
+          );
+    }
 
     this.props.setShowInstructions(
       !!levelData?.text || !!this.props.longInstructions
@@ -726,7 +726,7 @@ class UnconnectedMusicView extends React.Component {
 
     // Sequence out all possible trigger events to preload sounds if necessary.
     this.sequencer.clear();
-    //this.musicBlocklyWorkspace.executeAllTriggers();
+    this.musicBlocklyWorkspace.executeAllTriggers();
 
     this.musicBlocklyWorkspace.executeCode(this.props.currentCode, {
       Sequencer: this.sequencer,
@@ -735,11 +735,14 @@ class UnconnectedMusicView extends React.Component {
     const allTriggerEvents = this.sequencer.getPlaybackEvents();
 
     this.sequencer.clear();
-    //this.musicBlocklyWorkspace.executeCompiledSong(this.playingTriggers);
 
-    this.musicBlocklyWorkspace.executeCode(this.props.currentCode, {
-      Sequencer: this.sequencer,
-    });
+    if (AppConfig.getValue('js-editor') === 'true') {
+      this.musicBlocklyWorkspace.executeCode(this.props.currentCode, {
+        Sequencer: this.sequencer,
+      });
+    } else {
+      this.musicBlocklyWorkspace.executeCompiledSong(this.playingTriggers);
+    }
 
     this.props.addPlaybackEvents(this.sequencer.getPlaybackEvents());
     this.props.setLastMeasure(this.sequencer.getLastMeasure());
@@ -904,13 +907,13 @@ class UnconnectedMusicView extends React.Component {
           analyticsReporter={this.analyticsReporter}
           blocklyWorkspace={this.musicBlocklyWorkspace}
           exemplarPlaybackEvents={this.getExemplarPlaybackEvents()}
-          executeCode={code => {
-            this.props.setCurrentCode(code);
-            this.executeCompiledSong();
-            //this.musicBlocklyWorkspace.executeCode(code, {
-            //  Sequencer: this.sequencer,
-            //});
-          }}
+          executeCode={
+            AppConfig.getValue('js-editor') === 'true' &&
+            (code => {
+              this.props.setCurrentCode(code);
+              this.executeCompiledSong();
+            })
+          }
         />
         <Callouts />
       </AnalyticsContext.Provider>
