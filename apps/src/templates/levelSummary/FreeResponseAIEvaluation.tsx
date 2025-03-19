@@ -13,7 +13,6 @@ import CollapsibleSection from '@cdo/apps/templates/CollapsibleSection';
 import style from '@cdo/apps/levelbuilder/ai-iteration-tools/ai-tutor/ai-tutor-tester.module.scss';
 
 interface LevelData {
-  levelInstructions: string;
   levelId: number;
   unitId: number;
 }
