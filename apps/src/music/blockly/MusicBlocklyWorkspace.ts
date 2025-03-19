@@ -578,6 +578,7 @@ export default class MusicBlocklyWorkspace {
       return;
     }
     if (!this.workspace) {
+      return;
       this.metricsReporter.logWarning(
         'updateHighlightedBlocks called before workspace initialized.'
       );

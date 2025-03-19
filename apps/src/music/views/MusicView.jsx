@@ -135,6 +135,8 @@ class UnconnectedMusicView extends React.Component {
     blockMode: PropTypes.string,
     playbackEvents: PropTypes.array,
     exemplarPlaybackEvents: PropTypes.array,
+    setCurrentCode: PropTypes.func,
+    currentCode: PropTypes.string,
     validationState: PropTypes.object,
   };
 
@@ -714,6 +716,10 @@ class UnconnectedMusicView extends React.Component {
   };
 
   executeCompiledSong = () => {
+    if (!this.sequencer) {
+      return;
+    }
+
     // Clear the events list because it will be populated next.
     this.props.clearPlaybackEvents();
     this.props.clearOrderedFunctions();
