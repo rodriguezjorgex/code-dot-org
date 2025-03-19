@@ -6,7 +6,11 @@ class OpenaiEvaluateController < ApplicationController
 
   # POST /openai/evaluate
   def evaluate
-    system_prompt = params[:systemPrompt]
+    # TODO: handle if level or unit is not found.
+    level = Level.find(params[:levelId])
+    unit = Unit.find(params[:unitId])
+    evaluation_type = params[:evaluationType]
+    system_prompt = AiSystemPrompts::EvaluateSystemPromptHelper.get_system_prompt(level, unit, evaluation_type)
     student_work = prepend_system_prompt(system_prompt, params[:studentWork])
     response = client.request_evaluation(student_work)
     response_body = JSON.parse(response.body)
