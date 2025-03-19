@@ -37,7 +37,7 @@ describe('LoginTypeSelection', () => {
     if (userType) {
       sessionStorage.setItem(ACCOUNT_TYPE_SESSION_KEY, userType);
     }
-    render(<LoginTypeSelection />);
+    render(<LoginTypeSelection isSignedOut={true} />);
   }
 
   it('redirects user back to account type page if they have not selected account type', async () => {
@@ -224,7 +224,6 @@ describe('LoginTypeSelection', () => {
       locale.confirm_password()
     );
     const beginSignUpParams = {
-      new_sign_up: true,
       user: {
         email: email,
         password: password,
@@ -300,7 +299,6 @@ describe('LoginTypeSelection', () => {
       locale.confirm_password()
     );
     const beginSignUpParams = {
-      new_sign_up: true,
       user: {
         email: email,
         password: password,
@@ -355,7 +353,6 @@ describe('LoginTypeSelection', () => {
       locale.confirm_password()
     );
     const beginSignUpParams = {
-      new_sign_up: true,
       user: {
         email: email,
         password: password,

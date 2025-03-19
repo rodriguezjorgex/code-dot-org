@@ -101,7 +101,7 @@ module AichatSafetyHelper
     end
 
     private def get_safety_system_prompt(level_id)
-      spanish_script_name = 'gen-ai-spanish-test-a-unit'
+      spanish_script_names = ['customizing-llms-latm-pilot']
 
       in_spanish_script = false
       if level_id
@@ -109,9 +109,9 @@ module AichatSafetyHelper
         bubble_choice_parents = BubbleChoice.parent_levels(level.name)
 
         any_parent_in_spanish_script = bubble_choice_parents.any? do |pl|
-          pl.script_levels.any? {|sl| sl.script.name == spanish_script_name}
+          pl.script_levels.any? {|sl| spanish_script_names.include?(sl.script.name)}
         end
-        level_in_spanish_script = level.script_levels.any? {|sl| sl.script.name == spanish_script_name}
+        level_in_spanish_script = level.script_levels.any? {|sl| spanish_script_names.include?(sl.script.name)}
         in_spanish_script = any_parent_in_spanish_script || level_in_spanish_script
       end
 
@@ -176,7 +176,20 @@ module AichatSafetyHelper
     end
   end
 
+  class StubbedToxicityDetector
+    def find_toxicity(_, text, _, _)
+      # Note that it's important that we use the word "Damn" here, as our UI tests specifically use this word
+      # so that we can use a stubbed version of our toxicity detection service in CI environments (ie, Drone).
+      text == 'Damn' ?
+        {text: text, blocked_by: 'openai', details: {evaluation: 'INAPPROPRIATE'}} :
+        nil
+    end
+  end
+
   def self.find_toxicity(role, text, locale, level_id)
-    ToxicityDetector.new.find_toxicity(role, text, locale, level_id)
+    # Stubbed toxicity detection allows UI tests (without the roundtrip to third-party moderation services) to run in CI environments
+    Rails.application.config.respond_to?(:stub_aichat_external_services) && Rails.application.config.stub_aichat_external_services ?
+      StubbedToxicityDetector.new.find_toxicity(nil, text, nil, nil) :
+      ToxicityDetector.new.find_toxicity(role, text, locale, level_id)
   end
 end

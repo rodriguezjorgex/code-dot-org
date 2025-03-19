@@ -205,6 +205,14 @@
       "import": "./dist/esm/formFieldWrapper/index.mjs",
       "require": "./dist/cjs/formFieldWrapper/index.js"
     },
+    "./cms/image": {
+      "types": {
+        "import": "./dist/esm/cms/image/index.d.ts",
+        "require": "./dist/cjs/cms/image/index.d.ts"
+      },
+      "import": "./dist/esm/cms/image/index.mjs",
+      "require": "./dist/cjs/cms/image/index.js"
+    },
     "./link": {
       "types": {
         "import": "./dist/esm/link/index.d.ts",
@@ -214,6 +222,22 @@
       "require": "./dist/cjs/link/index.js"
     },
     "./link/index.css": "./dist/esm/link/index.css",
+    "./list": {
+      "types": {
+        "import": "./dist/esm/list/index.d.ts",
+        "require": "./dist/cjs/list/index.d.ts"
+      },
+      "import": "./dist/esm/list/index.mjs",
+      "require": "./dist/cjs/list/index.js"
+    },
+    "./list/simpleList": {
+      "types": {
+        "import": "./dist/esm/list/simpleList/index.d.ts",
+        "require": "./dist/cjs/list/simpleList/index.d.ts"
+      },
+      "import": "./dist/esm/list/simpleList/index.mjs",
+      "require": "./dist/cjs/list/simpleList/index.js"
+    },
     "./modal": {
       "types": {
         "import": "./dist/esm/modal/index.d.ts",
@@ -237,6 +261,14 @@
       },
       "import": "./dist/esm/radioButton/index.mjs",
       "require": "./dist/cjs/radioButton/index.js"
+    },
+    "./cms/iframe": {
+      "types": {
+        "import": "./dist/esm/cms/iframe/index.d.ts",
+        "require": "./dist/cjs/cms/iframe/index.d.ts"
+      },
+      "import": "./dist/esm/cms/iframe/index.mjs",
+      "require": "./dist/cjs/cms/iframe/index.js"
     },
     "./cms/section": {
       "types": {
