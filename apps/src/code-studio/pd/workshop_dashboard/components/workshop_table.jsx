@@ -243,7 +243,7 @@ export default class WorkshopTable extends React.Component {
   };
 
   formatVirtualFormat = isVirtual => {
-    return isVirtual ? 'Virtual' : 'In-person';
+    return isVirtual ? 'Virtual' : 'In-Person';
   };
 
   formatOrganizer = organizer => {
