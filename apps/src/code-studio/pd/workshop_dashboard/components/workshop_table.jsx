@@ -137,7 +137,7 @@ export default class WorkshopTable extends React.Component {
           transforms: [sortable],
         },
         cell: {
-          formatters: [this.formatBoolean],
+          formatters: [this.formatVirtualFormat],
         },
       },
       {
@@ -242,8 +242,8 @@ export default class WorkshopTable extends React.Component {
     return <SessionTimesList sessions={rowData.sessions} />;
   };
 
-  formatBoolean = bool => {
-    return bool ? 'Yes' : 'No';
+  formatVirtualFormat = isVirtual => {
+    return isVirtual ? 'Virtual' : 'In-person';
   };
 
   formatOrganizer = organizer => {
