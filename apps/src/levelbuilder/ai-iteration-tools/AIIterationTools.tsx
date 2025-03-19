@@ -1,10 +1,10 @@
 import React from 'react';
 
 import AITutorTester from './ai-tutor/AITutorTester';
+import FreeResponseDatasetMaker from './FreeResponseDatasetMaker';
 import StudentCodeDatasetMaker from './StudentCodeDatasetMaker';
 
 import styles from './ai-tutor/ai-tutor-tester.module.scss';
-import FreeResponseDatasetMaker from './FreeResponseDatasetMaker';
 
 interface AIIterationToolsProps {
   allowed: boolean;
