@@ -1,7 +1,8 @@
 require 'cdo/shared_constants'
 
+# Helper methods for generating system prompts for AI shared across
+# AI Tutor and Evaluate Student Learning.
 module AiSystemPrompts::SystemPromptHelper
-  # What's shared between Evaluate & AI Tutor?
   def self.get_basic_system_prompt(level, unit)
     base_prompt =
       "You are an expert Computer Science teacher. Your students are in grades: #{get_grade_levels(unit)}. The programming language they are learning is #{get_programming_language(unit)}. They are working on a level where they have been asked to #{get_level_instructions(level)}."
@@ -30,9 +31,7 @@ module AiSystemPrompts::SystemPromptHelper
   end
 
   def self.programming_level?(level)
-    level_type = level.type
-    # This is a subset of programming level types that also have an AI feature that uses the system prompt helper.
-    ["Applab", "Javalab", "Pythonlab"].include?(level_type)
+    level.upper_grades_programming_level?
   end
 
   def self.get_level_instructions(level)
@@ -41,8 +40,7 @@ module AiSystemPrompts::SystemPromptHelper
   end
 
   def self.get_starter_code(level)
-    starter_code = level.properties["start_blocks"]
-    "\n Here is the starter code for this level: #{starter_code}"
+    "\n Here is the starter code for this level: #{level.get_starter_code}"
   end
 
   def self.get_validated_level_test_file_contents(level)
