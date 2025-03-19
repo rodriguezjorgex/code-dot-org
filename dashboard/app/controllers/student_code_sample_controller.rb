@@ -8,8 +8,18 @@ class StudentCodeSampleController < ApplicationController
     num_samples = student_code_sample_params[:num_samples].to_i
 
     return render json: [] if num_samples == 0
-    check_valid_level(level_id)
-    check_valid_unit(unit_id)
+
+    begin
+      Level.find(level_id)
+    rescue ActiveRecord::RecordNotFound
+      return render status: :not_found, json: "Level with id #{level_id}"
+    end
+
+    begin
+      Unit.find(unit_id)
+    rescue ActiveRecord::RecordNotFound
+      return render status: :not_found, json: "Unit with id #{unit_id}"
+    end
 
     if student_code_sample_params[:include_ai_evaluations]
       fetch_student_code_samples_with_evaluations(level_id, unit_id, num_samples)
@@ -75,40 +85,26 @@ class StudentCodeSampleController < ApplicationController
     user_level = UserLevel.where(user_id: user_id, level_id: level_id, script_id: unit_id).last
     if user_level && channel_token
       storage_app_id = channel_token.storage_app_id
-      token = storage_encrypt_channel_id(storage_id, storage_app_id)
-      _owner_storage_id, project_id = storage_decrypt_channel_id(token)
-      s3_filename = "#{base_dir}/#{storage_id}/#{project_id}/main.json"
+      channel_id = storage_encrypt_channel_id(storage_id, storage_app_id)
+      s3_filename = "#{base_dir}/#{storage_id}/#{storage_app_id}/main.json"
       s3_args = {bucket: bucket, key: s3_filename}
       s3_args[:version_id] = code_version if code_version
       body = s3.get_object(s3_args)[:body].read
       student_code = JSON.parse(body)['source'] if body
     end
     {
-      project_id: token,
+      project_id: channel_id,
       code_version: code_version,
       student_code: student_code,
     }
   end
 
-  def check_valid_level(level_id)
-    Level.find(level_id)
-  rescue ActiveRecord::RecordNotFound
-    return render status: :not_found, json: "Level with id #{level_id}"
-  end
-
-  def check_valid_unit(unit_id)
-    Unit.find(unit_id)
-  rescue ActiveRecord::RecordNotFound
-    return render status: :not_found, json: "Unit with id #{unit_id}"
-  end
-
   def student_code_sample_params
-    student_code_sample_params = params.transform_keys(&:underscore).permit(
+    params.transform_keys(&:underscore).permit(
       :level_id,
       :unit_id,
       :num_samples,
       :include_ai_evaluations,
     )
-    student_code_sample_params
   end
 end
