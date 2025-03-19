@@ -4,6 +4,7 @@ import AITutorTester from './ai-tutor/AITutorTester';
 import StudentCodeDatasetMaker from './StudentCodeDatasetMaker';
 
 import styles from './ai-tutor/ai-tutor-tester.module.scss';
+import FreeResponseDatasetMaker from './FreeResponseDatasetMaker';
 
 interface AIIterationToolsProps {
   allowed: boolean;
@@ -25,6 +26,8 @@ const AIIterationTools: React.FC<AIIterationToolsProps> = ({allowed}) => {
         <div>
           <StudentCodeDatasetMaker />
           <br />
+          <br />
+          <FreeResponseDatasetMaker />
           <hr />
           <br />
           <AITutorTester />
