@@ -3,6 +3,8 @@
  *
  * Note: This file must be imported both server-side and client-side to ensure Contentful is able to map on both rendering modes.
  */
+import {defineComponents} from '@contentful/experiences-sdk-react';
+
 import Button, {ButtonContentfulComponentDefinition} from '@/components/button';
 import VideoCarousel, {
   VideoCarouselContentfulComponentDefinition,
@@ -28,9 +30,10 @@ import Paragraph, {
 import Section, {
   SectionContentfulComponentDefinition,
 } from '@/components/section';
+import SimpleList, {
+  SimpleListContentfulComponentDefinition,
+} from '@/components/simpleList';
 import Video, {VideoContentfulComponentDefinition} from '@/components/video';
-
-import {defineComponents} from '@contentful/experiences-sdk-react';
 
 defineComponents(
   [
@@ -80,6 +83,10 @@ defineComponents(
       options: {
         wrapContainerWidth: '100%',
       },
+    },
+    {
+      component: SimpleList,
+      definition: SimpleListContentfulComponentDefinition,
     },
     {
       component: Video,

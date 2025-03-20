@@ -494,6 +494,12 @@ class Level < ApplicationRecord
     false
   end
 
+  # Programming levels are levels where students write code.
+  # These are the lab types that support programming used in 6-12th grade curriculum.
+  def upper_grades_programming_level?
+    %w(Applab Gamelab Javalab Pythonlab Weblab).include?(type)
+  end
+
   # Currently only Web Lab, Game Lab and App Lab levels can have teacher feedback
   def can_have_feedback?
     ["Applab", "Gamelab", "Weblab"].include?(type)
@@ -879,6 +885,7 @@ class Level < ApplicationRecord
   def summarize_for_lab2_properties(script, script_level = nil, current_user = nil)
     video = specified_autoplay_video&.summarize(false)&.camelize_keys
     properties_camelized = properties.camelize_keys
+    properties_camelized[:name] = name
     properties_camelized[:id] = id
     properties_camelized[:levelData] = video if video
     properties_camelized[:helpVideos] = related_videos.map(&:summarize)
@@ -942,9 +949,15 @@ class Level < ApplicationRecord
     properties['validations']
   end
 
+  # Some labs override this if starter code isn't block-based.
+  def get_starter_code
+    properties["start_blocks"]
+  end
+
   def get_exemplar_settings
     properties['exemplar_settings']
   end
+
   # Returns the level name, removing the name_suffix first (if present), and
   # also removing any additional suffixes of the format "_NNNN" which might
   # represent a version year.
