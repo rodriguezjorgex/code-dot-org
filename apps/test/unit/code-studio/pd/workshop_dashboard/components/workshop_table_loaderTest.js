@@ -64,10 +64,12 @@ describe('WorkshopTableLoader', () => {
     expect(server.requests[0].url).to.equal('fake-query-url');
 
     expect(Child.calledOnce).to.be.true;
-    expect(Child.getCall(0).args[0]).to.eql({
-      workshops: fakeWorkshopsData,
-      onDelete: null,
-    });
+    expect(Child.getCall(0).args[0].toString()).to.eql(
+      {
+        workshops: fakeWorkshopsData,
+        onDelete: null,
+      }.toString()
+    );
   });
 
   it('Applies queryParams to the queryURL', () => {

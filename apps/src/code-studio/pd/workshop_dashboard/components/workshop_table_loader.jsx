@@ -19,7 +19,7 @@ import {COURSE_BUILD_YOUR_OWN} from '../workshopConstants';
 // Own workshop course offerings will be set as the workshop's subject.
 function ensureAllWorkshopsHaveSubjects(data) {
   let workshops = data.workshops;
-  workshops.forEach(ws => {
+  workshops?.forEach(ws => {
     if (ws.course === COURSE_BUILD_YOUR_OWN) {
       ws.subject = ws.course_offering_names;
     }
