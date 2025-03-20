@@ -642,7 +642,7 @@ export default class CustomMarshalingInterpreter extends Interpreter {
         let stepCount = 0;
         while (interpreter.step() && stepCount++ < runMaxSteps);
         if (stepCount >= runMaxSteps) {
-          console.log('exceeded step count!');
+          console.log('evalWith: exceeded step count.');
         }
       } else {
         interpreter.run();
