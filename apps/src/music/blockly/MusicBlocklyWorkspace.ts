@@ -416,7 +416,7 @@ export default class MusicBlocklyWorkspace {
     try {
       CustomMarshalingInterpreter.evalWith(code, scope, {runMaxSteps: 1000});
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 

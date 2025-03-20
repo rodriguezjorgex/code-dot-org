@@ -71,7 +71,6 @@ import {
   setSelectedTriggerId,
   clearSelectedTriggerId,
   getBlockMode,
-  setCurrentCode,
 } from '../redux/musicRedux';
 import {Key} from '../utils/Notes';
 import SoundUploader from '../utils/SoundUploader';
@@ -135,8 +134,6 @@ class UnconnectedMusicView extends React.Component {
     blockMode: PropTypes.string,
     playbackEvents: PropTypes.array,
     exemplarPlaybackEvents: PropTypes.array,
-    setCurrentCode: PropTypes.func,
-    currentCode: PropTypes.string,
     validationState: PropTypes.object,
   };
 
@@ -715,8 +712,13 @@ class UnconnectedMusicView extends React.Component {
     );
   };
 
+  // Execute a song that has already been compiled, presumably from Blockly sources.
   executeCompiledSong = () => {
     if (!this.sequencer) {
+      return;
+    }
+
+    if (AppConfig.getValue('js-editor') === 'true') {
       return;
     }
 
@@ -727,22 +729,11 @@ class UnconnectedMusicView extends React.Component {
     // Sequence out all possible trigger events to preload sounds if necessary.
     this.sequencer.clear();
     this.musicBlocklyWorkspace.executeAllTriggers();
-
-    this.musicBlocklyWorkspace.executeCode(this.props.currentCode, {
-      Sequencer: this.sequencer,
-    });
-
     const allTriggerEvents = this.sequencer.getPlaybackEvents();
 
     this.sequencer.clear();
 
-    if (AppConfig.getValue('js-editor') === 'true') {
-      this.musicBlocklyWorkspace.executeCode(this.props.currentCode, {
-        Sequencer: this.sequencer,
-      });
-    } else {
-      this.musicBlocklyWorkspace.executeCompiledSong(this.playingTriggers);
-    }
+    this.musicBlocklyWorkspace.executeCompiledSong(this.playingTriggers);
 
     this.props.addPlaybackEvents(this.sequencer.getPlaybackEvents());
     this.props.setLastMeasure(this.sequencer.getLastMeasure());
@@ -750,6 +741,38 @@ class UnconnectedMusicView extends React.Component {
       orderedFunctions: this.sequencer.getOrderedFunctions?.() || [],
     });
 
+    return this.preloadSounds(allTriggerEvents);
+  };
+
+  // Execute some song code directly.  Currently called by the prototype JavaScript editor.
+  executeSongCode = code => {
+    if (!this.sequencer) {
+      return;
+    }
+
+    if (AppConfig.getValue('js-editor') !== 'true') {
+      return;
+    }
+
+    // Clear the events list because it will be populated next.
+    this.props.clearPlaybackEvents();
+    this.props.clearOrderedFunctions();
+
+    this.sequencer.clear();
+
+    this.musicBlocklyWorkspace.executeCode(code, {
+      Sequencer: this.sequencer,
+    });
+
+    this.props.addPlaybackEvents(this.sequencer.getPlaybackEvents());
+    this.props.setLastMeasure(this.sequencer.getLastMeasure());
+
+    return this.preloadSounds();
+  };
+
+  // Preload sounds that the sequencer knows about.
+  // Called by executeCompiledSong and executeSongCode.
+  preloadSounds = (allTriggerEvents = []) => {
     return this.player.preloadSounds(
       [...this.sequencer.getPlaybackEvents(), ...allTriggerEvents],
       (loadTimeMs, soundsLoaded) => {
@@ -910,8 +933,7 @@ class UnconnectedMusicView extends React.Component {
           executeCode={
             AppConfig.getValue('js-editor') === 'true' &&
             (code => {
-              this.props.setCurrentCode(code);
-              this.executeCompiledSong();
+              this.executeSongCode(code);
             })
           }
         />
@@ -946,7 +968,6 @@ const MusicView = connect(
     isPlayView: state.lab.isShareView,
     playbackEvents: state.music.playbackEvents,
     validationState: state.lab.validationState,
-    currentCode: state.music.currentCode,
   }),
   dispatch => ({
     setPackId: packId => dispatch(setPackId(packId)),
@@ -976,7 +997,6 @@ const MusicView = connect(
     updateLoadProgress: value => dispatch(setSoundLoadingProgress(value)),
     setUndoStatus: value => dispatch(setUndoStatus(value)),
     clearCallout: id => dispatch(clearCallout()),
-    setCurrentCode: code => dispatch(setCurrentCode(code)),
   })
 )(UnconnectedMusicView);
 
