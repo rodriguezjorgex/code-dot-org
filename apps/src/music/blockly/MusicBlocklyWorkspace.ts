@@ -587,6 +587,7 @@ export default class MusicBlocklyWorkspace {
       );
       return;
     }
+
     // Clear all highlights.
     for (const block of this.workspace.getAllBlocks()) {
       (this.workspace as GoogleBlockly.WorkspaceSvg).highlightBlock(

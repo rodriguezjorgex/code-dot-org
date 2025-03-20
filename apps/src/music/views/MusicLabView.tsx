@@ -462,9 +462,7 @@ const MusicLabView: React.FunctionComponent<MusicLabViewProps> = ({
             {AppConfig.getValue('js-editor') === 'true' && (
               <CodeEditor
                 darkMode={true}
-                onCodeChange={code => {
-                  executeCode(code);
-                }}
+                onCodeChange={executeCode}
                 startCode={''}
                 editorConfigExtensions={[javascript()]}
               />

@@ -712,12 +712,11 @@ class UnconnectedMusicView extends React.Component {
     );
   };
 
-  // Execute a song that has already been compiled, presumably from Blockly sources.
+  // Execute a song that has already been compiled from Blockly sources.
   executeCompiledSong = () => {
     if (!this.sequencer) {
       return;
     }
-
     if (AppConfig.getValue('js-editor') === 'true') {
       return;
     }
@@ -732,9 +731,7 @@ class UnconnectedMusicView extends React.Component {
     const allTriggerEvents = this.sequencer.getPlaybackEvents();
 
     this.sequencer.clear();
-
     this.musicBlocklyWorkspace.executeCompiledSong(this.playingTriggers);
-
     this.props.addPlaybackEvents(this.sequencer.getPlaybackEvents());
     this.props.setLastMeasure(this.sequencer.getLastMeasure());
     this.props.addOrderedFunctions({
@@ -744,12 +741,11 @@ class UnconnectedMusicView extends React.Component {
     return this.preloadSounds(allTriggerEvents);
   };
 
-  // Execute some song code directly.  Currently called by the prototype JavaScript editor.
+  // Execute some song code directly.  Called by the JavaScript editor.
   executeSongCode = code => {
     if (!this.sequencer) {
       return;
     }
-
     if (AppConfig.getValue('js-editor') !== 'true') {
       return;
     }
