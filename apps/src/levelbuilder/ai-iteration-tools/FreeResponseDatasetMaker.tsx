@@ -13,13 +13,12 @@ interface StudentFreeResponseAnswer {
   studentDisplayName: string;
   sectionId: number;
   studentWork: string;
-  question: string;
 }
 
 interface StudentFreeResponseEvaluation extends StudentFreeResponseAnswer {
   aiEvaluation: string;
   aiReasoning: string;
-  evaluationCriteria?: string;
+  evaluationCriteria: string;
 }
 
 const FreeResponseDatasetMaker: React.FC = () => {
@@ -29,10 +28,11 @@ const FreeResponseDatasetMaker: React.FC = () => {
   const [numSamples, setNumSamples] = useState<string>('25');
   const [includeAiEvaluations, setIncludeAiEvaluations] =
     useState<boolean>(false);
-  const [pending, setPending] = useState<boolean>(false);
+  const [fetchPending, setFetchPending] = useState<boolean>(false);
   const [fetchedSamples, setFetchedSamples] = useState<
     StudentFreeResponseAnswer[]
   >([]);
+  const [evaluationPending, setEvaluationPending] = useState<boolean>(false);
   const [evaluatedSamples, setEvaluatedSamples] = useState<
     StudentFreeResponseEvaluation[]
   >([]);
@@ -48,7 +48,7 @@ const FreeResponseDatasetMaker: React.FC = () => {
   };
 
   const getStudentFreeResponseAnswers = async () => {
-    setPending(true);
+    setFetchPending(true);
     const studentWorkRequest = {
       includeAiEvaluations: includeAiEvaluations,
       numSamples: Number(numSamples),
@@ -57,42 +57,33 @@ const FreeResponseDatasetMaker: React.FC = () => {
     };
     const studentAnswers = await fetchFreeResponseAnswers(studentWorkRequest);
     setFetchedSamples(studentAnswers as unknown as StudentFreeResponseAnswer[]);
-    setPending(false);
+    setFetchPending(false);
   };
 
-  // TODO: Evaluate the fetched student responses with AI
-
-  const basePrompt =
-    'You are a teaching assistant for a high school AP Computer Science class where the students are learning JavaScript.';
-
   const getAIEvaluations = async () => {
-    setPending(true);
+    setEvaluationPending(true);
     const responsePromises = fetchedSamples.map(async studentResponse => {
       return evaluateStudentResponse(studentResponse);
     });
     await Promise.allSettled(responsePromises);
+    setEvaluationPending(false);
   };
 
   const evaluateStudentResponse = async (
     studentAnswer: StudentFreeResponseAnswer
   ) => {
-    const systemPrompt = `${basePrompt} Please review the student's work. Respond in correctly formatted JSON.
-        evaluationCriteria should just be a copy of "hello".
-        aiEvaluation should be your assessment of the student's work. Respond with "great", "ok", or "needs revision".
-        aiReasoning should be one sentence with your reasoning.`;
     const aiResponse = await evaluateStudentWork(
       studentAnswer,
       parseInt(levelId),
-      parseInt(unitId),
-      systemPrompt
+      parseInt(unitId)
     );
     const evaluation = {
       ...studentAnswer,
       aiEvaluation: aiResponse.aiEvaluation,
       aiReasoning: aiResponse.aiReasoning,
+      evaluationCriteria: aiResponse.evaluationCriteria,
     };
     setEvaluatedSamples(prevSamples => [...prevSamples, evaluation]);
-    setPending(false);
   };
 
   return (
@@ -143,8 +134,8 @@ const FreeResponseDatasetMaker: React.FC = () => {
           <Button
             text="Fetch Free Responses"
             onClick={getStudentFreeResponseAnswers}
-            disabled={pending}
-            isPending={pending}
+            disabled={fetchPending}
+            isPending={fetchPending}
           />
         </div>
         <br />
@@ -153,7 +144,7 @@ const FreeResponseDatasetMaker: React.FC = () => {
             text="Evaluate Free Responses"
             onClick={getAIEvaluations}
             disabled={!includeAiEvaluations || fetchedSamples.length === 0}
-            isPending={pending}
+            isPending={evaluationPending}
           />
         </div>
         <br />
@@ -161,7 +152,10 @@ const FreeResponseDatasetMaker: React.FC = () => {
           <Button
             text="Download CSV"
             onClick={downloadCSV}
-            disabled={evaluatedSamples.length === 0}
+            disabled={
+              evaluatedSamples.length === 0 ||
+              evaluatedSamples.length !== fetchedSamples.length
+            }
           />
         </div>
       </div>

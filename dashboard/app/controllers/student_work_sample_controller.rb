@@ -27,7 +27,7 @@ class StudentWorkSampleController < ApplicationController
     sections = Section.where(script_id: unit_id)
     student_answers = []
     have_enough_samples = false
-    sections.each do |section|
+    sections.shuffle.each do |section|
       student_ids = Follower.where(section: section).pluck(:student_user_id)
       student_ids.each do |student_id|
         unless have_enough_samples
@@ -51,8 +51,12 @@ class StudentWorkSampleController < ApplicationController
   end
 
   def get_free_response_answer(user_id, level_id, unit_id)
-    user_level = UserLevel.where(user_id: user_id, level_id: level_id, script_id: unit_id).last
-    user_level.level_source.try(:data)
+    begin
+      user_level = UserLevel.where(user_id: user_id, level_id: level_id, script_id: unit_id).last
+    rescue ActiveRecord::RecordNotFound
+      return render status: :not_found, json: "No UserLevel found for user #{user_id}, level #{level_id}, unit #{unit_id}"
+    end
+    user_level&.level_source.try(:data)
   end
 
   # POST /student_work_sample/fetch_student_code_samples
@@ -62,12 +66,14 @@ class StudentWorkSampleController < ApplicationController
     num_samples = student_work_params[:num_samples].to_i
 
     return render json: [] if num_samples == 0
-    # TODO: confirm it's a programming level before trying to fetch student code.
+
     begin
       Level.find(level_id)
     rescue ActiveRecord::RecordNotFound
       return render status: :not_found, json: "Level with id #{level_id}"
     end
+
+    return render status: :bad_request, json: "Level #{level_id} is not a programming level" unless level.upper_grades_programming_level?
 
     begin
       Unit.find(unit_id)
@@ -88,7 +94,7 @@ class StudentWorkSampleController < ApplicationController
     student_ids = Follower.where(section: sections).pluck(:student_user_id)
     code_samples = []
     have_enough_samples = false
-    student_ids.each do |student_id|
+    student_ids.shuffle.each do |student_id|
       unless have_enough_samples
         student_code = get_student_code(student_id, level_id, unit_id)
         if student_code[:student_code]
@@ -107,7 +113,7 @@ class StudentWorkSampleController < ApplicationController
     end
     code_samples = []
     have_enough_samples = false
-    evaluations.each do |evaluation|
+    evaluations.shuffle.each do |evaluation|
       unless have_enough_samples
         student_code = get_student_code(evaluation.user_id, level_id, unit_id, evaluation.code_version)
         if student_code[:student_code]
