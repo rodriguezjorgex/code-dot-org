@@ -68,7 +68,7 @@ class StudentWorkSampleController < ApplicationController
     return render json: [] if num_samples == 0
 
     begin
-      Level.find(level_id)
+      level = Level.find(level_id)
     rescue ActiveRecord::RecordNotFound
       return render status: :not_found, json: "Level with id #{level_id}"
     end
