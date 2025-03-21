@@ -83,7 +83,7 @@ async function evaluationFromOpenAI(
   evaluationType?: EvaluationType
 ): Promise<OpenaiChatCompletionMessage | null> {
   const payload = {
-    studentWork: [{role: Role.USER, content: studentWork}],
+    studentWork: studentWork,
     levelId: levelId,
     unitId: unitId,
     evaluationType: evaluationType,

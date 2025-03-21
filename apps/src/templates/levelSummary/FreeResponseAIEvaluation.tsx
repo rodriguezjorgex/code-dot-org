@@ -37,26 +37,15 @@ const FreeResponseAIEvaluation: React.FunctionComponent<
     const responsePromises = responses.map(async studentResponse => {
       return evaluateStudentResponse(studentResponse);
     });
-
-    await Promise.allSettled(responsePromises).then(() =>
-      summarizeStudentEvaluations(evaluations)
-    );
   };
 
   const evaluateStudentResponse = async (studentAnswer: StudentAnswer) => {
     let aiResponse: AIResponse;
-    if (studentAnswer.studentWork === '') {
-      aiResponse = {
-        aiEvaluation: 'no attempt',
-        aiReasoning: 'The student did not submit a response',
-      };
-    } else {
-      aiResponse = await evaluateStudentWork(
-        studentAnswer,
-        levelData.levelId,
-        levelData.unitId
-      );
-    }
+    aiResponse = await evaluateStudentWork(
+      studentAnswer,
+      levelData.levelId,
+      levelData.unitId
+    );
     const evaluation = {
       ...studentAnswer,
       aiEvaluation: aiResponse.aiEvaluation,
@@ -88,6 +77,7 @@ const FreeResponseAIEvaluation: React.FunctionComponent<
   useEffect(() => {
     if (evaluationComplete) {
       setEvaluationsPending(false);
+      summarizeStudentEvaluations(evaluations);
     }
   }, [evaluationComplete]);
 
