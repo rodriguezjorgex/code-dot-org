@@ -446,6 +446,7 @@ export interface SoundData {
   path?: string;
   src: string;
   length: number;
+  early?: number;
   type: SoundType;
   note?: number;
   restricted?: boolean;

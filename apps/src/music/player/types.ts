@@ -4,6 +4,8 @@ import {Effects} from './interfaces/Effects';
 export interface SampleEvent {
   // 1-based playback position in measures
   playbackPosition: number;
+  // How early to play the sample, in which case it has extra sound that should play before its scheduled time.
+  early?: number;
   // ID of the sound
   id: string;
   // URL of the sample
