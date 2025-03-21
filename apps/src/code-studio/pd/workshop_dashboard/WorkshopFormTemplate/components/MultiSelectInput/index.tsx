@@ -59,6 +59,9 @@ export const MultiSelectInput: React.FC<{
     [options]
   );
 
+  // sets focus and scrolls option into view
+  // focusedOptionId is set when navigating the option menu
+  // via keyboard interaction
   useEffect(() => {
     if (focusedOptionId !== null && menuOpen) {
       const activeElement = optionRefs.current.get(focusedOptionId ?? '');
@@ -69,12 +72,15 @@ export const MultiSelectInput: React.FC<{
     }
   }, [focusedOptionId, menuOpen]);
 
+  // clear the focusedOptionId when the option menu is closed
   useEffect(() => {
     if (!menuOpen) {
       setFocusedOptionId(null);
     }
   }, [menuOpen]);
 
+  // listen for clicks outside the component to close the option menu
+  // removes the listener when the component unmounts
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (
