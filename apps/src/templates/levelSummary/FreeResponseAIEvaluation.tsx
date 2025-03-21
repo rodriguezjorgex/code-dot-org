@@ -44,11 +44,19 @@ const FreeResponseAIEvaluation: React.FunctionComponent<
   };
 
   const evaluateStudentResponse = async (studentAnswer: StudentAnswer) => {
-    const aiResponse = await evaluateStudentWork(
-      studentAnswer,
-      levelData.levelId,
-      levelData.unitId
-    );
+    let aiResponse: AIResponse;
+    if (studentAnswer.studentWork === '') {
+      aiResponse = {
+        aiEvaluation: 'no attempt',
+        aiReasoning: 'The student did not submit a response',
+      };
+    } else {
+      aiResponse = await evaluateStudentWork(
+        studentAnswer,
+        levelData.levelId,
+        levelData.unitId
+      );
+    }
     const evaluation = {
       ...studentAnswer,
       aiEvaluation: aiResponse.aiEvaluation,
