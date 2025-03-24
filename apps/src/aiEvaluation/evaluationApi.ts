@@ -1,4 +1,3 @@
-import {Role} from '@cdo/apps/aiComponentLibrary/chatMessage/types';
 import HttpClient from '@cdo/apps/util/HttpClient';
 import {AiEvaluationTypes} from '@cdo/generated-scripts/sharedConstants';
 

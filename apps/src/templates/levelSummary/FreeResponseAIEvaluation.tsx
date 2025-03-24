@@ -37,6 +37,9 @@ const FreeResponseAIEvaluation: React.FunctionComponent<
     const responsePromises = responses.map(async studentResponse => {
       return evaluateStudentResponse(studentResponse);
     });
+    await Promise.allSettled(responsePromises).then(() =>
+      summarizeStudentEvaluations(evaluations)
+    );
   };
 
   const evaluateStudentResponse = async (studentAnswer: StudentAnswer) => {
@@ -76,7 +79,6 @@ const FreeResponseAIEvaluation: React.FunctionComponent<
   useEffect(() => {
     if (evaluationComplete) {
       setEvaluationsPending(false);
-      summarizeStudentEvaluations(evaluations);
     }
   }, [evaluationComplete]);
 
