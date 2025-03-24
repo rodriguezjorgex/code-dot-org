@@ -73,7 +73,7 @@ class StudentWorkSampleController < ApplicationController
       return render status: :not_found, json: "Level with id #{level_id}"
     end
 
-    return render status: :bad_request, json: "Level #{level_id} is not a programming level" unless level.upper_grades_programming_level?
+    return render status: :not_found, json: "Level #{level_id} is not a programming level" unless level.upper_grades_programming_level?
 
     begin
       Unit.find(unit_id)
