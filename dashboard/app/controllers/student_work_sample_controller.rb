@@ -15,7 +15,7 @@ class StudentWorkSampleController < ApplicationController
       return render status: :not_found, json: "Level with id #{level_id}"
     end
 
-    return render status: :bad_request, json: "Level #{level_id} is not a free response level" unless level.is_a?(FreeResponse)
+    return render status: :not_found, json: "Level #{level_id} is not a free response level" unless level.is_a?(FreeResponse)
 
     begin
       Unit.find(unit_id)
