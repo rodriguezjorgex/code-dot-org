@@ -17,15 +17,14 @@ import {COURSE_BUILD_YOUR_OWN} from '../workshopConstants';
 // To allow the workshop table to display/sort by Subjects/Topics, the subjects and topics have to all be
 // under the same field name. So, only for the purposes of displaying the info to the user, the Build Your
 // Own workshop course offerings will be set as the workshop's subject.
-function ensureAllWorkshopsHaveSubjects(data) {
-  let workshops = data.workshops;
-  workshops?.forEach(ws => {
+function processWorkshopData(workshopData) {
+  let updatedData = {...workshopData};
+  updatedData.workshops?.forEach(ws => {
     if (ws.course === COURSE_BUILD_YOUR_OWN) {
       ws.subject = ws.course_offering_names;
     }
   });
-  data.workshops = workshops;
-  return data;
+  return updatedData;
 }
 
 export default class WorkshopTableLoader extends React.Component {
@@ -85,7 +84,7 @@ export default class WorkshopTableLoader extends React.Component {
     }).done(data => {
       this.setState({
         loading: false,
-        workshops: ensureAllWorkshopsHaveSubjects(data),
+        workshops: processWorkshopData(data),
       });
     });
   };
