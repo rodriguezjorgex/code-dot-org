@@ -40,8 +40,7 @@ const FreeResponseAIEvaluation: React.FunctionComponent<
   };
 
   const evaluateStudentResponse = async (studentAnswer: StudentAnswer) => {
-    let aiResponse: AIResponse;
-    aiResponse = await evaluateStudentWork(
+    const aiResponse = await evaluateStudentWork(
       studentAnswer,
       levelData.levelId,
       levelData.unitId
