@@ -298,7 +298,7 @@ class ToneJSPlayer {
       .sync()
       .start(
         this.playbackTimeToTransportTime(
-          sample.playbackPosition - (sample.early || 0)
+          sample.playbackPosition - (sample.pickupLength || 0)
         )
       );
 
