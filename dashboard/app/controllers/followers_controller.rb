@@ -12,7 +12,7 @@ class FollowersController < ApplicationController
   # GET /join/:section_code (section_code is optional)
   def student_user_new
     if current_user
-      render 'join_section', formats: [:html]
+      render 'student_user_new', formats: [:html]
     else
       @section_code = params[:section_code]
       render 'join_logged_out', formats: [:html]
