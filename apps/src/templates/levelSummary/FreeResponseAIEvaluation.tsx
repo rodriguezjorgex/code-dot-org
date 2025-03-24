@@ -37,6 +37,7 @@ const FreeResponseAIEvaluation: React.FunctionComponent<
     const responsePromises = responses.map(async studentResponse => {
       return evaluateStudentResponse(studentResponse);
     });
+
     await Promise.allSettled(responsePromises).then(() =>
       summarizeStudentEvaluations(evaluations)
     );
