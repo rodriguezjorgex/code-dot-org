@@ -6,22 +6,22 @@ class OpenaiEvaluateControllerTest < ActionController::TestCase
   end
 
   # level not found
-  # test 'evaluate returns not found for bogus level",' do
-  #   student = create(:student)
-  #   sign_in(student)
-  #   unit = create(:script)
-  #   get :evaluate, params: {level_id: 18976, unit_id: unit.id, student_work: "This is a good answer.", evaluation_type: SharedConstants::AI_EVALUATION_TYPES[:SINGLE_STUDENT]}
-  #   assert_response :not_found
-  # end
+  test 'evaluate returns not found for bogus level",' do
+    student = create(:student)
+    sign_in(student)
+    unit = create(:script)
+    get :evaluate, params: {level_id: 18976, unit_id: unit.id, student_work: "This is a good answer.", evaluation_type: SharedConstants::AI_EVALUATION_TYPES[:SINGLE_STUDENT]}
+    assert_response :not_found
+  end
 
   # # unit not found
-  # test 'evaluate returns not found for bogus unit",' do
-  #   student = create(:student)
-  #   sign_in(student)
-  #   level = create(:level)
-  #   get :evaluate, params: {level_id: level.id, unit_id: 9478, student_work: "This is a good answer.", evaluation_type: SharedConstants::AI_EVALUATION_TYPES[:SINGLE_STUDENT]}
-  #   assert_response :not_found
-  # end
+  test 'evaluate returns not found for bogus unit",' do
+    student = create(:student)
+    sign_in(student)
+    level = create(:level)
+    get :evaluate, params: {level_id: level.id, unit_id: 9478, student_work: "This is a good answer.", evaluation_type: SharedConstants::AI_EVALUATION_TYPES[:SINGLE_STUDENT]}
+    assert_response :not_found
+  end
 
   # student did not attempt free response level
   test 'evaluate returns custom `no attempt` for empty free response",' do
