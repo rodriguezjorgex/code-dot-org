@@ -8,10 +8,10 @@ class OpenaiEvaluateController < ApplicationController
 
   # POST /openai/evaluate
   def evaluate
-    level_id = params[:levelId]
-    unit_id = params[:unitId]
-    student_work = params[:studentWork]
-    evaluation_type = params[:evaluationType]
+    level_id = evaluate_params[:level_id]
+    unit_id = evaluate_params[:unit_id]
+    student_work = evaluate_params[:student_work]
+    evaluation_type = evaluate_params[:evaluation_type]
 
     begin
       level = Level.find(level_id)
@@ -32,12 +32,14 @@ class OpenaiEvaluateController < ApplicationController
       aiEvaluation: "No attempt",
       evaluationCriteria: "Did the student attempt the level?",
     }
+
     if level.is_a?(FreeResponse) && student_work.delete(' ').empty?
-      no_attempt_response[:aiReasoning] = "The student's response was blank."
+      no_attempt_response[:aiReasoning] = "The student response was blank."
       # mimic the format of the response from AI
       json_response = {"content" => no_attempt_response.to_json}
       return render(status: :ok, json: json_response)
     elsif level.upper_grades_programming_level? && level.get_starter_code == student_work
+      puts "we are here!"
       no_attempt_response[:aiReasoning] = "The student did not change the starter code."
       # mimic the format of the response from AI
       json_response = {"content" => no_attempt_response.to_json}
@@ -52,6 +54,10 @@ class OpenaiEvaluateController < ApplicationController
       evaluation =  {status: response.code, json: response_body}
       return render(status: evaluation[:status], json: evaluation[:json])
     end
+  end
+
+  private def evaluate_params
+    params.transform_keys(&:underscore).permit(:level_id, :unit_id, :student_work, :evaluation_type)
   end
 
   private def client
