@@ -642,17 +642,17 @@ ActiveRecord::Schema.define(version: 2025_03_25_183210) do
   end
 
   create_table "feature_feedbacks", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "feature", null: false
-    t.integer "feature_id"
     t.integer "user_id", null: false
     t.integer "level_id"
     t.integer "script_id"
     t.boolean "thumbs_up"
     t.string "school_year"
     t.json "metadata"
+    t.string "feature_type", null: false
+    t.bigint "feature_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["feature"], name: "index_feature_feedbacks_on_feature"
+    t.index ["feature_type", "feature_id"], name: "index_feature_feedbacks_on_feature"
   end
 
   create_table "featured_projects", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
