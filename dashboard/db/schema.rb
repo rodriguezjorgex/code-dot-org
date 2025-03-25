@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_03_19_204416) do
+ActiveRecord::Schema.define(version: 2025_03_25_183210) do
 
   create_table "activities", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "user_id"
@@ -639,6 +639,20 @@ ActiveRecord::Schema.define(version: 2025_03_19_204416) do
     t.index ["overflow_max_user_id"], name: "index_experiments_on_overflow_max_user_id"
     t.index ["section_id"], name: "index_experiments_on_section_id"
     t.index ["start_at"], name: "index_experiments_on_start_at"
+  end
+
+  create_table "feature_feedbacks", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "feature", null: false
+    t.integer "feature_id"
+    t.integer "user_id", null: false
+    t.integer "level_id"
+    t.integer "script_id"
+    t.boolean "thumbs_up"
+    t.string "school_year"
+    t.json "metadata"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["feature"], name: "index_feature_feedbacks_on_feature"
   end
 
   create_table "featured_projects", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
