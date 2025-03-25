@@ -2,14 +2,15 @@ import Button from '@code-dot-org/component-library/button';
 import Checkbox from '@code-dot-org/component-library/checkbox';
 import {SimpleDropdown} from '@code-dot-org/component-library/dropdown';
 import TextField from '@code-dot-org/component-library/textField';
+import {WithTooltip} from '@code-dot-org/component-library/tooltip';
 import classNames from 'classnames';
 import moment from 'moment-timezone';
-import React, {FC, useMemo} from 'react';
+import React, {Dispatch, FC, useCallback, useMemo} from 'react';
 
 import {PdSessionFormats} from '@cdo/apps/generated/pd/sharedWorkshopConstants';
 
 import {DATE_FORMAT, TIME_FORMAT} from '../../../workshopConstants';
-import {SessionFormat, SessionFormState} from '../../types';
+import {SessionAction, SessionFormat, SessionFormState} from '../../types';
 
 import styles from './styles.module.scss';
 import commonStyles from '../../styles.module.scss';
@@ -37,40 +38,11 @@ export const generateNewSession = (
 
 export const SessionsEditor: FC<{
   sessions: SessionFormState[];
-  handleSessions: (sessions: SessionFormState[]) => void;
-}> = ({sessions, handleSessions}) => {
-  const getHandleSession = (index: number) => (session: SessionFormState) => {
-    const newSessions = [...sessions];
-    newSessions[index] = session;
-    handleSessions(newSessions);
-  };
-
-  const getDeleteSession = (index: number) => () => {
-    const newSessions = [...sessions];
-    newSessions.splice(index, 1);
-    handleSessions(newSessions);
-  };
-
-  const getHandleSameAsPrevious =
-    (index: number) => (sameAsPrevious: boolean) => {
-      const currentSession = {...sessions[index]};
-      currentSession.sameAsPrevious = sameAsPrevious;
-      const prevSession = sessions[index - 1];
-      if (sameAsPrevious && prevSession) {
-        currentSession.locationAddress = prevSession.locationAddress;
-        currentSession.locationName = prevSession.locationName;
-        currentSession.meetingLink = prevSession.meetingLink;
-      }
-      const newSessions = [...sessions];
-      newSessions.splice(index, 1, currentSession);
-      handleSessions(newSessions);
-    };
-
-  const addSession = () => {
-    const newSessions = [...sessions];
-    newSessions.push(generateNewSession(sessions[sessions.length - 1]));
-    handleSessions(newSessions);
-  };
+  dispatchSessions: Dispatch<SessionAction>;
+}> = ({sessions, dispatchSessions}) => {
+  const addSession = useCallback(() => {
+    dispatchSessions({type: 'ADD_SESSION'});
+  }, [dispatchSessions]);
 
   return (
     <>
@@ -144,14 +116,38 @@ export const SessionPart: FC<{
   }, []);
 
   const sameAsPreviousLabel = useMemo(() => {
-    if (session.format === 'in_person') {
-      return 'Location';
+    switch (format) {
+      case 'in_person':
+        return 'Location';
+      case 'virtual':
+        return 'Meeting link';
+      default:
+        return '';
     }
-    if (session.format === 'virtual') {
-      return 'Meeting link';
-    }
-    return '';
-  }, [session.format]);
+  }, [format]);
+
+  const handleSession = useCallback(
+    (update: Partial<SessionFormState>) => {
+      dispatchSessions({type: 'UPDATE_SESSION', index, payload: update});
+    },
+    [dispatchSessions, index]
+  );
+
+  const deleteSession = useCallback(() => {
+    dispatchSessions({type: 'DELETE_SESSION', index});
+  }, [dispatchSessions, index]);
+
+  const handleSameAsPrevious = useCallback(
+    (sameAsPrevious: boolean) => {
+      const updatedSession: Partial<SessionFormState> = {sameAsPrevious};
+      dispatchSessions({
+        type: 'UPDATE_SESSION',
+        index,
+        payload: updatedSession,
+      });
+    },
+    [dispatchSessions, index]
+  );
 
   return (
     <>
@@ -217,16 +213,25 @@ export const SessionPart: FC<{
           size="s"
           className={classNames(commonStyles.item, commonStyles.required)}
         />
-        <Button
-          icon={{iconName: 'minus'}}
-          onClick={deleteSession}
-          isIconOnly={true}
-          className={styles.deleteButton}
-          type="secondary"
-          color="destructive"
-          title="delete workshop session"
-          aria-label="delete workshop session"
-        />
+        <WithTooltip
+          tooltipProps={{
+            tooltipId: `${date}-${start}-${end}`,
+            size: 'xs',
+            text: 'delete workshop session',
+          }}
+        >
+          <Button
+            icon={{iconName: 'minus'}}
+            onClick={deleteSession}
+            isIconOnly={true}
+            className={styles.deleteButton}
+            type="secondary"
+            color="destructive"
+            title="delete workshop session"
+            aria-label="delete workshop session"
+            aria-describedby={`${date}-${start}-${end}`}
+          />
+        </WithTooltip>
       </div>
       <div className={commonStyles.card}>
         <div className={commonStyles.row}>
