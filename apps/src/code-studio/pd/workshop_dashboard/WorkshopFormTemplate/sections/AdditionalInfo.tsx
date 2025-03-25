@@ -3,7 +3,7 @@ import FormFieldWrapper from '@code-dot-org/component-library/formFieldWrapper';
 import TextField from '@code-dot-org/component-library/textField';
 import {Heading2} from '@code-dot-org/component-library/typography';
 import classNames from 'classnames';
-import React, {FC} from 'react';
+import React, {FC, useMemo} from 'react';
 
 import {ParticipantGroupTypes} from '@cdo/apps/generated/pd/sharedWorkshopConstants';
 
@@ -18,6 +18,16 @@ export const AdditionalInfo: FC<SectionProps> = ({
   state,
   handleChange,
 }) => {
+  const participantGroupTypeOptions = useMemo(() => {
+    return [
+      {value: '', text: 'Select a cohort type'},
+      ...ParticipantGroupTypes.map(value => ({
+        value,
+        text: value,
+      })),
+    ];
+  }, []);
+
   return (
     <>
       <Heading2 visualAppearance="heading-sm">Additional Information</Heading2>
@@ -40,10 +50,7 @@ export const AdditionalInfo: FC<SectionProps> = ({
             name="participant group type"
             onChange={e => handleChange({participantGroupType: e.target.value})}
             styleAsFormField={true}
-            items={ParticipantGroupTypes.map(value => ({
-              value,
-              text: value,
-            }))}
+            items={participantGroupTypeOptions}
             selectedValue={state.participantGroupType}
             labelText="Cohort type"
             size="s"
