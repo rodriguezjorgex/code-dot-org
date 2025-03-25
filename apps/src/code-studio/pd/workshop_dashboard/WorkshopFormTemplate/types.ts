@@ -1,3 +1,5 @@
+import {Dispatch} from 'react';
+
 export interface Option {
   value: string;
   label: string;
@@ -152,10 +154,16 @@ export interface SectionProps {
 
 export interface ScheduleProps extends SectionProps {
   sessions: SessionFormState[];
-  handleSessions: (sessions: SessionFormState[]) => void;
+  dispatchSessions: Dispatch<SessionAction>;
 }
 
 export interface PublishCancelButtonsProps {
   publish: () => void;
   cancel: () => void;
 }
+
+export type SessionAction =
+  | {type: 'ADD_SESSION'}
+  | {type: 'UPDATE_SESSION'; payload: Partial<SessionFormState>; index: number}
+  | {type: 'SET_SESSIONS'; payload: SessionFormState[]}
+  | {type: 'DELETE_SESSION'; index: number};

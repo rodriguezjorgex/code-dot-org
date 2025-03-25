@@ -21,6 +21,7 @@ import {
   Facilitator,
   RegionalPartner,
   Session,
+  SessionAction,
   SessionFormState,
   Workshop,
   WorkshopFormState,
@@ -67,6 +68,30 @@ export const sessionDataToState = (
     sameAsPrevious: false,
   }));
 
+const sessionReducer = (
+  state: SessionFormState[],
+  action: SessionAction
+): SessionFormState[] => {
+  switch (action.type) {
+    case 'ADD_SESSION':
+      return state.concat(generateNewSession(state[state.length - 1]));
+
+    case 'UPDATE_SESSION':
+      return state.map((session, i) =>
+        i === action.index ? {...session, ...action.payload} : session
+      );
+
+    case 'DELETE_SESSION':
+      return state.filter((_, i) => i !== action.index);
+
+    case 'SET_SESSIONS':
+      return action.payload;
+
+    default:
+      return state;
+  }
+};
+
 export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
   config,
 }) => {
@@ -101,19 +126,20 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
     }
   );
 
-  const [sessionFormState, setSessionFormState] = useState<SessionFormState[]>([
+  const [sessionFormState, dispatchSessions] = useReducer(sessionReducer, [
     generateNewSession(),
   ]);
 
   useEffect(() => {
     if (workshop) {
       setWorkshopFormState(workshopDataToState(workshop));
-      setSessionFormState(
-        sessionDataToState(
+      dispatchSessions({
+        type: 'SET_SESSIONS',
+        payload: sessionDataToState(
           workshop.sessions,
           workshop.time_zone ?? userTimeZone
-        )
-      );
+        ),
+      });
     }
   }, [workshop, userTimeZone]);
 
@@ -141,7 +167,7 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
         state={workshopFormState}
         handleChange={handleChange}
         sessions={sessionFormState}
-        handleSessions={setSessionFormState}
+        dispatchSessions={dispatchSessions}
         config={config}
       />
       <PartnerFacilitator

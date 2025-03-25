@@ -9,7 +9,7 @@ export const Schedule: FC<ScheduleProps> = ({
   state: {timeZone},
   handleChange,
   sessions,
-  handleSessions,
+  dispatchSessions,
 }) => {
   return (
     <>
@@ -19,7 +19,7 @@ export const Schedule: FC<ScheduleProps> = ({
         timeZone={timeZone}
         handleChange={tz => handleChange({timeZone: tz})}
       />
-      <SessionsEditor sessions={sessions} handleSessions={handleSessions} />
+      <SessionsEditor sessions={sessions} dispatchSessions={dispatchSessions} />
     </>
   );
 };
