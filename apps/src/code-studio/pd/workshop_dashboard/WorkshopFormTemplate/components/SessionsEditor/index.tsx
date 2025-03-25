@@ -138,13 +138,15 @@ export const SessionPart: FC<{
   }, [dispatchSessions, index]);
 
   const handleSameAsPrevious = useCallback(
-    (sameAsPrevious: boolean) => {
-      const updatedSession: Partial<SessionFormState> = {sameAsPrevious};
-      dispatchSessions({
-        type: 'UPDATE_SESSION',
-        index,
-        payload: updatedSession,
-      });
+    (event: ChangeEvent<HTMLInputElement>) => {
+      if (event.target.checked) {
+        dispatchSessions({
+          type: 'UPDATE_SESSION_SAME_AS_PREVIOUS',
+          index,
+        });
+      } else {
+        handleSession({sameAsPrevious: false});
+      }
     },
     [dispatchSessions, handleSession, index]
   );

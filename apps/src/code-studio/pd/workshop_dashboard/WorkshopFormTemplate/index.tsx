@@ -72,7 +72,7 @@ export const sessionDataToState = (
     sameAsPrevious: false,
   }));
 
-const sessionReducer = (
+export const sessionReducer = (
   state: SessionFormState[],
   action: SessionAction
 ): SessionFormState[] => {
@@ -83,6 +83,13 @@ const sessionReducer = (
     case 'UPDATE_SESSION':
       return state.map((session, i) =>
         i === action.index ? {...session, ...action.payload} : session
+      );
+
+    case 'UPDATE_SESSION_SAME_AS_PREVIOUS':
+      return state.map((session, i) =>
+        i === action.index
+          ? {...session, ...(state[i - 1] ?? {}), sameAsPrevious: true}
+          : session
       );
 
     case 'DELETE_SESSION':

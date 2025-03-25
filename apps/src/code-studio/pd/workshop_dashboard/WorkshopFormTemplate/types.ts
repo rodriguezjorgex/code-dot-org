@@ -186,4 +186,5 @@ export type SessionAction =
   | {type: 'ADD_SESSION'}
   | {type: 'UPDATE_SESSION'; payload: Partial<SessionFormState>; index: number}
   | {type: 'SET_SESSIONS'; payload: SessionFormState[]}
-  | {type: 'DELETE_SESSION'; index: number};
+  | {type: 'DELETE_SESSION'; index: number}
+  | {type: 'UPDATE_SESSION_SAME_AS_PREVIOUS'; index: number};
