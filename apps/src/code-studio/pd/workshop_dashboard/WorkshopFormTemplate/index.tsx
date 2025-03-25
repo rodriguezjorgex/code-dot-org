@@ -1,6 +1,13 @@
 import {Heading1} from '@code-dot-org/component-library/typography';
 import moment from 'moment-timezone';
-import React, {FC, useEffect, useState} from 'react';
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState,
+} from 'react';
 import {useParams} from 'react-router-dom';
 
 import {useFetch} from '@cdo/apps/util/useFetch';
@@ -17,9 +24,6 @@ import {PublishCancelButtons} from './sections/PublishCancelButtons';
 import {PublishSettings} from './sections/PublishSettings';
 import {Schedule} from './sections/Schedule';
 import {
-  CourseOffering,
-  Facilitator,
-  RegionalPartner,
   Session,
   SessionAction,
   SessionFormState,
@@ -143,14 +147,20 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
     }
   }, [workshop, userTimeZone]);
 
-  const handleChange = <K extends keyof WorkshopFormState>(
-    update: Record<K, WorkshopFormState[K]>
-  ) => {
-    setWorkshopFormState(prevState => ({
-      ...prevState,
-      ...update,
-    }));
-  };
+  const handleChange = useCallback(
+    <K extends keyof WorkshopFormState>(
+      update: Record<K, WorkshopFormState[K]>
+    ) => {
+      setWorkshopFormState(prevState => ({
+        ...prevState,
+        ...update,
+      }));
+    },
+    []
+  );
+
+  const publish = useCallback(() => {}, []);
+  const cancel = useCallback(() => {}, []);
 
   const heading = workshopLabel(`New ${config.label}`);
 
@@ -195,6 +205,7 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
         {...sectionProps}
       />
       <PublishSettings {...sectionProps} />
+      <PublishCancelButtons publish={publish} cancel={cancel} />
     </form>
   );
 };
