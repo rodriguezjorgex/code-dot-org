@@ -323,12 +323,6 @@ function initializeBlocklyWrapper(blocklyInstance: GoogleBlocklyInstance) {
   blocklyWrapper.FieldAngleTextInput = CdoFieldAngleTextInput;
 
   blocklyWrapper.blockly_.registry.register(
-    blocklyWrapper.blockly_.registry.Type.FLYOUTS_VERTICAL_TOOLBOX,
-    blocklyWrapper.blockly_.registry.DEFAULT,
-    true /* opt_allowOverrides */
-  );
-
-  blocklyWrapper.blockly_.registry.register(
     blocklyWrapper.blockly_.registry.Type.RENDERER,
     Renderers.GERAS,
     CdoRendererGeras,
