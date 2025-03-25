@@ -84,16 +84,4 @@ export default class VerticalFlyout extends GoogleBlockly.VerticalFlyout {
       this.targetWorkspace.recordDragTargets();
     }
   }
-
-  resize() {
-    if (!this.targetWorkspace) {
-      return;
-    }
-    this.reflowInternal_();
-    const toolboxWidth = Blockly.cdoUtils.getToolboxWidth();
-    const header = document.getElementById('toolbox-header');
-    if (header) {
-      header.style.width = toolboxWidth + 'px';
-    }
-  }
 }
