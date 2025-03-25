@@ -142,17 +142,37 @@ export interface WorkshopFormState {
 }
 
 export interface SectionProps {
-  state: WorkshopFormState;
   handleChange: <K extends keyof WorkshopFormState>(
     update: Record<K, WorkshopFormState[K]>
   ) => void;
   config: WorkshopCourseConfig;
-  courseOfferings?: CourseOffering[] | null;
-  regionalPartners?: RegionalPartner[] | null;
-  facilitators?: Facilitator[] | null;
 }
 
-export interface ScheduleProps extends SectionProps {
+export interface BasicsProps
+  extends SectionProps,
+    Pick<
+      WorkshopFormState,
+      | 'name'
+      | 'grades'
+      | 'subject'
+      | 'prereq'
+      | 'hasPrereq'
+      | 'capacity'
+      | 'description'
+      | 'courseOfferings'
+    > {}
+
+export interface PartnerFacilitatorProps
+  extends SectionProps,
+    Pick<WorkshopFormState, 'facilitators' | 'regionalPartnerId'> {}
+
+export interface AdditionalInfoProps
+  extends SectionProps,
+    Pick<WorkshopFormState, 'fee' | 'participantGroupType' | 'notes'> {}
+
+export interface ScheduleProps
+  extends SectionProps,
+    Pick<WorkshopFormState, 'timeZone'> {
   sessions: SessionFormState[];
   dispatchSessions: Dispatch<SessionAction>;
 }

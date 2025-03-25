@@ -154,45 +154,47 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
 
   const heading = workshopLabel(`New ${config.label}`);
 
+  const sectionProps = useMemo(
+    () => ({
+      handleChange,
+      config,
+    }),
+    [handleChange, config]
+  );
+
   return (
     <form id="workshop-form-template" className={styles.container}>
       <Heading1 visualAppearance="heading-xl">{heading}</Heading1>
       <Basics
-        state={workshopFormState}
-        courseOfferings={courseOfferings}
-        handleChange={handleChange}
-        config={config}
+        capacity={workshopFormState.capacity}
+        description={workshopFormState.description}
+        prereq={workshopFormState.prereq}
+        hasPrereq={workshopFormState.hasPrereq}
+        subject={workshopFormState.subject}
+        grades={workshopFormState.grades}
+        courseOfferings={workshopFormState.courseOfferings}
+        name={workshopFormState.name}
+        {...sectionProps}
       />
       <Schedule
-        state={workshopFormState}
-        handleChange={handleChange}
+        timeZone={workshopFormState.timeZone}
         sessions={sessionFormState}
         dispatchSessions={dispatchSessions}
-        config={config}
+        {...sectionProps}
       />
       <PartnerFacilitator
-        state={workshopFormState}
-        regionalPartners={regionalPartners}
-        facilitators={facilitators}
-        handleChange={handleChange}
-        config={config}
+        {...sectionProps}
+        facilitators={workshopFormState.facilitators}
+        regionalPartnerId={workshopFormState.regionalPartnerId}
       />
-      <EmailsReminders
-        state={workshopFormState}
-        handleChange={handleChange}
-        config={config}
-      />
+      <EmailsReminders {...sectionProps} />
       <AdditionalInfo
-        state={workshopFormState}
-        handleChange={handleChange}
-        config={config}
+        fee={workshopFormState.fee}
+        participantGroupType={workshopFormState.participantGroupType}
+        notes={workshopFormState.notes}
+        {...sectionProps}
       />
-      <PublishSettings
-        state={workshopFormState}
-        handleChange={handleChange}
-        config={config}
-      />
-      <PublishCancelButtons publish={() => {}} cancel={() => {}} />
+      <PublishSettings {...sectionProps} />
     </form>
   );
 };

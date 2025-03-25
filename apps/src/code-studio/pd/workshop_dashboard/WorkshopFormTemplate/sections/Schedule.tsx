@@ -6,7 +6,7 @@ import {TimeZoneEditor} from '../components/TimeZoneEditor';
 import {ScheduleProps} from '../types';
 
 export const Schedule: FC<ScheduleProps> = ({
-  state: {timeZone},
+  timeZone,
   handleChange,
   sessions,
   dispatchSessions,

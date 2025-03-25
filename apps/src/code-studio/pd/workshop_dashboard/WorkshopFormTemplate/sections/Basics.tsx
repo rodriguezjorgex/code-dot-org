@@ -7,29 +7,26 @@ import Tags from '@code-dot-org/component-library/tags';
 import TextField from '@code-dot-org/component-library/textField';
 import {Heading2} from '@code-dot-org/component-library/typography';
 import classNames from 'classnames';
-import React, {FC, useMemo} from 'react';
+import React, {ChangeEvent, FC, useMemo} from 'react';
 
+import {useFetch} from '@cdo/apps/util/useFetch';
 import {StudentGradeLevels} from '@cdo/generated-scripts/sharedConstants';
 
-import {SectionProps} from '../types';
+import {BasicsProps, CourseOffering} from '../types';
 
 import commonStyles from '../styles.module.scss';
 
-export const Basics: FC<SectionProps> = ({
-  config: {
-    fields: {
-      name,
-      grades,
-      subject,
-      prereq,
-      capacity,
-      description,
-      course_offerings,
-    },
-  },
-  state,
-  handleChange,
+export const Basics: FC<BasicsProps> = ({
+  config: {fields},
+  name,
+  grades,
+  subject,
+  prereq,
+  hasPrereq,
+  capacity,
+  description,
   courseOfferings,
+  handleChange,
 }) => {
   const {data: fetchedCourseOfferings} = useFetch<CourseOffering[]>(
     fields.course_offerings
@@ -38,7 +35,7 @@ export const Basics: FC<SectionProps> = ({
   );
 
   const handleGradesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let selectedGrades = [...state.grades];
+    let selectedGrades = [...grades];
     if (e.target.checked) {
       selectedGrades.push(e.target.value);
       selectedGrades.sort((a, b) => {
@@ -59,10 +56,8 @@ export const Basics: FC<SectionProps> = ({
     handleChange({grades: selectedGrades});
   };
 
-  const handleCourseOfferingsChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    let selectedCourseOfferings = [...state.courseOfferings];
+  const handleCourseOfferingsChange = (e: ChangeEvent<HTMLInputElement>) => {
+    let selectedCourseOfferings = [...courseOfferings];
     if (e.target.checked) {
       selectedCourseOfferings.push(e.target.value);
     } else {
@@ -75,43 +70,43 @@ export const Basics: FC<SectionProps> = ({
 
   const removeCourseOffering = (id: string) => {
     handleChange({
-      courseOfferings: state.courseOfferings.filter(co => co !== id),
+      courseOfferings: courseOfferings.filter(co => co !== id),
     });
   };
 
   const subjectOptions = useMemo(() => {
     let options = [{value: '', text: 'Select a subject'}];
-    if (subject?.options) {
+    if (fields.subject?.options) {
       options = options.concat(
-        subject.options.map(({value, label}) => ({value, text: label}))
+        fields.subject.options.map(({value, label}) => ({value, text: label}))
       );
     }
     return options;
-  }, [subject?.options]);
+  }, [fields.subject?.options]);
 
   return (
     <>
       <Heading2 visualAppearance="heading-sm">Workshop Basics</Heading2>
       <div className={commonStyles.row}>
-        {name && (
+        {fields.name && (
           <TextField
             name="name"
             onChange={e => handleChange({name: e.target.value})}
-            value={state.name}
+            value={name}
             label="Workshop name"
             size="s"
             className={classNames(commonStyles.item, {
-              [commonStyles.required]: name.required,
+              [commonStyles.required]: fields.name.required,
             })}
           />
         )}
-        {grades && (
+        {fields.grades && (
           <CheckboxDropdown
             name="grades"
             onChange={handleGradesChange}
             styleAsFormField={true}
             hideControls
-            checkedOptions={state.grades}
+            checkedOptions={grades}
             allOptions={StudentGradeLevels.map(value => ({
               value,
               label: value,
@@ -120,35 +115,35 @@ export const Basics: FC<SectionProps> = ({
             size="s"
             helperMessage="Select applicable grade levels for this workshop."
             className={classNames(commonStyles.item, {
-              [commonStyles.required]: grades.required,
+              [commonStyles.required]: fields.grades.required,
             })}
           />
         )}
-        {subject && (
+        {fields.subject && (
           <SimpleDropdown
             name="subject"
             onChange={e => handleChange({subject: e.target.value})}
             styleAsFormField={true}
             items={subjectOptions}
-            selectedValue={state.subject}
+            selectedValue={subject}
             labelText="Subject"
             size="s"
             dropdownTextThickness="thin"
             className={classNames(commonStyles.item, {
-              [commonStyles.required]: subject.required,
+              [commonStyles.required]: fields.subject.required,
             })}
           />
         )}
       </div>
       <div className={commonStyles.row}>
-        {prereq && (
+        {fields.prereq && (
           <SimpleDropdown
             name="has-prereq"
             onChange={e => {
-              const hasPrereq = e.target.value === 'true';
+              const updatedHasPrereq = e.target.value === 'true';
               handleChange({
-                hasPrereq,
-                prereq: hasPrereq ? state.prereq : '',
+                hasPrereq: updatedHasPrereq,
+                prereq: updatedHasPrereq ? prereq : '',
               });
             }}
             styleAsFormField={true}
@@ -156,27 +151,27 @@ export const Basics: FC<SectionProps> = ({
               {value: 'true', text: 'Has prerequisites'},
               {value: 'false', text: 'No experience needed'},
             ]}
-            selectedValue={state.hasPrereq.toString()}
+            selectedValue={hasPrereq.toString()}
             labelText="Experience needed"
             helperMessage="Indicate if this workshop requires previous experience."
             size="s"
             dropdownTextThickness="thin"
             className={classNames(commonStyles.item, {
-              [commonStyles.required]: prereq.required,
+              [commonStyles.required]: fields.prereq.required,
             })}
           />
         )}
-        {capacity && (
+        {fields.capacity && (
           <TextField
             inputType="number"
             name="capacity"
             onChange={e => handleChange({capacity: e.target.value})}
-            value={state.capacity?.toString()}
+            value={capacity?.toString()}
             label="Capacity"
             helperMessage="Maximum number of attendees allowed."
             size="s"
             className={classNames(commonStyles.item, {
-              [commonStyles.required]: capacity.required,
+              [commonStyles.required]: fields.capacity.required,
             })}
           />
         )}
@@ -184,16 +179,16 @@ export const Basics: FC<SectionProps> = ({
         {subject && <div className={commonStyles.item} />}
       </div>
       <div className={commonStyles.row}>
-        {prereq && state.hasPrereq && (
+        {fields.prereq && hasPrereq && (
           <div className={commonStyles.card}>
             <TextField
               name="prereq"
               onChange={e => handleChange({prereq: e.target.value})}
-              value={state.prereq}
+              value={prereq}
               label="Workshop prerequisites"
               size="s"
               className={classNames(commonStyles.item, {
-                [commonStyles.required]: prereq.required,
+                [commonStyles.required]: fields.prereq.required,
               })}
             />
           </div>
@@ -211,21 +206,21 @@ export const Basics: FC<SectionProps> = ({
               id="description"
               name="description"
               onChange={e => handleChange({description: e.target.value})}
-              value={state.description}
+              value={description}
               placeholder="Enter description here"
             />
           </FormFieldWrapper>
         )}
       </div>
       <div className={commonStyles.row}>
-        {course_offerings && (
+        {fields.course_offerings && (
           <CheckboxDropdown
             name="course_offerings"
             onChange={handleCourseOfferingsChange}
             onSelectAll={() =>
               handleChange({
                 courseOfferings:
-                  courseOfferings?.map(({id}) => id.toString()) ?? [],
+                  fetchedCourseOfferings?.map(({id}) => id.toString()) ?? [],
               })
             }
             selectAllText="Select all"
@@ -234,9 +229,9 @@ export const Basics: FC<SectionProps> = ({
               handleChange({courseOfferings: []});
             }}
             styleAsFormField={true}
-            checkedOptions={state.courseOfferings}
+            checkedOptions={courseOfferings}
             allOptions={
-              courseOfferings?.map(({id, display_name}) => ({
+              fetchedCourseOfferings?.map(({id, display_name}) => ({
                 value: id.toString(),
                 label: display_name,
               })) ?? []
@@ -244,17 +239,17 @@ export const Basics: FC<SectionProps> = ({
             labelText="Select workshop topic(s)"
             size="s"
             className={classNames(commonStyles.item, {
-              [commonStyles.required]: course_offerings.required,
+              [commonStyles.required]: fields.course_offerings.required,
             })}
           />
         )}
       </div>
       <div>
-        {courseOfferings &&
-          state.courseOfferings.map(id => {
+        {fetchedCourseOfferings &&
+          courseOfferings.map(id => {
             const topic =
-              courseOfferings.find(co => co.id === Number(id))?.display_name ??
-              '';
+              fetchedCourseOfferings.find(co => co.id === Number(id))
+                ?.display_name ?? '';
             return (
               <div className={commonStyles.tag_button_container}>
                 <Tags

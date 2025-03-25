@@ -3,19 +3,18 @@ import {Heading2} from '@code-dot-org/component-library/typography';
 import classNames from 'classnames';
 import React, {FC, useMemo} from 'react';
 
+import {useFetch} from '@cdo/apps/util/useFetch';
+
 import {MultiSelectInput} from '../components/MultiSelectInput';
-import {SectionProps} from '../types';
+import {Facilitator, PartnerFacilitatorProps, RegionalPartner} from '../types';
 
 import commonStyles from '../styles.module.scss';
 
-export const PartnerFacilitator: FC<SectionProps> = ({
-  config: {
-    fields: {regional_partner_id, facilitators},
-  },
-  state,
+export const PartnerFacilitator: FC<PartnerFacilitatorProps> = ({
+  config: {label, fields},
+  facilitators,
+  regionalPartnerId,
   handleChange,
-  regionalPartners,
-  facilitators: fetchedFacilitators,
 }) => {
   const {data: regionalPartners} = useFetch<RegionalPartner[]>(
     '/api/v1/regional_partners'
@@ -52,7 +51,7 @@ export const PartnerFacilitator: FC<SectionProps> = ({
         Partner and Facilitator Information
       </Heading2>
       <div className={commonStyles.row}>
-        {regional_partner_id && (
+        {fields.regional_partner_id && (
           <SimpleDropdown
             name="regional_partner_id"
             onChange={e =>
@@ -64,27 +63,25 @@ export const PartnerFacilitator: FC<SectionProps> = ({
             }
             styleAsFormField={true}
             items={regionalPartnerOptions}
-            selectedValue={state.regionalPartnerId?.toString() ?? ''}
+            selectedValue={regionalPartnerId?.toString() ?? ''}
             labelText="Regional partner"
             size="s"
             dropdownTextThickness="thin"
             className={classNames(commonStyles.item, {
-              [commonStyles.required]: regional_partner_id.required,
+              [commonStyles.required]: fields.regional_partner_id.required,
             })}
           />
         )}
-        {facilitators && (
+        {fields.facilitators && (
           <MultiSelectInput
             label="Select facilitator(s)"
             options={facilitatorOptions ?? []}
-            selectedOptions={state.facilitators}
+            selectedOptions={facilitators}
             setSelectedOptions={newFacilitators =>
               handleChange({facilitators: newFacilitators.map(Number)})
             }
             placeholder={
-              state.facilitators.length
-                ? 'Type to filter'
-                : 'Enter name or email'
+              facilitators.length ? 'Type to filter' : 'Enter name or email'
             }
           />
         )}

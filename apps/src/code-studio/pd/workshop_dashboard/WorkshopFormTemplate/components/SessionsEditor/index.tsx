@@ -76,12 +76,18 @@ export const SessionsEditor: FC<{
     <>
       {sessions.map((session, i) => (
         <SessionPart
-          key={i}
-          session={session}
-          handleSession={getHandleSession(i)}
-          deleteSession={getDeleteSession(i)}
+          key={`${session.date}-${session.start}-${session.end}`}
+          date={session.date}
+          start={session.start}
+          end={session.end}
+          format={session.format}
+          locationName={session.locationName}
+          locationAddress={session.locationAddress}
+          meetingLink={session.meetingLink}
+          sameAsPrevious={session.sameAsPrevious}
           showSameAsPrevious={i > 0}
-          handleSameAsPrevious={getHandleSameAsPrevious(i)}
+          dispatchSessions={dispatchSessions}
+          index={i}
         />
       ))}
       <div className={commonStyles.row}>
@@ -98,17 +104,29 @@ export const SessionsEditor: FC<{
 };
 
 export const SessionPart: FC<{
-  session: SessionFormState;
-  handleSession: (session: SessionFormState) => void;
-  deleteSession: () => void;
-  handleSameAsPrevious: (checked: boolean) => void;
+  date: SessionFormState['date'];
+  start: SessionFormState['start'];
+  end: SessionFormState['end'];
+  format: SessionFormState['format'];
+  locationName: SessionFormState['locationName'];
+  locationAddress: SessionFormState['locationAddress'];
+  meetingLink: SessionFormState['meetingLink'];
+  sameAsPrevious: SessionFormState['sameAsPrevious'];
   showSameAsPrevious: boolean;
+  dispatchSessions: Dispatch<SessionAction>;
+  index: number;
 }> = ({
-  session,
-  handleSession,
-  deleteSession,
+  date,
+  start,
+  end,
+  format,
+  locationName,
+  locationAddress,
+  meetingLink,
+  sameAsPrevious,
   showSameAsPrevious,
-  handleSameAsPrevious,
+  dispatchSessions,
+  index,
 }) => {
   const timeOptions = useMemo(() => {
     const startTime = moment().startOf('day').add(7, 'hours');
@@ -144,19 +162,19 @@ export const SessionPart: FC<{
           inputType="date"
           size="s"
           className={classNames(commonStyles.item, commonStyles.required)}
-          value={session.date}
+          value={date}
           onChange={e => {
-            handleSession({...session, date: e.target.value});
+            handleSession({date: e.target.value});
           }}
         />
         <SimpleDropdown
           name="start time"
           labelText="Start Time"
           onChange={e => {
-            handleSession({...session, start: e.target.value});
+            handleSession({start: e.target.value});
           }}
           iconLeft={{iconName: 'clock'}}
-          selectedValue={session.start}
+          selectedValue={start}
           items={timeOptions}
           dropdownTextThickness="thin"
           size="s"
@@ -170,10 +188,10 @@ export const SessionPart: FC<{
           name="end time"
           labelText="End Time"
           onChange={e => {
-            handleSession({...session, end: e.target.value});
+            handleSession({end: e.target.value});
           }}
           iconLeft={{iconName: 'clock'}}
-          selectedValue={session.end}
+          selectedValue={end}
           items={timeOptions}
           dropdownTextThickness="thin"
           size="s"
@@ -188,9 +206,9 @@ export const SessionPart: FC<{
           labelText="Format"
           onChange={e => {
             const format = e.target.value as SessionFormat;
-            handleSession({...session, format});
+            handleSession({format});
           }}
-          selectedValue={session.format}
+          selectedValue={format}
           items={PdSessionFormats.map(({value, label}) => ({
             value,
             text: label,
@@ -212,7 +230,7 @@ export const SessionPart: FC<{
       </div>
       <div className={commonStyles.card}>
         <div className={commonStyles.row}>
-          {session.format === 'in_person' && (
+          {format === 'in_person' && (
             <>
               <TextField
                 label="Location name"
@@ -220,9 +238,9 @@ export const SessionPart: FC<{
                 size="s"
                 className={classNames(commonStyles.item, commonStyles.required)}
                 onChange={e => {
-                  handleSession({...session, locationName: e.target.value});
+                  handleSession({locationName: e.target.value});
                 }}
-                value={session.locationName}
+                value={locationName}
               />
               <TextField
                 label="Location address"
@@ -230,13 +248,15 @@ export const SessionPart: FC<{
                 size="s"
                 className={classNames(commonStyles.item, commonStyles.required)}
                 onChange={e => {
-                  handleSession({...session, locationAddress: e.target.value});
+                  handleSession({
+                    locationAddress: e.target.value,
+                  });
                 }}
-                value={session.locationAddress}
+                value={locationAddress}
               />
             </>
           )}
-          {session.format === 'virtual' && (
+          {format === 'virtual' && (
             <>
               <TextField
                 label="Meeting link"
@@ -244,9 +264,9 @@ export const SessionPart: FC<{
                 size="s"
                 className={classNames(commonStyles.item, commonStyles.required)}
                 onChange={e => {
-                  handleSession({...session, meetingLink: e.target.value});
+                  handleSession({meetingLink: e.target.value});
                 }}
-                value={session.meetingLink}
+                value={meetingLink}
               />
               {/* blank space */}
               <div className={commonStyles.item} />
@@ -258,7 +278,7 @@ export const SessionPart: FC<{
             <Checkbox
               label={`${sameAsPreviousLabel} same as previous`}
               name={`${sameAsPreviousLabel} same as previous`}
-              checked={session.sameAsPrevious}
+              checked={sameAsPrevious}
               size="s"
               onChange={e => handleSameAsPrevious(e.target.checked)}
             />
