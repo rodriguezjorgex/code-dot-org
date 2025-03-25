@@ -73,27 +73,9 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const {workshopId} = useParams();
 
-  const workshopUrl = workshopId ? `/api/v1/pd/workshops/${workshopId}` : '';
-
-  const {data: workshop} = useFetch<Workshop>(workshopUrl);
-
-  const courseOfferingsUrl = config.fields.course_offerings
-    ? '/course_offerings/self_paced_pl_course_offerings'
-    : '';
-
-  const {data: courseOfferings} =
-    useFetch<CourseOffering[]>(courseOfferingsUrl);
-
-  const regionalPartnersUrl = '/api/v1/regional_partners';
-
-  const {data: regionalPartners} =
-    useFetch<RegionalPartner[]>(regionalPartnersUrl);
-
-  const facilitatorsUrl = `/api/v1/pd/course_facilitators?course=${encodeURIComponent(
-    config.label
-  )}`;
-
-  const {data: facilitators} = useFetch<Facilitator[]>(facilitatorsUrl);
+  const {data: workshop} = useFetch<Workshop>(
+    workshopId ? `/api/v1/pd/workshops/${workshopId}` : ''
+  );
 
   const [workshopFormState, setWorkshopFormState] = useState<WorkshopFormState>(
     {

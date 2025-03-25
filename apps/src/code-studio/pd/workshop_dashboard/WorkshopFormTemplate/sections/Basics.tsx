@@ -31,6 +31,12 @@ export const Basics: FC<SectionProps> = ({
   handleChange,
   courseOfferings,
 }) => {
+  const {data: fetchedCourseOfferings} = useFetch<CourseOffering[]>(
+    fields.course_offerings
+      ? '/course_offerings/self_paced_pl_course_offerings'
+      : ''
+  );
+
   const handleGradesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let selectedGrades = [...state.grades];
     if (e.target.checked) {

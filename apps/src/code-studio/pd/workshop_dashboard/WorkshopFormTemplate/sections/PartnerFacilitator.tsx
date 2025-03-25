@@ -17,6 +17,13 @@ export const PartnerFacilitator: FC<SectionProps> = ({
   regionalPartners,
   facilitators: fetchedFacilitators,
 }) => {
+  const {data: regionalPartners} = useFetch<RegionalPartner[]>(
+    '/api/v1/regional_partners'
+  );
+
+  const {data: fetchedFacilitators} = useFetch<Facilitator[]>(
+    `/api/v1/pd/course_facilitators?course=${encodeURIComponent(label)}`
+  );
   const regionalPartnerOptions = useMemo(() => {
     const options = [{value: '', text: 'None'}];
 
