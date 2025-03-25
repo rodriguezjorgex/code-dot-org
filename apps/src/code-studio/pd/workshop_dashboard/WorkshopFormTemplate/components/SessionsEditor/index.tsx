@@ -5,12 +5,12 @@ import TextField from '@code-dot-org/component-library/textField';
 import {WithTooltip} from '@code-dot-org/component-library/tooltip';
 import classNames from 'classnames';
 import moment from 'moment-timezone';
-import React, {Dispatch, FC, useCallback, useMemo} from 'react';
+import React, {ChangeEvent, Dispatch, FC, useCallback, useMemo} from 'react';
 
 import {PdSessionFormats} from '@cdo/apps/generated/pd/sharedWorkshopConstants';
 
 import {DATE_FORMAT, TIME_FORMAT} from '../../../workshopConstants';
-import {SessionAction, SessionFormat, SessionFormState} from '../../types';
+import {SessionAction, SessionFormState} from '../../types';
 
 import styles from './styles.module.scss';
 import commonStyles from '../../styles.module.scss';
@@ -146,7 +146,17 @@ export const SessionPart: FC<{
         payload: updatedSession,
       });
     },
-    [dispatchSessions, index]
+    [dispatchSessions, handleSession, index]
+  );
+
+  const updateSession = useCallback(
+    (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+      const update = {
+        [event.target.name]: event.target.value,
+      };
+      handleSession(update);
+    },
+    [handleSession]
   );
 
   return (
@@ -159,16 +169,12 @@ export const SessionPart: FC<{
           size="s"
           className={classNames(commonStyles.item, commonStyles.required)}
           value={date}
-          onChange={e => {
-            handleSession({date: e.target.value});
-          }}
+          onChange={updateSession}
         />
         <SimpleDropdown
-          name="start time"
+          name="start"
           labelText="Start Time"
-          onChange={e => {
-            handleSession({start: e.target.value});
-          }}
+          onChange={updateSession}
           iconLeft={{iconName: 'clock'}}
           selectedValue={start}
           items={timeOptions}
@@ -181,11 +187,9 @@ export const SessionPart: FC<{
           )}
         />
         <SimpleDropdown
-          name="end time"
+          name="end"
           labelText="End Time"
-          onChange={e => {
-            handleSession({end: e.target.value});
-          }}
+          onChange={updateSession}
           iconLeft={{iconName: 'clock'}}
           selectedValue={end}
           items={timeOptions}
@@ -200,10 +204,7 @@ export const SessionPart: FC<{
         <SimpleDropdown
           name="format"
           labelText="Format"
-          onChange={e => {
-            const format = e.target.value as SessionFormat;
-            handleSession({format});
-          }}
+          onChange={updateSession}
           selectedValue={format}
           items={PdSessionFormats.map(({value, label}) => ({
             value,
@@ -239,24 +240,18 @@ export const SessionPart: FC<{
             <>
               <TextField
                 label="Location name"
-                name="location name"
+                name="locationName"
                 size="s"
                 className={classNames(commonStyles.item, commonStyles.required)}
-                onChange={e => {
-                  handleSession({locationName: e.target.value});
-                }}
+                onChange={updateSession}
                 value={locationName}
               />
               <TextField
                 label="Location address"
-                name="location address"
+                name="locationAddress"
                 size="s"
                 className={classNames(commonStyles.item, commonStyles.required)}
-                onChange={e => {
-                  handleSession({
-                    locationAddress: e.target.value,
-                  });
-                }}
+                onChange={updateSession}
                 value={locationAddress}
               />
             </>
@@ -265,12 +260,10 @@ export const SessionPart: FC<{
             <>
               <TextField
                 label="Meeting link"
-                name="meeting link"
+                name="meetingLink"
                 size="s"
                 className={classNames(commonStyles.item, commonStyles.required)}
-                onChange={e => {
-                  handleSession({meetingLink: e.target.value});
-                }}
+                onChange={updateSession}
                 value={meetingLink}
               />
               {/* blank space */}
@@ -285,7 +278,7 @@ export const SessionPart: FC<{
               name={`${sameAsPreviousLabel} same as previous`}
               checked={sameAsPrevious}
               size="s"
-              onChange={e => handleSameAsPrevious(e.target.checked)}
+              onChange={handleSameAsPrevious}
             />
           </div>
         )}
