@@ -60,6 +60,7 @@ import {getPointerBlockImageUrl} from './addons/cdoSpritePointer';
 import CdoTrashcan from './addons/cdoTrashcan';
 import * as cdoUtils from './addons/cdoUtils';
 import initializeVariables from './addons/cdoVariables';
+import CdoVerticalFlyout from './addons/cdoVerticalFlyout';
 import initializeBlocklyXml, {
   removeInvisibleBlocks,
   removeStaticCallBlocks,
@@ -321,6 +322,13 @@ function initializeBlocklyWrapper(blocklyInstance: GoogleBlocklyInstance) {
   blocklyWrapper.FieldAnimationDropdown = CdoFieldAnimationDropdown;
   blocklyWrapper.FieldAngleDropdown = CdoFieldAngleDropdown;
   blocklyWrapper.FieldAngleTextInput = CdoFieldAngleTextInput;
+
+  blocklyWrapper.blockly_.registry.register(
+    blocklyWrapper.blockly_.registry.Type.FLYOUTS_VERTICAL_TOOLBOX,
+    blocklyWrapper.blockly_.registry.DEFAULT,
+    CdoVerticalFlyout,
+    true /* opt_allowOverrides */
+  );
 
   blocklyWrapper.blockly_.registry.register(
     blocklyWrapper.blockly_.registry.Type.RENDERER,

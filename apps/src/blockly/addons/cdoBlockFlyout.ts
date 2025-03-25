@@ -84,6 +84,35 @@ export default class CdoBlockFlyout extends GoogleBlockly.HorizontalFlyout {
     return this.svgGroup_;
   }
 
+  /**
+   * Compute height of flyout.  Position mat under each block.
+   * For RTL: Lay out the blocks right-aligned.
+   * @override
+   */
+  reflowInternal_() {
+    this.height_ = 0;
+    this.width_ = 0;
+    const topBlocks = this.workspace_.getTopBlocks(false);
+    // Adjust the size of the flyout for each block.
+    topBlocks.forEach(block => {
+      const blockHW = block.getHeightWidth();
+      this.updateHeight_(blockHW.height);
+      this.updateWidth_(blockHW.width);
+
+      const rect = this.rectMap_.get(block);
+      if (rect) {
+        this.moveRectToBlock_(rect, block);
+      }
+    });
+    // Adjust the size of the flyout for each button.
+    this.buttons_.forEach(button => {
+      this.updateHeight_(button.height);
+      this.updateWidth_(button.width);
+    });
+    this.setBackgroundPath_(this.width_, this.height_);
+    this.position();
+  }
+
   /** Update the flyout height based on the new block height.
    *
    * @param {number} newHeight - The new block height.
