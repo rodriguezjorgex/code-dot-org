@@ -19,11 +19,12 @@ export const TimeZoneEditor: FC<{
 
   return (
     <div className={styles.container}>
-      <BodyThreeText>{text}</BodyThreeText>
+      <BodyThreeText id="tz-label">{text}</BodyThreeText>
       {editMode ? (
         <SimpleDropdown
           name="timezone"
           labelText=""
+          aria-labelledby="tz-label"
           size="xs"
           className={styles.tzDropdown}
           selectedValue={timeZone}
@@ -52,6 +53,7 @@ export const TimeZoneEditor: FC<{
         <FontAwesomeV6Icon
           iconName="check-circle"
           className={styles.checkIcon}
+          aria-label="timezone changed"
         />
       )}
     </div>
