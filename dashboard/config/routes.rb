@@ -839,6 +839,7 @@ Dashboard::Application.routes.draw do
     post '/dashboardapi/v1/foorm/simple_survey_submission', action: :create, controller: 'api/v1/foorm_simple_survey_submissions'
 
     get 'my-professional-learning', to: 'pd/professional_learning#index', as: 'professional_learning'
+    get 'professional-learning/facilitator/computer-science-a', to: 'pd/professional_learning#csa'
 
     namespace :pd do
       # React-router will handle sub-routes on the client.
