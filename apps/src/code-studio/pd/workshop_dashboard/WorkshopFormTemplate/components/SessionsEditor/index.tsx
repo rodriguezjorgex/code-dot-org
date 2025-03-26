@@ -217,6 +217,7 @@ export const SessionPart: FC<{
           className={classNames(commonStyles.item, commonStyles.required)}
         />
         <WithTooltip
+          tooltipOverlayClassName={styles.deleteButtonContainer}
           tooltipProps={{
             tooltipId: `${date}-${start}-${end}`,
             size: 'xs',
