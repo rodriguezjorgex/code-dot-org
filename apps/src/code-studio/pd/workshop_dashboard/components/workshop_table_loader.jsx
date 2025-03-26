@@ -18,13 +18,15 @@ import {COURSE_BUILD_YOUR_OWN} from '../workshopConstants';
 // under the same field name. So, only for the purposes of displaying the info to the user, the Build Your
 // Own workshop course offerings will be set as the workshop's subject.
 function processWorkshopData(workshopData) {
-  let updatedData = {...workshopData};
-  updatedData.workshops?.forEach(ws => {
-    if (ws.course === COURSE_BUILD_YOUR_OWN) {
-      ws.subject = ws.course_offering_names;
-    }
-  });
-  return updatedData;
+  return {
+    ...workshopData,
+    workshops: workshopData.workshops?.map(ws => {
+      if (ws.course === COURSE_BUILD_YOUR_OWN) {
+        ws.subject = ws.course_offering_names;
+      }
+      return ws;
+    }),
+  };
 }
 
 export default class WorkshopTableLoader extends React.Component {
