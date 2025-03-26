@@ -34,21 +34,18 @@ export const Basics: FC<BasicsProps> = ({
       : ''
   );
 
-  const handleGradesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let selectedGrades = [...grades];
-    if (e.target.checked) {
-      selectedGrades.push(e.target.value);
-      selectedGrades.sort((a, b) => {
-        // sort 'K' to beginning
-        if (a === 'K') return -1;
-        if (b === 'K') return 1;
-        // sort 'Other' to end
-        if (a === 'Other') return 1;
-        if (b === 'Other') return -1;
-        const numA = Number(a);
-        const numB = Number(b);
-        if (isNaN(numA) || isNaN(numB)) return 0;
-        return numA - numB;
+  const courseOfferingsById = useMemo(
+    () =>
+      fetchedCourseOfferings?.reduce(
+        (acc: Record<number, CourseOffering>, curr) => {
+          acc[curr.id] = curr;
+          return acc;
+        },
+        {}
+      ),
+    [fetchedCourseOfferings]
+  );
+
       });
     } else {
       selectedGrades = selectedGrades.filter(g => g !== e.target.value);
@@ -56,23 +53,15 @@ export const Basics: FC<BasicsProps> = ({
     handleChange({grades: selectedGrades});
   };
 
-  const handleCourseOfferingsChange = (e: ChangeEvent<HTMLInputElement>) => {
-    let selectedCourseOfferings = [...courseOfferings];
-    if (e.target.checked) {
-      selectedCourseOfferings.push(e.target.value);
-    } else {
-      selectedCourseOfferings = selectedCourseOfferings.filter(
-        co => co !== e.target.value
-      );
-    }
-    handleChange({courseOfferings: selectedCourseOfferings});
-  };
-
-  const removeCourseOffering = (id: string) => {
-    handleChange({
-      courseOfferings: courseOfferings.filter(co => co !== id),
-    });
-  };
+  const handleRemoveCourseOffering = useCallback(
+    (offeringId: string) => () => {
+      dispatchWorkshop({
+        type: 'REMOVE_COURSE_OFFERING',
+        payload: offeringId,
+      });
+    },
+    [dispatchWorkshop]
+  );
 
   const subjectOptions = useMemo(() => {
     let options = [{value: '', text: 'Select a subject'}];
@@ -244,36 +233,16 @@ export const Basics: FC<BasicsProps> = ({
           />
         )}
       </div>
-      <div>
-        {fetchedCourseOfferings &&
-          courseOfferings.map(id => {
-            const topic =
-              fetchedCourseOfferings.find(co => co.id === Number(id))
-                ?.display_name ?? '';
-            return (
-              <div className={commonStyles.tag_button_container}>
-                <Tags
-                  key={id}
-                  tagsList={[
-                    {
-                      label: topic,
-                      icon: {
-                        iconName: 'close',
-                        title: 'remove topic',
-                        iconStyle: 'regular',
-                        placement: 'right',
-                      },
-                    },
-                  ]}
-                />
-                <button
-                  type="button"
-                  onClick={() => removeCourseOffering(id)}
-                />
-              </div>
-            );
-          })}
-      </div>
+      {courseOfferingsById && (
+        <Tags
+          className={commonStyles.wrapContainer}
+          tagsList={courseOfferings.map(offeringId => ({
+            type: 'closable',
+            onClose: handleRemoveCourseOffering(offeringId),
+            label: courseOfferingsById[Number(offeringId)]?.display_name ?? '',
+          }))}
+        />
+      )}
     </>
   );
 };
