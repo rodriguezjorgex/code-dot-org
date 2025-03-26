@@ -118,7 +118,7 @@ export const workshopReducer = (
   }
 };
 
-export const sessionReducer = (
+export const sessionsReducer = (
   state: SessionFormState[],
   action: SessionAction
 ): SessionFormState[] => {
@@ -181,7 +181,7 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
     timeZone: userTimeZone,
   });
 
-  const [sessionFormState, dispatchSessions] = useReducer(sessionReducer, [
+  const [sessionFormState, dispatchSessions] = useReducer(sessionsReducer, [
     generateNewSession(),
   ]);
 

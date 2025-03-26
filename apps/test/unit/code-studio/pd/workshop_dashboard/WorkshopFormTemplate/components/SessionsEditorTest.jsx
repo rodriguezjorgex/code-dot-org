@@ -8,7 +8,7 @@ import {
   DATE_FORMAT,
   TIME_FORMAT,
 } from '@cdo/apps/code-studio/pd/workshop_dashboard/workshopConstants';
-import {sessionReducer} from '@cdo/apps/code-studio/pd/workshop_dashboard/WorkshopFormTemplate';
+import {sessionsReducer} from '@cdo/apps/code-studio/pd/workshop_dashboard/WorkshopFormTemplate';
 import {
   SessionsEditor,
   SessionPart,
@@ -124,7 +124,7 @@ describe('SessionPart', () => {
   };
 
   const SessionPartWithState = (props = {}) => {
-    const [sessions, dispatch] = useReducer(sessionReducer, [
+    const [sessions, dispatch] = useReducer(sessionsReducer, [
       props?.session ?? mockSession,
     ]);
     if (!sessions.length) return null;
