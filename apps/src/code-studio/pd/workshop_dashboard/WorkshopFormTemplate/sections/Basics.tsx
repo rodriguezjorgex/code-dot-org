@@ -7,12 +7,12 @@ import Tags from '@code-dot-org/component-library/tags';
 import TextField from '@code-dot-org/component-library/textField';
 import {Heading2} from '@code-dot-org/component-library/typography';
 import classNames from 'classnames';
-import React, {ChangeEvent, FC, useMemo} from 'react';
+import React, {ChangeEvent, FC, useCallback, useMemo} from 'react';
 
 import {useFetch} from '@cdo/apps/util/useFetch';
 import {StudentGradeLevels} from '@cdo/generated-scripts/sharedConstants';
 
-import {BasicsProps, CourseOffering} from '../types';
+import {BasicsProps, CourseOffering, WorkshopFormState} from '../types';
 
 import commonStyles from '../styles.module.scss';
 
@@ -26,7 +26,7 @@ export const Basics: FC<BasicsProps> = ({
   capacity,
   description,
   courseOfferings,
-  handleChange,
+  dispatchWorkshop,
 }) => {
   const {data: fetchedCourseOfferings} = useFetch<CourseOffering[]>(
     fields.course_offerings
@@ -46,12 +46,65 @@ export const Basics: FC<BasicsProps> = ({
     [fetchedCourseOfferings]
   );
 
+  const handleChange = useCallback(
+    (
+      e: React.ChangeEvent<
+        HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+      >
+    ) => {
+      const payload: Partial<WorkshopFormState> = {
+        [e.target.name]: e.target.value,
+      };
+      if (e.target.name === 'hasPrereq') {
+        const hasPrereq = e.target.value === 'true';
+        payload[e.target.name] = hasPrereq;
+        if (!hasPrereq) {
+          payload.prereq = '';
+        }
+      }
+      dispatchWorkshop({
+        type: 'UPDATE_WORKSHOP',
+        payload,
       });
-    } else {
-      selectedGrades = selectedGrades.filter(g => g !== e.target.value);
-    }
-    handleChange({grades: selectedGrades});
-  };
+    },
+    [dispatchWorkshop]
+  );
+
+  const handleGradesChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      dispatchWorkshop({
+        type: e.target.checked ? 'ADD_GRADE' : 'REMOVE_GRADE',
+        payload: e.target.value,
+      });
+    },
+    [dispatchWorkshop]
+  );
+
+  const handleCourseOfferingsChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      dispatchWorkshop({
+        type: e.target.checked
+          ? 'ADD_COURSE_OFFERING'
+          : 'REMOVE_COURSE_OFFERING',
+        payload: e.target.value,
+      });
+    },
+    [dispatchWorkshop]
+  );
+
+  const handleSelectAllCourseOfferings = useCallback(() => {
+    dispatchWorkshop({
+      type: 'SET_COURSE_OFFERINGS',
+      payload: fetchedCourseOfferings?.map(({id}) => id.toString()) ?? [],
+    });
+  }, [dispatchWorkshop, fetchedCourseOfferings]);
+
+  const handleClearAllCourseOfferings = useCallback(() => {
+    dispatchWorkshop({
+      type: 'SET_COURSE_OFFERINGS',
+      payload: [],
+    });
+  }, [dispatchWorkshop]);
 
   const handleRemoveCourseOffering = useCallback(
     (offeringId: string) => () => {
@@ -80,7 +133,7 @@ export const Basics: FC<BasicsProps> = ({
         {fields.name && (
           <TextField
             name="name"
-            onChange={e => handleChange({name: e.target.value})}
+            onChange={handleChange}
             value={name}
             label="Workshop name"
             size="s"
@@ -111,7 +164,7 @@ export const Basics: FC<BasicsProps> = ({
         {fields.subject && (
           <SimpleDropdown
             name="subject"
-            onChange={e => handleChange({subject: e.target.value})}
+            onChange={handleChange}
             styleAsFormField={true}
             items={subjectOptions}
             selectedValue={subject}
@@ -127,14 +180,8 @@ export const Basics: FC<BasicsProps> = ({
       <div className={commonStyles.row}>
         {fields.prereq && (
           <SimpleDropdown
-            name="has-prereq"
-            onChange={e => {
-              const updatedHasPrereq = e.target.value === 'true';
-              handleChange({
-                hasPrereq: updatedHasPrereq,
-                prereq: updatedHasPrereq ? prereq : '',
-              });
-            }}
+            name="hasPrereq"
+            onChange={handleChange}
             styleAsFormField={true}
             items={[
               {value: 'true', text: 'Has prerequisites'},
@@ -154,7 +201,7 @@ export const Basics: FC<BasicsProps> = ({
           <TextField
             inputType="number"
             name="capacity"
-            onChange={e => handleChange({capacity: e.target.value})}
+            onChange={handleChange}
             value={capacity?.toString()}
             label="Capacity"
             helperMessage="Maximum number of attendees allowed."
@@ -172,7 +219,7 @@ export const Basics: FC<BasicsProps> = ({
           <div className={commonStyles.card}>
             <TextField
               name="prereq"
-              onChange={e => handleChange({prereq: e.target.value})}
+              onChange={handleChange}
               value={prereq}
               label="Workshop prerequisites"
               size="s"
@@ -194,7 +241,7 @@ export const Basics: FC<BasicsProps> = ({
             <textarea
               id="description"
               name="description"
-              onChange={e => handleChange({description: e.target.value})}
+              onChange={handleChange}
               value={description}
               placeholder="Enter description here"
             />
@@ -204,19 +251,12 @@ export const Basics: FC<BasicsProps> = ({
       <div className={commonStyles.row}>
         {fields.course_offerings && (
           <CheckboxDropdown
-            name="course_offerings"
+            name="courseOfferings"
             onChange={handleCourseOfferingsChange}
-            onSelectAll={() =>
-              handleChange({
-                courseOfferings:
-                  fetchedCourseOfferings?.map(({id}) => id.toString()) ?? [],
-              })
-            }
+            onSelectAll={handleSelectAllCourseOfferings}
             selectAllText="Select all"
             clearAllText="Clear all"
-            onClearAll={() => {
-              handleChange({courseOfferings: []});
-            }}
+            onClearAll={handleClearAllCourseOfferings}
             styleAsFormField={true}
             checkedOptions={courseOfferings}
             allOptions={

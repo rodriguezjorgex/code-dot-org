@@ -142,9 +142,7 @@ export interface WorkshopFormState {
 }
 
 export interface SectionProps {
-  handleChange: <K extends keyof WorkshopFormState>(
-    update: Record<K, WorkshopFormState[K]>
-  ) => void;
+  dispatchWorkshop: Dispatch<WorkshopAction>;
   config: WorkshopCourseConfig;
 }
 
@@ -188,3 +186,12 @@ export type SessionAction =
   | {type: 'SET_SESSIONS'; payload: SessionFormState[]}
   | {type: 'DELETE_SESSION'; index: number}
   | {type: 'UPDATE_SESSION_SAME_AS_PREVIOUS'; index: number};
+
+export type WorkshopAction =
+  | {type: 'UPDATE_WORKSHOP'; payload: Partial<WorkshopFormState>}
+  | {type: 'ADD_GRADE'; payload: string}
+  | {type: 'REMOVE_GRADE'; payload: string}
+  | {type: 'ADD_COURSE_OFFERING'; payload: string}
+  | {type: 'REMOVE_COURSE_OFFERING'; payload: string}
+  | {type: 'SET_COURSE_OFFERINGS'; payload: string[]}
+  | {type: 'SET_WORKSHOP'; payload: WorkshopFormState};

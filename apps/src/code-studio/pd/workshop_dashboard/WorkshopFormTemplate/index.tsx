@@ -1,13 +1,6 @@
 import {Heading1} from '@code-dot-org/component-library/typography';
 import moment from 'moment-timezone';
-import React, {
-  FC,
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useState,
-} from 'react';
+import React, {FC, useCallback, useEffect, useMemo, useReducer} from 'react';
 import {useParams} from 'react-router-dom';
 
 import {useFetch} from '@cdo/apps/util/useFetch';
@@ -28,6 +21,7 @@ import {
   SessionAction,
   SessionFormState,
   Workshop,
+  WorkshopAction,
   WorkshopFormState,
   WorkshopFormTemplateProps,
 } from './types';
@@ -72,6 +66,58 @@ export const sessionDataToState = (
     sameAsPrevious: false,
   }));
 
+export const workshopReducer = (
+  state: WorkshopFormState,
+  action: WorkshopAction
+): WorkshopFormState => {
+  switch (action.type) {
+    case 'UPDATE_WORKSHOP':
+      return {...state, ...action.payload};
+    case 'ADD_GRADE': {
+      const newGrades = state.grades.concat(action.payload);
+      newGrades.sort((a, b) => {
+        // sort 'K' to beginning
+        if (a === 'K') return -1;
+        if (b === 'K') return 1;
+        // sort 'Other' to end
+        if (a === 'Other') return 1;
+        if (b === 'Other') return -1;
+        const numA = Number(a);
+        const numB = Number(b);
+        if (isNaN(numA) || isNaN(numB)) return 0;
+        return numA - numB;
+      });
+      return {...state, grades: newGrades};
+    }
+    case 'REMOVE_GRADE':
+      return {
+        ...state,
+        grades: state.grades.filter(grade => grade !== action.payload),
+      };
+    case 'ADD_COURSE_OFFERING':
+      return {
+        ...state,
+        courseOfferings: [...state.courseOfferings, action.payload],
+      };
+    case 'REMOVE_COURSE_OFFERING':
+      return {
+        ...state,
+        courseOfferings: state.courseOfferings.filter(
+          offering => offering !== action.payload
+        ),
+      };
+    case 'SET_COURSE_OFFERINGS':
+      return {
+        ...state,
+        courseOfferings: action.payload,
+      };
+    case 'SET_WORKSHOP':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 export const sessionReducer = (
   state: SessionFormState[],
   action: SessionAction
@@ -113,29 +159,27 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
     workshopId ? `/api/v1/pd/workshops/${workshopId}` : ''
   );
 
-  const [workshopFormState, setWorkshopFormState] = useState<WorkshopFormState>(
-    {
-      course: '',
-      capacity: '',
-      description: '',
-      facilitators: [],
-      fee: '',
-      grades: [],
-      hidden: false,
-      name: '',
-      notes: '',
-      organizerId: null,
-      prereq: '',
-      hasPrereq: false,
-      regionalPartnerId: null,
-      registrationLink: '',
-      subject: '',
-      suppressEmail: false,
-      courseOfferings: [],
-      participantGroupType: '',
-      timeZone: userTimeZone,
-    }
-  );
+  const [workshopFormState, dispatchWorkshop] = useReducer(workshopReducer, {
+    course: '',
+    capacity: '',
+    description: '',
+    facilitators: [],
+    fee: '',
+    grades: [],
+    hidden: false,
+    name: '',
+    notes: '',
+    organizerId: null,
+    prereq: '',
+    hasPrereq: false,
+    regionalPartnerId: null,
+    registrationLink: '',
+    subject: '',
+    suppressEmail: false,
+    courseOfferings: [],
+    participantGroupType: '',
+    timeZone: userTimeZone,
+  });
 
   const [sessionFormState, dispatchSessions] = useReducer(sessionReducer, [
     generateNewSession(),
@@ -143,7 +187,10 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
 
   useEffect(() => {
     if (workshop) {
-      setWorkshopFormState(workshopDataToState(workshop));
+      dispatchWorkshop({
+        type: 'SET_WORKSHOP',
+        payload: workshopDataToState(workshop),
+      });
       dispatchSessions({
         type: 'SET_SESSIONS',
         payload: sessionDataToState(
@@ -154,18 +201,6 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
     }
   }, [workshop, userTimeZone]);
 
-  const handleChange = useCallback(
-    <K extends keyof WorkshopFormState>(
-      update: Record<K, WorkshopFormState[K]>
-    ) => {
-      setWorkshopFormState(prevState => ({
-        ...prevState,
-        ...update,
-      }));
-    },
-    []
-  );
-
   const publish = useCallback(() => {}, []);
   const cancel = useCallback(() => {}, []);
 
@@ -173,10 +208,10 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
 
   const sectionProps = useMemo(
     () => ({
-      handleChange,
+      dispatchWorkshop,
       config,
     }),
-    [handleChange, config]
+    [dispatchWorkshop, config]
   );
 
   return (

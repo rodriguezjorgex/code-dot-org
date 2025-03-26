@@ -3,7 +3,7 @@ import FormFieldWrapper from '@code-dot-org/component-library/formFieldWrapper';
 import TextField from '@code-dot-org/component-library/textField';
 import {Heading2} from '@code-dot-org/component-library/typography';
 import classNames from 'classnames';
-import React, {FC, useMemo} from 'react';
+import React, {ChangeEvent, FC, useMemo} from 'react';
 
 import {ParticipantGroupTypes} from '@cdo/apps/generated/pd/sharedWorkshopConstants';
 
@@ -16,7 +16,7 @@ export const AdditionalInfo: FC<AdditionalInfoProps> = ({
   fee,
   participantGroupType,
   notes,
-  handleChange,
+  dispatchWorkshop,
 }) => {
   const participantGroupTypeOptions = useMemo(() => {
     return [
@@ -27,15 +27,26 @@ export const AdditionalInfo: FC<AdditionalInfoProps> = ({
       })),
     ];
   }, []);
+
+  const handleChange = (
+    event: ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    dispatchWorkshop({
+      type: 'UPDATE_WORKSHOP',
+      payload: {[event.target.name]: event.target.value},
+    });
+  };
   return (
     <>
       <Heading2 visualAppearance="heading-sm">Additional Information</Heading2>
       <div className={commonStyles.row}>
         {fields.fee && (
           <TextField
-            name="cost"
+            name="fee"
             helperMessage="You can leave this field blank if the workshop is free"
-            onChange={e => handleChange({fee: e.target.value})}
+            onChange={handleChange}
             value={fee}
             label="Workshop cost"
             size="s"
@@ -46,8 +57,8 @@ export const AdditionalInfo: FC<AdditionalInfoProps> = ({
         )}
         {fields.participant_group_type ? (
           <SimpleDropdown
-            name="participant group type"
-            onChange={e => handleChange({participantGroupType: e.target.value})}
+            name="participantGroupType"
+            onChange={handleChange}
             styleAsFormField={true}
             items={participantGroupTypeOptions}
             selectedValue={participantGroupType}
@@ -75,7 +86,7 @@ export const AdditionalInfo: FC<AdditionalInfoProps> = ({
             <textarea
               id="notes"
               name="notes"
-              onChange={e => handleChange({notes: e.target.value})}
+              onChange={handleChange}
               value={notes}
               placeholder="Enter attendee notes here"
             />
