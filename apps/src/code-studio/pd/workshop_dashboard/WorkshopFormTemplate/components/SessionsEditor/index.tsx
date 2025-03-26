@@ -49,17 +49,10 @@ export const SessionsEditor: FC<{
       {sessions.map((session, i) => (
         <SessionPart
           key={`${session.date}-${session.start}-${session.end}`}
-          date={session.date}
-          start={session.start}
-          end={session.end}
-          format={session.format}
-          locationName={session.locationName}
-          locationAddress={session.locationAddress}
-          meetingLink={session.meetingLink}
-          sameAsPrevious={session.sameAsPrevious}
           showSameAsPrevious={i > 0}
           dispatchSessions={dispatchSessions}
           index={i}
+          {...session}
         />
       ))}
       <div className={commonStyles.row}>
