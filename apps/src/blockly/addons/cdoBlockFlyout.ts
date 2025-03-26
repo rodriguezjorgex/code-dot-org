@@ -98,17 +98,8 @@ export default class CdoBlockFlyout extends GoogleBlockly.HorizontalFlyout {
       const blockHW = block.getHeightWidth();
       this.updateHeight_(blockHW.height);
       this.updateWidth_(blockHW.width);
+    });
 
-      const rect = this.rectMap_.get(block);
-      if (rect) {
-        this.moveRectToBlock_(rect, block);
-      }
-    });
-    // Adjust the size of the flyout for each button.
-    this.buttons_.forEach(button => {
-      this.updateHeight_(button.height);
-      this.updateWidth_(button.width);
-    });
     this.setBackgroundPath_(this.width_, this.height_);
     this.position();
   }
