@@ -30,10 +30,44 @@ class Pd::ProfessionalLearningController < ApplicationController
     }.compact
   end
 
-  # /professional_learning/facilitator/computer-science-a
+  # /professional-learning/facilitator/computer-science-a
   def csa
-    # view_options(full_width: true, responsive_content: true)
-    render 'pd/professional_learning/facilitator/csa'
+    @course_name = Pd::Workshop::COURSE_CSA
+    if current_user&.can_view_all_facilitator_landing_pages? || current_user&.courses_as_facilitator&.exists?(course: @course_name)
+      render 'pd/professional_learning/facilitator/csa'
+    else
+      render 'pd/professional_learning/facilitator/not_permitted_to_view'
+    end
+  end
+
+  # /professional-learning/facilitator/computer-science-discoveries
+  def csd
+    @course_name = Pd::Workshop::COURSE_CSD
+    if current_user&.can_view_all_facilitator_landing_pages? || current_user&.courses_as_facilitator&.exists?(course: @course_name)
+      render 'pd/professional_learning/facilitator/csd'
+    else
+      render 'pd/professional_learning/facilitator/not_permitted_to_view'
+    end
+  end
+
+  # /professional-learning/facilitator/computer-science-fundamentals
+  def csf
+    @course_name = Pd::Workshop::COURSE_CSF
+    if current_user&.can_view_all_facilitator_landing_pages? || current_user&.courses_as_facilitator&.exists?(course: @course_name)
+      render 'pd/professional_learning/facilitator/csf'
+    else
+      render 'pd/professional_learning/facilitator/not_permitted_to_view'
+    end
+  end
+
+  # /professional-learning/facilitator/computer-science-principles
+  def csp
+    @course_name = Pd::Workshop::COURSE_CSP
+    if current_user&.can_view_all_facilitator_landing_pages? || current_user&.courses_as_facilitator&.exists?(course: @course_name)
+      render 'pd/professional_learning/facilitator/csp'
+    else
+      render 'pd/professional_learning/facilitator/not_permitted_to_view'
+    end
   end
 
   def applications_closed
