@@ -55,7 +55,7 @@ export const sessionDataToState = (
   timeZone: string
 ): SessionFormState[] =>
   data.map(session => ({
-    id: session.id,
+    id: `existing-${session.id}`,
     date: moment(session.start).tz(timeZone).format(DATE_FORMAT),
     start: moment(session.start).tz(timeZone).format(TIME_FORMAT),
     end: moment(session.end).tz(timeZone).format(TIME_FORMAT),
@@ -127,19 +127,19 @@ export const sessionsReducer = (
       return state.concat(generateNewSession(state[state.length - 1]));
 
     case 'UPDATE_SESSION':
-      return state.map((session, i) =>
-        i === action.index ? {...session, ...action.payload} : session
+      return state.map(session =>
+        session.id === action.id ? {...session, ...action.payload} : session
       );
 
     case 'UPDATE_SESSION_SAME_AS_PREVIOUS':
       return state.map((session, i) =>
-        i === action.index
+        session.id === action.id
           ? {...session, ...(state[i - 1] ?? {}), sameAsPrevious: true}
           : session
       );
 
     case 'DELETE_SESSION':
-      return state.filter((_, i) => i !== action.index);
+      return state.filter(session => session.id !== action.id);
 
     case 'SET_SESSIONS':
       return action.payload;

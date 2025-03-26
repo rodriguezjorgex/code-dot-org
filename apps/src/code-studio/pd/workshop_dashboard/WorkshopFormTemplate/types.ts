@@ -69,7 +69,7 @@ export interface Session {
 }
 
 export interface SessionFormState {
-  id?: number;
+  id: string;
   date: string;
   start: string;
   end: string;
@@ -182,10 +182,10 @@ export interface PublishCancelButtonsProps {
 
 export type SessionAction =
   | {type: 'ADD_SESSION'}
-  | {type: 'UPDATE_SESSION'; payload: Partial<SessionFormState>; index: number}
+  | {type: 'UPDATE_SESSION'; payload: Partial<SessionFormState>; id: string}
   | {type: 'SET_SESSIONS'; payload: SessionFormState[]}
-  | {type: 'DELETE_SESSION'; index: number}
-  | {type: 'UPDATE_SESSION_SAME_AS_PREVIOUS'; index: number};
+  | {type: 'DELETE_SESSION'; id: string}
+  | {type: 'UPDATE_SESSION_SAME_AS_PREVIOUS'; id: string};
 
 export type WorkshopAction =
   | {type: 'UPDATE_WORKSHOP'; payload: Partial<WorkshopFormState>}

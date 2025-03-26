@@ -18,6 +18,7 @@ import commonStyles from '../../styles.module.scss';
 export const generateNewSession = (
   prevSession?: SessionFormState
 ): SessionFormState => ({
+  id: `new-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
   date: prevSession
     ? moment(prevSession.date, DATE_FORMAT).add(1, 'day').format(DATE_FORMAT)
     : moment().format(DATE_FORMAT),
@@ -48,10 +49,9 @@ export const SessionsEditor: FC<{
     <>
       {sessions.map((session, i) => (
         <SessionPart
-          key={`${session.date}-${session.start}-${session.end}`}
+          key={session.id}
           showSameAsPrevious={i > 0}
           dispatchSessions={dispatchSessions}
-          index={i}
           {...session}
         />
       ))}
@@ -69,6 +69,7 @@ export const SessionsEditor: FC<{
 };
 
 export const SessionPart: FC<{
+  id: SessionFormState['id'];
   date: SessionFormState['date'];
   start: SessionFormState['start'];
   end: SessionFormState['end'];
@@ -79,8 +80,8 @@ export const SessionPart: FC<{
   sameAsPrevious: SessionFormState['sameAsPrevious'];
   showSameAsPrevious: boolean;
   dispatchSessions: Dispatch<SessionAction>;
-  index: number;
 }> = ({
+  id,
   date,
   start,
   end,
@@ -91,7 +92,6 @@ export const SessionPart: FC<{
   sameAsPrevious,
   showSameAsPrevious,
   dispatchSessions,
-  index,
 }) => {
   const timeOptions = useMemo(() => {
     const startTime = moment().startOf('day').add(7, 'hours');
@@ -121,27 +121,27 @@ export const SessionPart: FC<{
 
   const handleSession = useCallback(
     (update: Partial<SessionFormState>) => {
-      dispatchSessions({type: 'UPDATE_SESSION', index, payload: update});
+      dispatchSessions({type: 'UPDATE_SESSION', id, payload: update});
     },
-    [dispatchSessions, index]
+    [dispatchSessions, id]
   );
 
   const deleteSession = useCallback(() => {
-    dispatchSessions({type: 'DELETE_SESSION', index});
-  }, [dispatchSessions, index]);
+    dispatchSessions({type: 'DELETE_SESSION', id});
+  }, [dispatchSessions, id]);
 
   const handleSameAsPrevious = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       if (event.target.checked) {
         dispatchSessions({
           type: 'UPDATE_SESSION_SAME_AS_PREVIOUS',
-          index,
+          id,
         });
       } else {
         handleSession({sameAsPrevious: false});
       }
     },
-    [dispatchSessions, handleSession, index]
+    [dispatchSessions, handleSession, id]
   );
 
   const updateSession = useCallback(
@@ -212,7 +212,7 @@ export const SessionPart: FC<{
         <WithTooltip
           tooltipOverlayClassName={styles.deleteButtonContainer}
           tooltipProps={{
-            tooltipId: `${date}-${start}-${end}`,
+            tooltipId: `delete-session-tooltip-${id}`,
             size: 'xs',
             text: 'delete workshop session',
           }}
@@ -226,7 +226,7 @@ export const SessionPart: FC<{
             color="destructive"
             title="delete workshop session"
             aria-label="delete workshop session"
-            aria-describedby={`${date}-${start}-${end}`}
+            aria-describedby={`delete-session-tooltip-${id}`}
           />
         </WithTooltip>
       </div>
