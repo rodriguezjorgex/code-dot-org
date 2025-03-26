@@ -223,7 +223,7 @@ class ToneJSPlayer {
     await this.startContextIfNeeded();
     events.forEach(({notes, playbackPosition}) => {
       const offsetSeconds = Transport.toSeconds(
-        this.playbackTimeToTransportTime(playbackPosition, true)
+        this.playbackTimeToTransportTime(playbackPosition - 1)
       );
       lastSampleStart = Math.max(lastSampleStart, offsetSeconds);
       this.previewSamplers[instrument]
@@ -388,15 +388,14 @@ class ToneJSPlayer {
   }
 
   private playbackTimeToTransportTime(
-    playbackPosition: number,
-    zeroBased = false
+    playbackPosition: number
   ): BarsBeatsSixteenths {
     const bar = Math.floor(playbackPosition);
     const beat = Math.floor((playbackPosition - bar) * 4);
     const sixteenths = (playbackPosition - bar - beat / 4) * 16;
     // Round sixteenths note value to 3 decimal places.
     const sixteenthsRounded = Math.round(sixteenths * 1000) / 1000;
-    return `${bar - (zeroBased ? 1 : 0)}:${beat}:${sixteenthsRounded}`;
+    return `${bar}:${beat}:${sixteenthsRounded}`;
   }
 
   private createPlayer(
