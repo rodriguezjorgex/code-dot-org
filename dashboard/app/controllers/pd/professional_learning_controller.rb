@@ -3,7 +3,7 @@ class Pd::ProfessionalLearningController < ApplicationController
 
   before_action :authenticate_user!, only: [:index, :csa]
 
-  # /my-professional-learning
+  # GET my-professional-learning
   def index
     view_options(full_width: true, responsive_content: true, no_padding_container: true)
 
@@ -30,7 +30,7 @@ class Pd::ProfessionalLearningController < ApplicationController
     }.compact
   end
 
-  # /professional-learning/facilitator/computer-science-a
+  # GET professional-learning/facilitator/computer-science-a
   def csa
     @course_name = Pd::Workshop::COURSE_CSA
     if current_user&.can_view_all_facilitator_landing_pages? || current_user&.courses_as_facilitator&.exists?(course: @course_name)
@@ -40,7 +40,7 @@ class Pd::ProfessionalLearningController < ApplicationController
     end
   end
 
-  # /professional-learning/facilitator/computer-science-discoveries
+  # GET professional-learning/facilitator/computer-science-discoveries
   def csd
     @course_name = Pd::Workshop::COURSE_CSD
     if current_user&.can_view_all_facilitator_landing_pages? || current_user&.courses_as_facilitator&.exists?(course: @course_name)
@@ -50,7 +50,7 @@ class Pd::ProfessionalLearningController < ApplicationController
     end
   end
 
-  # /professional-learning/facilitator/computer-science-fundamentals
+  # GET professional-learning/facilitator/computer-science-fundamentals
   def csf
     @course_name = Pd::Workshop::COURSE_CSF
     if current_user&.can_view_all_facilitator_landing_pages? || current_user&.courses_as_facilitator&.exists?(course: @course_name)
@@ -60,7 +60,7 @@ class Pd::ProfessionalLearningController < ApplicationController
     end
   end
 
-  # /professional-learning/facilitator/computer-science-principles
+  # GET professional-learning/facilitator/computer-science-principles
   def csp
     @course_name = Pd::Workshop::COURSE_CSP
     if current_user&.can_view_all_facilitator_landing_pages? || current_user&.courses_as_facilitator&.exists?(course: @course_name)
