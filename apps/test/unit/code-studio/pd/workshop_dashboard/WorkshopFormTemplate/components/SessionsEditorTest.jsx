@@ -16,9 +16,11 @@ import {
 } from '@cdo/apps/code-studio/pd/workshop_dashboard/WorkshopFormTemplate/components/SessionsEditor';
 
 describe('generateNewSession', () => {
+  const newIdRegex = /^new-\d+-\w+$/;
   it('generates a new session with default values', () => {
     const newSession = generateNewSession();
 
+    expect(newSession.id).toMatch(newIdRegex);
     expect(newSession.date).toEqual(moment().format(DATE_FORMAT));
     expect(newSession.start).toEqual(
       moment().startOf('day').add(7, 'hours').format(TIME_FORMAT)
@@ -35,6 +37,7 @@ describe('generateNewSession', () => {
 
   it('generates a new session based on the previous session', () => {
     const prevSession = {
+      id: 'new-123-abc',
       date: '2025-03-28',
       start: '8:00am',
       end: '5:00pm',
@@ -49,6 +52,8 @@ describe('generateNewSession', () => {
     expect(newSession.date).toEqual(
       moment('2025-03-28', DATE_FORMAT).add(1, 'day').format(DATE_FORMAT)
     );
+    expect(newSession.id).toMatch(newIdRegex);
+    expect(newSession.id).not.toEqual(prevSession.id);
     expect(newSession.start).toEqual('8:00am');
     expect(newSession.end).toEqual('5:00pm');
     expect(newSession.locationAddress).toEqual('123 Main St');
@@ -63,6 +68,7 @@ describe('SessionsEditor', () => {
   const mockDispatchSessions = jest.fn();
   const initialSessions = [
     {
+      id: 'new-123-abc',
       date: '2025-03-28',
       start: '8:00am',
       end: '5:00pm',
@@ -113,6 +119,7 @@ describe('SessionsEditor', () => {
 describe('SessionPart', () => {
   const dispatchSessions = jest.fn();
   const mockSession = {
+    id: 'new-123-abc',
     date: '2025-03-28',
     start: '8:00am',
     end: '5:00pm',
@@ -171,7 +178,7 @@ describe('SessionPart', () => {
     await waitFor(() => {
       expect(dispatchSessions).toHaveBeenCalledTimes(1);
       expect(dispatchSessions).toHaveBeenCalledWith({
-        index: 0,
+        id: mockSession.id,
         type: 'UPDATE_SESSION',
         payload: {
           date: '2025-03-29',
@@ -189,7 +196,7 @@ describe('SessionPart', () => {
     await waitFor(() => {
       expect(dispatchSessions).toHaveBeenCalledTimes(1);
       expect(dispatchSessions).toHaveBeenCalledWith({
-        index: 0,
+        id: mockSession.id,
         type: 'UPDATE_SESSION',
         payload: {
           start: '8:30am',
@@ -207,7 +214,7 @@ describe('SessionPart', () => {
     await waitFor(() => {
       expect(dispatchSessions).toHaveBeenCalledTimes(1);
       expect(dispatchSessions).toHaveBeenCalledWith({
-        index: 0,
+        id: mockSession.id,
         type: 'UPDATE_SESSION',
         payload: {
           end: '5:30pm',
@@ -225,7 +232,7 @@ describe('SessionPart', () => {
     await waitFor(() => {
       expect(dispatchSessions).toHaveBeenCalledTimes(1);
       expect(dispatchSessions).toHaveBeenCalledWith({
-        index: 0,
+        id: mockSession.id,
         type: 'UPDATE_SESSION',
         payload: {
           format: 'virtual',
@@ -244,7 +251,7 @@ describe('SessionPart', () => {
 
     expect(dispatchSessions).toHaveBeenCalledTimes(1);
     expect(dispatchSessions).toHaveBeenCalledWith({
-      index: 0,
+      id: mockSession.id,
       type: 'DELETE_SESSION',
     });
   });
@@ -260,7 +267,7 @@ describe('SessionPart', () => {
     await waitFor(() => {
       expect(dispatchSessions).toHaveBeenCalledTimes(newLocation.length + 1);
       expect(dispatchSessions).toHaveBeenCalledWith({
-        index: 0,
+        id: mockSession.id,
         type: 'UPDATE_SESSION',
         payload: {
           locationName: newLocation,
@@ -280,7 +287,7 @@ describe('SessionPart', () => {
     await waitFor(() => {
       expect(dispatchSessions).toHaveBeenCalledTimes(newAddress.length + 1);
       expect(dispatchSessions).toHaveBeenCalledWith({
-        index: 0,
+        id: mockSession.id,
         type: 'UPDATE_SESSION',
         payload: {
           locationAddress: newAddress,
@@ -305,7 +312,7 @@ describe('SessionPart', () => {
     await waitFor(() => {
       expect(dispatchSessions).toHaveBeenCalledTimes(newLink.length + 1);
       expect(dispatchSessions).toHaveBeenCalledWith({
-        index: 0,
+        id: mockSession.id,
         type: 'UPDATE_SESSION',
         payload: {
           meetingLink: newLink,
@@ -325,7 +332,7 @@ describe('SessionPart', () => {
     await waitFor(() => {
       expect(dispatchSessions).toHaveBeenCalledTimes(1);
       expect(dispatchSessions).toHaveBeenCalledWith({
-        index: 0,
+        id: mockSession.id,
         type: 'UPDATE_SESSION',
         payload: {sameAsPrevious: false},
       });
@@ -341,7 +348,7 @@ describe('SessionPart', () => {
     await waitFor(() => {
       expect(dispatchSessions).toHaveBeenCalledTimes(1);
       expect(dispatchSessions).toHaveBeenCalledWith({
-        index: 0,
+        id: mockSession.id,
         type: 'UPDATE_SESSION_SAME_AS_PREVIOUS',
       });
     });
