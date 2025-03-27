@@ -12,7 +12,7 @@ import React, {ChangeEvent, FC, useCallback, useMemo} from 'react';
 import {useFetch} from '@cdo/apps/util/useFetch';
 import {StudentGradeLevels} from '@cdo/generated-scripts/sharedConstants';
 
-import {BasicsProps, CourseOffering, WorkshopFormState} from '../types';
+import {BasicsProps, CourseOffering} from '../types';
 
 import commonStyles from '../styles.module.scss';
 
@@ -52,19 +52,12 @@ export const Basics: FC<BasicsProps> = ({
         HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
       >
     ) => {
-      const payload: Partial<WorkshopFormState> = {
-        [e.target.name]: e.target.value,
-      };
-      if (e.target.name === 'hasPrereq') {
-        const hasPrereq = e.target.value === 'true';
-        payload[e.target.name] = hasPrereq;
-        if (!hasPrereq) {
-          payload.prereq = '';
-        }
-      }
+      const {name, value} = e.target;
       dispatchWorkshop({
         type: 'UPDATE_WORKSHOP',
-        payload,
+        payload: {
+          [name]: name === 'hasPrereq' ? value === 'true' : value,
+        },
       });
     },
     [dispatchWorkshop]
