@@ -360,6 +360,20 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     assert_equal [earlier_workshop.course, later_workshop.course], program_manager_workshop_courses
   end
 
+  test 'signed out user trying to view facilitator landing pages is sent to sign in page' do
+    get :csa
+    assert_redirected_to '/users/sign_in'
+
+    get :csd
+    assert_redirected_to '/users/sign_in'
+
+    get :csf
+    assert_redirected_to '/users/sign_in'
+
+    get :csp
+    assert_redirected_to '/users/sign_in'
+  end
+
   test 'csa facilitator landing page only loads for users with one of the necessary permissions' do
     setup_facilitator_landing_users
     can_view = [@program_manager, @workshop_organizer, @workshop_admin, @csa_facilitator]
