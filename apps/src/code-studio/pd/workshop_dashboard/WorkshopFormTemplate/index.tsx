@@ -15,7 +15,7 @@ import EmailsReminders from './sections/EmailsReminders';
 import PartnerFacilitator from './sections/PartnerFacilitator';
 import PublishCancelButtons from './sections/PublishCancelButtons';
 import PublishSettings from './sections/PublishSettings';
-import {Schedule} from './sections/Schedule';
+import Schedule from './sections/Schedule';
 import {
   Session,
   SessionAction,
