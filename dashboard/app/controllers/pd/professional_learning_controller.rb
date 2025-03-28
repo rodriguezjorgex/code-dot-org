@@ -29,6 +29,9 @@ class Pd::ProfessionalLearningController < ApplicationController
     }.compact
   end
 
+  def workshops
+  end
+
   def applications_closed
     # true when teacher applications are closed site-wide
     closed = Rails.env.production? && !current_user.try(:workshop_admin?) && Gatekeeper.disallows('pd_teacher_application')
