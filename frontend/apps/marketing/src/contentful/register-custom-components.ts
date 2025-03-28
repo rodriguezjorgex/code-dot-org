@@ -5,6 +5,9 @@
  */
 import {defineComponents} from '@contentful/experiences-sdk-react';
 
+import ActionBlock, {
+  ActionBlockContentfulComponentDefinition,
+} from '@/components/actionBlocks/defaultActionBlock';
 import Button, {ButtonContentfulComponentDefinition} from '@/components/button';
 import VideoCarousel, {
   VideoCarouselContentfulComponentDefinition,
@@ -36,10 +39,20 @@ import Section, {
 import SimpleList, {
   SimpleListContentfulComponentDefinition,
 } from '@/components/simpleList';
+import TabGroup, {
+  TabGroupContentfulComponentDefinition,
+} from '@/components/tabGroup';
 import Video, {VideoContentfulComponentDefinition} from '@/components/video';
 
 defineComponents(
   [
+    {
+      component: ActionBlock,
+      definition: ActionBlockContentfulComponentDefinition,
+      options: {
+        wrapContainerWidth: '100%',
+      },
+    },
     {component: Button, definition: ButtonContentfulComponentDefinition},
     {
       component: VideoCarousel,
@@ -95,6 +108,7 @@ defineComponents(
       component: SimpleList,
       definition: SimpleListContentfulComponentDefinition,
     },
+    {component: TabGroup, definition: TabGroupContentfulComponentDefinition},
     {
       component: Video,
       definition: VideoContentfulComponentDefinition,
