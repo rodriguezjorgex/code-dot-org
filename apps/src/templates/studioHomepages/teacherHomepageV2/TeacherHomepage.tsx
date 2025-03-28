@@ -9,6 +9,7 @@ import {asyncLoadTeacherHomepageSectionData} from '../../teacherDashboard/teache
 import {EmptyHomepage} from './EmptyHomepage';
 import {Header} from './Header';
 import {SectionList} from './SectionList';
+import {TeacherPromotions} from './TeacherPromotions';
 
 import styles from './teacherHomepage.module.scss';
 
@@ -58,7 +59,7 @@ export const TeacherHomepage: React.FC = () => {
               />
             )}
           </div>
-          <div className={styles.blankAnnouncement} />
+          <TeacherPromotions />
         </div>
       </div>
     </div>
