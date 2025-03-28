@@ -39,6 +39,20 @@ ActiveRecord::Schema.define(version: 2025_03_25_183210) do
     t.index ["lesson_activity_id"], name: "index_activity_sections_on_lesson_activity_id"
   end
 
+  create_table "ai_interaction_feedbacks", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "level_id"
+    t.integer "script_id"
+    t.boolean "thumbs_up"
+    t.string "school_year"
+    t.json "metadata"
+    t.string "ai_interaction_type", null: false
+    t.bigint "ai_interaction_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["ai_interaction_type", "ai_interaction_id"], name: "index_ai_interaction_feedbacks_on_ai_interaction"
+  end
+
   create_table "ai_tutor_interaction_feedbacks", charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.bigint "ai_tutor_interaction_id", null: false
     t.integer "user_id", null: false
@@ -110,7 +124,7 @@ ActiveRecord::Schema.define(version: 2025_03_25_183210) do
     t.index ["user_id", "level_id", "script_id"], name: "index_acs_user_level_script"
   end
 
-  create_table "aidiff_message_feedbacks", charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+  create_table "aidiff_message_feedbacks", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "aidiff_message_id", null: false
     t.bigint "teacher_id", null: false
     t.boolean "approval"
@@ -120,7 +134,7 @@ ActiveRecord::Schema.define(version: 2025_03_25_183210) do
     t.index ["aidiff_message_id"], name: "index_aidiff_message_feedbacks_on_aidiff_message_id", unique: true
   end
 
-  create_table "aidiff_messages", charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+  create_table "aidiff_messages", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "aidiff_thread_id", null: false
     t.text "external_id", null: false
     t.integer "role", null: false
@@ -131,7 +145,7 @@ ActiveRecord::Schema.define(version: 2025_03_25_183210) do
     t.index ["aidiff_thread_id"], name: "index_aidiff_messages_on_aidiff_thread_id"
   end
 
-  create_table "aidiff_threads", charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+  create_table "aidiff_threads", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.text "external_id", null: false
     t.text "llm_version", null: false
@@ -641,20 +655,6 @@ ActiveRecord::Schema.define(version: 2025_03_25_183210) do
     t.index ["start_at"], name: "index_experiments_on_start_at"
   end
 
-  create_table "feature_feedbacks", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "level_id"
-    t.integer "script_id"
-    t.boolean "thumbs_up"
-    t.string "school_year"
-    t.json "metadata"
-    t.string "feature_type", null: false
-    t.bigint "feature_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["feature_type", "feature_id"], name: "index_feature_feedbacks_on_feature"
-  end
-
   create_table "featured_projects", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "storage_app_id"
     t.datetime "featured_at"
@@ -987,7 +987,7 @@ ActiveRecord::Schema.define(version: 2025_03_25_183210) do
     t.index ["lti_integration_id"], name: "index_lti_deployments_on_lti_integration_id"
   end
 
-  create_table "lti_deployments_user_identities", id: false, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+  create_table "lti_deployments_user_identities", id: false, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "lti_deployment_id", null: false
     t.bigint "lti_user_identity_id", null: false
     t.index ["lti_deployment_id"], name: "index_lti_deployments_user_identities_on_lti_deployment_id"
@@ -2300,7 +2300,7 @@ ActiveRecord::Schema.define(version: 2025_03_25_183210) do
     t.index ["user_id"], name: "index_user_geos_on_user_id"
   end
 
-  create_table "user_level_evaluations", charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+  create_table "user_level_evaluations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "level_id", null: false
     t.integer "script_id", null: false
@@ -2316,7 +2316,7 @@ ActiveRecord::Schema.define(version: 2025_03_25_183210) do
     t.index ["user_id"], name: "index_user_level_evaluations_on_user_id"
   end
 
-  create_table "user_level_interactions", charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+  create_table "user_level_interactions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "level_id", null: false
     t.integer "script_id", null: false
@@ -2518,9 +2518,9 @@ ActiveRecord::Schema.define(version: 2025_03_25_183210) do
     t.integer "primary_contact_info_id"
     t.string "unlock_token"
     t.string "cap_status", limit: 1
-    t.datetime "cap_status_date"
+    t.datetime "cap_state_date"
     t.index ["birthday"], name: "index_users_on_birthday"
-    t.index ["cap_status", "cap_status_date"], name: "index_users_on_cap_status_and_cap_status_date"
+    t.index ["cap_status", "cap_state_date"], name: "index_users_on_cap_state_and_cap_state_date"
     t.index ["current_sign_in_at"], name: "index_users_on_current_sign_in_at"
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email", "deleted_at"], name: "index_users_on_email_and_deleted_at"
