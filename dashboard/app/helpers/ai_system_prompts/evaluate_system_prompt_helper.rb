@@ -24,16 +24,69 @@ module AiSystemPrompts::EvaluateSystemPromptHelper
   # or very generic criteria for programming levels.
   def self.get_evaluation_criteria(level)
     skills_based_evaluation_criteria = {
-      22595 => [
-        "Are all of the variables in the student's code named conventionally?",
-        "Is every variable declared before it is used?",
-      ],
+      # Lesson 3, Level 2
+      22595 => {
+        level_type: "Programming",
+        programming_task_type: "Modify existing code",
+        programming_concept_skills: [
+          {
+            skill: "Declare variables correctly",
+            evaluation_criteria: "Did the students declare all of the variables in their code correctly?",
+            concept: "Variables"
+          },
+          {
+            skill: "Name variables according to conventions",
+            evaluation_criteria: "Are there any spaces in variable names? Are there any misspelled variable names? Do variable names follow casing conventions?",
+            concept: "Variables"
+          },
+        ],
+        computational_thinking_skills: [
+          {
+            skill: "Identify errors in starter code",
+            evaluation_criteria: "Does the code compile without errors?",
+            concept: "Debugging"
+          },
+          {
+            skill: "Fix errors in starter code",
+            evaluation_criteria: "Does the code compile without errors?",
+            concept: "Debugging",
+          },
+        ],
+        habits_of_work: [
+          {
+            skill: "Share work with partner verbally",
+            concept: "Communication"
+          },
+        ],
+      },
+      # Lesson 3, Level 6
+      22630 => {
+        level_type: "Programming",
+        programming_task_type: "Write new code with guidance",
+        programming_concept_skills: [
+          {
+            skill: "Increment values stored in variables",
+            evaluation_criteria: "Does the student's added code increment the values stored in the variables correctly?",
+            concept: "Variables"
+          },
+        ],
+        computational_thinking_skills: [
+          {
+            skill: "Pattern matching",
+            evaluation_criteria: "Does the student's added code match the pattern of the existing code?",
+            concept: "Pattern recognition"
+          },
+        ],
+      },
     }
     levels_with_skills_based_criteria = skills_based_evaluation_criteria.keys
     if levels_with_skills_based_criteria.include?(level.id)
-      evaluation_criteria = "Does the code compile without errors? "
-      skills_based_evaluation_criteria[level.id].each do |criterion|
-        evaluation_criteria << criterion
+      evaluation_criteria = []
+      skills_based_evaluation_criteria[level.id][:programming_concept_skills].each do |criterion|
+        evaluation_criteria << criterion[:evaluation_criteria]
+      end
+      skills_based_evaluation_criteria[level.id][:computational_thinking_skills].each do |criterion|
+        evaluation_criteria << criterion[:evaluation_criteria]
       end
       evaluation_criteria
     elsif level.upper_grades_programming_level?
