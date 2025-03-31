@@ -28,7 +28,7 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
   const background = useAppSelector(
     state => getCurrentLesson(state)?.background || null
   );
-  const backgroundSuffix = capitalizeFirstLetter(background || 'dark');
+  const backgroundSuffix = capitalizeFirstLetter(background || 'light');
   const levelBubbleChoice = levelProperties.levelData as BubbleChoiceLevelData;
   const sublevelsStatus = useAppSelector(state =>
     levelBubbleChoice.sublevels.map(
