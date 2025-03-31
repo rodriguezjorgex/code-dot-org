@@ -36,7 +36,7 @@ class Pd::ProfessionalLearningController < ApplicationController
     if can_view_facilitator_page(@course_name)
       render 'pd/professional_learning/facilitator/csa'
     else
-      render 'pd/professional_learning/facilitator/not_permitted_to_view'
+      render 'pd/professional_learning/facilitator/not_permitted_to_view', :status => :forbidden
     end
   end
 
@@ -46,7 +46,7 @@ class Pd::ProfessionalLearningController < ApplicationController
     if can_view_facilitator_page(@course_name)
       render 'pd/professional_learning/facilitator/csd'
     else
-      render 'pd/professional_learning/facilitator/not_permitted_to_view'
+      render 'pd/professional_learning/facilitator/not_permitted_to_view', :status => :forbidden
     end
   end
 
@@ -56,7 +56,7 @@ class Pd::ProfessionalLearningController < ApplicationController
     if can_view_facilitator_page(@course_name)
       render 'pd/professional_learning/facilitator/csf'
     else
-      render 'pd/professional_learning/facilitator/not_permitted_to_view'
+      render 'pd/professional_learning/facilitator/not_permitted_to_view', :status => :forbidden
     end
   end
 
@@ -66,7 +66,7 @@ class Pd::ProfessionalLearningController < ApplicationController
     if can_view_facilitator_page(@course_name)
       render 'pd/professional_learning/facilitator/csp'
     else
-      render 'pd/professional_learning/facilitator/not_permitted_to_view'
+      render 'pd/professional_learning/facilitator/not_permitted_to_view', :status => :forbidden
     end
   end
 
@@ -76,7 +76,7 @@ class Pd::ProfessionalLearningController < ApplicationController
     if can_view_facilitator_page(@course_name)
       render 'pd/professional_learning/facilitator/csaif'
     else
-      render 'pd/professional_learning/facilitator/not_permitted_to_view'
+      render 'pd/professional_learning/facilitator/not_permitted_to_view', :status => :forbidden
     end
   end
 
@@ -85,7 +85,7 @@ class Pd::ProfessionalLearningController < ApplicationController
     if current_user.permission?(UserPermission::PROGRAM_MANAGER) || current_user.permission?(UserPermission::WORKSHOP_ADMIN)
       render 'pd/professional_learning/regional_partner/regional_partner_playbook'
     else
-      render 'pd/professional_learning/regional_partner/not_permitted_to_view'
+      render 'pd/professional_learning/regional_partner/not_permitted_to_view', :status => :forbidden
     end
   end
 
