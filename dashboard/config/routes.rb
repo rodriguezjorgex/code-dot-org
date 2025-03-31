@@ -569,15 +569,21 @@ Dashboard::Application.routes.draw do
 
     resources :scripts, path: '/s/', &unit_routes
 
-    get '/certificate_images/:filename', to: 'certificate_images#show'
+    resources :certificate_images, only: [:show], param: 'filename'
 
-    post '/print_certificates/batch'
-    get '/print_certificates/:encoded_params', to: 'print_certificates#show'
+    resources :print_certificates, only: [:show], param: 'encoded_params' do
+      collection do
+        post :batch
+      end
+    end
 
-    get '/certificates/blank'
-    get '/certificates/batch'
-    post '/certificates/batch'
-    get '/certificates/:encoded_params', to: 'certificates#show'
+    resources :certificates, only: [:show], param: 'encoded_params' do
+      collection do
+        get :blank
+        get :batch
+        post :batch
+      end
+    end
 
     get '/beta', to: redirect('/')
 
