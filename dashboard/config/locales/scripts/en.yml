@@ -20722,6 +20722,10 @@ en:
               name: 'Mini Project: Walk Up Songs'
             lesson-13:
               name: 'Mini Project: Cat GIF Loops'
+            lesson-14:
+              name: Introduction to Music Lab
+            lesson-15:
+              name: 'Project: Genre Mash-Up'
           lesson_groups: {}
           name: musiclab-6-12-playground
           title: 6-12 Music Lab Playground
@@ -21959,3 +21963,96 @@ en:
           description_short: ''
           description: "## Welcome\nWelcome to Code.org's free self-paced online learning for educators to get started teaching with Code.org! After completing this professional learning experience, **you'll be ready to get started teaching any of the Code.org curriculum** with your students.\n\n### Find the learning that works for you\n* **Go at your own pace:** This self-paced learning experience is designed to give you control over your own learning. Suggested times are given for each lesson.  However, we encourage you to **engage with the content at your own pace.**\n\nPick your content: The Getting Started Content is organized in five lessons: \n* Lesson 1: Welcome to Code.org\n* Lesson 2: Navigating the Code.org Learning Platform\n* Lesson 3: The Student Experience\n* Lesson 4: Navigating Lesson Plans, Assessments, and Resources\n* Lesson 5: Navigating Support"
           student_description: "## Welcome\nWelcome to Code.org's free self-paced online learning for educators to get started teaching with Code.org! After completing this professional learning experience, **you'll be ready to get started teaching any of the Code.org curriculum** with your students.\n\n### Find the learning that works for you\n* **Go at your own pace:** This self-paced learning experience is designed to give you control over your own learning. Suggested times are given for each lesson.  However, we encourage you to **engage with the content at your own pace.**\n\nPick your content: The Getting Started Content is organized in five lessons: \n* Lesson 1: Welcome to Code.org\n* Lesson 2: Navigating the Code.org Learning Platform\n* Lesson 3: The Student Experience\n* Lesson 4: Navigating Lesson Plans, Assessments, and Resources\n* Lesson 5: Navigating Support"
+        facilitator-access-csaif:
+          lessons: {}
+          lesson_groups: {}
+          name: facilitator-access-csaif
+          title: CSAIF - Faciliator Early Access
+          description_audience: ''
+          description_short: ''
+          description: ''
+          student_description: ''
+        pl-equity-cs:
+          lessons: {}
+          lesson_groups: {}
+        facilitator-compsys-pl-early-access:
+          lessons:
+            lesson-1:
+              name: Teaching Computer Systems and Devices
+            lesson-2:
+              name: Hardware and Software
+            lesson-3:
+              name: Data in Computer Systems
+            lesson-4:
+              name: Ethical Use and the Final Project
+          lesson_groups: {}
+          name: facilitator-compsys-pl-early-access
+          title: Teaching Computer Systems & Devices - EARLY ACCESS
+          description_audience: ''
+          description_short: ''
+          description: ''
+          student_description: ''
+        facilitator-cyber-csaif-early-access:
+          lessons:
+            lesson-1:
+              name: Teaching Cybersecurity & Global Impact
+            lesson-2:
+              name: Lesson Exploration
+          lesson_groups: {}
+          name: facilitator-cyber-csaif-early-access
+          title: Teaching Cybersecurity and Global Impacts PL (CSAIF) - EARLY ACCESS
+          description_audience: ''
+          description_short: ''
+          description: ''
+          student_description: ''
+        facilitator-prog-fund-pl-early-access:
+          lessons:
+            lesson-1:
+              name: Teaching Programming Fundamentals
+            lesson-2:
+              name: Computational Thinking
+            lesson-3:
+              name: Python Basics
+            lesson-4:
+              name: Algorithms with Python
+            lesson-5:
+              name: Preparing for Final Project
+          lesson_groups: {}
+          name: facilitator-prog-fund-pl-early-access
+          title: Teaching Programming Fundamentals PL - EARLY ACCESS
+          description_audience: ''
+          description_short: ''
+          description: ''
+          student_description: ''
+        facilitator-prog-fund-early-access:
+          lessons:
+            lesson-1:
+              name: Teaching Programming Fundamentals
+            lesson-2:
+              name: Computational Thinking
+            lesson-3:
+              name: Python Basics
+            lesson-4:
+              name: Algorithms with Python
+            lesson-5:
+              name: Preparing for the Final Project
+          lesson_groups: {}
+          name: facilitator-prog-fund-early-access
+          title: Teaching Programming Fundamentals PL - EARLY ACCESS
+          description_audience: ''
+          description_short: ''
+          description: ''
+          student_description: ''
+        facilitator-networks-early-access:
+          lessons:
+            lesson-1:
+              name: Introduction to Networks
+            lesson-2:
+              name: Lesson Exploration
+          lesson_groups: {}
+          name: facilitator-networks-early-access
+          title: Teaching Networks and the Internet - EARLY ACCESS
+          description_audience: ''
+          description_short: ''
+          description: ''
+          student_description: ''

@@ -1774,8 +1774,8 @@ en:
         gamelab-demo:
           title: gamelab-demo
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.gamelab-demo.student_description'
-          description_teacher: 'translation missing: en.data.script.name.gamelab-demo.description'
+          description_student: 'translation missing: en-US.data.script.name.gamelab-demo.student_description'
+          description_teacher: 'translation missing: en-US.data.script.name.gamelab-demo.description'
           version_title: unversioned
         workshop-gamelab:
           title: Game Lab Workshop
@@ -1840,8 +1840,8 @@ en:
         allthettsthings:
           title: allthettsthings
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.allthettsthings.student_description'
-          description_teacher: 'translation missing: en.data.script.name.allthettsthings.description'
+          description_student: 'translation missing: en-US.data.script.name.allthettsthings.student_description'
+          description_teacher: 'translation missing: en-US.data.script.name.allthettsthings.description'
           version_title: unversioned
         subgoal-labels-opt-in:
           title: Subgoal Labels Study Opt-in
@@ -2182,8 +2182,8 @@ en:
         denny-science-copy:
           title: denny-science-copy
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.denny-science-copy.student_description'
-          description_teacher: 'translation missing: en.data.script.name.denny-science-copy.description'
+          description_student: 'translation missing: en-US.data.script.name.denny-science-copy.student_description'
+          description_teacher: 'translation missing: en-US.data.script.name.denny-science-copy.description'
           version_title: unversioned
         denny-science-8:
           title: Collision Detector
@@ -2200,8 +2200,8 @@ en:
         moneppo-1:
           title: moneppo-1
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.moneppo-1.student_description'
-          description_teacher: 'translation missing: en.data.script.name.moneppo-1.description'
+          description_student: 'translation missing: en-US.data.script.name.moneppo-1.student_description'
+          description_teacher: 'translation missing: en-US.data.script.name.moneppo-1.description'
           version_title: unversioned
         csd2-virtual:
           title: Self Paced Introduction to Web Lab
@@ -2242,8 +2242,8 @@ en:
         gamelabprojects:
           title: gamelabprojects
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.gamelabprojects.student_description'
-          description_teacher: 'translation missing: en.data.script.name.gamelabprojects.description'
+          description_student: 'translation missing: en-US.data.script.name.gamelabprojects.student_description'
+          description_teacher: 'translation missing: en-US.data.script.name.gamelabprojects.description'
           version_title: unversioned
         dani-june-2020-test:
           title: ''
@@ -2356,8 +2356,8 @@ en:
         teststandard:
           title: teststandard
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.teststandard.student_description'
-          description_teacher: 'translation missing: en.data.script.name.teststandard.description'
+          description_student: 'translation missing: en-US.data.script.name.teststandard.student_description'
+          description_teacher: 'translation missing: en-US.data.script.name.teststandard.description'
           version_title: unversioned
         haikubot-pilot:
           title: Poem Bot (Pilot)
@@ -2404,7 +2404,7 @@ en:
         poster:
           title: 'V1_Interactive Poster: Self-Expression'
           description_short: '(Need to change name) Interactive Poster project in an "About Me" format for HoC - V1 '
-          description_student: 'translation missing: en.data.script.name.poster.student_description'
+          description_student: 'translation missing: en-US.data.script.name.poster.student_description'
           description_teacher: ''
           version_title: unversioned
         self-paced-pl-csd6-2021:
@@ -2440,61 +2440,61 @@ en:
         outbreak-module:
           title: Outbreak
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.outbreak-module.student_description'
+          description_student: 'translation missing: en-US.data.script.name.outbreak-module.student_description'
           description_teacher: ''
           version_title: unversioned
         poembot:
           title: Poembot
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.poembot.student_description'
+          description_student: 'translation missing: en-US.data.script.name.poembot.student_description'
           description_teacher: ''
           version_title: unversioned
         csa1-exemplars:
           title: Unit 1 - Object Oriented Programming [Exemplars]
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.csa1-exemplars.student_description'
+          description_student: 'translation missing: en-US.data.script.name.csa1-exemplars.student_description'
           description_teacher: ''
           version_title: unversioned
         csa2-exemplars:
           title: Unit 2 - Giving Objects State [Exemplars]
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.csa2-exemplars.student_description'
+          description_student: 'translation missing: en-US.data.script.name.csa2-exemplars.student_description'
           description_teacher: ''
           version_title: unversioned
         csa-videos:
           title: CSA Videos
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.csa-videos.student_description'
+          description_student: 'translation missing: en-US.data.script.name.csa-videos.student_description'
           description_teacher: ''
           version_title: unversioned
         csa3-exemplars:
           title: Unit 3 - Expanding Program Data [Exemplars]
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.csa3-exemplars.student_description'
+          description_student: 'translation missing: en-US.data.script.name.csa3-exemplars.student_description'
           description_teacher: ''
           version_title: unversioned
         poster-experiment:
           title: Story Board (V1 - Experiment)
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.poster-experiment.student_description'
+          description_student: 'translation missing: en-US.data.script.name.poster-experiment.student_description'
           description_teacher: ''
           version_title: unversioned
         sb-pt-cont:
           title: Story Board (playtest control)
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.sb-pt-cont.student_description'
+          description_student: 'translation missing: en-US.data.script.name.sb-pt-cont.student_description'
           description_teacher: ''
           version_title: unversioned
         sb-pt-exp:
           title: Story Board (playtest experiment)
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.sb-pt-exp.student_description'
+          description_student: 'translation missing: en-US.data.script.name.sb-pt-exp.student_description'
           description_teacher: ''
           version_title: unversioned
         csa-u6-dev:
           title: CSA Unit 6 Development
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.csa-u6-dev.student_description'
+          description_student: 'translation missing: en-US.data.script.name.csa-u6-dev.student_description'
           description_teacher: ''
           version_title: unversioned
         hello-world-draft:
@@ -2752,8 +2752,8 @@ en:
         katie-practice:
           title: katie-practice
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.katie-practice.student_description'
-          description_teacher: 'translation missing: en.data.script.name.katie-practice.description'
+          description_student: 'translation missing: en-US.data.script.name.katie-practice.student_description'
+          description_teacher: 'translation missing: en-US.data.script.name.katie-practice.description'
           version_title: unversioned
         emma:
           title: ''
@@ -2869,8 +2869,8 @@ en:
         testing-digital-information-2023:
           title: testing-digital-information-2023
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.testing-digital-information-2023.student_description'
-          description_teacher: 'translation missing: en.data.script.name.testing-digital-information-2023.description'
+          description_student: 'translation missing: en-US.data.script.name.testing-digital-information-2023.student_description'
+          description_teacher: 'translation missing: en-US.data.script.name.testing-digital-information-2023.description'
           version_title: '2023'
         poemmaker-2023:
           title: Poem Maker
@@ -3328,8 +3328,8 @@ en:
         dan-test:
           title: dan-test
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.dan-test.student_description'
-          description_teacher: 'translation missing: en.data.script.name.dan-test.description'
+          description_student: 'translation missing: en-US.data.script.name.dan-test.student_description'
+          description_teacher: 'translation missing: en-US.data.script.name.dan-test.description'
           version_title: unversioned
         net-int:
           title: Networks & Internet Playground
@@ -3340,8 +3340,8 @@ en:
         none-none:
           title: none-none
           description_short: ''
-          description_student: 'translation missing: en.data.script.name.none-none.student_description'
-          description_teacher: 'translation missing: en.data.script.name.none-none.description'
+          description_student: 'translation missing: en-US.data.script.name.none-none.student_description'
+          description_teacher: 'translation missing: en-US.data.script.name.none-none.description'
           version_title: unversioned
         jamila-sandbox:
           title: jamila's stuff go away
@@ -4304,4 +4304,10 @@ en:
           description_teacher: |-
             ##Welcome
             This self-paced module is designed to introduce educators to Code.org as a teaching tool, focusing on foundational aspects of the platform and its features. Educators will learn how to set up their classrooms, navigate the platform’s resources, and implement Code.org’s beginner-friendly coding curriculum. The module combines instructional videos, interactive activities, and practical assignments to help teachers gain confidence in using Code.org effectively in their classrooms. Upon completing this module, teachers will have a pathway to start using Code.org with their students immediately.
+          version_title: ''
+        facilitator-access-csaif-2025:
+          title: facilitator-access-csaif-2025
+          description_short: ''
+          description_student: ''
+          description_teacher: ''
           version_title: ''
