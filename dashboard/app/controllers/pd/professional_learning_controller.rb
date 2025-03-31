@@ -1,7 +1,7 @@
 class Pd::ProfessionalLearningController < ApplicationController
   PLC_COURSE_ORDERING = ['CSP Support', 'ECS Support', 'CS in Algebra Support', 'CS in Science Support']
 
-  before_action :authenticate_user!, only: [:index]
+  before_action :authenticate_user!, only: [:index, :workshops]
 
   def index
     view_options(full_width: true, responsive_content: true, no_padding_container: true)
@@ -30,6 +30,8 @@ class Pd::ProfessionalLearningController < ApplicationController
   end
 
   def workshops
+    view_options(full_width: true, no_padding_container: true)
+    render :regional_workshop_catalog
   end
 
   def applications_closed

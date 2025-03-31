@@ -4,19 +4,18 @@ import {
   Heading1,
   Heading2,
   BodyTwoText,
-  Overline2,
+  OverlineTwoText,
 } from '@code-dot-org/component-library/typography';
-import PropTypes from 'prop-types';
 import React, {useState} from 'react';
-import {connect} from 'react-redux';
 
 import style from './regionalWorkshopCatalog.module.scss';
 
-export const RegionalWorkshopCatalog = ({responsiveSize, sourcePageId}) => {
+export default function RegionalWorkshopCatalog() {
   const [zipCode, setZipCode] = useState('');
+
   return (
-    <div>
-      <div className={style.headerContainer}>
+    <div className={style.workshopCatalog}>
+      <section className={style.headerContainer}>
         <div className={style.headerText}>
           <Heading1>Find your local workshop and apply</Heading1>
           <BodyTwoText>
@@ -25,59 +24,56 @@ export const RegionalWorkshopCatalog = ({responsiveSize, sourcePageId}) => {
           </BodyTwoText>
         </div>
         <div className={style.zipSearchContainer}>
-          <div className={style.zipSearchBox}>
-            <div className={style.zipSearchBoxHeader}>
-              <BodyTwoText>School ZIP Code:</BodyTwoText>
-            </div>
-            <div className={style.zipSearchBar}>
-              <TextField
-                id="zipCode"
-                name="zipCode"
-                label={'School ZIP Code:'}
-                onChange={e => setZipCode(e.target.value)}
-                value={zipCode}
-                maxLength={255}
-                placeHolder={'12345'}
-              />
-              <Button text={'Submit'} color={'purple'} onClick={() => {}} />
-            </div>
+          <div className={style.zipSearchInput}>
+            <TextField
+              id="zipCode"
+              name="zipCode"
+              label="School ZIP Code:"
+              onChange={e => setZipCode(e.target.value)}
+              value={zipCode}
+              maxLength={255}
+              placeholder="12345"
+            />
+            <Button text="Submit" color="purple" onClick={() => {}} />
           </div>
           <div className={style.rpInfoContainer}>
-            <div className={style.rpInfoHeader}>
-              <Overline2>Your Regional Partner</Overline2>
-            </div>
+            <OverlineTwoText className={style.rpInfoHeader}>
+              Your Regional Partner
+            </OverlineTwoText>
             <div className={style.rpInfo}>
-              <BodyTwoText>Sample Regional Partner Name</BodyTwoText>
-              <LinkButton
-                color={'white'}
-                href={'/'}
-                size="s"
-                text={'Partner info'}
-              />
-              <LinkButton
-                color={'white'}
-                href={'/'}
-                size="s"
-                text={'Contact'}
-              />
+              <BodyTwoText className={style.rpName}>
+                Sample Regional Partner Name
+              </BodyTwoText>
+              <div className={style.rpInfoButtons}>
+                <LinkButton
+                  color="black"
+                  type="secondary"
+                  href={'/'}
+                  size="xs"
+                  text="Partner info"
+                />
+                <LinkButton
+                  color="black"
+                  type="secondary"
+                  href={'/'}
+                  size="xs"
+                  text="Contact"
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className={style.workshopContainer}>
-        <Heading2>Upcoming workshops</Heading2>
-      </div>
+      </section>
+      <section className={style.workshopContainer}>
+        <div className={style.workshopContentContainer}>
+          <Heading2>Upcoming workshops</Heading2>
+          <BodyTwoText>
+            Workshops are always being added. If you do not see the workshop you
+            are looking for check back again soon or{' '}
+            <a href="/">contact your regional partner</a>.
+          </BodyTwoText>
+        </div>
+      </section>
     </div>
   );
-};
-
-RegionalWorkshopCatalog.propTypes = {
-  responsiveSize: PropTypes.oneOf(['lg', 'md', 'sm', 'xs']).isRequired,
-  sourcePageId: PropTypes.string,
-};
-
-export const UnconnectedRegionalWorkshopCatalog = RegionalWorkshopCatalog;
-
-export default connect(state => ({
-  responsiveSize: state.responsive.responsiveSize,
-}))(RegionalWorkshopCatalog);
+}
