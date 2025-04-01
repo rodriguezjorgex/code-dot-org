@@ -30,6 +30,7 @@ class Pd::ProfessionalLearningController < ApplicationController
     }.compact
   end
 
+  # GET professional-learning/workshops
   def workshops
     view_options(full_width: true, no_padding_container: true)
     render :regional_workshop_catalog
@@ -124,8 +125,52 @@ class Pd::ProfessionalLearningController < ApplicationController
     render json: {status: :ok, workshops_as_program_manager: workshops_as_program_manager}
   end
 
+  # Returns the regional partner of the provided zip and workshops that meet the following criteria:
+  # - Not started yet
+  # - Has "national" or "regional" cohort type
+  #    - If workshop is marked as "regional", must be associated with the regional partner
+  # - If applications are open, then show CSD, CSP, and CSA traditional 5-day summer workshops
+  #   (do not show CSD, CSP, or CSA academic year workshops)
+  def regional_workshop_data
+    zip_code = params[:zip_code]
+
+    partner, _ = RegionalPartner.find_by_zip(zip_code)
+    rp_workshops = partner&.pd_workshops
+    national_workshops = Pd::Workshop.where(participant_group_type: "National")
+    workshops = (rp_workshops + national_workshops).uniq(&:id)
+
+    workshops.select do |ws|
+      ws.state == Pd::Workshop::STATE_NOT_STARTED &&
+        has_allowed_cohort_type_for_regional_ws_page?(ws, partner) &&
+        has_allowed_course_for_regional_ws_page?(ws)
+    end
+
+    render json: {status: :ok, regional_workshop_data: {
+      regional_partner: partner,
+      regional_workshops: workshops
+    }}
+  end
+
   # Returns if the current_user can view the facilitator landing page of the given course.
   private def can_view_facilitator_page(course)
     current_user&.can_view_all_facilitator_landing_pages? || current_user&.courses_as_facilitator&.exists?(course: course)
+  end
+
+  # Returns if the given workshop has a cohort type that we want to show on the Regional
+  # Workshop Page: either has the "national" cohort type or has the "regional" cohort
+  # type and is associated with the given regional partner.
+  private def has_allowed_cohort_type_for_regional_ws_page?(workshop, regional_partner)
+    return true if workshop.participant_group_type == 'National'
+    workshop.participant_group_type == 'Regional' && workshop.regional_partner_id == regional_partner.id
+  end
+
+  # Returns if the given workshop is on a course that we want to show on the Regional
+  # Workshop Page:
+  # - Show all non-CSD, non-CSP, and non-CSA workshops
+  # - Only show CSD, CSP, and CSA workshops if they're traditional 5-day summer workshops
+  #   and applications are open
+  private def has_allowed_course_for_regional_ws_page?(workshop)
+    return true unless [Pd::Workshop::COURSE_CSD, Pd::Workshop::COURSE_CSP, Pd::Workshop::COURSE_CSA].include?(workshop.course)
+    workshop.subject == Pd::Workshop::SUBJECT_SUMMER_WORKSHOP && !!DCDO.get('pl-teacher-application-off-season', false)
   end
 end

@@ -843,6 +843,7 @@ Dashboard::Application.routes.draw do
     get '/dashboardapi/v1/pd/workshops_as_facilitator_for_pl_page', to: 'pd/professional_learning#workshops_as_facilitator_for_pl_page'
     get '/dashboardapi/v1/pd/workshops_as_organizer_for_pl_page', to: 'pd/professional_learning#workshops_as_organizer_for_pl_page'
     get '/dashboardapi/v1/pd/workshops_as_program_manager_for_pl_page', to: 'pd/professional_learning#workshops_as_program_manager_for_pl_page'
+    get '/dashboardapi/v1/pd/regional_workshop_data', to: 'pd/professional_learning#regional_workshop_data'
     post '/dashboardapi/v1/pd/regional_partner_mini_contacts', to: 'api/v1/pd/regional_partner_mini_contacts#create'
     post '/dashboardapi/v1/amazon_future_engineer_submit', to: 'api/v1/amazon_future_engineer#submit'
 

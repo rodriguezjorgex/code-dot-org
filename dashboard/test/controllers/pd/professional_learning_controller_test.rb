@@ -477,6 +477,44 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     end
   end
 
+  test 'regional_workshop_data only returns regional workshops under their regional partner and national workshops' do
+    nearby_rp = create :regional_partner, name: "RP_in_users_region"
+    nearby_rp.mappings.find_or_create_by!(zip_code: "11111")
+    distant_rp = create :regional_partner, name: "RP_outside_of_users_region"
+    distant_rp.mappings.find_or_create_by!(zip_code: "99999")
+    nearby_rp_pm_1 = create :program_manager, regional_partner: nearby_rp
+    nearby_rp_pm_2 = create :program_manager, regional_partner: nearby_rp
+    distant_rp_pm = create :program_manager, regional_partner: distant_rp
+
+    test_course_offerings = [] << (create :course_offering)
+    nearby_regional_ws_1 = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: nearby_rp_pm_1
+    nearby_regional_ws_2 = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: nearby_rp_pm_2
+    nearby_national_ws = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'National', organizer: nearby_rp_pm_2
+    create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: distant_rp_pm
+    distant_national_ws = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'National', organizer: distant_rp_pm
+
+    reg_ws_data_response = get :regional_workshop_data, params: {zip_code: "11111"}
+    assert_response :success
+    reg_ws_data = JSON.parse(reg_ws_data_response.body)['regional_workshop_data']
+    regional_partner = reg_ws_data['regional_partner']['id']
+    workshop_ids = reg_ws_data['regional_workshops'].map {|ws| ws['id']}
+
+    assert_equal nearby_rp.id, regional_partner
+    assert_equal [nearby_regional_ws_1.id, nearby_regional_ws_2.id, nearby_national_ws.id, distant_national_ws.id], workshop_ids
+  end
+
+  test 'regional_workshop_data only returns workshops that have not been started' do
+
+    # ONLY RETURNS IF NOT STARTED
+
+    # Won't be returned because it's already started
+    started_ws = create :workshop, course: COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offering, participant_group_type: 'Regional', organizer: nearby_rp_pm_1, :in_progress
+    # Won't be returned because it's ended
+    ended_ws = create :workshop, course: COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offering, participant_group_type: 'Regional', organizer: nearby_rp_pm_1, :ended
+  
+    # ONLY RETURNS IF ALLOWED COURSE
+  end
+
   private def go_to_workshop(workshop, teacher)
     enrollment = create :pd_enrollment, email: teacher.email, workshop: workshop
     create :pd_attendance, session: workshop.sessions.first, enrollment: enrollment
