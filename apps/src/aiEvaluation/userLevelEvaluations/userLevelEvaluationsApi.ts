@@ -2,10 +2,10 @@ import {MetricEvent} from '@cdo/apps/metrics/events';
 import MetricsReporter from '@cdo/apps/metrics/MetricsReporter';
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
 
-import {UserLevelEvaluation} from './types';
+import {UserLevelEvaluation_old} from '../types';
 
 export async function logUserLevelEvaluation(
-  evaluationData: UserLevelEvaluation
+  evaluationData: UserLevelEvaluation_old
 ) {
   try {
     const response = await fetch('/user_level_evaluations', {
