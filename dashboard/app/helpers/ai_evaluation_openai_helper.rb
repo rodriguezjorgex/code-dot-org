@@ -28,7 +28,7 @@ module AiEvaluationOpenaiHelper
                 evaluationCriteria: {type: "string"},
                 aiEvaluation: {type: "string"},
                 aiReasoning: {type: "string"},
-                specificEvaluations: {type: "array", items: {type: "object"}},
+                skillEvaluations: {type: "array", items: {type: "object"}},
               },
             }
           }
