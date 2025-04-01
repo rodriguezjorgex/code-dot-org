@@ -844,11 +844,6 @@ Dashboard::Application.routes.draw do
 
     get 'my-professional-learning', to: 'pd/professional_learning#index', as: 'professional_learning'
     get 'professional-learning/workshops', to: 'pd/professional_learning#workshops'
-    get 'professional-learning/facilitator/computer-science-a', to: 'pd/professional_learning#csa'
-    get 'professional-learning/facilitator/computer-science-discoveries', to: 'pd/professional_learning#csd'
-    get 'professional-learning/facilitator/computer-science-fundamentals', to: 'pd/professional_learning#csf'
-    get 'professional-learning/facilitator/computer-science-principles', to: 'pd/professional_learning#csp'
-    get 'professional-learning/facilitator/computer-science-ai-fundamentals', to: 'pd/professional_learning#csaif'
 
     namespace :pd do
       # React-router will handle sub-routes on the client.
