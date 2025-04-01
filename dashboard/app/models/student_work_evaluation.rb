@@ -3,7 +3,7 @@
 # Table name: student_work_evaluations
 #
 #  id                  :bigint           not null, primary key
-#  type                :string(255)
+#  type                :string(255)      not null
 #  student_id          :integer
 #  requester_id        :integer
 #  level_id            :integer
