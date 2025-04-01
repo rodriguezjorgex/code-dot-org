@@ -54,8 +54,8 @@ const defaultConfig: ConfigType = {
   activeLayout: 'vertical',
   showFileBrowser: true,
   layoutComponents: {
-    vertical: <VerticalLayout />,
-    horizontal: <HorizontalLayout />,
+    vertical: VerticalLayout,
+    horizontal: HorizontalLayout,
   },
 };
 
@@ -157,6 +157,7 @@ const Weblab2View: React.FC<
             setConfig={setConfig}
             startSources={startSources}
             projectVersion={projectVersion}
+            levelProperties={levelProperties}
           />
         )}
       </div>

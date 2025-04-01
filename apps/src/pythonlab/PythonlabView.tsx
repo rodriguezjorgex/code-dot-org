@@ -89,9 +89,9 @@ const defaultConfig: ConfigType = {
   showFileBrowser: true,
   validMimeTypes: ['text/'],
   layoutComponents: {
-    horizontal: <HorizontalLayout />,
-    vertical: <VerticalLayout />,
-    share: <ShareView />,
+    horizontal: HorizontalLayout,
+    vertical: VerticalLayout,
+    share: ShareView,
   },
 };
 
@@ -176,6 +176,7 @@ const PythonlabView: React.FunctionComponent<
           projectVersion={projectVersion}
           labConfig={labConfig}
           sendConsoleInput={sendInput}
+          levelProperties={levelProperties}
         />
       )}
     </div>

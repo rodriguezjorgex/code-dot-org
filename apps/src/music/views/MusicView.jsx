@@ -40,6 +40,7 @@ import {
   LEGACY_DEFAULT_LIBRARY,
   DEFAULT_LIBRARY,
   DEFAULT_PACK,
+  DEFAULT_VALIDATION_TIMEOUT,
 } from '../constants';
 import {AnalyticsContext} from '../context';
 import MusicRegistry from '../MusicRegistry';
@@ -402,6 +403,10 @@ class UnconnectedMusicView extends React.Component {
     MusicRegistry.showSoundsPanelInSoundsMode =
       !!levelData?.showSoundsPanelInSoundsMode;
 
+    MusicRegistry.sortUnrestrictedPacksByType =
+      !!levelData?.sortUnrestrictedPacksByType ||
+      AppConfig.getValue('sort-unrestricted-packs-by-type') === 'true';
+
     MusicRegistry.hideAiTemperature =
       levelData?.hideAiTemperature ||
       AppConfig.getValue('hide-ai-temperature') === 'true';
@@ -465,7 +470,7 @@ class UnconnectedMusicView extends React.Component {
           this.props.levelProperties?.levelData?.validationTimeout,
           this.sequencer.getLastMeasure()
         )
-      : 2;
+      : DEFAULT_VALIDATION_TIMEOUT;
   };
 
   getPlaybackEvents = () => {
