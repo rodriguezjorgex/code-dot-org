@@ -497,7 +497,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     assert_response :success
     response_data = JSON.parse(reg_ws_data_response.body)['regional_workshop_data']
     response_rp = response_data['regional_partner']
-    response_workshop_ids = response_data['regional_workshops'].map {|ws| ws['id']}
+    response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
 
     assert_equal nearby_rp.id, response_rp['id']
     assert_equal [nearby_regional_ws_1.id, nearby_regional_ws_2.id, nearby_national_ws.id, distant_national_ws.id], response_workshop_ids
@@ -516,7 +516,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     assert_response :success
     response_data = JSON.parse(reg_ws_data_response.body)['regional_workshop_data']
     response_rp = response_data['regional_partner']
-    response_workshop_ids = response_data['regional_workshops'].map {|ws| ws['id']}
+    response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
 
     assert_equal rp.id, response_rp['id']
     assert_equal [not_started_ws.id], response_workshop_ids
@@ -538,7 +538,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     assert_response :success
     response_data = JSON.parse(reg_ws_data_response.body)['regional_workshop_data']
     response_rp = response_data['regional_partner']
-    response_workshop_ids = response_data['regional_workshops'].map {|ws| ws['id']}
+    response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
 
     assert_equal rp.id, response_rp['id']
     assert_equal [byow.id], response_workshop_ids
@@ -565,7 +565,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     assert_response :success
     response_data = JSON.parse(reg_ws_data_response.body)['regional_workshop_data']
     response_rp = response_data['regional_partner']
-    response_workshop_ids = response_data['regional_workshops'].map {|ws| ws['id']}
+    response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
 
     assert_equal rp.id, response_rp['id']
     assert_equal [summer_csd.id, summer_csp.id, summer_csa.id, byow.id], response_workshop_ids

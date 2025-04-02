@@ -147,7 +147,7 @@ class Pd::ProfessionalLearningController < ApplicationController
 
     render json: {status: :ok, regional_workshop_data: {
       regional_partner: partner,
-      regional_workshops: available_workshops
+      available_workshops: available_workshops
     }}
   end
 
