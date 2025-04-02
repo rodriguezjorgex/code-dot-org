@@ -81,10 +81,7 @@ const Timeline: React.FunctionComponent = () => {
   const [availableHeight, setAvailableHeight] = useState(0);
 
   // Get the height that each event should occupy.  This is inclusive of empty vertical space at the bottom.
-  const getEventHeight = (
-    numUniqueRows: number
-    //availableHeight = timelineHeight
-  ) => {
+  const getEventHeight = (numUniqueRows: number) => {
     // While we might not actually have this many rows to show,
     // we will limit each row's height to the size that would allow
     // this many to be shown at once.
