@@ -8,7 +8,7 @@ class UserLevelEvaluationsController < ApplicationController
 
   # POST /user_level_evaluations
   def create
-    @user_level_evaluation = UserLevelEvaluation.new(user_level_evaluation_params)
+    @user_level_evaluation = UserLevelEvaluationOld.new(user_level_evaluation_params)
     if @user_level_evaluation.save
       render(status: :created, json: {message: "Successfully created UserLevelEvaluation.", id: @user_level_evaluation.id})
     else
