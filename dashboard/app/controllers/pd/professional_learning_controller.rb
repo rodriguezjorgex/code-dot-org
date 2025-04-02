@@ -139,7 +139,7 @@ class Pd::ProfessionalLearningController < ApplicationController
     national_workshops = Pd::Workshop.where(participant_group_type: "National")
     workshops = (rp_workshops + national_workshops).uniq(&:id)
 
-    workshops.select do |ws|
+    available_workshops = workshops.select do |ws|
       ws.state == Pd::Workshop::STATE_NOT_STARTED &&
         has_allowed_cohort_type_for_regional_ws_page?(ws, partner) &&
         has_allowed_course_for_regional_ws_page?(ws)
@@ -147,7 +147,7 @@ class Pd::ProfessionalLearningController < ApplicationController
 
     render json: {status: :ok, regional_workshop_data: {
       regional_partner: partner,
-      regional_workshops: workshops
+      regional_workshops: available_workshops
     }}
   end
 
@@ -171,6 +171,6 @@ class Pd::ProfessionalLearningController < ApplicationController
   #   and applications are open
   private def has_allowed_course_for_regional_ws_page?(workshop)
     return true unless [Pd::Workshop::COURSE_CSD, Pd::Workshop::COURSE_CSP, Pd::Workshop::COURSE_CSA].include?(workshop.course)
-    workshop.subject == Pd::Workshop::SUBJECT_SUMMER_WORKSHOP && !!DCDO.get('pl-teacher-application-off-season', false)
+    workshop.subject == Pd::Workshop::SUBJECT_SUMMER_WORKSHOP && !DCDO.get('pl-teacher-application-off-season', false)
   end
 end
