@@ -14,6 +14,7 @@ export async function logStudentWorkEvaluations(
   logStudentWorkEvaluation({
     type: 'UserLevelEvaluation',
     studentId: studentWorkSample.studentId,
+    codeVersion: studentWorkSample.codeVersion,
     levelId: levelId,
     unitId: unitId,
     evaluator: 'AI',
@@ -59,7 +60,6 @@ export async function logStudentWorkEvaluation(
       );
     }
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     MetricsReporter.logError({

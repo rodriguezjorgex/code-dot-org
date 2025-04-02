@@ -2,13 +2,13 @@ import {MetricEvent} from '@cdo/apps/metrics/events';
 import MetricsReporter from '@cdo/apps/metrics/MetricsReporter';
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
 
-import {UserLevelEvaluation_old} from '../types';
+import {UserLevelEvaluationOld} from '../types';
 
 export async function logUserLevelEvaluation(
-  evaluationData: UserLevelEvaluation_old
+  evaluationData: UserLevelEvaluationOld
 ) {
   try {
-    const response = await fetch('/user_level_evaluations', {
+    const response = await fetch('/user_level_evaluations_old', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

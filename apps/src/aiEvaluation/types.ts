@@ -1,4 +1,4 @@
-export interface UserLevelEvaluation_old {
+export interface UserLevelEvaluationOld {
   userId: number | undefined;
   levelId: number | undefined;
   unitId: number | undefined;

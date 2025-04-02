@@ -58,8 +58,7 @@ Dashboard::Application.routes.draw do
     get '/user_levels/level_source/:script_id/:level_id', to: 'user_levels#get_level_source'
     get '/user_levels/section_summary/:section_id/:level_id', to: 'user_levels#get_section_response_summary'
 
-    resources :user_level_evaluations, only: [:create]
-    #resources :user_level_skill_evaluations, controller: 'student_work_evaluations', only: [:create]
+    resources :user_level_evaluations_old, only: [:create]
     resources :student_work_evaluations, only: [:create]
 
     resources :user_level_interactions, only: [:create]

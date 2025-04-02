@@ -1,12 +1,12 @@
 require 'json'
 
-class UserLevelEvaluationsController < ApplicationController
+class UserLevelEvaluationsOldController < ApplicationController
   include LevelsHelper
   include Rails.application.routes.url_helpers
   before_action :authenticate_user!
   load_and_authorize_resource :user_level_evaluation
 
-  # POST /user_level_evaluations
+  # POST /user_level_evaluations_old
   def create
     @user_level_evaluation = UserLevelEvaluationOld.new(user_level_evaluation_params)
     if @user_level_evaluation.save
