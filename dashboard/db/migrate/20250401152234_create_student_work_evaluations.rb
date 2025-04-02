@@ -10,8 +10,8 @@ class CreateStudentWorkEvaluations < ActiveRecord::Migration[6.1]
       t.integer :section_id
       t.string :school_year
       t.string :evaluator
-      t.string :evaluation_criteria
-      t.string :reasoning
+      t.text :evaluation_criteria
+      t.text :reasoning
       t.string :evaluation
       t.string :ai_model_version
       t.string :code_version
