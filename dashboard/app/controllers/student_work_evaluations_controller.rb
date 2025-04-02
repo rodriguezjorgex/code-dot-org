@@ -1,18 +1,15 @@
 require 'json'
 
 class StudentWorkEvaluationsController < ApplicationController
-  include LevelsHelper
   include Rails.application.routes.url_helpers
   before_action :authenticate_user!
   load_and_authorize_resource :student_work_evaluation
 
   # POST /student_work_evaluations
   def create
-    type = student_work_evaluation_params[:type]
-    @student_work_evaluation = type.constantize.new(student_work_evaluation_params)
     @student_work_evaluation = StudentWorkEvaluation.new(student_work_evaluation_params)
     if @student_work_evaluation.save
-      render(status: :created, json: {message: "Successfully created StudentWorkEvaluation.", id: @student_work_evaluation_evaluation.id, type: @student_work_evaluation_evaluation.type})
+      render(status: :created, json: {message: "Successfully created #{@student_work_evaluation.type}.", id: @student_work_evaluation.id})
     else
       render(status: :not_acceptable, json: {error: @student_work_evaluation.errors.full_messages})
     end

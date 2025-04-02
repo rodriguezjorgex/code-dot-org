@@ -9,7 +9,7 @@ export interface UserLevelEvaluation_old {
   codeVersion?: string;
 }
 
-interface StudentWorkEvaluation {
+export interface Evaluation {
   evaluator: string;
   evaluationCriteria: string;
   evaluation: string;
@@ -17,13 +17,16 @@ interface StudentWorkEvaluation {
   type: string;
 }
 
-export interface UserLevelSkillEvaluation extends StudentWorkEvaluation {
+export interface UserLevelSkillEvaluation extends Evaluation {
+  type: 'UserLevelSkillEvaluation';
   studentId: number;
   levelId: number;
   unitId: number;
+  // TODO: Add skillId
 }
 
-export interface UserLevelEvaluation extends StudentWorkEvaluation {
+export interface UserLevelEvaluation extends Evaluation {
+  type: 'UserLevelEvaluation';
   studentId: number;
   levelId: number;
   unitId: number;

@@ -3,8 +3,8 @@ import {AiEvaluationTypes} from '@cdo/generated-scripts/sharedConstants';
 
 import {OpenaiChatCompletionMessage} from '../aiTutor/chatApi';
 
-import {logUserLevelEvaluation} from './userLevelEvaluations/userLevelEvaluationsApi';
 import {logStudentWorkEvaluations} from './studentWorkEvaluationsApi';
+import {logUserLevelEvaluation} from './userLevelEvaluations/userLevelEvaluationsApi';
 
 export interface StudentAnswer {
   studentId: number;
@@ -37,15 +37,15 @@ export async function evaluateStudentWork(
   if (response?.content) {
     parsedResponse = JSON.parse(response?.content);
     // Logs to OLD UserLevelEvaluation table
-    logUserLevelEvaluation({
-      userId: studentWorkSample.studentId,
-      levelId: levelId,
-      unitId: unitId,
-      evaluationCriteria: parsedResponse.evaluationCriteria,
-      aiEvaluation: parsedResponse.aiEvaluation,
-      aiReasoning: parsedResponse.aiReasoning,
-      codeVersion: studentWorkSample.codeVersion,
-    });
+    // logUserLevelEvaluation({
+    //   userId: studentWorkSample.studentId,
+    //   levelId: levelId,
+    //   unitId: unitId,
+    //   evaluationCriteria: parsedResponse.evaluationCriteria,
+    //   aiEvaluation: parsedResponse.aiEvaluation,
+    //   aiReasoning: parsedResponse.aiReasoning,
+    //   codeVersion: studentWorkSample.codeVersion,
+    // });
     // Logs to new StudentWorkEvaluation table
     logStudentWorkEvaluations(
       studentWorkSample,

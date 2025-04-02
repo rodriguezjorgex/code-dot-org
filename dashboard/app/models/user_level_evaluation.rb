@@ -20,7 +20,7 @@
 #  index_user_level_evaluations_on_level_id  (level_id)
 #  index_user_level_evaluations_on_user_id   (user_id)
 #
-class UserLevelEvaluation < ApplicationRecord
-  belongs_to :user
-  belongs_to :level
+class UserLevelEvaluation < StudentWorkEvaluation
+  # belongs_to :user
+  # belongs_to :level
 end
