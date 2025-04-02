@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_03_31_202624) do
+ActiveRecord::Schema.define(version: 2025_04_01_152234) do
   create_table "activities", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "user_id"
     t.integer "level_id"
@@ -2181,7 +2181,7 @@ ActiveRecord::Schema.define(version: 2025_03_31_202624) do
   end
 
   create_table "student_work_evaluations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "type"
+    t.string "type", null: false
     t.integer "student_id"
     t.integer "requester_id"
     t.integer "level_id"

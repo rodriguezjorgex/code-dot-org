@@ -1,7 +1,7 @@
 class CreateStudentWorkEvaluations < ActiveRecord::Migration[6.1]
   def change
     create_table :student_work_evaluations do |t|
-      t.string :type
+      t.string :type, null: false
       t.integer :student_id
       t.integer :requester_id
       t.integer :level_id
