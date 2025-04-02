@@ -30,6 +30,7 @@ class StudentWorkEvaluationsController < ApplicationController
       :ai_model_version,
       :code_version
     )
+    student_work_evaluation_params[:requester_id] = current_user.id
     student_work_evaluation_params[:school_year] = school_year
     student_work_evaluation_params[:ai_model_version] = SharedConstants::EVALUATE_STUDENT_LEARNING_MODEL_VERSION
     student_work_evaluation_params

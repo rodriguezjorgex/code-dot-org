@@ -11,16 +11,16 @@ export async function logStudentWorkEvaluations(
   levelId: number,
   unitId: number
 ) {
-  //   logStudentWorkEvaluation({
-  //     type: 'UserLevelEvaluation',
-  //     studentId: studentWorkSample.studentId,
-  //     levelId: levelId,
-  //     unitId: unitId,
-  //     evaluator: 'AI',
-  //     evaluationCriteria: parsedResponse.evaluationCriteria,
-  //     evaluation: parsedResponse.aiEvaluation,
-  //     reasoning: parsedResponse.aiReasoning,
-  //   });
+  logStudentWorkEvaluation({
+    type: 'UserLevelEvaluation',
+    studentId: studentWorkSample.studentId,
+    levelId: levelId,
+    unitId: unitId,
+    evaluator: 'AI',
+    evaluationCriteria: parsedResponse.evaluationCriteria,
+    evaluation: parsedResponse.aiEvaluation,
+    reasoning: parsedResponse.aiReasoning,
+  });
   // For each specific skill-based evaluation, log a UserLevelSkillEvaluation
   if (parsedResponse.skillEvaluations) {
     parsedResponse.skillEvaluations.forEach((skillEvaluation: AIResponse) => {
