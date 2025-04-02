@@ -2324,7 +2324,7 @@ ActiveRecord::Schema.define(version: 2025_04_01_152234) do
     t.index ["user_id"], name: "index_user_level_evaluations_on_user_id"
   end
 
-  create_table "user_level_interactions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "user_level_interactions", charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "level_id", null: false
     t.integer "script_id", null: false
