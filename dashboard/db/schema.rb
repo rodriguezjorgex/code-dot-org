@@ -11,7 +11,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2025_03_25_183210) do
-
   create_table "activities", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "user_id"
     t.integer "level_id"
@@ -2376,6 +2375,14 @@ ActiveRecord::Schema.define(version: 2025_03_25_183210) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["user_id", "permission"], name: "index_user_permissions_on_user_id_and_permission", unique: true
+  end
+
+  create_table "user_preference", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.json "section_order"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_user_preference_on_user_id"
   end
 
   create_table "user_proficiencies", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
