@@ -63,8 +63,7 @@ export async function logStudentWorkEvaluation(
     return data;
   } catch (error) {
     MetricsReporter.logError({
-      //TODO: change the name of this MetricEvent
-      event: MetricEvent.USER_LEVEL_EVALUATION_SAVE_FAIL,
+      event: MetricEvent.STUDENT_WORK_EVALUATION_SAVE_FAIL,
       errorMessage:
         (error as Error).message ||
         `Failed to save StudentWorkEvaluation of type ${evaluationData.type}`,

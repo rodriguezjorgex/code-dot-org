@@ -23,8 +23,7 @@ module AiSystemPrompts::EvaluateSystemPromptHelper
   def self.get_skills
     {
       #CSP 2024, Unit 4, Lesson 3, Level 2
-      # 49911 => {
-      22595 => {
+      49911 => {
         programming_concept_skills: [
           {
             skill: "Declare variables correctly",
