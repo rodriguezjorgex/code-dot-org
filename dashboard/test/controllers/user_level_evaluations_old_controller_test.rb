@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UserLevelEvaluationsControllerTest < ActionController::TestCase
+class UserLevelEvaluationsOldControllerTest < ActionController::TestCase
   include LevelsHelper
   setup do
     @teacher = create(:teacher)
@@ -22,7 +22,7 @@ class UserLevelEvaluationsControllerTest < ActionController::TestCase
   test "User can create their own User Level Evaluation" do
     sign_in @student
     @ule_params["user_id"] = @student.id
-    assert_creates(UserLevelEvaluation) do
+    assert_creates(UserLevelEvaluationOld) do
       post :create, params: @ule_params
     end
     created_ule = UserLevelEvaluation.last
@@ -34,7 +34,7 @@ class UserLevelEvaluationsControllerTest < ActionController::TestCase
   test "Teacher can create User Level Evaluation for student in their section" do
     sign_in @teacher
     @ule_params[:user_id] = @student.id
-    assert_creates(UserLevelEvaluation) do
+    assert_creates(UserLevelEvaluationOld) do
       post :create, params: @ule_params
     end
   end
@@ -42,7 +42,7 @@ class UserLevelEvaluationsControllerTest < ActionController::TestCase
   test "Teacher can not create User Level Evaluation for random student" do
     sign_in @teacher
     @ule_params[:user_id] = create(:student).id
-    refute_creates(UserLevelEvaluation) do
+    refute_creates(UserLevelEvaluationOld) do
       post :create, params: @ule_params
     end
   end
