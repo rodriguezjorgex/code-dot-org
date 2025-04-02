@@ -661,7 +661,8 @@ function initializeBlocklyWrapper(blocklyInstance: GoogleBlocklyInstance) {
 
   const originalGetTypes = extendedVariableMap.getTypes;
   extendedVariableMap.getTypes = function () {
-    return [...originalGetTypes.call(this), ''];
+    const types = originalGetTypes.call(this);
+    return types.includes('') ? types : [...types, ''];
   };
 
   gestureOverrides(blocklyWrapper);
