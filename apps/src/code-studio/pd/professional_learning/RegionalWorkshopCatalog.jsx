@@ -17,34 +17,33 @@ export default function RegionalWorkshopCatalog() {
   const [regionalPartner, setRegionalPartner] = useState('');
   const [availableWorkshops, setAvailableWorkshops] = useState([]);
 
-  const handleZipChage = async zip => {
-    setZipCode(zip);
-
-    if (zip.length === 5) {
-      try {
-        const response = await fetch(
-          '/dashboardapi/v1/pd/regional_workshop_data',
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-CSRF-Token': await getAuthenticityToken(),
-            },
-            body: JSON.stringify({zip_code: zip}),
-          }
-        );
-
-        if (response.ok) {
-          const jsonData = await response.json();
-          setRegionalPartner(jsonData.regional_partner);
-          setAvailableWorkshops(jsonData.available_workshops);
+  const handleSubmitZip = async () => {
+    try {
+      const response = await fetch(
+        `/dashboardapi/v1/pd/regional_workshop_data/${zipCode}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': await getAuthenticityToken(),
+          },
         }
-      } catch (error) {
-        console.error(
-          'Error fetching regional partner and available workshops:',
-          error
+      );
+
+      if (response.ok) {
+        const jsonData = await response.json();
+        setRegionalPartner(
+          jsonData.regional_workshop_data.regional_partner?.name ?? ''
+        );
+        setAvailableWorkshops(
+          jsonData.regional_workshop_data.available_workshops
         );
       }
+    } catch (error) {
+      console.error(
+        'Error fetching regional partner and available workshops:',
+        error
+      );
     }
   };
 
@@ -64,12 +63,12 @@ export default function RegionalWorkshopCatalog() {
               id="zipCode"
               name="zipCode"
               label="School ZIP Code:"
-              onChange={e => handleZipChage(e.target.value)}
+              onChange={e => setZipCode(e.target.value)}
               value={zipCode}
               maxLength={255}
               placeholder="12345"
             />
-            <Button text="Submit" color="purple" onClick={() => {}} />
+            <Button text="Submit" color="purple" onClick={handleSubmitZip} />
           </div>
           <div className={style.rpInfoContainer}>
             <OverlineTwoText className={style.rpInfoHeader}>
@@ -113,13 +112,23 @@ export default function RegionalWorkshopCatalog() {
             are looking for check back again soon or{' '}
             <a href="/">contact your regional partner</a>.
           </BodyTwoText>
-        </div>
-        <div>
-          <ul>
-            {availableWorkshops.map(workshop => (
-              <li>{workshop.id}</li>
-            ))}
-          </ul>
+          {availableWorkshops && (
+            <div>
+              <ul>
+                {availableWorkshops.map(workshop => (
+                  <li key={workshop.id}>{`Id: ${workshop.id}, Title: ${
+                    workshop.name
+                      ? workshop.name
+                      : workshop.course + ' - ' + workshop.subject
+                  }, Location: ${
+                    workshop.location_name
+                  }, Participant Group Type: ${
+                    workshop.participant_group_type
+                  }`}</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </section>
     </div>
