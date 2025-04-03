@@ -15,7 +15,8 @@ import style from './regionalWorkshopCatalog.module.scss';
 export default function RegionalWorkshopCatalog() {
   const [zipCode, setZipCode] = useState('');
   const [hasValidRP, setHasValidRP] = useState(false);
-  const [regionalPartnerText, setRegionalPartnerText] = useState('');
+  const [regionalPartnerText, setRegionalPartnerText] =
+    useState('Zip code required');
   const [availableWorkshops, setAvailableWorkshops] = useState([]);
 
   const handleSubmitZip = async () => {
