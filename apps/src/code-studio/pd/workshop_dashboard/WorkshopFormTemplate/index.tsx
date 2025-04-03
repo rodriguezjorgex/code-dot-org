@@ -25,9 +25,11 @@ import PublishCancelButtons from './sections/PublishCancelButtons';
 import PublishSettings from './sections/PublishSettings';
 import Schedule from './sections/Schedule';
 import {
+  Errors,
   FieldConfig,
   Session,
   SessionAction,
+  SessionErrors,
   SessionFormState,
   Workshop,
   WorkshopAction,
@@ -204,13 +206,11 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
     generateNewSession(),
   ]);
 
-  const [workshopErrors, setWorkshopErrors] = useState<Record<string, string>>(
-    {}
-  );
-
-  const [sessionErrors, setSessionErrors] = useState<
-    Record<string, Record<string, string>>
+  const [workshopErrors, setWorkshopErrors] = useState<
+    Errors<keyof WorkshopFormState>
   >({});
+
+  const [sessionErrors, setSessionErrors] = useState<SessionErrors>({});
 
   useEffect(() => {
     if (workshop) {
@@ -349,7 +349,6 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
     }),
     [workshopErrors.registrationLink, workshopErrors.hidden]
   );
-
 
   const sectionProps = useMemo(
     () => ({
