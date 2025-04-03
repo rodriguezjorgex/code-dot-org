@@ -14,7 +14,8 @@ import style from './regionalWorkshopCatalog.module.scss';
 
 export default function RegionalWorkshopCatalog() {
   const [zipCode, setZipCode] = useState('');
-  const [regionalPartner, setRegionalPartner] = useState('');
+  const [hasValidRP, setHasValidRP] = useState(false);
+  const [regionalPartnerText, setRegionalPartnerText] = useState('');
   const [availableWorkshops, setAvailableWorkshops] = useState([]);
 
   const handleSubmitZip = async () => {
@@ -32,9 +33,14 @@ export default function RegionalWorkshopCatalog() {
 
       if (response.ok) {
         const jsonData = await response.json();
-        setRegionalPartner(
-          jsonData.regional_workshop_data.regional_partner?.name ?? ''
-        );
+        const rpName = jsonData.regional_workshop_data.regional_partner?.name;
+        if (rpName) {
+          setHasValidRP(true);
+          setRegionalPartnerText(rpName);
+        } else {
+          setHasValidRP(false);
+          setRegionalPartnerText('No regional partner found');
+        }
         setAvailableWorkshops(
           jsonData.regional_workshop_data.available_workshops
         );
@@ -75,15 +81,11 @@ export default function RegionalWorkshopCatalog() {
               Your Regional Partner
             </OverlineTwoText>
             <div className={style.rpInfo}>
-              {regionalPartner ? (
-                <BodyTwoText className={style.rpName}>
-                  {regionalPartner}
-                </BodyTwoText>
-              ) : (
-                <BodyTwoText className={style.rpNameMissing}>
-                  Zip code required
-                </BodyTwoText>
-              )}
+              <BodyTwoText
+                className={hasValidRP ? style.rpName : style.rpNameMissing}
+              >
+                {regionalPartnerText}
+              </BodyTwoText>
               <div className={style.rpInfoButtons}>
                 <LinkButton
                   color="black"
