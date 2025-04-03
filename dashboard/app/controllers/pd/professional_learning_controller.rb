@@ -1,7 +1,7 @@
 class Pd::ProfessionalLearningController < ApplicationController
   PLC_COURSE_ORDERING = ['CSP Support', 'ECS Support', 'CS in Algebra Support', 'CS in Science Support']
 
-  before_action :authenticate_user!, only: [:index, :csa, :csd, :csf, :csp, :csaif]
+  before_action :authenticate_user!, only: [:index, :workshops, :csa, :csd, :csf, :csp, :csaif]
 
   # GET my-professional-learning
   def index
@@ -28,6 +28,11 @@ class Pd::ProfessionalLearningController < ApplicationController
       joined_pl_sections: current_user.sections_as_pl_participant&.map(&:summarize_without_students),
       courses_as_facilitator: Pd::CourseFacilitator.where(facilitator: current_user).map(&:course).uniq,
     }.compact
+  end
+
+  def workshops
+    view_options(full_width: true, no_padding_container: true)
+    render :regional_workshop_catalog
   end
 
   # GET professional-learning/facilitator/computer-science-a
