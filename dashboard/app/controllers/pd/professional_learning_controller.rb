@@ -128,10 +128,11 @@ class Pd::ProfessionalLearningController < ApplicationController
   # GET /dashboardapi/v1/pd/regional_workshop_data/:zip_code
   # Returns the regional partner of the provided zip and workshops that meet the following criteria:
   # - Not started yet
-  # - Has "national" or "regional" cohort type
-  #    - If workshop is marked as "regional", must be associated with the regional partner
-  # - If applications are open, then show CSD, CSP, and CSA traditional 5-day summer workshops
-  #   (do not show CSD, CSP, or CSA academic year workshops)
+  # - Considered to be in the regional partner's region (i.e. satisfies one of the following):
+  #    - Has "National" participant group type
+  #    - Has "Regional" participant group type and is associated with the given regional partner
+  #    - Is a CSD, CSP, or CSA workshop and is associated with the given regional partner
+  # - If applications are open, then allow CSD, CSP, and CSA traditional 5-day summer workshops
   def regional_workshop_data
     zip_code = params[:zip_code]
 
