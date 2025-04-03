@@ -477,6 +477,17 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     end
   end
 
+  test 'regional_workshop_data returns empty results if no results' do
+    reg_ws_data_response = get :regional_workshop_data, params: {zip_code: "00000"}
+    assert_response :success
+    response_data = JSON.parse(reg_ws_data_response.body)['regional_workshop_data']
+    response_rp = response_data['regional_partner']
+    response_workshops = response_data['available_workshops']
+
+    assert_nil response_rp
+    assert_equal [], response_workshops
+  end
+
   test 'regional_workshop_data only returns regional workshops under their regional partner and national workshops' do
     nearby_rp = create :regional_partner, name: "RP_in_users_region"
     nearby_rp.mappings.find_or_create_by!(zip_code: "11111")
@@ -527,9 +538,9 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     rp.mappings.find_or_create_by!(zip_code: "11111")
     pm = create :program_manager, regional_partner: rp
     test_course_offerings = [] << (create :course_offering)
-    create :workshop, course: Pd::Workshop::COURSE_CSD, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, participant_group_type: 'Regional', organizer: pm
-    create :workshop, course: Pd::Workshop::COURSE_CSP, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, participant_group_type: 'Regional', organizer: pm
-    create :workshop, course: Pd::Workshop::COURSE_CSA, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, participant_group_type: 'Regional', organizer: pm
+    create :workshop, course: Pd::Workshop::COURSE_CSD, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, organizer: pm
+    create :workshop, course: Pd::Workshop::COURSE_CSP, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, organizer: pm
+    create :workshop, course: Pd::Workshop::COURSE_CSA, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, organizer: pm
     byow = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: pm
 
     DCDO.stubs(:get).with('pl-teacher-application-off-season', false).returns(true)
@@ -546,18 +557,32 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     DCDO.unstub(:get)
   end
 
-  test 'regional_workshop_data only returns traditional 5-day summer CSD, CSP, and CSA workshops when applications are open' do
+  test 'regional_workshop_data only returns traditional 5-day summer CSD, CSP, and CSA workshops associated with the regional partner when applications are open' do
     rp = create :regional_partner
     rp.mappings.find_or_create_by!(zip_code: "11111")
     pm = create :program_manager, regional_partner: rp
+    distant_rp = create :regional_partner
+    distant_rp.mappings.find_or_create_by!(zip_code: "99999")
+    distant_pm = create :program_manager, regional_partner: distant_rp
     test_course_offerings = [] << (create :course_offering)
-    summer_csd = create :workshop, course: Pd::Workshop::COURSE_CSD, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, participant_group_type: 'Regional', organizer: pm
-    create :workshop, course: Pd::Workshop::COURSE_CSD, subject: Pd::Workshop::SUBJECT_WORKSHOP_1, participant_group_type: 'Regional', organizer: pm
-    summer_csp = create :workshop, course: Pd::Workshop::COURSE_CSP, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, participant_group_type: 'Regional', organizer: pm
-    create :workshop, course: Pd::Workshop::COURSE_CSP, subject: Pd::Workshop::SUBJECT_WORKSHOP_1, participant_group_type: 'Regional', organizer: pm
-    summer_csa = create :workshop, course: Pd::Workshop::COURSE_CSA, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, participant_group_type: 'Regional', organizer: pm
-    create :workshop, course: Pd::Workshop::COURSE_CSA, subject: Pd::Workshop::SUBJECT_WORKSHOP_1, participant_group_type: 'Regional', organizer: pm
-    byow = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: pm
+
+    # Summer CSD, CSP, CSA workshops under the user's regional partner
+    summer_csd = create :workshop, course: Pd::Workshop::COURSE_CSD, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, organizer: pm
+    summer_csp = create :workshop, course: Pd::Workshop::COURSE_CSP, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, organizer: pm
+    summer_csa = create :workshop, course: Pd::Workshop::COURSE_CSA, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, organizer: pm
+
+    # Summer CSD, CSP, CSA workshops under a different regional partner
+    create :workshop, course: Pd::Workshop::COURSE_CSD, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, organizer: distant_pm
+    create :workshop, course: Pd::Workshop::COURSE_CSP, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, organizer: distant_pm
+    create :workshop, course: Pd::Workshop::COURSE_CSA, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, organizer: distant_pm
+
+    # AYW workshops
+    create :workshop, course: Pd::Workshop::COURSE_CSD, subject: Pd::Workshop::SUBJECT_WORKSHOP_1, organizer: pm
+    create :workshop, course: Pd::Workshop::COURSE_CSP, subject: Pd::Workshop::SUBJECT_WORKSHOP_1, organizer: pm
+    create :workshop, course: Pd::Workshop::COURSE_CSA, subject: Pd::Workshop::SUBJECT_WORKSHOP_1, organizer: pm
+
+    # Non-[CSD, CSP, CSA] workshop
+    byow = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, participant_group_type: 'Regional', course_offerings: test_course_offerings, organizer: pm
 
     DCDO.stubs(:get).with('pl-teacher-application-off-season', false).returns(false)
 
