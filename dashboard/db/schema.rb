@@ -39,6 +39,20 @@ ActiveRecord::Schema.define(version: 2025_04_03_150349) do
     t.index ["lesson_activity_id"], name: "index_activity_sections_on_lesson_activity_id"
   end
 
+  create_table "ai_interaction_feedbacks", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "level_id"
+    t.integer "script_id"
+    t.boolean "thumbs_up"
+    t.string "school_year"
+    t.json "metadata"
+    t.string "ai_interaction_type", null: false
+    t.bigint "ai_interaction_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["ai_interaction_type", "ai_interaction_id"], name: "index_ai_interaction_feedbacks_on_ai_interaction"
+  end
+
   create_table "ai_tutor_interaction_feedbacks", charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.bigint "ai_tutor_interaction_id", null: false
     t.integer "user_id", null: false
