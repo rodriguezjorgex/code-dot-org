@@ -13,21 +13,12 @@
       "weekly_instructional_minutes": 225
     },
     "new_name": null,
-<<<<<<< HEAD
-    "family_name": "elem-game-design",
-    "serialized_at": "2025-04-02 17:22:33 UTC",
-    "published_state": "stable",
-    "instruction_type": "teacher_led",
-    "instructor_audience": "teacher",
-    "participant_audience": "student",
-=======
     "family_name": null,
-    "serialized_at": "2025-03-25 00:55:27 UTC",
+    "serialized_at": "2025-04-03 01:06:01 UTC",
     "published_state": null,
     "instruction_type": null,
     "instructor_audience": null,
     "participant_audience": null,
->>>>>>> e5a8b183ae20822d9c9349b790ea66701dec9ccb
     "seeding_key": {
       "script.name": "elem-game-design-2024"
     }
