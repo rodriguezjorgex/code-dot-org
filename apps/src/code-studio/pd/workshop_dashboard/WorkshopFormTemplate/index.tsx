@@ -37,7 +37,7 @@ import {
 
 import styles from './styles.module.scss';
 
-const REQUIRED_ERROR = 'Required';
+export const REQUIRED_ERROR = 'Required';
 
 export const isEmpty = (
   value: string | boolean | number | unknown[] | null | undefined
