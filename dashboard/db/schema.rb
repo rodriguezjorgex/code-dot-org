@@ -2545,7 +2545,7 @@ ActiveRecord::Schema.define(version: 2025_04_03_150349) do
     t.string "cap_status", limit: 1
     t.datetime "cap_status_date"
     t.index ["birthday"], name: "index_users_on_birthday"
-    t.index ["cap_status", "cap_status_date"], name: "index_users_on_cap_status_and_cap_statusq_date"
+    t.index ["cap_status", "cap_status_date"], name: "index_users_on_cap_status_and_cap_status_date"
     t.index ["current_sign_in_at"], name: "index_users_on_current_sign_in_at"
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email", "deleted_at"], name: "index_users_on_email_and_deleted_at"
