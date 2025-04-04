@@ -477,6 +477,28 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     end
   end
 
+  test 'regional partner landing page only loads for users with one of the necessary permissions' do
+    @program_manager = create :program_manager
+    @workshop_admin = create :workshop_admin
+    @teacher = create :teacher
+
+    # Program Managers and Workshop Admins can view the page
+    sign_in @program_manager
+    get :rp_playbook
+    assert_template 'pd/professional_learning/regional_partner/regional_partner_playbook'
+    sign_out @program_manager
+
+    sign_in @workshop_admin
+    get :rp_playbook
+    assert_template 'pd/professional_learning/regional_partner/regional_partner_playbook'
+    sign_out @workshop_admin
+
+    # Users without one of those permissions cannot view it
+    sign_in @teacher
+    get :rp_playbook
+    assert_template 'pd/professional_learning/regional_partner/not_permitted_to_view'
+  end
+
   test 'regional_workshop_data returns empty results if no results' do
     reg_ws_data_response = get :regional_workshop_data, params: {zip_code: "00000"}
     assert_response :success
