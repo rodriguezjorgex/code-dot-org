@@ -60,7 +60,7 @@
         "conditions": [
           {
             "name": "played_sounds",
-            "value": "1:1"
+            "value": 1
           }
         ]
       },
@@ -75,7 +75,7 @@
     ],
     "preload_asset_list": null
   },
-  "audit_log": "[{\"changed_at\":\"2025-04-03T23:55:26.224+00:00\",\"changed\":[\"cloned from \\\"test-music-lab-intro-try\\\"\"],\"cloned_from\":\"test-music-lab-intro-try\"},{\"changed_at\":\"2025-04-03 23:55:57 +0000\",\"changed\":[\"long_instructions\",\"offer_browser_tts\",\"level_data\",\"predict_settings\"],\"changed_by_id\":14639,\"changed_by_email\":\"dan+teacher@code.org\"},{\"changed_at\":\"2025-04-03 23:56:15 +0000\",\"changed\":[\"level_data\"],\"changed_by_id\":14639,\"changed_by_email\":\"dan+teacher@code.org\"},{\"changed_at\":\"2025-04-03 23:56:41 +0000\",\"changed\":[\"predict_settings\",\"validations\"],\"changed_by_id\":14639,\"changed_by_email\":\"dan+teacher@code.org\"},{\"changed_at\":\"2025-04-03 23:57:28 +0000\",\"changed\":[\"predict_settings\"],\"changed_by_id\":14639,\"changed_by_email\":\"dan+teacher@code.org\"}]"
+  "audit_log": "[{\"changed_at\":\"2025-04-03T23:55:26.224+00:00\",\"changed\":[\"cloned from \\\"test-music-lab-intro-try\\\"\"],\"cloned_from\":\"test-music-lab-intro-try\"},{\"changed_at\":\"2025-04-03 23:55:57 +0000\",\"changed\":[\"long_instructions\",\"offer_browser_tts\",\"level_data\",\"predict_settings\"],\"changed_by_id\":14639,\"changed_by_email\":\"dan+teacher@code.org\"},{\"changed_at\":\"2025-04-03 23:56:15 +0000\",\"changed\":[\"level_data\"],\"changed_by_id\":14639,\"changed_by_email\":\"dan+teacher@code.org\"},{\"changed_at\":\"2025-04-03 23:56:41 +0000\",\"changed\":[\"predict_settings\",\"validations\"],\"changed_by_id\":14639,\"changed_by_email\":\"dan+teacher@code.org\"},{\"changed_at\":\"2025-04-03 23:57:28 +0000\",\"changed\":[\"predict_settings\"],\"changed_by_id\":14639,\"changed_by_email\":\"dan+teacher@code.org\"},{\"changed_at\":\"2025-04-04 12:15:11 +0000\",\"changed\":[\"predict_settings\",\"validations\"],\"changed_by_id\":831,\"changed_by_email\":\"mike.harvey@code.org\"}]"
 }]]></config>
   <blocks/>
 </Music>
