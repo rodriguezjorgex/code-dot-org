@@ -230,14 +230,15 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
 
   const getWorkshopErrors = useCallback(
     () =>
-      Object.entries(config.fields).reduce(
+      Object.values(config.fields).reduce(
         (
-          acc: Record<string, string>,
-          [key, field]: [string, FieldConfig<WorkshopFormState>]
+          acc: Errors<keyof WorkshopFormState>,
+          field: FieldConfig<WorkshopFormState>
         ) => {
           const {stateKey} = field;
           const required =
-            field.required || (key === 'prereq' && workshopFormState.hasPrereq);
+            field.required ||
+            (stateKey === 'prereq' && workshopFormState.hasPrereq);
           if (required && isEmpty(workshopFormState[stateKey])) {
             acc[stateKey] = REQUIRED_ERROR;
           }
@@ -251,10 +252,7 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
   const getSessionErrors = useCallback(
     () =>
       Object.values(config.session_fields).reduce(
-        (
-          acc: Record<string, Record<string, string>>,
-          field: FieldConfig<SessionFormState>
-        ) => {
+        (acc: SessionErrors, field: FieldConfig<SessionFormState>) => {
           const {stateKey, required} = field;
           sessionFormState.forEach(session => {
             if (required && isEmpty(session[stateKey])) {
@@ -289,66 +287,15 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
       ) {
         return;
       }
+      // api request
     } catch (error) {
-      console.log(error);
+      // handle error
     }
   }, [getSessionErrors, getWorkshopErrors]);
 
   const cancel = () => {};
 
   const heading = workshopLabel(`New ${config.label}`);
-
-  const basicsErrors = useMemo(
-    () => ({
-      capacity: workshopErrors.capacity,
-      description: workshopErrors.description,
-      prereq: workshopErrors.prereq,
-      hasPrereq: workshopErrors.hasPrereq,
-      subject: workshopErrors.subject,
-      grades: workshopErrors.grades,
-      courseOfferings: workshopErrors.courseOfferings,
-      name: workshopErrors.name,
-    }),
-    [
-      workshopErrors.capacity,
-      workshopErrors.description,
-      workshopErrors.prereq,
-      workshopErrors.hasPrereq,
-      workshopErrors.subject,
-      workshopErrors.grades,
-      workshopErrors.courseOfferings,
-      workshopErrors.name,
-    ]
-  );
-
-  const partnerFacilitatorErrors = useMemo(
-    () => ({
-      facilitators: workshopErrors.facilitators,
-      regionalPartnerId: workshopErrors.regionalPartnerId,
-    }),
-    [workshopErrors.facilitators, workshopErrors.regionalPartnerId]
-  );
-
-  const additionalInfoErrors = useMemo(
-    () => ({
-      fee: workshopErrors.fee,
-      participantGroupType: workshopErrors.participantGroupType,
-      notes: workshopErrors.notes,
-    }),
-    [
-      workshopErrors.fee,
-      workshopErrors.participantGroupType,
-      workshopErrors.notes,
-    ]
-  );
-
-  const publishSettingsErrors = useMemo(
-    () => ({
-      registrationLink: workshopErrors.registrationLink,
-      hidden: workshopErrors.hidden,
-    }),
-    [workshopErrors.registrationLink, workshopErrors.hidden]
-  );
 
   const sectionProps = useMemo(
     () => ({
@@ -370,7 +317,7 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
         grades={workshopFormState.grades}
         courseOfferings={workshopFormState.courseOfferings}
         name={workshopFormState.name}
-        errors={basicsErrors}
+        errors={workshopErrors}
         {...sectionProps}
       />
       <Schedule
@@ -383,7 +330,7 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
       <PartnerFacilitator
         facilitators={workshopFormState.facilitators}
         regionalPartnerId={workshopFormState.regionalPartnerId}
-        errors={partnerFacilitatorErrors}
+        errors={workshopErrors}
         {...sectionProps}
       />
       <EmailsReminders
@@ -394,13 +341,13 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
         fee={workshopFormState.fee}
         participantGroupType={workshopFormState.participantGroupType}
         notes={workshopFormState.notes}
-        errors={additionalInfoErrors}
+        errors={workshopErrors}
         {...sectionProps}
       />
       <PublishSettings
         registrationLink={workshopFormState.registrationLink}
         hidden={workshopFormState.hidden}
-        errors={publishSettingsErrors}
+        errors={workshopErrors}
         {...sectionProps}
       />
       {hasErrors && (
