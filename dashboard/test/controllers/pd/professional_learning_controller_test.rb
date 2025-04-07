@@ -500,6 +500,8 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
   end
 
   test 'regional_workshop_data returns empty results if no results' do
+    RegionalPartner.any_instance.stubs(:find_by_zip).with({zip_code: "00000"}).returns(nil)
+
     reg_ws_data_response = get :regional_workshop_data, params: {zip_code: "00000"}
     assert_response :success
     response_data = JSON.parse(reg_ws_data_response.body)['regional_workshop_data']
