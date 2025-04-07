@@ -1,5 +1,6 @@
 import Alert from '@code-dot-org/component-library/alert';
 import {Heading1} from '@code-dot-org/component-library/typography';
+import {isEmpty} from 'lodash';
 import moment from 'moment-timezone';
 import React, {
   FC,
@@ -40,14 +41,6 @@ import {
 import styles from './styles.module.scss';
 
 export const REQUIRED_ERROR = 'Required';
-
-export const isEmpty = (
-  value: string | boolean | number | unknown[] | null | undefined
-) =>
-  value === undefined ||
-  value === null ||
-  value === '' ||
-  (Array.isArray(value) && value.length === 0);
 
 export const workshopDataToState = (data: Workshop): WorkshopFormState => ({
   course: data.course ?? '',
