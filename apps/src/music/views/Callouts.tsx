@@ -76,6 +76,9 @@ const availableCallouts: AvailableCallouts = {
   'trigger-button-2': {selector: `#${Triggers[1].id}`},
   'trigger-button-3': {selector: `#${Triggers[2].id}`},
   'trigger-button-4': {selector: `#${Triggers[3].id}`},
+  'start-over-button': {
+    selector: 'button:has(i.fa-refresh)',
+  },
   'toolbox-first-row': {selector: '.blocklyTreeRow'},
   'flyout-first-block': {
     selector: '.blocklyFlyout:not([style*="display: none;"]) .blocklyDraggable',
