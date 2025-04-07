@@ -117,6 +117,14 @@ export const SessionPart: FC<{
     [handleSession]
   );
 
+  const showAdditionalFields = useMemo(
+    () =>
+      Boolean(
+        fields.location_name || fields.location_address || fields.meeting_link
+      ),
+    [fields]
+  );
+
   return (
     <div>
       <div className={classNames(commonStyles.row, styles.sessionRow)}>
@@ -208,9 +216,7 @@ export const SessionPart: FC<{
           />
         </WithTooltip>
       </div>
-      {(fields.location_name ||
-        fields.location_address ||
-        fields.meeting_link) && (
+      {showAdditionalFields && (
         <div className={commonStyles.card}>
           <div className={commonStyles.row}>
             {format === 'in_person' &&
