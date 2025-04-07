@@ -72,6 +72,10 @@ export const PartnerFacilitator: FC<PartnerFacilitatorProps> = ({
     [dispatchWorkshop]
   );
 
+  if (!fields.facilitators && !fields.regional_partner_id) {
+    return null;
+  }
+
   return (
     <section>
       <Heading2 visualAppearance="heading-sm">

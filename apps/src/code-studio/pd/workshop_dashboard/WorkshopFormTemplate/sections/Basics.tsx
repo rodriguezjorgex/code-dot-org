@@ -120,6 +120,18 @@ export const Basics: FC<BasicsProps> = ({
     return options;
   }, [fields.subject?.options]);
 
+  if (
+    !fields.name &&
+    !fields.grades &&
+    !fields.subject &&
+    !fields.prereq &&
+    !fields.capacity &&
+    !fields.description &&
+    !fields.course_offerings
+  ) {
+    return null;
+  }
+
   return (
     <section>
       <Heading2 visualAppearance="heading-sm">Workshop Basics</Heading2>

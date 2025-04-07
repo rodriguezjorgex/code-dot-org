@@ -26,6 +26,11 @@ export const PublishSettings: FC<PublishSettingsProps> = ({
       payload: {[event.target.name]: event.target.value},
     });
   };
+
+  if (!fields.registration_link && !fields.hidden) {
+    return null;
+  }
+
   return (
     <section>
       <Heading2 visualAppearance="heading-sm">Publish Settings</Heading2>

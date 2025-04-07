@@ -45,6 +45,11 @@ export const EmailsReminders: FC<EmailsRemindersProps> = ({
     },
     [dispatchWorkshop]
   );
+
+  if (!fields.suppress_email) {
+    return null;
+  }
+
   return (
     <section>
       <Heading2 visualAppearance="heading-sm">Emails & Reminders</Heading2>

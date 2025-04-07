@@ -39,6 +39,11 @@ export const AdditionalInfo: FC<AdditionalInfoProps> = ({
       payload: {[event.target.name]: event.target.value},
     });
   };
+
+  if (!fields.fee && !fields.participant_group_type && !fields.notes) {
+    return null;
+  }
+
   return (
     <section>
       <Heading2 visualAppearance="heading-sm">Additional Information</Heading2>
