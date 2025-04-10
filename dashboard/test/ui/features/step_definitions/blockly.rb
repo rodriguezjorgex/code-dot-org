@@ -239,6 +239,10 @@ And /^I've initialized the workspace with losing artist blocks$/ do
   @browser.execute_script('Blockly.serialization.workspaces.load({"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"draw_move_by_constant","fields":{"DIR":"<field name=\"DIR\">moveForward</field>","VALUE":"100"},"next":{"block":{"type":"draw_turn_by_constant_restricted","fields":{"DIR":"<field name=\"DIR\">turnRight</field>","VALUE":"<field name=\"VALUE\">90</field>"}}}}}}]}}, Blockly.getMainWorkspace());')
 end
 
+And /^I've initialized the workspace with bee blocks$/ do
+  @browser.execute_script('Blockly.serialization.workspaces.load({"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"controls_repeat","id":"repeat","fields":{"TIMES":2},"inputs":{"DO":{"block":{"type":"maze_moveForward","next":{"block":{"type":"maze_moveForward","next":{"block":{"type":"bee_ifFlower","fields":{"LOC":"<field name=\"LOC\">atHoneycomb</field>"},"inputs":{"DO":{"block":{"type":"maze_honey"}}},"next":{"block":{"type":"maze_turn","fields":{"DIR":"<field name=\"DIR\">turnLeft</field>"}}}}}}}}}}}}}]}}, Blockly.getMainWorkspace());')
+end
+
 Then(/^block "([^"]*)" is in front of block "([^"]*)"$/) do |block_front, block_back|
   id_selector = get_id_selector
   block_front_id = get_block_id(block_front)
