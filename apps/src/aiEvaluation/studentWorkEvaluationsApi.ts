@@ -24,8 +24,8 @@ export async function logStudentWorkEvaluations(
   });
   // For each specific skill-based evaluation, log a UserLevelSkillEvaluation
   if (parsedResponse.skillEvaluations) {
-    parsedResponse.skillEvaluations.forEach(
-      async (skillEvaluation: AIResponse) => {
+    await Promise.all(
+      parsedResponse.skillEvaluations.map(async skillEvaluation => {
         const ulse = await logStudentWorkEvaluation({
           type: 'UserLevelSkillEvaluation',
           studentId: studentWorkSample.studentId,
@@ -40,7 +40,7 @@ export async function logStudentWorkEvaluations(
           studentWorkEvaluationId: ulse.id,
           studentWorkEvaluationSummaryId: ule.id,
         });
-      }
+      })
     );
   }
 }
