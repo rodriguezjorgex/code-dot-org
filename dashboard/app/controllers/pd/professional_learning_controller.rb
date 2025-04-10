@@ -137,6 +137,7 @@ class Pd::ProfessionalLearningController < ApplicationController
   # GET /dashboardapi/v1/pd/regional_workshop_data/:zip_code
   # Returns the regional partner of the provided zip and workshops that meet the following criteria:
   # - Not started yet
+  # - Not hidden
   # - Considered to be in the regional partner's region (i.e. satisfies one of the following):
   #    - Has "National" participant group type
   #    - Has "Regional" participant group type and is associated with the given regional partner
@@ -152,6 +153,7 @@ class Pd::ProfessionalLearningController < ApplicationController
 
     available_workshops = workshops.select do |ws|
       ws.state == Pd::Workshop::STATE_NOT_STARTED &&
+        !ws.hidden &&
         in_region?(ws, partner) &&
         has_allowed_course_for_regional_ws_page?(ws)
     end
