@@ -8,12 +8,15 @@ import {
 } from '@code-dot-org/component-library/typography';
 import React, {useState} from 'react';
 
+import CalendarEmptyStateIllustration from '@cdo/apps/templates/teacherNavigation/images/CalendarEmptyStateIllustration.svg';
+import CalendarNotAvailable from '@cdo/apps/templates/teacherNavigation/images/CalendarNotAvailable.svg';
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
 
 import style from './regionalWorkshopCatalog.module.scss';
 
 export default function RegionalWorkshopCatalog() {
   const [zipCode, setZipCode] = useState('');
+  const [hasSubmittedZip, setHasSubmittedZip] = useState(false);
   const [hasValidRP, setHasValidRP] = useState(false);
   const [regionalPartnerText, setRegionalPartnerText] =
     useState('Zip code required');
@@ -45,11 +48,85 @@ export default function RegionalWorkshopCatalog() {
         setAvailableWorkshops(
           jsonData.regional_workshop_data.available_workshops
         );
+        setHasSubmittedZip(true);
       }
     } catch (error) {
       console.error(
         'Error fetching regional partner and available workshops:',
         error
+      );
+    }
+  };
+
+  const RenderWorkshopContent = () => {
+    if (!hasSubmittedZip) {
+      return (
+        <>
+          <img id="enter-zip-img" src={CalendarEmptyStateIllustration} alt="" />
+          <Heading2>Enter zip code to see workshops</Heading2>
+          <BodyTwoText>
+            To see available workshops, please provide your zip code. National
+            workshops are available for all teachers, but we'll use your zip to
+            match you with a regional partner and show you local workshops.
+          </BodyTwoText>
+          <div className={style.zipSearchInput}>
+            <TextField
+              id="noZipSearch"
+              name="zipCode"
+              onChange={e => setZipCode(e.target.value)}
+              value={zipCode}
+              maxLength={255}
+              placeholder="12345"
+            />
+            <Button text="Submit" color="purple" onClick={handleSubmitZip} />
+          </div>
+        </>
+      );
+    } else if (availableWorkshops.length === 0) {
+      return (
+        <>
+          <img id="no-workshops-found-img" src={CalendarNotAvailable} alt="" />
+          <Heading2>No workshops found</Heading2>
+          <BodyTwoText>
+            We didn't find any upcoming workshops in your area. Workshops are
+            being added all the time. Check back again soon or{' '}
+            <a href="/">contact your regional partner</a>
+            for more information on upcoming workshops.
+          </BodyTwoText>
+          <LinkButton
+            text="Contact regional partner"
+            color="purple"
+            href={'/'}
+          />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Heading2>Upcoming workshops</Heading2>
+          <BodyTwoText>
+            Workshops are always being added. If you do not see the workshop you
+            are looking for check back again soon or{' '}
+            <a href="/">contact your regional partner</a>.
+          </BodyTwoText>
+          {availableWorkshops && (
+            <div>
+              <ul>
+                {availableWorkshops.map(workshop => (
+                  <li key={workshop.id}>{`Id: ${workshop.id}, Title: ${
+                    workshop.name
+                      ? workshop.name
+                      : workshop.course + ' - ' + workshop.subject
+                  }, Location: ${
+                    workshop.location_name
+                  }, Participant Group Type: ${
+                    workshop.participant_group_type
+                  }`}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </>
       );
     }
   };
@@ -67,7 +144,7 @@ export default function RegionalWorkshopCatalog() {
         <div className={style.zipSearchContainer}>
           <div className={style.zipSearchInput}>
             <TextField
-              id="zipCode"
+              id="zipSearch"
               name="zipCode"
               label="School ZIP Code:"
               onChange={e => setZipCode(e.target.value)}
@@ -109,29 +186,7 @@ export default function RegionalWorkshopCatalog() {
       </section>
       <section className={style.workshopContainer}>
         <div className={style.workshopContentContainer}>
-          <Heading2>Upcoming workshops</Heading2>
-          <BodyTwoText>
-            Workshops are always being added. If you do not see the workshop you
-            are looking for check back again soon or{' '}
-            <a href="/">contact your regional partner</a>.
-          </BodyTwoText>
-          {availableWorkshops && (
-            <div>
-              <ul>
-                {availableWorkshops.map(workshop => (
-                  <li key={workshop.id}>{`Id: ${workshop.id}, Title: ${
-                    workshop.name
-                      ? workshop.name
-                      : workshop.course + ' - ' + workshop.subject
-                  }, Location: ${
-                    workshop.location_name
-                  }, Participant Group Type: ${
-                    workshop.participant_group_type
-                  }`}</li>
-                ))}
-              </ul>
-            </div>
-          )}
+          {RenderWorkshopContent()}
         </div>
       </section>
     </div>
