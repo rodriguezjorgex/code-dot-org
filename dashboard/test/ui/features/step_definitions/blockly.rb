@@ -307,6 +307,14 @@ And /^I've initialized the workspace with k1 maze blocks$/ do
   load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"maze_moveWest","next":{"block":{"type":"maze_moveWest"}}}}}]}}')
 end
 
+And /^I've initialized the workspace with recommended bee blocks$/ do
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"controls_repeat","fields":{"TIMES":2},"inputs":{"DO":{"block":{"type":"maze_moveForward","next":{"block":{"type":"bee_ifNectarAmount","fields":{"ARG1":"<field name=\"ARG1\">nectarRemaining</field>","OP":"<field name=\"OP\">==</field>","ARG2":"1"},"inputs":{"DO":{"block":{"type":"maze_nectar"}}}}}}}}}}}]}}')
+end
+
+And /^I've initialized the workspace with bee conditional blocks$/ do
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"controls_repeat_dropdown","fields":{"TIMES":"<field name=\"TIMES\" config=\"3-10\">3</field>"},"inputs":{"DO":{"block":{"type":"maze_moveForward"}}},"next":{"block":{"type":"bee_ifNectarAmount","fields":{"ARG1":"<field name=\"ARG1\">nectarRemaining</field>","OP":"<field name=\"OP\">==</field>","ARG2":"1"},"inputs":{"DO":{"block":{"type":"maze_nectar"}}}}}}}}]}}')
+end
+
 Then(/^block "([^"]*)" is in front of block "([^"]*)"$/) do |block_front, block_back|
   id_selector = get_id_selector
   block_front_id = get_block_id(block_front)
