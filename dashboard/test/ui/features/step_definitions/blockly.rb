@@ -263,6 +263,14 @@ And /^I've initialized the workspace with losing farmer blocks$/ do
   load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"maze_moveForward","id":"startBlock","next":{"block":{"type":"maze_moveForward","next":{"block":{"type":"maze_moveForward"}}}}}}}]}}')
 end
 
+And /^I've initialized the workspace with level 1 flappy blocks$/ do
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"flappy_whenClick","x":20,"y":20,"next":{"block":{"type":"flappy_flap"}}}]}}')
+end
+
+And /^I've initialized the workspace with level 2 flappy blocks$/ do
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"flappy_whenClick","x":20,"y":20,"next":{"block":{"type":"flappy_flap"}}},{"type":"flappy_whenCollideGround","x":230,"y":20,"deletable":false,"next":{"block":{"type":"flappy_endGame"}}}]}}')
+end
+
 Then(/^block "([^"]*)" is in front of block "([^"]*)"$/) do |block_front, block_back|
   id_selector = get_id_selector
   block_front_id = get_block_id(block_front)
