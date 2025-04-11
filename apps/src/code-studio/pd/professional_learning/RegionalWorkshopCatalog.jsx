@@ -21,16 +21,13 @@ export default function RegionalWorkshopCatalog() {
 
   const handleSubmitZip = async () => {
     try {
-      const response = await fetch(
-        `/dashboardapi/v1/pd/regional_workshop_data/${zipCode}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': await getAuthenticityToken(),
-          },
-        }
-      );
+      const response = await fetch(`/regional_workshop_data/${zipCode}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': await getAuthenticityToken(),
+        },
+      });
 
       if (response.ok) {
         const jsonData = await response.json();
