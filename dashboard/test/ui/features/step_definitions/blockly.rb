@@ -291,7 +291,7 @@ And /^I've initialized the workspace with artist project blocks$/ do
   load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"draw_move_by_constant","fields":{"DIR":"<field name=\"DIR\">moveForward</field>","VALUE":"100"}}}}]}}')
 end
 
-And /^I've initialized the workspace with partial step blocks$/ do
+And /^I've initialized the workspace with two move forward blocks$/ do
   load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","id":"topBlock","x":16,"y":16,"next":{"block":{"type":"maze_moveForward","id":"startBlock","next":{"block":{"type":"maze_moveForward","id":"moveForward"}}}}}]}}')
 end
 
@@ -301,6 +301,10 @@ end
 
 And /^I've initialized the workspace with hoc blocks to clear$/ do
   load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"maze_moveForward","id":"startBlock","next":{"block":{"type":"maze_moveForward","id":"moveForward","next":{"block":{"type":"maze_turn","id":"turnRight","fields":{"DIR":"<field name=\"DIR\">turnRight</field>"}}}}}}}}]}}')
+end
+
+And /^I've initialized the workspace with k1 maze blocks$/ do
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"maze_moveWest","next":{"block":{"type":"maze_moveWest"}}}}}]}}')
 end
 
 Then(/^block "([^"]*)" is in front of block "([^"]*)"$/) do |block_front, block_back|

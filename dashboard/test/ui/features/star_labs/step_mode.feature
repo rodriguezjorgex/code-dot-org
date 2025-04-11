@@ -9,7 +9,7 @@ Scenario: Step Only - Failure
     And element "#stepButton" is visible
     And element "#stepButton" is not disabled
 
-  When I've initialized the workspace with partial step blocks
+  When I've initialized the workspace with two move forward blocks
     And I press "stepButton"
     And I wait for 1 second
     And I wait until "#stepButton" is not disabled
@@ -61,7 +61,7 @@ Scenario: Step Only - Reset while stepping
     And element "#stepButton" is visible
     And element "#stepButton" is not disabled
 
-  When I've initialized the workspace with partial step blocks
+  When I've initialized the workspace with two move forward blocks
     And I press "stepButton"
     And I wait for 1 second
     And I wait until "#stepButton" is not disabled
@@ -84,7 +84,7 @@ Scenario: Step and Run - Stepping
     And element "#stepButton" is visible
     And element "#stepButton" is not disabled
 
-  When I've initialized the workspace with partial step blocks
+  When I've initialized the workspace with two move forward blocks
     And I press "stepButton"
     And I wait for 1 second
     And I wait until "#stepButton" is not disabled
@@ -108,7 +108,7 @@ Scenario: Step and Run - Running
     And element "#resetButton" is hidden
     And element "#stepButton" is visible
     And element "#stepButton" is not disabled
-  When I've initialized the workspace with partial step blocks
+  When I've initialized the workspace with two move forward blocks
     And I press "runButton"
   Then element "#stepButton" is disabled
     And element "#runButton" is hidden
