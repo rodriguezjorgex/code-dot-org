@@ -137,11 +137,7 @@ def do_linting(base = nil, current = nil)
   todo.each do |func, files|
     unless files.empty?
       stdout, stderr, status = func.call(files)
-      unless status.success?
-        puts "FAILED COMMAND: #{func.name}"
-        puts files[0..2].map {|f| "  - #{f}"}.join("\n") + (files.length > 3 ? "\n  - ... (#{files.length - 3} more files)" : "")
-        lint_failure(stdout + stderr)
-      end
+      lint_failure(stdout + stderr) unless status.success?
     end
   end
 end
