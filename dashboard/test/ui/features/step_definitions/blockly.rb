@@ -271,6 +271,22 @@ And /^I've initialized the workspace with level 2 flappy blocks$/ do
   load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"flappy_whenClick","x":20,"y":20,"next":{"block":{"type":"flappy_flap"}}},{"type":"flappy_whenCollideGround","x":230,"y":20,"deletable":false,"next":{"block":{"type":"flappy_endGame"}}}]}}')
 end
 
+And /^I've initialized the workspace with valid maze blocks$/ do
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"maze_forever","inputs":{"DO":{"block":{"type":"maze_moveForward","next":{"block":{"type":"maze_if","fields":{"DIR":"<field name=\"DIR\">isPathRight</field>"},"inputs":{"DO":{"block":{"type":"maze_turn","fields":{"DIR":"<field name=\"DIR\">turnRight</field>"}}}}}}}}}}}}]}}')
+end
+
+And /^I've initialized the workspace with incorrect maze blocks$/ do
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"maze_forever","inputs":{"DO":{"block":{"type":"maze_turn","fields":{"DIR":"<field name=\"DIR\">turnRight</field>"},"next":{"block":{"type":"maze_moveForward","next":{"block":{"type":"maze_moveForward"}}}}}}}}}}]}}')
+end
+
+And /^I've initialized the workspace with empty repeat maze blocks$/ do
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"maze_forever"}}}]}}')
+end
+
+And /^I've initialized the workspace with too many maze blocks$/ do
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"maze_moveForward","next":{"block":{"type":"maze_forever","inputs":{"DO":{"block":{"type":"maze_moveForward","next":{"block":{"type":"maze_turn","fields":{"DIR":"<field name=\"DIR\">turnLeft</field>"},"next":{"block":{"type":"maze_moveForward"}}}}}}}}}}}}]}}')
+end
+
 Then(/^block "([^"]*)" is in front of block "([^"]*)"$/) do |block_front, block_back|
   id_selector = get_id_selector
   block_front_id = get_block_id(block_front)
