@@ -33,7 +33,7 @@ Scenario: Incomplete Level 5
 Scenario: Complete Level 5
   Given I am on "http://studio.code.org/s/events/lessons/1/levels/5?noautoplay=true"
   And I wait for the lab page to fully load
-  And I've initialized the workspace with level 3 bounce blocks
+  And I've initialized the workspace with level 5 bounce blocks
   And I press "runButton"
   And I wait to see ".congrats"
   And element ".congrats" is visible
