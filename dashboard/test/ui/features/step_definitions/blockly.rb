@@ -255,6 +255,14 @@ And /^I've initialized the workspace with level 5 bounce blocks$/ do
   load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"bounce_whenPaddleCollided","id":"whenPaddleCollided","x":20,"y":20,"next":{"block":{"type":"bounce_bounceBall"}}}]}}')
 end
 
+And /^I've initialized the workspace with winning farmer blocks$/ do
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"maze_moveForward","id":"startBlock","next":{"block":{"type":"maze_moveForward","next":{"block":{"type":"maze_moveForward","next":{"block":{"type":"maze_moveForward","next":{"block":{"type":"maze_dig"}}}}}}}}}}}]}}')
+end
+
+And /^I've initialized the workspace with losing farmer blocks$/ do
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"maze_moveForward","id":"startBlock","next":{"block":{"type":"maze_moveForward","next":{"block":{"type":"maze_moveForward"}}}}}}}]}}')
+end
+
 Then(/^block "([^"]*)" is in front of block "([^"]*)"$/) do |block_front, block_back|
   id_selector = get_id_selector
   block_front_id = get_block_id(block_front)
