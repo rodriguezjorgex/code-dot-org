@@ -228,31 +228,31 @@ And /^I've initialized the workspace with a studio say block saying "([^"]*)"$/ 
 end
 
 And /^I've initialized the workspace with the artist_autorun blocks$/ do
-  @browser.execute_script('Blockly.serialization.workspaces.load({"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"procedures_callnoreturn","extraState":{"name":"draw a square"},"next":{"block":{"type":"draw_turn_by_constant","fields":{"DIR":"<field name=\"DIR\">turnRight</field>","VALUE":90},"next":{"block":{"type":"procedures_callnoreturn","extraState":{"name":"draw a square"}}}}}}}},{"type":"procedures_defnoreturn","x":31,"y":200,"extraState":{"procedureId":"Y#CwUBj4x2-@q[[-cnCn"},"fields":{"NAME":"draw a square"},"inputs":{"STACK":{"block":{"type":"controls_repeat","deletable":false,"editable":false,"fields":{"TIMES":4},"inputs":{"DO":{"block":{"type":"draw_move_by_constant","id":"rSJg`0XlA5u]7@#jSctv","deletable":false,"editable":false,"fields":{"DIR":"<field name=\"DIR\">moveForward</field>","VALUE":"100"},"next":{"block":{"type":"draw_turn_by_constant","id":"#C%7cLw=1KH%hZ`RM$NU","deletable":false,"editable":false,"fields":{"DIR":"<field name=\"DIR\">turnRight</field>","VALUE":90}}}}}}}}},"movable":true}]},"procedures":[{"id":"Y#CwUBj4x2-@q[[-cnCn","name":"draw a square","returnTypes":null}]}, Blockly.getMainWorkspace());')
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"procedures_callnoreturn","extraState":{"name":"draw a square"},"next":{"block":{"type":"draw_turn_by_constant","fields":{"DIR":"<field name=\"DIR\">turnRight</field>","VALUE":90},"next":{"block":{"type":"procedures_callnoreturn","extraState":{"name":"draw a square"}}}}}}}},{"type":"procedures_defnoreturn","x":31,"y":200,"extraState":{"procedureId":"Y#CwUBj4x2-@q[[-cnCn"},"fields":{"NAME":"draw a square"},"inputs":{"STACK":{"block":{"type":"controls_repeat","deletable":false,"editable":false,"fields":{"TIMES":4},"inputs":{"DO":{"block":{"type":"draw_move_by_constant","id":"rSJg`0XlA5u]7@#jSctv","deletable":false,"editable":false,"fields":{"DIR":"<field name=\"DIR\">moveForward</field>","VALUE":"100"},"next":{"block":{"type":"draw_turn_by_constant","id":"#C%7cLw=1KH%hZ`RM$NU","deletable":false,"editable":false,"fields":{"DIR":"<field name=\"DIR\">turnRight</field>","VALUE":90}}}}}}}}},"movable":true}]},"procedures":[{"id":"Y#CwUBj4x2-@q[[-cnCn","name":"draw a square","returnTypes":null}]}')
 end
 
 And /^I've initialized the workspace with winning artist blocks$/ do
-  @browser.execute_script('Blockly.serialization.workspaces.load({"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"draw_move_by_constant","fields":{"DIR":"<field name=\"DIR\">moveForward</field>","VALUE":"100"},"next":{"block":{"type":"draw_turn_by_constant_restricted","fields":{"DIR":"<field name=\"DIR\">turnRight</field>","VALUE":"<field name=\"VALUE\">90</field>"},"next":{"block":{"type":"draw_move_by_constant","fields":{"DIR":"<field name=\"DIR\">moveForward</field>","VALUE":"100"}}}}}}}}]}}, Blockly.getMainWorkspace());')
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"draw_move_by_constant","fields":{"DIR":"<field name=\"DIR\">moveForward</field>","VALUE":"100"},"next":{"block":{"type":"draw_turn_by_constant_restricted","fields":{"DIR":"<field name=\"DIR\">turnRight</field>","VALUE":"<field name=\"VALUE\">90</field>"},"next":{"block":{"type":"draw_move_by_constant","fields":{"DIR":"<field name=\"DIR\">moveForward</field>","VALUE":"100"}}}}}}}}]}}')
 end
 
 And /^I've initialized the workspace with losing artist blocks$/ do
-  @browser.execute_script('Blockly.serialization.workspaces.load({"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"draw_move_by_constant","fields":{"DIR":"<field name=\"DIR\">moveForward</field>","VALUE":"100"},"next":{"block":{"type":"draw_turn_by_constant_restricted","fields":{"DIR":"<field name=\"DIR\">turnRight</field>","VALUE":"<field name=\"VALUE\">90</field>"}}}}}}]}}, Blockly.getMainWorkspace());')
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"draw_move_by_constant","fields":{"DIR":"<field name=\"DIR\">moveForward</field>","VALUE":"100"},"next":{"block":{"type":"draw_turn_by_constant_restricted","fields":{"DIR":"<field name=\"DIR\">turnRight</field>","VALUE":"<field name=\"VALUE\">90</field>"}}}}}}]}}')
 end
 
 And /^I've initialized the workspace with bee blocks$/ do
-  @browser.execute_script('Blockly.serialization.workspaces.load({"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"controls_repeat","id":"repeat","fields":{"TIMES":2},"inputs":{"DO":{"block":{"type":"maze_moveForward","next":{"block":{"type":"maze_moveForward","next":{"block":{"type":"bee_ifFlower","fields":{"LOC":"<field name=\"LOC\">atHoneycomb</field>"},"inputs":{"DO":{"block":{"type":"maze_honey"}}},"next":{"block":{"type":"maze_turn","fields":{"DIR":"<field name=\"DIR\">turnLeft</field>"}}}}}}}}}}}}}]}}, Blockly.getMainWorkspace());')
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"controls_repeat","id":"repeat","fields":{"TIMES":2},"inputs":{"DO":{"block":{"type":"maze_moveForward","next":{"block":{"type":"maze_moveForward","next":{"block":{"type":"bee_ifFlower","fields":{"LOC":"<field name=\"LOC\">atHoneycomb</field>"},"inputs":{"DO":{"block":{"type":"maze_honey"}}},"next":{"block":{"type":"maze_turn","fields":{"DIR":"<field name=\"DIR\">turnLeft</field>"}}}}}}}}}}}}}]}}')
 end
 
 And /^I've initialized the workspace with level 1 bounce blocks$/ do
-  @browser.execute_script('Blockly.serialization.workspaces.load({"blocks":{"languageVersion":0,"blocks":[{"type":"bounce_whenLeft","x":20,"y":20,"next":{"block":{"type":"bounce_moveLeft","id":"moveLeft"}}}]}}, Blockly.getMainWorkspace());')
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"bounce_whenLeft","x":20,"y":20,"next":{"block":{"type":"bounce_moveLeft","id":"moveLeft"}}}]}}')
 end
 
 And /^I've initialized the workspace with level 3 bounce blocks$/ do
-  @browser.execute_script('Blockly.serialization.workspaces.load({"blocks":{"languageVersion":0,"blocks":[{"type":"bounce_whenUp","x":20,"y":20,"next":{"block":{"type":"bounce_moveUp"}}}]}}, Blockly.getMainWorkspace());')
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"bounce_whenUp","x":20,"y":20,"next":{"block":{"type":"bounce_moveUp"}}}]}}')
 end
 
 And /^I've initialized the workspace with level 5 bounce blocks$/ do
-  @browser.execute_script('Blockly.serialization.workspaces.load({"blocks":{"languageVersion":0,"blocks":[{"type":"bounce_whenPaddleCollided","id":"whenPaddleCollided","x":20,"y":20,"next":{"block":{"type":"bounce_bounceBall"}}}]}}, Blockly.getMainWorkspace());')
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"bounce_whenPaddleCollided","id":"whenPaddleCollided","x":20,"y":20,"next":{"block":{"type":"bounce_bounceBall"}}}]}}')
 end
 
 Then(/^block "([^"]*)" is in front of block "([^"]*)"$/) do |block_front, block_back|
