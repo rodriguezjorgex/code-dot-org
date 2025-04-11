@@ -292,11 +292,11 @@ And /^I've initialized the workspace with artist project blocks$/ do
 end
 
 And /^I've initialized the workspace with partial step blocks$/ do
-  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"maze_moveForward","next":{"block":{"type":"maze_moveForward"}}}}}]}}')
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","id":"topBlock","x":16,"y":16,"next":{"block":{"type":"maze_moveForward","id":"startBlock","next":{"block":{"type":"maze_moveForward","id":"moveForward"}}}}}]}}')
 end
 
 And /^I've initialized the workspace with complete step blocks$/ do
-  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"maze_moveForward","next":{"block":{"type":"maze_moveForward","next":{"block":{"type":"maze_moveForward"}}}}}}}]}}')
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","id":"topBlock","x":16,"y":16,"next":{"block":{"type":"maze_moveForward","id":"startBlock","next":{"block":{"type":"maze_moveForward","id":"moveForward","next":{"block":{"type":"maze_moveForward"}}}}}}}]}}')
 end
 
 Then(/^block "([^"]*)" is in front of block "([^"]*)"$/) do |block_front, block_back|
