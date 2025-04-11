@@ -252,7 +252,7 @@ And /^I've initialized the workspace with level 3 bounce blocks$/ do
 end
 
 And /^I've initialized the workspace with level 5 bounce blocks$/ do
-  @browser.execute_script('Blockly.serialization.workspaces.load({}, Blockly.getMainWorkspace());')
+  @browser.execute_script('Blockly.serialization.workspaces.load({"blocks":{"languageVersion":0,"blocks":[{"type":"bounce_whenPaddleCollided","id":"whenPaddleCollided","x":20,"y":20,"next":{"block":{"type":"bounce_bounceBall"}}}]}}, Blockly.getMainWorkspace());')
 end
 
 Then(/^block "([^"]*)" is in front of block "([^"]*)"$/) do |block_front, block_back|
