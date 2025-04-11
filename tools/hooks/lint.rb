@@ -137,7 +137,19 @@ def do_linting(base = nil, current = nil)
   todo.each do |func, files|
     unless files.empty?
       stdout, stderr, status = func.call(files)
-      lint_failure(stdout + stderr) unless status.success?
+      unless status.success?
+        puts "FAILED COMMAND: #{func.name}"
+        working_dir = if func.name.to_s.include?('apps')
+                        APPS_DIR
+                      elsif func.name.to_s.include?('frontend')
+                        FRONTEND_DIR
+                      else
+                        REPO_DIR
+                      end
+        puts "WORKING DIRECTORY: #{working_dir}"
+        puts files[0..2].map {|f| "  - #{f}"}.join("\n") + (files.length > 3 ? "\n  - ... (#{files.length - 3} more files)" : "")
+        lint_failure(stdout + stderr)
+      end
     end
   end
 end
