@@ -35,6 +35,8 @@ interface InstructionsProps {
   manageNavigation?: boolean;
   /** Optional classname for the container */
   className?: string;
+  /** Optional component to render at the bottom of the main instructions. */
+  bottomComponent?: React.ReactNode;
 }
 
 /**
@@ -50,6 +52,7 @@ const Instructions: React.FunctionComponent<InstructionsProps> = ({
   handleInstructionsTextClick,
   className,
   manageNavigation = true,
+  bottomComponent,
 }) => {
   const instructionsText = useAppSelector(
     state => state.lab.levelProperties?.longInstructions
@@ -105,6 +108,7 @@ const Instructions: React.FunctionComponent<InstructionsProps> = ({
       hasNextLevel={hasNextLevel}
       useSecondaryFinishButton={useSecondaryFinishButton}
       onContinueOrFinish={() => dispatch(continueOrFinishLesson())}
+      bottomComponent={bottomComponent}
     />
   );
 };
@@ -135,6 +139,7 @@ interface InstructionsPanelProps {
   hasNextLevel: boolean;
   useSecondaryFinishButton: boolean;
   onContinueOrFinish: () => void;
+  bottomComponent?: React.ReactNode;
 }
 
 /**
@@ -163,6 +168,7 @@ const InstructionsPanel: React.FunctionComponent<InstructionsPanelProps> = ({
   hasNextLevel,
   useSecondaryFinishButton,
   onContinueOrFinish,
+  bottomComponent,
 }) => {
   const vertical = layout === 'vertical';
 
@@ -254,6 +260,7 @@ const InstructionsPanel: React.FunctionComponent<InstructionsPanelProps> = ({
                   </div>
                 </InstructorsOnly>
               )}
+              {bottomComponent && <div>{bottomComponent}</div>}
             </div>
           </div>
         )}
@@ -271,7 +278,10 @@ const InstructionsPanel: React.FunctionComponent<InstructionsPanelProps> = ({
               className={moduleStyles['message-' + theme]}
             >
               {offerBrowserTts && useMessage && !canShowNextButton && (
-                <TextToSpeech text={useMessage} />
+                <TextToSpeech
+                  text={useMessage}
+                  higherPosition={!!bottomComponent}
+                />
               )}
               {useMessage && (
                 <div ref={feedbackRef} tabIndex={-1}>
