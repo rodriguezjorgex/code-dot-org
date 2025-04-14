@@ -18,7 +18,6 @@ class AzureTextToSpeechTest < ActionController::TestCase
   end
 
   test 'get_token: returns token on success' do
-    skip 'tests have been flaky'
     stub_request(:post, "https://#{@region}.api.cognitive.microsoft.com/sts/v1.0/issueToken").
       with(headers: {'Ocp-Apim-Subscription-Key' => @api_key}).
       to_return(status: 200, body: @mock_token)
@@ -28,7 +27,6 @@ class AzureTextToSpeechTest < ActionController::TestCase
   end
 
   test 'get_token: caches token' do
-    skip 'tests have been flaky'
     Timecop.freeze
     token_url = "https://#{@region}.api.cognitive.microsoft.com/sts/v1.0/issueToken"
     stub_request(:post, token_url).
@@ -45,7 +43,6 @@ class AzureTextToSpeechTest < ActionController::TestCase
   end
 
   test 'get_token: returns nil on error' do
-    skip 'tests have been flaky'
     stub_request(:post, "https://#{@region}.api.cognitive.microsoft.com/sts/v1.0/issueToken").
       with(headers: {'Ocp-Apim-Subscription-Key' => @api_key}).
       to_raise(ArgumentError)
@@ -55,7 +52,6 @@ class AzureTextToSpeechTest < ActionController::TestCase
   end
 
   test 'throttled_get_speech: yields text as speech on success' do
-    skip 'tests have been flaky'
     expected_speech = 'string-of-bytes'
     Cdo::Throttle.expects(:throttle).once.returns(false)
     AzureTextToSpeech.expects(:get_token).once.returns(@mock_token)
@@ -71,7 +67,6 @@ class AzureTextToSpeechTest < ActionController::TestCase
   end
 
   test 'throttled_get_speech: does not yield if request is throttled' do
-    skip 'tests have been flaky'
     id = 'a1b2c3'
     limit = 100
     period = 60
@@ -85,7 +80,6 @@ class AzureTextToSpeechTest < ActionController::TestCase
   end
 
   test 'throttled_get_speech: yields nil if token is nil' do
-    skip 'tests have been flaky'
     Cdo::Throttle.expects(:throttle).once.returns(false)
     AzureTextToSpeech.expects(:get_token).once.returns(nil)
     Honeybadger.expects(:notify).never
@@ -97,7 +91,6 @@ class AzureTextToSpeechTest < ActionController::TestCase
   end
 
   test 'throttled_get_speech: yields nil on error' do
-    skip 'tests have been flaky'
     Cdo::Throttle.expects(:throttle).once.returns(false)
     AzureTextToSpeech.expects(:get_token).once.returns(@mock_token)
     AzureTextToSpeech.expects(:ssml).once.returns('<speak>hi</speak>')
@@ -111,7 +104,6 @@ class AzureTextToSpeechTest < ActionController::TestCase
   end
 
   test 'get_voices: caches and returns voices array on success' do
-    skip 'tests have been flaky'
     AzureTextToSpeech.stubs(:get_token).returns(@mock_token)
     Honeybadger.expects(:notify).never
     voices_url = "https://#{@region}.tts.speech.microsoft.com/cognitiveservices/voices/list"
@@ -132,7 +124,6 @@ class AzureTextToSpeechTest < ActionController::TestCase
   end
 
   test 'get_voices: returns nil if voices response is empty' do
-    skip 'tests have been flaky'
     AzureTextToSpeech.stubs(:get_token).returns(@mock_token)
     Honeybadger.expects(:notify).never
     voices_url = "https://#{@region}.tts.speech.microsoft.com/cognitiveservices/voices/list"
@@ -144,7 +135,6 @@ class AzureTextToSpeechTest < ActionController::TestCase
   end
 
   test 'get_azure_speech_service_voices returns nil on error' do
-    skip 'tests have been flaky'
     AzureTextToSpeech.stubs(:get_token).returns(@mock_token)
     Honeybadger.expects(:notify).once
     stub_request(:get, "https://#{@region}.tts.speech.microsoft.com/cognitiveservices/voices/list").
@@ -155,7 +145,6 @@ class AzureTextToSpeechTest < ActionController::TestCase
   end
 
   test 'get_voice_by: returns voice name if exists for given locale + gender' do
-    skip 'tests have been flaky'
     AzureTextToSpeech.stubs(:get_voices).returns(
       {
         'Deutsch' => {'female' => 'de-DE-HeddaRUS', 'locale' => 'de-DE', 'male' => 'de-DE-Stefan'}
