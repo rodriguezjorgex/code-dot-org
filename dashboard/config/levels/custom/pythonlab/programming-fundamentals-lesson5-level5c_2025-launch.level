@@ -7,15 +7,30 @@
   "user_id": 16889,
   "properties": {
     "encrypted": "false",
-    "long_instructions": "instructions\r\n\r\n---\r\n\r\n<i class=\"fa-solid fa-laptop\"></i> **Coding Tip**\r\n\r\nAnything inside the quotation marks is called a **string** -- it's a type of data Python uses for text.",
+    "long_instructions": "A `Painter` has been given instructions to move and turn, but it hasn't yet been created!\r\n\r\nFix the program by creating another `Painter`.\r\n\r\n![](https://images.code.org/4eb615dcfa692c69948b993e4e24b34c-choiceA.gif)\r\n\r\n---\r\n\r\n<i class=\"fa-solid fa-laptop\"></i> **Coding Tip**\r\n\r\nTo create a `Painter`, use\r\n\r\n   ```\r\n   painter_name = Painter()\r\n   ```\r\n\r\nFor example:\r\n\r\n   ```\r\n   alicia = Painter()\r\n   ```",
     "ai_tutor_available": "false",
     "submittable": "false",
     "hide_share_and_remix": "false",
     "enable_micro_bit": "false",
     "predict_settings": {
       "isPredictLevel": false
+    },
+    "start_sources": {
+      "files": {
+        "0": {
+          "id": "0",
+          "name": "main.py",
+          "language": "py",
+          "contents": "from neighborhood import Painter\n\nyara = Painter()\n\n# TODO - Create a second Painter\nimani = Painter()\n\n",
+          "folderId": "0",
+          "active": true,
+          "open": true
+        }
+      },
+      "folders": {
+      }
     }
   },
-  "audit_log": "[{\"changed_at\":\"2025-04-02T19:33:29.376+00:00\",\"changed\":[\"cloned from \\\"programming-fundamentals-lesson5-level5b_2025-launch\\\"\"],\"cloned_from\":\"programming-fundamentals-lesson5-level5b_2025-launch\"},{\"changed_at\":\"2025-04-02 19:33:31 +0000\",\"changed\":[\"predict_settings\"],\"changed_by_id\":16889,\"changed_by_email\":\"jamila+lb@code.org\"},{\"changed_at\":\"2025-04-12 04:04:55 +0000\",\"changed\":[\"long_instructions\",\"predict_settings\"],\"changed_by_id\":16889,\"changed_by_email\":\"jamila+lb@code.org\"}]"
+  "audit_log": "[{\"changed_at\":\"2025-04-02T19:33:29.376+00:00\",\"changed\":[\"cloned from \\\"programming-fundamentals-lesson5-level5b_2025-launch\\\"\"],\"cloned_from\":\"programming-fundamentals-lesson5-level5b_2025-launch\"},{\"changed_at\":\"2025-04-02 19:33:31 +0000\",\"changed\":[\"predict_settings\"],\"changed_by_id\":16889,\"changed_by_email\":\"jamila+lb@code.org\"},{\"changed_at\":\"2025-04-12 04:04:55 +0000\",\"changed\":[\"long_instructions\",\"predict_settings\"],\"changed_by_id\":16889,\"changed_by_email\":\"jamila+lb@code.org\"},{\"changed_at\":\"2025-04-14 14:34:22 +0000\",\"changed\":[],\"changed_by_id\":16889,\"changed_by_email\":\"jamila+lb@code.org\"},{\"changed_at\":\"2025-04-14 15:15:15 +0000\",\"changed\":[\"long_instructions\",\"predict_settings\"],\"changed_by_id\":16889,\"changed_by_email\":\"jamila+lb@code.org\"}]"
 }]]></config>
 </Pythonlab>
