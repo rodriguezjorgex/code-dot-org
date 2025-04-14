@@ -84,7 +84,7 @@ export default function RegionalWorkshopCatalog() {
           </div>
         </div>
       );
-    } else if (availableWorkshops.length === 0) {
+    } else if (!availableWorkshops || availableWorkshops.length === 0) {
       return (
         <div className={style.noCardsContainer}>
           <img id="no-workshops-found-img" src={CalendarNotAvailable} alt="" />
