@@ -258,18 +258,17 @@ const optionsList = [
     ],
   },
   {
-    name: 'exemplar-player-inside-instructions',
+    name: 'exemplar-player-bottom',
     type: 'radio',
     values: [
       {
         value: 'false',
         description:
-          'Exemplar player appears at bottom of instructions panel (default).',
+          'Exemplar player appears at bottom of main instructions text. (default).',
       },
       {
         value: 'true',
-        description:
-          'Exemplar player appears at bottom of main instructions text.',
+        description: 'Exemplar player appears at bottom of instructions panel.',
       },
     ],
   },

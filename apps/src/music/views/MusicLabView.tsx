@@ -287,7 +287,7 @@ const MusicLabView: React.FunctionComponent<MusicLabViewProps> = ({
   const renderInstructions = useCallback(
     (position: InstructionsPosition) => {
       const exemplarPlayerInsideInstructions =
-        AppConfig.getValue('exemplar-player-inside-instructions') === 'true';
+        AppConfig.getValue('exemplar-player-bottom') !== 'true';
 
       const exemplarPlayer = exemplarSettings?.playerEnabled &&
         exemplarSources &&

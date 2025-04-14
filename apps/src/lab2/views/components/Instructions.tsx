@@ -237,7 +237,9 @@ const InstructionsPanel: React.FunctionComponent<InstructionsPanelProps> = ({
             id="instructions-text"
             className={moduleStyles['text-' + theme]}
           >
-            {offerBrowserTts && <TextToSpeech text={text} />}
+            {offerBrowserTts && (
+              <TextToSpeech text={text} higherPosition={!!bottomComponent} />
+            )}
             <div
               id="instructions-text-content"
               className={moduleStyles.textContent}
@@ -278,10 +280,7 @@ const InstructionsPanel: React.FunctionComponent<InstructionsPanelProps> = ({
               className={moduleStyles['message-' + theme]}
             >
               {offerBrowserTts && useMessage && !canShowNextButton && (
-                <TextToSpeech
-                  text={useMessage}
-                  higherPosition={!!bottomComponent}
-                />
+                <TextToSpeech text={useMessage} />
               )}
               {useMessage && (
                 <div ref={feedbackRef} tabIndex={-1}>
