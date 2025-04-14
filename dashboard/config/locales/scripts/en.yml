@@ -23314,3 +23314,41 @@ en:
           student_description: Learn to code with sprites and variables, and discuss societal impacts of computing and the internet. By the end of this course, design and create a project you can share with friends and family.
           description_short: Learn all the concepts in Computer Science Fundamentals and create your own art, story or game.
           description_audience: 'Ages: 9-13'
+        express-2025:
+          lesson_groups:
+            csf_sequencing:
+              display_name: Sequencing
+            lessonGroup-2:
+              display_name: Sprites
+            lessonGroup-3:
+              display_name: Events
+            lessonGroup-4:
+              display_name: Loops
+            lessonGroup-5:
+              display_name: Conditionals
+            lessonGroup-6:
+              display_name: Functions
+            lessonGroup-7:
+              display_name: Variables
+            lessonGroup-8:
+              display_name: For Loops
+            lessonGroup-9:
+              display_name: End of Course Project
+          title: Express Course (2024)
+          description: Learn computer science by trying the lessons below at your own pace! Learn to create computer programs, develop problem-solving skills, and work through fun challenges! Make games and creative projects to share with friends, family, and teachers.
+          student_description: Learn computer science by trying the lessons below at your own pace! Learn to create computer programs, develop problem-solving skills, and work through fun challenges! Make games and creative projects to share with friends, family, and teachers.
+          description_short: 'An introduction to computer science: combines the best of our elementary school curriculum for older students.'
+          description_audience: 'Ages: 9-18'
+        pre-express-2025:
+          lesson_groups:
+            lessonGroup-2:
+              display_name: Sequencing
+            lessonGroup-3:
+              display_name: Loops
+            lessonGroup-4:
+              display_name: Events
+          title: Pre-reader Express (2024)
+          description: Learn computer science by trying the lessons below at your own pace! Learn to create computer programs, develop problem-solving skills, and work through fun challenges! Make games and creative projects to share with friends, family, and teachers.
+          student_description: Learn computer science by trying the lessons below at your own pace! Learn to create computer programs, develop problem-solving skills, and work through fun challenges! Make games and creative projects to share with friends, family, and teachers.
+          description_short: 'An introduction to computer science for pre-readers: combines the best of our kindergarten and first grade courses.'
+          description_audience: 'Ages: 4-8'
