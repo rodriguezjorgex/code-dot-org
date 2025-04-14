@@ -232,7 +232,7 @@ And /^I've initialized the workspace with the artist_autorun blocks$/ do
 end
 
 And /^I've initialized the workspace with winning artist blocks$/ do
-  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":16,"y":16,"next":{"block":{"type":"draw_move_by_constant","fields":{"DIR":"<field name=\"DIR\">moveForward</field>","VALUE":"100"},"next":{"block":{"type":"draw_turn_by_constant_restricted","fields":{"DIR":"<field name=\"DIR\">turnRight</field>","VALUE":"<field name=\"VALUE\">90</field>"},"next":{"block":{"type":"draw_move_by_constant","fields":{"DIR":"<field name=\"DIR\">moveForward</field>","VALUE":"100"}}}}}}}}]}}')
+  load_json_blocks('{"blocks":{"languageVersion":0,"blocks":[{"type":"when_run","x":32,"y":32,"next":{"block":{"type":"draw_move_by_constant","fields":{"DIR":"<field name=\"DIR\">moveForward</field>","VALUE":"100"},"next":{"block":{"type":"draw_turn_by_constant_dropdown","fields":{"DIR":"<field name=\"DIR\">turnRight</field>","VALUE":"<field name=\"VALUE\" config=\"45,60,90,120,180\">90</field>"},"next":{"block":{"type":"draw_move_by_constant","fields":{"DIR":"<field name=\"DIR\">moveForward</field>","VALUE":"100"}}}}}}}}]}}')
 end
 
 And /^I've initialized the workspace with losing artist blocks$/ do
