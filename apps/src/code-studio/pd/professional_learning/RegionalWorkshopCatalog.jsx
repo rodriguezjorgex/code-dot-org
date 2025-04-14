@@ -61,14 +61,16 @@ export default function RegionalWorkshopCatalog() {
   const RenderWorkshopContent = () => {
     if (!hasSubmittedZip) {
       return (
-        <>
+        <div className={style.noCardsContainer}>
           <img id="enter-zip-img" src={CalendarEmptyStateIllustration} alt="" />
-          <Heading2>Enter zip code to see workshops</Heading2>
-          <BodyTwoText>
-            To see available workshops, please provide your zip code. National
-            workshops are available for all teachers, but we'll use your zip to
-            match you with a regional partner and show you local workshops.
-          </BodyTwoText>
+          <div className={style.noCardsTextContainer}>
+            <Heading2>Enter zip code to see workshops</Heading2>
+            <BodyTwoText>
+              To see available workshops, please provide your zip code. National
+              workshops are available for all teachers, but we'll use your zip
+              to match you with a regional partner and show you local workshops.
+            </BodyTwoText>
+          </div>
           <div className={style.zipSearchInput}>
             <TextField
               id="noZipSearch"
@@ -80,29 +82,30 @@ export default function RegionalWorkshopCatalog() {
             />
             <Button text="Submit" color="purple" onClick={handleSubmitZip} />
           </div>
-        </>
+        </div>
       );
     } else if (availableWorkshops.length === 0) {
       return (
-        <>
+        <div className={style.noCardsContainer}>
           <img id="no-workshops-found-img" src={CalendarNotAvailable} alt="" />
-          <Heading2>No workshops found</Heading2>
-          <BodyTwoText>
-            We didn't find any upcoming workshops in your area. Workshops are
-            being added all the time. Check back again soon or{' '}
-            <a href="/">contact your regional partner</a>
-            for more information on upcoming workshops.
-          </BodyTwoText>
+          <div className={style.noCardsTextContainer}>
+            <Heading2>No workshops found</Heading2>
+            <BodyTwoText>
+              We didn't find any upcoming workshops in your area. Workshops are
+              being added all the time. Check back again soon or contact your
+              regional partner for more information on upcoming workshops.
+            </BodyTwoText>
+          </div>
           <LinkButton
             text="Contact regional partner"
             color="purple"
             href={'/'}
           />
-        </>
+        </div>
       );
     } else {
       return (
-        <>
+        <div className={style.withWsCardsContainer}>
           <Heading2>Upcoming workshops</Heading2>
           <BodyTwoText>
             Workshops are always being added. If you do not see the workshop you
@@ -126,7 +129,7 @@ export default function RegionalWorkshopCatalog() {
               </ul>
             </div>
           )}
-        </>
+        </div>
       );
     }
   };
@@ -171,6 +174,7 @@ export default function RegionalWorkshopCatalog() {
                   href={'/'}
                   size="xs"
                   text="Partner info"
+                  disabled={!hasValidRP}
                 />
                 <LinkButton
                   color="black"
@@ -178,6 +182,7 @@ export default function RegionalWorkshopCatalog() {
                   href={'/'}
                   size="xs"
                   text="Contact"
+                  disabled={!hasValidRP}
                 />
               </div>
             </div>
@@ -185,9 +190,7 @@ export default function RegionalWorkshopCatalog() {
         </div>
       </section>
       <section className={style.workshopContainer}>
-        <div className={style.workshopContentContainer}>
-          {RenderWorkshopContent()}
-        </div>
+        {RenderWorkshopContent()}
       </section>
     </div>
   );
