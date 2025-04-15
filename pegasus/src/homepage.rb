@@ -539,7 +539,7 @@ class Homepage
     [
       "Beyoncé", "BTS", "Harry Styles", "Lizzo", "Post Malone", "Disney's \"Encanto\"", "Rosalía", "Nicky Youre",
       "Lil Nas X", "Jonas Brothers", "FIFTY FIFTY", "Steve Lacy",
-      "Shawn Mendes", "Pedro Capó", "Sia",
+      "Shawn Mendes", "Sia",
       "Ariana Grande", "Avicii and Aloe Blacc", "Calvin Harris",
       "Carly Rae Jepsen", "Coldplay", "Ed Sheeran", "Imagine Dragons",
       "J Balvin and Willy William", "Justin Bieber", "Lady Gaga",

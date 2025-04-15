@@ -27,7 +27,6 @@ export const SongTitlesToArtistTwitterHandle = {
   wakemeup_aviciialoeblacc: 'AloeBlacc',
   wenospeakamericano_yolandabecool: 'YolandaBeCool',
   // 2019 Songs
-  calma_pedrocapo: 'PedroCapo',
   ificanthaveyou_shawnmendes: 'ShawnMendes',
   introtoshamstep_47SOUL: '47soulofficial',
   // 2020 Songs

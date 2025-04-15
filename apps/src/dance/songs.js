@@ -28,6 +28,7 @@ const DEPRECATED_SONGS = [
   'highhopes_panicatthedisco',
   'starships_nickiminaj',
   'sucker_jonasbrothers',
+  'calma_pedrocapo',
 ];
 
 /**
