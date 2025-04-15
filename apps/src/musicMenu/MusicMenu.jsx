@@ -257,6 +257,20 @@ const optionsList = [
       },
     ],
   },
+  {
+    name: 'log-validator-changes',
+    type: 'radio',
+    values: [
+      {
+        value: 'false',
+        description: 'Do not log validator changes (default).',
+      },
+      {
+        value: 'true',
+        description: 'Log validator changes.',
+      },
+    ],
+  },
 ];
 
 export default class MusicMenu extends React.Component {
