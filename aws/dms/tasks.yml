@@ -91,6 +91,8 @@ cron:
     remove_column: [other_content]
 - dashboard.rubrics
 - dashboard.rubric_ai_evaluations
+- dashboard.learning_goals
+- dashboard.learning_goal_evidence_levels
 - dashboard.level_sources_multi_types
 - dashboard.paired_user_levels
 - dashboard.parental_permission_requests:
