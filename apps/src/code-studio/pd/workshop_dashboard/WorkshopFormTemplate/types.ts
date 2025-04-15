@@ -112,7 +112,8 @@ export interface Workshop {
   sessions: Session[];
   course_offerings?: number[];
   participant_group_type?: string | null;
-  time_zone?: string | null;
+  time_zone?: string;
+  legacy?: boolean;
 }
 
 export interface WorkshopRequest
