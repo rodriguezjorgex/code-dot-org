@@ -11,6 +11,9 @@
 
     button.deleteButton {
       min-width: 100%;
+      // specific margin top needed is to align delete button with inputs.
+      // top align would align it with the input label and bottom align
+      // would align it with the input helper/error messages
       margin-top: 1.354rem;
       height: 100%;
     }
