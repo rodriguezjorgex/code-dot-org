@@ -116,10 +116,6 @@ export default class MusicValidator extends Validator {
     // This is a list of unique sound lengths that have been played.
     const uniqueSoundLengths: number[] = [];
 
-    if (this.logChanges) {
-      this.conditionsChecker.snapshotToPrevious();
-    }
-
     const currentPlayheadPosition = this.player.getCurrentPlayheadPosition();
     this.getPlaybackEvents().forEach(eventData => {
       // Skip events that we haven't gotten to yet.
@@ -467,14 +463,9 @@ export default class MusicValidator extends Validator {
   // it was played.
   private addPlayedConditions(conditionName: string, playedNumber: number) {
     for (let numberSounds = playedNumber; numberSounds >= 1; numberSounds--) {
-      this.conditionsChecker.addSatisfiedCondition({
-        name: conditionName,
-        value: numberSounds,
-      });
-
       if (
         this.logChanges &&
-        !this.conditionsChecker.hadCondition({
+        !this.conditionsChecker.hasCondition({
           name: conditionName,
           value: playedNumber,
         })
@@ -485,6 +476,11 @@ export default class MusicValidator extends Validator {
           playedNumber
         );
       }
+
+      this.conditionsChecker.addSatisfiedCondition({
+        name: conditionName,
+        value: numberSounds,
+      });
     }
   }
 

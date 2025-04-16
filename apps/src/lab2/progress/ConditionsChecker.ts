@@ -8,25 +8,16 @@ import {Condition} from '../types';
 
 export default class ConditionsChecker {
   private currentSatisfiedConditions: Condition[];
-  private previousSatisfiedConditions: Condition[];
   private conditionNames: string[];
 
   constructor(conditionNames: string[]) {
     this.currentSatisfiedConditions = [];
-    this.previousSatisfiedConditions = [];
     this.conditionNames = conditionNames;
   }
 
   // Reset the accumulated conditions.
   clear() {
     this.currentSatisfiedConditions = [];
-  }
-
-  // Snapshot the current conditions to the previous conditions.
-  snapshotToPrevious() {
-    this.previousSatisfiedConditions = JSON.parse(
-      JSON.stringify(this.currentSatisfiedConditions)
-    );
   }
 
   // Accumulate a satisfied condition.
@@ -37,16 +28,9 @@ export default class ConditionsChecker {
   }
 
   // Determines whether we already know that a condition has been satisfied.
-  private hasCondition(condition: Condition) {
+  hasCondition(condition: Condition) {
     return this.currentSatisfiedConditions.some(currentSatisfiedCondition =>
       _.isEqual(currentSatisfiedCondition, condition)
-    );
-  }
-
-  // Determines whether the snapshot of previous conditions had a satisfied condition..
-  hadCondition(condition: Condition) {
-    return this.previousSatisfiedConditions.some(previousSatisfiedCondition =>
-      _.isEqual(previousSatisfiedCondition, condition)
     );
   }
 
