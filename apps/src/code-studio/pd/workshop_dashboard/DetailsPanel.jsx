@@ -62,24 +62,24 @@ export default class DetailsPanel extends React.Component {
     this.context.router.push(`/workshops/${workshopId}/edit`);
   };
 
-  handleAdminEditClick = () => this.setState({showAdminEditConfirmation: true});
-
   handleSaveClick = () => {
     // This button is just a shortcut to click the Save button in the form component,
     // which will handle the logic.
     $('#workshop-form-save-btn').trigger('click');
   };
 
+  handleAdminEditClick = () => this.setState({showAdminEditConfirmation: true});
+
   handleAdminEditCancel = () =>
     this.setState({showAdminEditConfirmation: false});
-
-  handleBackClick = () => {
-    this.context.router.push('/workshops');
-  };
 
   handleAdminEditConfirmed = () => {
     this.setState({showAdminEditConfirmation: false});
     this.handleEditClick();
+  };
+
+  handleBackClick = () => {
+    this.context.router.push('/workshops');
   };
 
   render() {
