@@ -273,16 +273,16 @@ const optionsList = [
     ],
   },
   {
-    name: 'log-validator-changes',
+    name: 'log-validator-condition-changes',
     type: 'radio',
     values: [
       {
         value: 'false',
-        description: 'Do not log validator changes (default).',
+        description: 'Do not log validator condition changes (default).',
       },
       {
         value: 'true',
-        description: 'Log validator changes.',
+        description: 'Log validator condition changes.',
       },
     ],
   },

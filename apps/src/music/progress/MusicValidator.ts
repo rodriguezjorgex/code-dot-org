@@ -463,20 +463,6 @@ export default class MusicValidator extends Validator {
   // it was played.
   private addPlayedConditions(conditionName: string, playedNumber: number) {
     for (let numberSounds = playedNumber; numberSounds >= 1; numberSounds--) {
-      if (
-        this.logChanges &&
-        !this.conditionsChecker.hasCondition({
-          name: conditionName,
-          value: playedNumber,
-        })
-      ) {
-        console.log(
-          'MusicValidator condition added:',
-          conditionName,
-          playedNumber
-        );
-      }
-
       this.conditionsChecker.addSatisfiedCondition({
         name: conditionName,
         value: numberSounds,
