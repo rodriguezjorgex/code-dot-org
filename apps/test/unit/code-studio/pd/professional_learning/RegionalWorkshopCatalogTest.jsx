@@ -8,32 +8,54 @@ jest.mock('@cdo/apps/util/AuthenticityTokenStore', () => ({
   getAuthenticityToken: jest.fn().mockResolvedValue('authToken'),
 }));
 
-const TEST_WORKSHOP = {
-  id: 1,
-  name: 'Regional Seattle Workshop',
-  course: 'Test Course 1',
-  subject: 'Test Subject',
-  dates: '1/1/2000',
-  location: 'Address 111',
-  sessions: [],
-  location_name: '111',
-  location_address: 'Address 111',
-  on_map: false,
-  funded: false,
-  virtual: false,
-  enrolled_teacher_count: 0,
-  capacity: 1,
-  facilitators: ['Mx. Facilitator'],
-  organizer: {name: 'Mx. Organizer'},
-  enrollment_code: 'ABCD',
-  status: 'Not Started',
-};
+const TEST_WORKSHOPS = [
+  {
+    id: 1,
+    name: 'Regional Seattle Workshop',
+    course: 'Test Course 1',
+    subject: 'Test Subject',
+    dates: '1/1/2000',
+    sessions: [],
+    participant_group_type: 'Regional',
+    location: 'Seattle 111',
+    location_name: 'Seattle Public School',
+    location_address: 'Seattle 111',
+    on_map: false,
+    funded: false,
+    virtual: false,
+    enrolled_teacher_count: 0,
+    capacity: 1,
+    facilitators: ['Mx. Facilitator'],
+    organizer: {name: 'Mx. Organizer'},
+    enrollment_code: 'ABCD',
+    status: 'Not Started',
+  },
+  {
+    id: 2,
+    name: 'National Austin Workshop',
+    course: 'Test Course 2',
+    subject: 'Test Subject',
+    dates: '1/1/2000',
+    sessions: [],
+    participant_group_type: 'National',
+    location: 'Austin 111',
+    location_name: 'Austin Public School',
+    location_address: 'Austin 111',
+    on_map: false,
+    funded: false,
+    virtual: false,
+    enrolled_teacher_count: 0,
+    capacity: 1,
+    facilitators: ['Mx. Facilitator'],
+    organizer: {name: 'Mx. Organizer'},
+    enrollment_code: 'ABCD',
+    status: 'Not Started',
+  },
+];
 
 describe('RegionalWorkshopCatalog', () => {
   it('page defaults to telling the user they need to enter a zip code', () => {
     render(<RegionalWorkshopCatalog />);
-
-    screen.getByText('Find your local workshop and apply');
     screen.getByText('Enter zip code to see workshops');
 
     // No regional partner retrieved with an empty zip
@@ -46,25 +68,76 @@ describe('RegionalWorkshopCatalog', () => {
       ok: true,
       json: () =>
         Promise.resolve({
-          regional_workshop_data: {regional_partner: '', workshops: []},
+          regional_workshop_data: {
+            regional_partner: '',
+            available_workshops: [],
+          },
         }),
     });
     render(<RegionalWorkshopCatalog />);
 
     fireEvent.change(screen.getAllByRole('textbox')[0], {
-      target: {value: '11111'},
+      target: {value: zip},
     });
     fireEvent.click(screen.getAllByRole('button')[0]);
 
     await waitFor(() => {
-      screen.getByText('Find your local workshop and apply');
       screen.getByText('No workshops found');
-
-      // No regional partner found in this zip
       screen.getByText('No regional partner found');
 
       expect(fetchStub).toHaveBeenCalledWith(
-        `/dashboardapi/v1/pd/regional_workshop_data/${zip}`
+        `/dashboardapi/v1/pd/regional_workshop_data/${zip}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': 'authToken',
+          },
+          method: 'GET',
+        }
+      );
+      fetchStub.mockRestore();
+    });
+  });
+
+  it('shows workshops available to that zip code', async () => {
+    const zip = '98122';
+    const regionalPartnerName = 'Reggie Partner';
+
+    const fetchStub = jest.spyOn(window, 'fetch').mockResolvedValue({
+      ok: true,
+      json: () =>
+        Promise.resolve({
+          regional_workshop_data: {
+            regional_partner: {name: regionalPartnerName},
+            available_workshops: TEST_WORKSHOPS,
+          },
+        }),
+    });
+    render(<RegionalWorkshopCatalog />);
+
+    fireEvent.change(screen.getAllByRole('textbox')[0], {
+      target: {value: zip},
+    });
+    fireEvent.click(screen.getAllByRole('button')[0]);
+
+    await waitFor(() => {
+      screen.getByText(regionalPartnerName);
+      screen.getByText('Upcoming workshops');
+      TEST_WORKSHOPS.forEach(ws =>
+        screen.getByText(
+          `Id: ${ws.id}, Title: ${ws.name}, Location: ${ws.location_name}, Participant Group Type: ${ws.participant_group_type}`
+        )
+      );
+
+      expect(fetchStub).toHaveBeenCalledWith(
+        `/dashboardapi/v1/pd/regional_workshop_data/${zip}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': 'authToken',
+          },
+          method: 'GET',
+        }
       );
       fetchStub.mockRestore();
     });
