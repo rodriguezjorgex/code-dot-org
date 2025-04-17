@@ -7,7 +7,6 @@ import {
 } from '@cdo/apps/lab2/progress/ProgressManager';
 import {Condition, ConditionType} from '@cdo/apps/lab2/types';
 
-import appConfig from '../appConfig';
 import {
   BlockTypes,
   FunctionDefinitionBlockTypes,
@@ -39,10 +38,7 @@ export default class MusicValidator extends Validator {
     private readonly getExemplarValidationMode: () => ExemplarValidationMode,
     private readonly conditionsChecker: ConditionsChecker = new ConditionsChecker(
       Object.values(MusicConditions).map(condition => condition.name)
-    ),
-    private readonly logChanges = appConfig.getValue(
-      'log-validator-changes'
-    ) === 'true'
+    )
   ) {
     super();
   }
