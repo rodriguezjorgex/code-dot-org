@@ -21,8 +21,14 @@ export default function RegionalWorkshopCatalog() {
   const [regionalPartnerText, setRegionalPartnerText] =
     useState('Zip code required');
   const [availableWorkshops, setAvailableWorkshops] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmitZip = async () => {
+    if (isSubmitting) {
+      return;
+    }
+
+    setIsSubmitting(true);
     try {
       const response = await fetch(
         `/dashboardapi/v1/pd/regional_workshop_data/${zipCode}`,
@@ -56,6 +62,7 @@ export default function RegionalWorkshopCatalog() {
         error
       );
     }
+    setIsSubmitting(false);
   };
 
   const RenderWorkshopContent = () => {
@@ -155,7 +162,12 @@ export default function RegionalWorkshopCatalog() {
               maxLength={255}
               placeholder="12345"
             />
-            <Button text="Submit" color="purple" onClick={handleSubmitZip} />
+            <Button
+              text={isSubmitting ? '' : 'Submit'}
+              color="purple"
+              onClick={handleSubmitZip}
+              isPending={isSubmitting}
+            />
           </div>
           <div className={style.rpInfoContainer}>
             <OverlineTwoText className={style.rpInfoHeader}>
