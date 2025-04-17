@@ -346,6 +346,9 @@ class UnconnectedMusicView extends React.Component {
       !!levelData?.text || !!this.props.longInstructions
     );
 
+    const startSources = this.getStartSources();
+    const isPredictLevel =
+      this.props.levelProperties?.predictSettings?.isPredictLevel;
     // Check if the user has already made changes to the code on the project level.
     let codeChangedOnProjectLevel = false;
     if (isToolboxMode) {
@@ -359,11 +362,10 @@ class UnconnectedMusicView extends React.Component {
         levelToolboxDefinition
       );
     } else if (isEditingExemplar || isViewingExemplar) {
-      this.loadCode(this.getExemplarSources() || this.getStartSources());
-    } else if (this.getStartSources() || initialSources) {
-      const startSources = this.getStartSources();
+      this.loadCode(this.getExemplarSources() || startSources);
+    } else if (startSources || initialSources) {
       let codeToLoad = startSources;
-      if (initialSources?.source) {
+      if (initialSources?.source && !isPredictLevel) {
         codeToLoad = JSON.parse(initialSources.source);
         codeChangedOnProjectLevel =
           this.props.isProjectLevel &&
