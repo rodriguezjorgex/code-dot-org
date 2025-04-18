@@ -1,4 +1,5 @@
 import {Button, LinkButton} from '@code-dot-org/component-library/button';
+import Dialog from '@code-dot-org/component-library/dialog';
 import TextField from '@code-dot-org/component-library/textField';
 import {
   Heading1,
@@ -20,6 +21,7 @@ export default function RegionalWorkshopCatalog() {
   const [hasValidRP, setHasValidRP] = useState(false);
   const [regionalPartnerText, setRegionalPartnerText] =
     useState('Zip code required');
+  const [showRPInfoDialog, setShowRPInfoDialog] = useState(false);
   const [availableWorkshops, setAvailableWorkshops] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -30,16 +32,13 @@ export default function RegionalWorkshopCatalog() {
 
     setIsSubmitting(true);
     try {
-      const response = await fetch(
-        `/dashboardapi/v1/pd/regional_workshop_data/${zipCode}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': await getAuthenticityToken(),
-          },
-        }
-      );
+      const response = await fetch(`regional_workshop_data/${zipCode}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': await getAuthenticityToken(),
+        },
+      });
 
       if (response.ok) {
         const jsonData = await response.json();
@@ -143,6 +142,17 @@ export default function RegionalWorkshopCatalog() {
 
   return (
     <div className={style.workshopCatalog}>
+      {showRPInfoDialog && (
+        <Dialog
+          title="Regional Partner Info"
+          description="Here is your regional partner info."
+          primaryButtonProps={{
+            text: 'Primary Action',
+            onClick: () => alert('Primary button clicked!'),
+          }}
+          onClose={() => setShowRPInfoDialog(false)}
+        />
+      )}
       <section className={style.headerContainer}>
         <div className={style.headerText}>
           <Heading1>Find your local workshop and apply</Heading1>
@@ -163,7 +173,7 @@ export default function RegionalWorkshopCatalog() {
               placeholder="12345"
             />
             <Button
-              text={isSubmitting ? '' : 'Submit'}
+              text="Submit"
               color="purple"
               onClick={handleSubmitZip}
               isPending={isSubmitting}
@@ -180,12 +190,12 @@ export default function RegionalWorkshopCatalog() {
                 {regionalPartnerText}
               </BodyTwoText>
               <div className={style.rpInfoButtons}>
-                <LinkButton
+                <Button
                   color="black"
                   type="secondary"
-                  href={'/'}
                   size="xs"
                   text="Partner info"
+                  onClick={() => setShowRPInfoDialog(true)}
                   disabled={!hasValidRP}
                 />
                 <LinkButton
