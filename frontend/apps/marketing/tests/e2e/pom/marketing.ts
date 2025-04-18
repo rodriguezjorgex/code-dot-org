@@ -11,6 +11,12 @@ export class MarketingPage {
     this.locale = locale;
   }
 
+  async enableDraftMode(token: string, slug: string) {
+    return await this.page.goto(
+      `${this.getBaseUrl()}/api/draft?token=${token}&slug=${slug}&locale=${this.locale}`,
+    );
+  }
+
   getBaseUrl() {
     const stage = process.env.STAGE;
 
@@ -41,9 +47,11 @@ export class MarketingPage {
   }
 
   async goto(subPath: string) {
-    await this.page.goto(`${this.getBasePath()}${subPath}`);
+    const response = await this.page.goto(`${this.getBasePath()}${subPath}`);
 
     await this.loadFonts();
+
+    return response;
   }
 
   async loadFonts() {
@@ -58,5 +66,27 @@ export class MarketingPage {
       },
       {fn: loadFonts.toString(), fonts: FONT_FAMILY_NAMES},
     );
+  }
+
+  async getMetatag(name: string) {
+    return this.page.locator(`meta[name="${name}"]`)?.getAttribute('content');
+  }
+
+  async getOpenGraph(name: string) {
+    return this.page
+      .locator(`meta[property="og:${name}"]`)
+      ?.getAttribute('content');
+  }
+
+  get pageTitle() {
+    return this.page.title();
+  }
+
+  get description() {
+    return this.getMetatag('description');
+  }
+
+  get robots() {
+    return this.getMetatag('robots');
   }
 }
