@@ -80,7 +80,7 @@ export default function RegionalWorkshopCatalog() {
           <div className={style.zipSearchInput}>
             <TextField
               id="noZipSearch"
-              name="zipCode"
+              aria-label="zipCode"
               onChange={e => setZipCode(e.target.value)}
               value={zipCode}
               maxLength={255}
@@ -165,7 +165,7 @@ export default function RegionalWorkshopCatalog() {
           <div className={style.zipSearchInput}>
             <TextField
               id="zipSearch"
-              name="zipCode"
+              aria-label="zipSearch"
               label="School ZIP Code:"
               onChange={e => setZipCode(e.target.value)}
               value={zipCode}
@@ -173,6 +173,7 @@ export default function RegionalWorkshopCatalog() {
               placeholder="12345"
             />
             <Button
+              aria-label="submitZip"
               text="Submit"
               color="purple"
               onClick={handleSubmitZip}
@@ -191,10 +192,11 @@ export default function RegionalWorkshopCatalog() {
               </BodyTwoText>
               <div className={style.rpInfoButtons}>
                 <Button
+                  aria-label="partnerInfo"
+                  text="Partner info"
                   color="black"
                   type="secondary"
                   size="xs"
-                  text="Partner info"
                   onClick={() => setShowRPInfoDialog(true)}
                   disabled={!hasValidRP}
                 />
