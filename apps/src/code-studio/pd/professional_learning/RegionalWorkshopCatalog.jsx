@@ -24,7 +24,7 @@ export default function RegionalWorkshopCatalog() {
 
   const handleSubmitZip = async () => {
     try {
-      const response = await fetch(`/regional_workshop_data/${zipCode}`, {
+      const response = await fetch(`regional_workshop_data/${zipCode}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
