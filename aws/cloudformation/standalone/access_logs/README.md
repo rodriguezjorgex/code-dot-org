@@ -12,6 +12,8 @@ RealtimeLogConfigArn: !ImportValue AccessLogs-Config
 
 ## Deployment
 
+The following process can only be carried out by a member of the Infra team using Admin permissions. Future upgrades could include rolling this into our `rake stack` commands that leverage other IAM roles, or implementing some kind of automatic CICD. It's also possible that this may all be replaced with a more unified logging system ([INF-1617](https://codedotorg.atlassian.net/browse/INF-1617)).
+
 First, lets package up the Ruby lambdas.
 
 ```
