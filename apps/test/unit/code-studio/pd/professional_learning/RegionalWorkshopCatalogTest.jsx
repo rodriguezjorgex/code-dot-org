@@ -85,16 +85,13 @@ describe('RegionalWorkshopCatalog', () => {
       screen.getByText('No workshops found');
       screen.getByText('No regional partner found');
 
-      expect(fetchStub).toHaveBeenCalledWith(
-        `/dashboardapi/v1/pd/regional_workshop_data/${zip}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': 'authToken',
-          },
-          method: 'GET',
-        }
-      );
+      expect(fetchStub).toHaveBeenCalledWith(`regional_workshop_data/${zip}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': 'authToken',
+        },
+        method: 'GET',
+      });
       fetchStub.mockRestore();
     });
   });
@@ -129,16 +126,13 @@ describe('RegionalWorkshopCatalog', () => {
         )
       );
 
-      expect(fetchStub).toHaveBeenCalledWith(
-        `/dashboardapi/v1/pd/regional_workshop_data/${zip}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': 'authToken',
-          },
-          method: 'GET',
-        }
-      );
+      expect(fetchStub).toHaveBeenCalledWith(`regional_workshop_data/${zip}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': 'authToken',
+        },
+        method: 'GET',
+      });
       fetchStub.mockRestore();
     });
   });
