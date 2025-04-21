@@ -122,7 +122,7 @@ export const useInitialSources = (
     }
     if (
       predictSettings?.isPredictLevel &&
-      predictSettings?.codeEditableAfterSubmit === false
+      !predictSettings?.codeEditableAfterSubmit
     ) {
       // Predict levels only use sources loaded from the server if the code is
       // editable after submit, otherwise use the start sources.
