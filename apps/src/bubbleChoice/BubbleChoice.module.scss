@@ -33,98 +33,97 @@
     align-items: center;
     justify-content: center;
     min-height: 0;
-  }
-
-  .sublevelsContainer {
-    display: grid;
-    justify-content: space-around;
-    gap: 15px;
-    max-height: 100%;
-    overflow: hidden;
-    justify-items: center;
-    align-items: center;
-    width: fit-content;
-    height: fit-content;
-
-    .sublevelButton {
-      display: flex;
-      flex-direction: row;
-      flex-basis: 0;
-      flex-grow: 1;
-      border-radius: 20px;
-      overflow: hidden;
-      background-color: inherit;
-      color: inherit;
-      font-size: 16px;
-      padding: inherit;
-      margin: 0;
-      max-width: 100%;
+    .sublevelsContainer {
+      display: grid;
+      justify-content: space-around;
+      gap: 15px;
       max-height: 100%;
-      container-type: size;
+      overflow: hidden;
+      justify-items: center;
+      align-items: center;
+      width: fit-content;
+      height: fit-content;
 
-      &Light {
-        border: solid 1px $neutral_dark60;
-      }
-
-      &Dark {
-        border: solid 1px $neutral_dark80;
-      }
-
-      &:hover {
-        .sublevelImage {
-          transform: scale(1.02, 1.02);
-          transition: 0.1s ease-in-out;
-        }
-      }
-
-      .sublevelImageContainer {
-        overflow: hidden;
-
-        .sublevelImage {
-          width: 800px;
-          object-fit: contain;
-          aspect-ratio: 1;
-          opacity: 1;
-        }
-      }
-
-      .sublevelTextContainer {
+      .sublevelButton {
         display: flex;
-        flex-direction: column;
-        flex: 1;
-        gap: 3cqw;
-        padding: 3cqw 2cqw;
-        box-sizing: border-box;
+        flex-direction: row;
+        flex-basis: 0;
+        flex-grow: 1;
+        border-radius: 20px;
+        overflow: hidden;
+        background-color: inherit;
+        color: inherit;
+        font-size: 16px;
+        padding: inherit;
+        margin: 0;
+        max-width: 100%;
+        max-height: 100%;
         container-type: size;
 
-        .sublevelTextHeading {
-          display: flex;
-          gap: 10px;
-          font-size: 6cqw;
-          line-height: 1.2em;
-          align-items: center;
-          text-align: initial;
+        &Light {
+          border: solid 1px $neutral_dark60;
         }
 
-        .sublevelDescriptionMarkdown{
-          text-align: initial;
-          overflow-y: scroll;
+        &Dark {
+          border: solid 1px $neutral_dark80;
+        }
 
-          ol, ul {
-            font-size: 4.5cqw;
-            line-height: 0;
-            margin: 0 0 4cqw 8cqw;
+        &:hover {
+          .sublevelImage {
+            transform: scale(1.02, 1.02);
+            transition: 0.1s ease-in-out;
+          }
+        }
+
+        .sublevelImageContainer {
+          overflow: hidden;
+
+          .sublevelImage {
+            width: 800px;
+            object-fit: contain;
+            aspect-ratio: 1;
+            opacity: 1;
+          }
+        }
+
+        .sublevelTextContainer {
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          gap: 3cqw;
+          padding: 3cqw 2cqw;
+          box-sizing: border-box;
+          container-type: size;
+
+          .sublevelTextHeading {
+            display: flex;
+            gap: 10px;
+            font-size: 6cqw;
+            line-height: 1.2em;
+            align-items: center;
+            text-align: initial;
           }
 
-          li {
-            margin-bottom: 1cqw;
-            line-height: 1.4em;
-          }
+          .sublevelDescriptionMarkdown{
+            text-align: initial;
+            overflow-y: scroll;
 
-          p {
-            margin-bottom: 1cqw;
-            font-size: 4.5cqw;
-            line-height: 1.4em;
+            p {
+              margin-bottom: 1cqw;
+              font-size: 4.5cqw;
+              line-height: 1.4em;
+            }
+
+            ol, ul {
+              font-size: 4.5cqw;
+              line-height: 0;
+              margin: 0 0 4cqw 8cqw;
+            }
+
+            li {
+              margin-bottom: 1cqw;
+              line-height: 1.4em;
+            }
           }
         }
       }
