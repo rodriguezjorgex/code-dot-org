@@ -153,12 +153,14 @@ class Api::V1::Pd::WorkshopsControllerTest < ActionController::TestCase
       organizer: @organizer,
       facilitators: [@facilitator],
       regional_partner: @regional_partner
+    # workshop subject is deprecated so validation must be skipped
     teachercon.save(validate: false)
 
     fit_weekend = build :fit_workshop,
       organizer: @organizer,
       facilitators: [@facilitator],
       regional_partner: @regional_partner
+    # workshop subject is deprecated so validation must be skipped
     fit_weekend.save(validate: false)
 
     create(:pd_enrollment, workshop: teachercon, email: teacher.email, user_id: teacher.id)
@@ -187,6 +189,7 @@ class Api::V1::Pd::WorkshopsControllerTest < ActionController::TestCase
       organizer: @organizer,
       facilitators: [@facilitator],
       regional_partner: @regional_partner
+    # workshop subject is deprecated so validation must be skipped
     teachercon.save(validate: false)
 
     fit_weekend = build :fit_workshop,
@@ -194,6 +197,7 @@ class Api::V1::Pd::WorkshopsControllerTest < ActionController::TestCase
       organizer: @organizer,
       facilitators: [@facilitator],
       regional_partner: @regional_partner
+    # workshop subject is deprecated so validation must be skipped
     fit_weekend.save(validate: false)
 
     teachercon_enrollment = create(:pd_enrollment, workshop: teachercon, email: teacher.email, user_id: teacher.id)
@@ -1288,6 +1292,7 @@ class Api::V1::Pd::WorkshopsControllerTest < ActionController::TestCase
       subject: Pd::Workshop::SUBJECT_TEACHER_CON,
       location_address: "Phoenix"
     )
+    # workshop subject is deprecated so validation must be skipped
     phoenix.save(validate: false)
     atlanta = build(
       :workshop,
@@ -1296,6 +1301,7 @@ class Api::V1::Pd::WorkshopsControllerTest < ActionController::TestCase
       subject: Pd::Workshop::SUBJECT_TEACHER_CON,
       location_address: "Atlanta"
     )
+    # workshop subject is deprecated so validation must be skipped
     atlanta.save(validate: false)
 
     sign_in create :admin
@@ -1314,6 +1320,7 @@ class Api::V1::Pd::WorkshopsControllerTest < ActionController::TestCase
       organizer: @organizer,
       subject: Pd::Workshop::SUBJECT_TEACHER_CON,
     )
+    # workshop subject is deprecated so validation must be skipped
     csd.save(validate: false)
     csp = build(
       :workshop,
@@ -1321,6 +1328,7 @@ class Api::V1::Pd::WorkshopsControllerTest < ActionController::TestCase
       organizer: @organizer,
       subject: Pd::Workshop::SUBJECT_TEACHER_CON,
     )
+    # workshop subject is deprecated so validation must be skipped
     csp.save(validate: false)
 
     sign_in create :admin

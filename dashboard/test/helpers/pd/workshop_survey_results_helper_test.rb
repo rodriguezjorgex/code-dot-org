@@ -41,9 +41,11 @@ class Pd::WorkshopSurveyResultsHelperTest < ActionView::TestCase
 
   test 'averaging across multiple surveys' do
     workshop_1 = build(:workshop, :teachercon, num_sessions: 1, num_facilitators: 2)
+    # workshop subject is deprecated so validation must be skipped
     workshop_1.save(validate: false)
 
     workshop_2 = build(:workshop, :teachercon, num_sessions: 1, num_facilitators: 3)
+    # workshop subject is deprecated so validation must be skipped
     workshop_2.save(validate: false)
 
     refute_nil workshop_1, 'workshop_1 should not be nil'

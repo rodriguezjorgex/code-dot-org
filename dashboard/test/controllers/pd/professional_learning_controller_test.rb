@@ -66,6 +66,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
   test 'FiT workshops do not show up as pending exit surveys' do
     # Fake FiT workshop, which should not produce an exit survey
     fit_workshop = build :fit_workshop, :ended
+    # workshop subject is deprecated so validation must be skipped
     fit_workshop.save(validate: false)
 
     # Given a teacher that attended the workshop, such that they would get
@@ -109,6 +110,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
 
     # Fake FiT workshop, which should not produce an exit survey
     fit_workshop = build :fit_workshop, :ended
+    # workshop subject is deprecated so validation must be skipped
     fit_workshop.save(validate: false)
 
     # Given a teacher that attended both workshops

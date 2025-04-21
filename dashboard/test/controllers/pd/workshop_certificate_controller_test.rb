@@ -83,6 +83,7 @@ class Pd::WorkshopCertificateControllerTest < ActionController::TestCase
       num_sessions: 1,
       course: Pd::Workshop::COURSE_CSD,
       subject: Pd::Workshop::SUBJECT_CSD_TEACHER_CON
+    # workshop subject is deprecated so validation must be skipped
     workshop.save(validate: false)
     enrollment = create :pd_enrollment, :with_attendance, workshop: workshop
 
@@ -106,6 +107,7 @@ class Pd::WorkshopCertificateControllerTest < ActionController::TestCase
       num_sessions: 1,
       course: Pd::Workshop::COURSE_CSP,
       subject: Pd::Workshop::SUBJECT_CSP_TEACHER_CON
+    # workshop subject is deprecated so validation must be skipped
     workshop.save(validate: false)
     enrollment = create :pd_enrollment, :with_attendance, workshop: workshop
 

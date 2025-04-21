@@ -94,6 +94,7 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
   test 'exclude_summer scope' do
     summer_workshop = create :summer_workshop
     teachercon = build :workshop, :teachercon
+    # workshop subject is deprecated so validation must be skipped
     teachercon.save(validate: false)
 
     assert Pd::Workshop.exclude_summer.exclude? summer_workshop
@@ -413,6 +414,7 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
     # Make a FiT workshop that's ended and has attendance;
     # these are the conditions under which we'd normally send a survey.
     workshop = build :fit_workshop, :ended
+    # workshop subject is deprecated so validation must be skipped
     workshop.save(validate: false)
     create(:pd_workshop_participant, workshop: workshop, enrolled: true, attended: true)
 
@@ -767,6 +769,7 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
       subject: Pd::Workshop::SUBJECT_CSD_TEACHER_CON,
       num_sessions: 5,
       each_session_hours: 8
+    # workshop subject is deprecated so validation must be skipped
     workshop_csd_teachercon.save(validate: false)
 
     workshop_csp_teachercon = build :workshop,
@@ -774,6 +777,7 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
       subject: Pd::Workshop::SUBJECT_CSP_TEACHER_CON,
       num_sessions: 5,
       each_session_hours: 8
+    # workshop subject is deprecated so validation must be skipped
     workshop_csp_teachercon.save(validate: false)
 
     assert_equal 33.5, workshop_csd_teachercon.effective_num_hours
@@ -1136,17 +1140,22 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
 
   test 'suppress_reminders? is true for certain subjects by default' do
     suppressed = [
+      # workshop subject is deprecated so validation must be skipped
       build(:fit_workshop, course: Pd::Workshop::COURSE_CSF).tap {|w| w.save(validate: false)},
+      # workshop subject is deprecated so validation must be skipped
       build(:workshop, course: Pd::Workshop::COURSE_CSD, subject: Pd::Workshop::SUBJECT_CSD_TEACHER_CON).tap {|w| w.save(validate: false)},
+      # workshop subject is deprecated so validation must be skipped
       build(:fit_workshop, course: Pd::Workshop::COURSE_CSD).tap {|w| w.save(validate: false)},
+      # workshop subject is deprecated so validation must be skipped
       build(:workshop, course: Pd::Workshop::COURSE_CSP, subject: Pd::Workshop::SUBJECT_CSP_TEACHER_CON).tap {|w| w.save(validate: false)},
+      # workshop subject is deprecated so validation must be skipped
       build(:fit_workshop, course: Pd::Workshop::COURSE_CSP).tap {|w| w.save(validate: false)},
-      build(:admin_counselor_workshop, subject: Pd::Workshop::SUBJECT_ADMIN_COUNSELOR_WELCOME).tap {|w| w.save(validate: false)},
-      build(:admin_counselor_workshop, subject: Pd::Workshop::SUBJECT_ADMIN_COUNSELOR_SLP_INTRO).tap {|w| w.save(validate: false)},
-      build(:admin_counselor_workshop, subject: Pd::Workshop::SUBJECT_ADMIN_COUNSELOR_SLP_CALL1).tap {|w| w.save(validate: false)},
-      build(:admin_counselor_workshop, subject: Pd::Workshop::SUBJECT_ADMIN_COUNSELOR_SLP_CALL2).tap {|w| w.save(validate: false)},
-      build(:admin_counselor_workshop, subject: Pd::Workshop::SUBJECT_ADMIN_COUNSELOR_SLP_CALL3).tap {|w| w.save(validate: false)},
-      build(:admin_counselor_workshop, subject: Pd::Workshop::SUBJECT_ADMIN_COUNSELOR_SLP_CALL4).tap {|w| w.save(validate: false)}
+      create(:admin_counselor_workshop, subject: Pd::Workshop::SUBJECT_ADMIN_COUNSELOR_WELCOME),
+      create(:admin_counselor_workshop, subject: Pd::Workshop::SUBJECT_ADMIN_COUNSELOR_SLP_INTRO),
+      create(:admin_counselor_workshop, subject: Pd::Workshop::SUBJECT_ADMIN_COUNSELOR_SLP_CALL1),
+      create(:admin_counselor_workshop, subject: Pd::Workshop::SUBJECT_ADMIN_COUNSELOR_SLP_CALL2),
+      create(:admin_counselor_workshop, subject: Pd::Workshop::SUBJECT_ADMIN_COUNSELOR_SLP_CALL3),
+      create(:admin_counselor_workshop, subject: Pd::Workshop::SUBJECT_ADMIN_COUNSELOR_SLP_CALL4)
     ]
 
     refute @workshop.suppress_reminders?

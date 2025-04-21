@@ -162,6 +162,7 @@ class Pd::EnrollmentTest < ActiveSupport::TestCase
     assert normal_enrollment.should_send_exit_survey?
 
     fit_workshop = build :fit_workshop, :ended
+    # workshop subject is deprecated so validation must be skipped
     fit_workshop.save(validate: false)
     fit_enrollment = create :pd_enrollment, user: create(:teacher), workshop: fit_workshop
 
@@ -177,6 +178,7 @@ class Pd::EnrollmentTest < ActiveSupport::TestCase
 
   test 'send_exit_survey does not send mail for FIT Weekend workshops' do
     workshop = build :fit_workshop, :ended
+    # workshop subject is deprecated so validation must be skipped
     workshop.save(validate: false)
     enrollment = create :pd_enrollment, user: create(:teacher), workshop: workshop
     Pd::WorkshopMailer.expects(:exit_survey).never
@@ -464,6 +466,7 @@ class Pd::EnrollmentTest < ActiveSupport::TestCase
     # Ended FiT workshop, with attendance
     # (Checks a special case: FiT workshops don't have exit surveys)
     fit_workshop = build :fit_workshop, :ended
+    # workshop subject is deprecated so validation must be skipped
     fit_workshop.save(validate: false)
     fit_enrollment = create :pd_enrollment, workshop: fit_workshop
     create :pd_attendance, session: fit_workshop.sessions.first, enrollment: fit_enrollment
