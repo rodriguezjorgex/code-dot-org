@@ -164,7 +164,7 @@ class Pd::ProfessionalLearningController < ApplicationController
     sorted_available_workshops = available_workshops.sort_by {|ws| ws.sessions&.first&.start}
 
     render json: {status: :ok, regional_workshop_data: {
-      regional_partner: partner,
+      regional_partner: {name: partner&.name, additional_info: partner&.additional_program_information},
       available_workshops: sorted_available_workshops
     }}
   end
