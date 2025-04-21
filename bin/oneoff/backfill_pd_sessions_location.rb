@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 # As of April 10, 2025:
-# The total number of sessions with available workshop location data is 19_686
+# The total number of sessions with available workshop location data is ~ 20k.
 # The sessions table itself only has ~ 150 more sessions, so I decided not to join
 # with the workshops table to filter to just workshops with location data.
 
@@ -19,9 +19,13 @@ Pd::Session.
     session.location_address = workshop.location_address
 
     if session.changed?
-      puts "Updating session #{session.id} with new location data"
-      session.save!
-      count += 1
+      begin
+        session.save!
+        count += 1
+        puts "Updated #{count} sessions" if count % 100 == 0
+      rescue => exception
+        puts "Failed to update session #{session.id}: #{exception.message}"
+      end
     end
   end
 
