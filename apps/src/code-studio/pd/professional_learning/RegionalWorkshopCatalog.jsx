@@ -1,4 +1,4 @@
-import {Button, LinkButton} from '@code-dot-org/component-library/button';
+import {Button} from '@code-dot-org/component-library/button';
 import Dialog from '@code-dot-org/component-library/dialog';
 import TextField from '@code-dot-org/component-library/textField';
 import {
@@ -9,6 +9,7 @@ import {
 } from '@code-dot-org/component-library/typography';
 import React, {useState} from 'react';
 
+import {RegionalPartnerMiniContactPopupLink} from '@cdo/apps/code-studio/pd/regional_partner_mini_contact/RegionalPartnerMiniContact';
 import CalendarEmptyStateIllustration from '@cdo/apps/templates/teacherNavigation/images/CalendarEmptyStateIllustration.svg';
 import CalendarNotAvailable from '@cdo/apps/templates/teacherNavigation/images/CalendarNotAvailable.svg';
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
@@ -102,11 +103,13 @@ export default function RegionalWorkshopCatalog() {
               regional partner for more information on upcoming workshops.
             </BodyTwoText>
           </div>
-          <LinkButton
-            text="Contact regional partner"
-            color="purple"
-            href={'/'}
-          />
+          <RegionalPartnerMiniContactPopupLink
+            zip={zipCode}
+            notes={'Please notify me when I can apply!'}
+            sourcePageId="regional-workshop-catalog"
+          >
+            <Button text="Contact regional partner" color="purple" />
+          </RegionalPartnerMiniContactPopupLink>
         </div>
       );
     } else {
@@ -116,7 +119,16 @@ export default function RegionalWorkshopCatalog() {
           <BodyTwoText>
             Workshops are always being added. If you do not see the workshop you
             are looking for check back again soon or{' '}
-            <a href="/">contact your regional partner</a>.
+            <RegionalPartnerMiniContactPopupLink
+              zip={zipCode}
+              notes={'Please notify me when I can apply!'}
+              sourcePageId="regional-workshop-catalog"
+            >
+              <span className={style.linkText}>
+                contact your Regional Partner
+              </span>
+            </RegionalPartnerMiniContactPopupLink>
+            {'.'}
           </BodyTwoText>
           {availableWorkshops && (
             <div>
@@ -200,14 +212,19 @@ export default function RegionalWorkshopCatalog() {
                   onClick={() => setShowRPInfoDialog(true)}
                   disabled={!hasValidRP}
                 />
-                <LinkButton
-                  color="black"
-                  type="secondary"
-                  href={'/'}
-                  size="xs"
-                  text="Contact"
-                  disabled={!hasValidRP}
-                />
+                <RegionalPartnerMiniContactPopupLink
+                  zip={zipCode}
+                  notes={'Please notify me when I can apply!'}
+                  sourcePageId="regional-workshop-catalog"
+                >
+                  <Button
+                    text="Contact"
+                    color="black"
+                    type="secondary"
+                    size="xs"
+                    disabled={!hasValidRP}
+                  />
+                </RegionalPartnerMiniContactPopupLink>
               </div>
             </div>
           </div>
