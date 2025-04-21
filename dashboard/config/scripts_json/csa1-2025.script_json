@@ -18,7 +18,7 @@
     },
     "new_name": null,
     "family_name": null,
-    "serialized_at": "2025-04-21 07:01:18 UTC",
+    "serialized_at": "2025-04-21 09:02:47 UTC",
     "published_state": null,
     "instruction_type": null,
     "instructor_audience": null,
@@ -3978,7 +3978,7 @@
       "key": "b374b88e-45ec-4003-903b-c0823b347123",
       "position": 12,
       "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Define ***void***.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Click through the animated slide to explain that a subclass can access methods in the superclass, but a superclass cannot access methods in the subclass."
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Define ***void***.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Explain that a subclass can access methods in the superclass, but a superclass cannot access methods in the subclass."
       },
       "seeding_key": {
         "activity_section.key": "b374b88e-45ec-4003-903b-c0823b347123",
