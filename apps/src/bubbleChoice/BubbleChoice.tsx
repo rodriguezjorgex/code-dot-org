@@ -28,10 +28,13 @@ import {commonI18n} from '../types/locale';
 
 import styles from './BubbleChoice.module.scss';
 
-const aspectRatio = 2.618;
-const gap = 15;
-
 const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
+  // The aspect ratio of each sublevel button.
+  const aspectRatio = 2.618;
+
+  // The gap (in pixels) between each sublevel button.
+  const gap = 15;
+
   const dispatch = useAppDispatch();
   const background = useAppSelector(
     state => getCurrentLesson(state)?.background || null
@@ -87,7 +90,7 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
 
   // Go through the candidates and find which will deliver the largest sublevel buttons, given
   // the current size of the container.
-  const [numRows, numColumns, imageWidth, imageHeight] = useMemo(() => {
+  const [numRows, numColumns, imageHeight] = useMemo(() => {
     let bestSize = -1;
     let bestNumRows = -1;
     for (const [
@@ -108,8 +111,10 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
     }
     const numRows = bestNumRows;
     const numColumns = candidateLayouts.get(bestNumRows);
-    return [numRows, numColumns, bestSize, bestSize];
+    return [numRows, numColumns, bestSize];
   }, [candidateLayouts, containerHeight, containerWidth]);
+
+  const imageWidth = imageHeight;
 
   const sublevelToProgressBubbleLevel = (index: number) => {
     const sublevel = levelBubbleChoice.sublevels[index];
@@ -190,7 +195,6 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
                   <EnhancedSafeMarkdown
                     markdown={sublevel.description}
                     className={styles.sublevelDescriptionMarkdown}
-                    //handleInstructionsTextClick={handleInstructionsTextClick}
                   />
                 )}
               </div>
