@@ -92,6 +92,21 @@
       }
     }
   }
+
+  .rpContactForm {
+    input[type="text"], label, textarea {
+      margin-inline-start: 20px;
+      font-size: 0.875rem;
+    }
+
+    label {
+      margin-top: 6px;
+    }
+
+    label.control-label {
+      padding: 40px;
+    }
+  }
   
   .workshopContainer {
     background-color: var(--neutral-base-white);

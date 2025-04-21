@@ -7,9 +7,9 @@ import {
   BodyTwoText,
   OverlineTwoText,
 } from '@code-dot-org/component-library/typography';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
-import {RegionalPartnerMiniContactPopupLink} from '@cdo/apps/code-studio/pd/regional_partner_mini_contact/RegionalPartnerMiniContact';
+import {RegionalPartnerMiniContact} from '@cdo/apps/code-studio/pd/regional_partner_mini_contact/RegionalPartnerMiniContact';
 import CalendarEmptyStateIllustration from '@cdo/apps/templates/teacherNavigation/images/CalendarEmptyStateIllustration.svg';
 import CalendarNotAvailable from '@cdo/apps/templates/teacherNavigation/images/CalendarNotAvailable.svg';
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
@@ -17,6 +17,8 @@ import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
 import style from './regionalWorkshopCatalog.module.scss';
 
 export default function RegionalWorkshopCatalog() {
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
   const [zipCode, setZipCode] = useState('');
   const [hasSubmittedZip, setHasSubmittedZip] = useState(false);
   const [regionalPartnerText, setRegionalPartnerText] =
@@ -24,8 +26,35 @@ export default function RegionalWorkshopCatalog() {
   const [regionalPartnerName, setRegionalPartnerName] = useState(false);
   const [regionalPartnerInfo, setRegionalPartnerInfo] = useState('');
   const [showRPInfoDialog, setShowRPInfoDialog] = useState(false);
+  const [showRPContactDialog, setShowRPContactDialog] = useState(false);
   const [availableWorkshops, setAvailableWorkshops] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    async function fetchUserInfo() {
+      try {
+        const response = await fetch(
+          '/dashboardapi/v1/users/me/contact_details',
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-Token': await getAuthenticityToken(),
+            },
+          }
+        );
+
+        if (response.ok) {
+          const jsonData = await response.json();
+          setUserName(jsonData.user_name);
+          setUserEmail(jsonData.email);
+        }
+      } catch (error) {
+        console.error('Error fetching user info.', error);
+      }
+    }
+    fetchUserInfo();
+  }, []);
 
   const handleSubmitZip = async () => {
     if (isSubmitting) {
@@ -107,13 +136,11 @@ export default function RegionalWorkshopCatalog() {
               regional partner for more information on upcoming workshops.
             </BodyTwoText>
           </div>
-          <RegionalPartnerMiniContactPopupLink
-            zip={zipCode}
-            notes={'Please notify me when I can apply!'}
-            sourcePageId="regional-workshop-catalog"
-          >
-            <Button text="Contact regional partner" color="purple" />
-          </RegionalPartnerMiniContactPopupLink>
+          <Button
+            text="Contact regional partner"
+            color="purple"
+            onClick={() => setShowRPContactDialog(true)}
+          />
         </div>
       );
     } else {
@@ -123,15 +150,13 @@ export default function RegionalWorkshopCatalog() {
           <BodyTwoText>
             Workshops are always being added. If you do not see the workshop you
             are looking for check back again soon or{' '}
-            <RegionalPartnerMiniContactPopupLink
-              zip={zipCode}
-              notes={'Please notify me when I can apply!'}
-              sourcePageId="regional-workshop-catalog"
-            >
-              <span className={style.linkText}>
-                contact your Regional Partner
-              </span>
-            </RegionalPartnerMiniContactPopupLink>
+            <Button
+              text="contact your Regional Partner"
+              className={style.linkText}
+              color="purple"
+              onClick={() => setShowRPContactDialog(true)}
+              styleAsText
+            />
             {'.'}
           </BodyTwoText>
           {availableWorkshops && (
@@ -165,6 +190,27 @@ export default function RegionalWorkshopCatalog() {
           primaryButtonProps={{
             text: 'Return to workshops',
             onClick: () => setShowRPInfoDialog(false),
+          }}
+        />
+      )}
+      {showRPContactDialog && (
+        <Modal
+          title="Contact your Regional Partner"
+          className={style.rpContactForm}
+          customContent={
+            <RegionalPartnerMiniContact
+              options={{
+                user_name: userName,
+                email: userEmail,
+                zip: zipCode,
+              }}
+              apiEndpoint="/dashboardapi/v1/pd/regional_partner_mini_contacts/"
+              sourcePageId="regional-workshop-catalog"
+            />
+          }
+          primaryButtonProps={{
+            text: 'Return to workshops',
+            onClick: () => setShowRPContactDialog(false),
           }}
         />
       )}
@@ -217,19 +263,14 @@ export default function RegionalWorkshopCatalog() {
                   onClick={() => setShowRPInfoDialog(true)}
                   disabled={!regionalPartnerName}
                 />
-                <RegionalPartnerMiniContactPopupLink
-                  zip={zipCode}
-                  notes={'Please notify me when I can apply!'}
-                  sourcePageId="regional-workshop-catalog"
-                >
-                  <Button
-                    text="Contact"
-                    color="black"
-                    type="secondary"
-                    size="xs"
-                    disabled={!regionalPartnerName}
-                  />
-                </RegionalPartnerMiniContactPopupLink>
+                <Button
+                  text="Contact"
+                  color="black"
+                  type="secondary"
+                  size="xs"
+                  onClick={() => setShowRPContactDialog(true)}
+                  disabled={!regionalPartnerName}
+                />
               </div>
             </div>
           </div>
