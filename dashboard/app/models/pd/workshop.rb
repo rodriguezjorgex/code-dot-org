@@ -77,8 +77,8 @@ class Pd::Workshop < ApplicationRecord
     'suppress_email',
     # TODO: ACQ-3081
     # temporary flag that skips some of the config based workshop validation if the
-    # workshop is submitted from the legacy form
-    'legacy'
+    # flag indicating workshop is created or updated via the legacy form
+    'legacyForm2025'
   ]
 
   before_validation :sanitize_time_zone
@@ -90,13 +90,13 @@ class Pd::Workshop < ApplicationRecord
   validate :sessions_must_start_on_separate_days
   validate :subject_must_be_valid_for_course
   # TODO: ACQ-3081 remove on_map & funded validation when we are ready to remove the legacy form
-  validates_inclusion_of :on_map, in: [true, false], if: :legacy?
-  validates_inclusion_of :funded, in: [true, false], if: :legacy?
+  validates_inclusion_of :on_map, in: [true, false], if: :legacyForm2025?
+  validates_inclusion_of :funded, in: [true, false], if: :legacyForm2025?
   validates_inclusion_of :third_party_provider, in: %w(friday_institute), allow_nil: true
   validate :not_funded_subjects_must_not_be_funded
   validate :valid_registration_link_format, if: :registration_link
 
-  validate :config_validation, unless: :legacy?
+  validate :config_validation, unless: :legacyForm2025?
 
   validates :funding_type,
     inclusion: {in: FUNDING_TYPES, if: :funded_csf?},
