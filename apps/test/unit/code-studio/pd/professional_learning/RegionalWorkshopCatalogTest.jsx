@@ -69,7 +69,7 @@ describe('RegionalWorkshopCatalog', () => {
       json: () =>
         Promise.resolve({
           regional_workshop_data: {
-            regional_partner: '',
+            regional_partner: {name: '', additional_info: ''},
             available_workshops: [],
           },
         }),
@@ -140,13 +140,17 @@ describe('RegionalWorkshopCatalog', () => {
   it('can open and close regional partner info dialog if regional partner is present', async () => {
     const zip = '98122';
     const regionalPartnerName = 'Reggie Partner';
+    const regionalPartnerInfo = 'Test partner info.';
 
     jest.spyOn(window, 'fetch').mockResolvedValue({
       ok: true,
       json: () =>
         Promise.resolve({
           regional_workshop_data: {
-            regional_partner: {name: regionalPartnerName},
+            regional_partner: {
+              name: regionalPartnerName,
+              additional_info: regionalPartnerInfo,
+            },
             available_workshops: TEST_WORKSHOPS,
           },
         }),
@@ -171,13 +175,15 @@ describe('RegionalWorkshopCatalog', () => {
     // Can open dialog
     fireEvent.click(screen.getByRole('button', {name: 'partnerInfo'}));
     await waitFor(() => {
-      screen.getByText('Regional Partner Info');
+      expect(screen.getAllByText(regionalPartnerName).length).toBe(2);
+      screen.getByText(regionalPartnerInfo);
     });
 
     // Can close dialog
-    fireEvent.click(screen.getByRole('button', {name: 'Close dialog'}));
+    fireEvent.click(screen.getByRole('button', {name: 'Return to workshops'}));
     await waitFor(() => {
-      expect(screen.queryByText('Regional Partner Info')).toBe(null);
+      expect(screen.getAllByText(regionalPartnerName).length).toBe(1);
+      expect(screen.queryByText(regionalPartnerInfo)).toBe(null);
     });
   });
 });

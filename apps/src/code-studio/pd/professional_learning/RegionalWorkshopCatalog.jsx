@@ -1,5 +1,5 @@
 import {Button} from '@code-dot-org/component-library/button';
-import Dialog from '@code-dot-org/component-library/dialog';
+import Modal from '@code-dot-org/component-library/modal';
 import TextField from '@code-dot-org/component-library/textField';
 import {
   Heading1,
@@ -19,9 +19,10 @@ import style from './regionalWorkshopCatalog.module.scss';
 export default function RegionalWorkshopCatalog() {
   const [zipCode, setZipCode] = useState('');
   const [hasSubmittedZip, setHasSubmittedZip] = useState(false);
-  const [hasValidRP, setHasValidRP] = useState(false);
   const [regionalPartnerText, setRegionalPartnerText] =
     useState('Zip code required');
+  const [regionalPartnerName, setRegionalPartnerName] = useState(false);
+  const [regionalPartnerInfo, setRegionalPartnerInfo] = useState('');
   const [showRPInfoDialog, setShowRPInfoDialog] = useState(false);
   const [availableWorkshops, setAvailableWorkshops] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,13 +44,16 @@ export default function RegionalWorkshopCatalog() {
 
       if (response.ok) {
         const jsonData = await response.json();
-        const rpName = jsonData.regional_workshop_data.regional_partner?.name;
-        if (rpName) {
-          setHasValidRP(true);
-          setRegionalPartnerText(rpName);
+        const regionalPartner =
+          jsonData.regional_workshop_data.regional_partner;
+        if (regionalPartner.name) {
+          setRegionalPartnerText(regionalPartner.name);
+          setRegionalPartnerName(regionalPartner.name);
+          setRegionalPartnerInfo(regionalPartner.additional_info);
         } else {
-          setHasValidRP(false);
           setRegionalPartnerText('No regional partner found');
+          setRegionalPartnerName('');
+          setRegionalPartnerInfo('');
         }
         setAvailableWorkshops(
           jsonData.regional_workshop_data.available_workshops
@@ -155,14 +159,13 @@ export default function RegionalWorkshopCatalog() {
   return (
     <div className={style.workshopCatalog}>
       {showRPInfoDialog && (
-        <Dialog
-          title="Regional Partner Info"
-          description="Here is your regional partner info."
+        <Modal
+          title={regionalPartnerName}
+          description={regionalPartnerInfo}
           primaryButtonProps={{
-            text: 'Primary Action',
-            onClick: () => alert('Primary button clicked!'),
+            text: 'Return to workshops',
+            onClick: () => setShowRPInfoDialog(false),
           }}
-          onClose={() => setShowRPInfoDialog(false)}
         />
       )}
       <section className={style.headerContainer}>
@@ -198,7 +201,9 @@ export default function RegionalWorkshopCatalog() {
             </OverlineTwoText>
             <div className={style.rpInfo}>
               <BodyTwoText
-                className={hasValidRP ? style.rpName : style.rpNameMissing}
+                className={
+                  regionalPartnerName ? style.rpName : style.rpNameMissing
+                }
               >
                 {regionalPartnerText}
               </BodyTwoText>
@@ -210,7 +215,7 @@ export default function RegionalWorkshopCatalog() {
                   type="secondary"
                   size="xs"
                   onClick={() => setShowRPInfoDialog(true)}
-                  disabled={!hasValidRP}
+                  disabled={!regionalPartnerName}
                 />
                 <RegionalPartnerMiniContactPopupLink
                   zip={zipCode}
@@ -222,7 +227,7 @@ export default function RegionalWorkshopCatalog() {
                     color="black"
                     type="secondary"
                     size="xs"
-                    disabled={!hasValidRP}
+                    disabled={!regionalPartnerName}
                   />
                 </RegionalPartnerMiniContactPopupLink>
               </div>
