@@ -114,6 +114,7 @@ export default function RegionalWorkshopCatalog() {
           <div className={style.zipSearchInput}>
             <TextField
               id="noZipSearch"
+              name="noZipSearch"
               aria-label="zipCode"
               onChange={e => setZipCode(e.target.value)}
               value={zipCode}
@@ -225,6 +226,7 @@ export default function RegionalWorkshopCatalog() {
           <div className={style.zipSearchInput}>
             <TextField
               id="zipSearch"
+              name="zipSearch"
               aria-label="zipSearch"
               label="School ZIP Code:"
               onChange={e => setZipCode(e.target.value)}
