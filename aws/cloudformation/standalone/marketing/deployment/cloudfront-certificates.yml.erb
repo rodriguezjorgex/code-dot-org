@@ -1,4 +1,4 @@
-# Marketing Shared AWS Resources
+# Marketing Cloudfront TLS Certificate AWS Resources
 # This stack is deployed to us-east-1 only as Cloudfront TLS certificates must be in us-east-1.
 # This template is manually deployed to create/update the Marketing App's AWS resources.
 
@@ -8,7 +8,7 @@ BASE_DOMAIN_NAME = Config::STAGES[stage.to_sym][:baseDomain]
 
 AWSTemplateFormatVersion: 2010-09-09
 
-Description: Marketing App Shared AWS resources (us-east-1)
+Description: Marketing App Cloudfront TLS Certificate resources (us-east-1)
 
 Parameters:
   BaseHostedZoneId:

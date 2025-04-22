@@ -1,14 +1,6 @@
 # Marketing App Resources
 # This template is manually deployed to create/update the Marketing App's AWS resources.
 
-<%
-site = Config::MARKETING_SITES[site_short_code.to_sym]
-BASE_DOMAIN_NAME = Config::STAGES[stage.to_sym][:baseDomain]
-
-LOAD_BALANCER_DOMAIN_NAME = "#{site[:subdomain]}-loadbalancer.#{BASE_DOMAIN_NAME}"
-CLOUDFRONT_DOMAIN_NAME = "#{site[:subdomain]}.#{BASE_DOMAIN_NAME}"
-%>
-
 AWSTemplateFormatVersion: 2010-09-09
 
 Description: Marketing App AWS resources
@@ -20,6 +12,12 @@ Parameters:
   BaseHostedZoneId:
     Type: String
     Description: The ID of the Route53 hosted zone for the marketing app. (e.g. the hosted zone id for 'marketingsites.code.org')
+  BaseDomainName:
+    Type: String
+    Description: The base domain name (e.g. 'marketing-sites.code.org' in 'hoc.marketing-sites.code.org').
+  SubdomainName:
+    Type: String
+    Description: Subdomain name for marketing (e.g. 'hoc' in 'hoc.marketing-sites.code.org').
   ContainerImageHashDigest:
     Type: String
     Description: "The sha256sum of the marketing container image."
@@ -187,9 +185,9 @@ Resources:
   TLSCertificate:
     Type: AWS::CertificateManager::Certificate
     Properties:
-      DomainName: <%= LOAD_BALANCER_DOMAIN_NAME %>
+      DomainName: !Sub "${SubdomainName}-loadbalancer.${BaseDomainName}"
       DomainValidationOptions:
-        - DomainName: <%= LOAD_BALANCER_DOMAIN_NAME %>
+        - DomainName: !Sub "${SubdomainName}-loadbalancer.${BaseDomainName}"
           HostedZoneId:
             Ref: BaseHostedZoneId
       ValidationMethod: DNS
@@ -276,7 +274,7 @@ Resources:
             - CanonicalHostedZoneID
       HostedZoneId:
         Ref: BaseHostedZoneId
-      Name: <%= LOAD_BALANCER_DOMAIN_NAME %>
+      Name: !Sub "${SubdomainName}-loadbalancer.${BaseDomainName}"
       Type: A
 
   FargateServiceLBPublicListenerECSGroup:
@@ -463,7 +461,7 @@ Resources:
   StaticAssetsBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: "<%= CLOUDFRONT_DOMAIN_NAME %>-static-assets"
+      BucketName: !Sub "${SubdomainName}.${BaseDomainName}-static-assets"
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
@@ -552,7 +550,7 @@ Resources:
     Type: AWS::CloudFront::OriginAccessControl
     Properties:
       OriginAccessControlConfig:
-        Name: !Sub "Cloudfront-OAC-<%= CLOUDFRONT_DOMAIN_NAME %>"
+        Name: !Sub "CLoudfront-OAC-${SubdomainName}.${BaseDomainName}"
         SigningBehavior: always
         SigningProtocol: sigv4
         OriginAccessControlOriginType: s3
@@ -610,11 +608,11 @@ Resources:
         PriceClass: PriceClass_100
 
         Aliases:
-          - <%= CLOUDFRONT_DOMAIN_NAME %>
+          - !Sub "${SubdomainName}.${BaseDomainName}"
 
         Origins:
           - Id: marketing-sites-application-origin
-            DomainName: <%= LOAD_BALANCER_DOMAIN_NAME %>
+            DomainName: !Sub "${SubdomainName}-loadbalancer.${BaseDomainName}"
             CustomOriginConfig:
               HTTPSPort: 443
               OriginProtocolPolicy: https-only
@@ -677,7 +675,7 @@ Resources:
         HostedZoneId: Z2FDTNDATAQYW2 # Cloudfront Hosted Zone ID, see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-recordset-aliastarget.html
       HostedZoneId:
         Ref: BaseHostedZoneId
-      Name: <%= CLOUDFRONT_DOMAIN_NAME %>
+      Name: !Sub "${SubdomainName}.${BaseDomainName}"
       Type: A
   ################################
   # End AWS Cloudfront Resources #

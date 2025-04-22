@@ -5,7 +5,7 @@ require 'optparse'
 
 options = {}
 OptionParser.new do |opts|
-  opts.banner = "Usage: ./deploy.rb <template-name> --region <aws region> --stage <stage>"
+  opts.banner = "Usage: ./render.rb <template-name> --region <aws region> --stage <stage>"
   opts.on('--region REGION', 'Specify the AWS region') do |region|
     options[:region] = region
   end
@@ -26,13 +26,11 @@ unless options.key?(:stage)
   exit 1
 end
 
-puts "\nTransforming ERB to YAML for template 'shared_infra'..."
-`erb stage=#{options[:stage]} -T - -r ./config.rb  shared-infra.yml.erb > shared-infra.yml `
+puts "\nTransforming ERB to YAML for template 'cloudfront-certificates'..."
+`erb stage=#{options[:stage]} -T - -r ./config.rb  cloudfront-certificates.yml.erb > cloudfront-certificates.yml `
 
-Config::MARKETING_SITES.each do |short_code, _site|
-  puts "\nTransforming ERB to YAML for template 'marketing', SITE=#{short_code}..."
-  `erb aws_region=#{options[:region]} stage=#{options[:stage]} site_short_code=#{short_code} -T - -r ./config.rb  marketing.yml.erb > marketing-#{short_code}.yml `
-end
+puts "\nTransforming ERB to YAML for template 'marketing'..."
+`erb aws_region=#{options[:region]} -T - -r ./config.rb  marketing.yml.erb > marketing.yml `
 
 if $?&.exitstatus == 0
   puts "Success!"
