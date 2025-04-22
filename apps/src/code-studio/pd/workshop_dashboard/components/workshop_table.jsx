@@ -16,9 +16,9 @@ import {workshopShape} from '../types.js';
 import {shouldShowSurveyResults} from '../workshop_summary_utils';
 import {COURSE_BUILD_YOUR_OWN} from '../workshopConstants';
 
-import FacilitatorsList from './facilitators_list';
 import SessionTimesList from './session_times_list';
 import WorkshopManagement from './workshop_management';
+import WorkshopTableCellList from './workshop_table_cell_list.jsx';
 
 export default class WorkshopTable extends React.Component {
   static propTypes = {
@@ -114,7 +114,7 @@ export default class WorkshopTable extends React.Component {
           transforms: [sortable],
         },
         cell: {
-          formatters: [this.formatSessions],
+          formatters: [this.formatSessionTimes],
         },
       },
       {
@@ -149,6 +149,9 @@ export default class WorkshopTable extends React.Component {
         header: {
           label: 'Location',
           transforms: [sortable],
+        },
+        cell: {
+          formatters: [this.formatSessionLocations],
         },
       },
       {
@@ -242,7 +245,7 @@ export default class WorkshopTable extends React.Component {
     this.setState({sortingColumns});
   };
 
-  formatSessions = (_ignored, {rowData}) => {
+  formatSessionTimes = (_ignored, {rowData}) => {
     return <SessionTimesList sessions={rowData.sessions} />;
   };
 
@@ -272,9 +275,17 @@ export default class WorkshopTable extends React.Component {
     return `${organizer.name} (${organizer.email})`;
   };
 
-  formatFacilitators = facilitators => {
-    return <FacilitatorsList facilitators={facilitators} />;
-  };
+  formatFacilitators = facilitators => (
+    <WorkshopTableCellList
+      items={facilitators.map(({name, email}) => `${name} ${email}`)}
+    />
+  );
+
+  formatSessionLocations = (_ignored, {rowData: {sessions}}) => (
+    <WorkshopTableCellList
+      items={sessions.map(({location_name}) => location_name ?? 'N/A')}
+    />
+  );
 
   formatSignupUrl = workshopId => {
     const signupUrl = `${location.origin}/pd/workshops/${workshopId}/enroll`;
