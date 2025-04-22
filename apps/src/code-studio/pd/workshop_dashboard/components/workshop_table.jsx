@@ -281,7 +281,9 @@ export default class WorkshopTable extends React.Component {
 
   formatSessionLocations = (_ignored, {rowData: {sessions}}) => (
     <WorkshopTableCellList
-      items={sessions.map(({location_name}) => location_name ?? 'N/A')}
+      items={sessions.map(({location_name, session_format}) =>
+        session_format === 'virtual' ? 'Virtual' : location_name ?? 'N/A'
+      )}
     />
   );
 
