@@ -145,10 +145,8 @@ export default class WorkshopTable extends React.Component {
         },
       },
       {
-        property: 'location_name',
         header: {
           label: 'Location',
-          transforms: [sortable],
         },
         cell: {
           formatters: [this.formatSessionLocations],
