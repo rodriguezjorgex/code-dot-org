@@ -7,7 +7,9 @@
 
 require_relative '../../dashboard/config/environment'
 
-count = 0
+success_count = 0
+failure_count = 0
+no_update_count = 0
 
 Pd::Session.
   includes(:workshop).
@@ -21,12 +23,17 @@ Pd::Session.
     if session.changed?
       begin
         session.save!
-        count += 1
-        puts "Updated #{count} sessions" if count % 100 == 0
+        success_count += 1
+        puts "Updated #{success_count} sessions" if success_count % 100 == 0
       rescue => exception
+        failure_count += 1
         puts "Failed to update session #{session.id}: #{exception.message}"
       end
+    else
+      no_update_count += 1
     end
   end
 
-puts "#{count} sessions updated with workshop location"
+puts "#{success_count} sessions updated with workshop location"
+puts "#{no_update_count} sessions did not need to update"
+puts "#{failure_count} sessions failed to update"
