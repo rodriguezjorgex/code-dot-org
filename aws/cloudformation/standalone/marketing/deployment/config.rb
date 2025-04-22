@@ -28,4 +28,18 @@ module Config
       }
     }
   }
+  STAGES = {
+    test: {
+      baseDomain: 'marketing-sites.dev-code.org', # temporarily dev-code.org until test-code.org is set up
+    },
+    production: {
+      baseDomain: 'marketing-sites.code.org',
+    }
+  }
+  MARKETING_SITES = {
+    CDO: {
+      shortCode: 'CDO',
+      subdomain: 'code' # code in code.marketingsites.code.org
+    }
+  }
 end

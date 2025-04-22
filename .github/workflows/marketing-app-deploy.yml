@@ -129,7 +129,7 @@ jobs:
     - name: Synthesize Cloudformation Template
       working-directory: ./aws/cloudformation/standalone/marketing/deployment
       run: |
-        ruby ./deploy.rb marketing
+        ruby ./render.rb --region us-east-2 --stage test
 
     - name: "Download Built Docker Image"
       run: |

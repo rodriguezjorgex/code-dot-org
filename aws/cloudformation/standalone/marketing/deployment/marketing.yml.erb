@@ -1,23 +1,65 @@
 # Marketing App Resources
 # This template is manually deployed to create/update the Marketing App's AWS resources.
 
+<%
+site = Config::MARKETING_SITES[site_short_code.to_sym]
+BASE_DOMAIN_NAME = Config::STAGES[stage.to_sym][:baseDomain]
+
+LOAD_BALANCER_DOMAIN_NAME = "#{site[:subdomain]}-loadbalancer.#{BASE_DOMAIN_NAME}"
+CLOUDFRONT_DOMAIN_NAME = "#{site[:subdomain]}.#{BASE_DOMAIN_NAME}"
+%>
+
 AWSTemplateFormatVersion: 2010-09-09
 
 Description: Marketing App AWS resources
 
 Parameters:
+  CloudFrontTLSCertificateArn:
+    Type: String
+    Description: The ARN of the TLS certificate for marketing app's cloudfront distribution. (e.g. the ARN of the ACM cert for 'test.marketing.code.org')
   BaseHostedZoneId:
     Type: String
-    Description: The ID of the Route53 hosted zone for the marketing app. (e.g. the hosted zone id for 'marketing.code.org')
-  BaseDomainName:
-    Type: String
-    Description: The base domain name (e.g. 'marketing.code.org' in 'test.marketing.code.org').
-  SubdomainName:
-    Type: String
-    Description: Subdomain name for marketing (e.g. 'test' in 'test.marketing.code.org').
+    Description: The ID of the Route53 hosted zone for the marketing app. (e.g. the hosted zone id for 'marketingsites.code.org')
   ContainerImageHashDigest:
     Type: String
     Description: "The sha256sum of the marketing container image."
+
+Mappings:
+  # Cloudfront Mappings
+  # See: https://aws.amazon.com/blogs/networking-and-content-delivery/limit-access-to-your-origins-using-the-aws-managed-prefix-list-for-amazon-cloudfront/
+  CFRegionMap:
+    ap-northeast-1:
+      PrefixList: pl-58a04531
+    ap-northeast-2:
+      PrefixList: pl-22a6434b
+    ap-south-1:
+      PrefixList: pl-9aa247f3
+    ap-southeast-1:
+      PrefixList: pl-31a34658
+    ap-southeast-2:
+      PrefixList: pl-b8a742d1
+    ca-central-1:
+      PrefixList: pl-38a64351
+    eu-central-1:
+      PrefixList: pl-a3a144ca
+    eu-north-1:
+      PrefixList: pl-fab65393
+    eu-west-1:
+      PrefixList: pl-4fa04526
+    eu-west-2:
+      PrefixList: pl-93a247fa
+    eu-west-3:
+      PrefixList: pl-75b1541c
+    sa-east-1:
+      PrefixList: pl-5da64334
+    us-east-1:
+      PrefixList: pl-3b927c52
+    us-east-2:
+      PrefixList: pl-b6a144df
+    us-west-1:
+      PrefixList: pl-4ea04527
+    us-west-2:
+      PrefixList: pl-82a045eb
 
 Resources:
   ###########################
@@ -141,6 +183,17 @@ Resources:
   # Start AWS ECS Resources #
   ###########################
 
+  # TLS Cert for the ECS ALB
+  TLSCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: <%= LOAD_BALANCER_DOMAIN_NAME %>
+      DomainValidationOptions:
+        - DomainName: <%= LOAD_BALANCER_DOMAIN_NAME %>
+          HostedZoneId:
+            Ref: BaseHostedZoneId
+      ValidationMethod: DNS
+
   EcsCluster:
     Type: AWS::ECS::Cluster
 
@@ -158,7 +211,7 @@ Resources:
             - GroupId
       Subnets:
 <% Config::REGIONS[aws_region.to_sym][:vpc][:private_subnets].each_with_index do |_, index| %>
-        - Ref: VpcPrivateSubnet<%= index %>
+        - Ref: VpcPublicSubnet<%= index %>
 <% end %>
       Type: application
 
@@ -167,11 +220,11 @@ Resources:
     Properties:
       GroupDescription: Security Group for ELB MarketingStackStagingFargateService
       SecurityGroupIngress:
-        - CidrIp: 0.0.0.0/0
-          Description: Allow from anyone on port 80
-          FromPort: 80
+        - Description: Allow HTTPS from com.amazonaws.global.cloudfront.origin-facing
+          FromPort: 443
           IpProtocol: tcp
-          ToPort: 80
+          ToPort: 443
+          SourcePrefixListId:  !FindInMap [CFRegionMap, !Ref 'AWS::Region', PrefixList]
       VpcId:
         Ref: Vpc
 
@@ -194,14 +247,37 @@ Resources:
   FargateServiceLBPublicListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
+      Certificates:
+        - CertificateArn:
+            Ref: TLSCertificate
       DefaultActions:
         - TargetGroupArn:
             Ref: FargateServiceLBPublicListenerECSGroup
           Type: forward
       LoadBalancerArn:
         Ref: FargateServiceLB
-      Port: 80
-      Protocol: HTTP
+      Port: 443
+      Protocol: HTTPS
+
+  FargateServiceDNS:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      AliasTarget:
+        DNSName:
+          Fn::Join:
+            - ""
+            - - dualstack.
+              - Fn::GetAtt:
+                  - FargateServiceLB
+                  - DNSName
+        HostedZoneId:
+          Fn::GetAtt:
+            - FargateServiceLB
+            - CanonicalHostedZoneID
+      HostedZoneId:
+        Ref: BaseHostedZoneId
+      Name: <%= LOAD_BALANCER_DOMAIN_NAME %>
+      Type: A
 
   FargateServiceLBPublicListenerECSGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -387,7 +463,7 @@ Resources:
   StaticAssetsBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub "${SubdomainName}.${BaseDomainName}-static-assets"
+      BucketName: "<%= CLOUDFRONT_DOMAIN_NAME %>-static-assets"
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
@@ -472,19 +548,11 @@ Resources:
   # Start AWS Cloudfront Resources   #
   ####################################
 
-  CloudFrontALBVPCOrigin:
-    Type: AWS::CloudFront::VpcOrigin
-    Properties:
-      VpcOriginEndpointConfig:
-        Arn: !Ref FargateServiceLB
-        Name: Marketing-Sites-Application-LB-VPC-Origin
-        OriginProtocolPolicy: http-only
-
   CloudFrontOriginAccessControl:
     Type: AWS::CloudFront::OriginAccessControl
     Properties:
       OriginAccessControlConfig:
-        Name: !Sub "Cloudfront-OAC-${SubdomainName}.${BaseDomainName}"
+        Name: !Sub "Cloudfront-OAC-<%= CLOUDFRONT_DOMAIN_NAME %>"
         SigningBehavior: always
         SigningProtocol: sigv4
         OriginAccessControlOriginType: s3
@@ -541,14 +609,17 @@ Resources:
         HttpVersion: http2
         PriceClass: PriceClass_100
 
+        Aliases:
+          - <%= CLOUDFRONT_DOMAIN_NAME %>
+
         Origins:
           - Id: marketing-sites-application-origin
-            DomainName:
-              Fn::GetAtt:
-                - FargateServiceLB
-                - DNSName
-            VpcOriginConfig:
-              VpcOriginId: !Ref CloudFrontALBVPCOrigin
+            DomainName: <%= LOAD_BALANCER_DOMAIN_NAME %>
+            CustomOriginConfig:
+              HTTPSPort: 443
+              OriginProtocolPolicy: https-only
+              OriginSSLProtocols:
+                - TLSv1.2
           - Id: marketing-sites-static-assets-origin
             DomainName: !GetAtt StaticAssetsBucket.RegionalDomainName
             S3OriginConfig:
@@ -562,7 +633,9 @@ Resources:
           CachePolicyId: !Ref ApplicationCachingPolicy
 
         ViewerCertificate:
-          CloudFrontDefaultCertificate: true  # For custom domain, replace with ACM cert ARN
+          AcmCertificateArn:
+            Ref: CloudFrontTLSCertificateArn
+          SslSupportMethod: sni-only
 
         Restrictions:
           GeoRestriction:
@@ -596,6 +669,16 @@ Resources:
             TargetOriginId: marketing-sites-static-assets-origin
             ViewerProtocolPolicy: redirect-to-https
 
+  CloudFrontDistributionDNS:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      AliasTarget:
+        DNSName: !GetAtt CloudFrontDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2 # Cloudfront Hosted Zone ID, see: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-recordset-aliastarget.html
+      HostedZoneId:
+        Ref: BaseHostedZoneId
+      Name: <%= CLOUDFRONT_DOMAIN_NAME %>
+      Type: A
   ################################
   # End AWS Cloudfront Resources #
   ################################

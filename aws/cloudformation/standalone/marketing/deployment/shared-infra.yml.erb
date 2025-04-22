@@ -1,33 +1,45 @@
-# Marketing Root DNS Resources
+# Marketing Shared AWS Resources
+# This stack is deployed to us-east-1 only as Cloudfront TLS certificates must be in us-east-1.
 # This template is manually deployed to create/update the Marketing App's AWS resources.
+
+<%
+BASE_DOMAIN_NAME = Config::STAGES[stage.to_sym][:baseDomain]
+%>
 
 AWSTemplateFormatVersion: 2010-09-09
 
-Description: Marketing App Root DNS AWS resources
+Description: Marketing App Shared AWS resources (us-east-1)
 
 Parameters:
-  SubDomainName:
+  BaseHostedZoneId:
     Type: String
-    Description: Subdomain name (e.g. 'marketing' in 'marketing.code.org').
-  RootDomainName:
-    Type: String
-    Description: Root domain name (e.g. 'code.org' in 'marketing.code.org').
+    Description: The ID of the Route53 hosted zone for the marketing app. (e.g. the hosted zone id for 'marketingsites.code.org')
+
+Conditions:
+  IsUSEast1: !Equals [!Ref "AWS::Region", "us-east-1"]
 
 Resources:
-   RootHostedZone:
-     Type: AWS::Route53::HostedZone
+<%
+Config::MARKETING_SITES.each do |_, site|
+%>
+  # TLS Cert for the ECS ALB and Cloudfront (must be in us-east-1)
+   <%= site[:shortCode] %>TLSCertificate:
+     Condition: IsUSEast1
+     Type: AWS::CertificateManager::Certificate
      Properties:
-       Name: !Sub "${SubDomainName}.${RootDomainName}."
-       Comment: 'Private root delegation hosted zone for the marketing app'
+       DomainName: "<%= site[:subdomain] %>.<%= BASE_DOMAIN_NAME %>"
+       DomainValidationOptions:
+         - DomainName: "<%= site[:subdomain] %>.<%= BASE_DOMAIN_NAME %>"
+           HostedZoneId:
+             Ref: BaseHostedZoneId
+       ValidationMethod: DNS
+<% end %>
 
 Outputs:
-  RootHostedZoneId:
-    Value: !Ref RootHostedZone
+<% Config::MARKETING_SITES.each do |_, site| %>
+  <%= site[:shortCode] %>TLSCertificateArn:
+    Value: !Ref <%= site[:shortCode] %>TLSCertificate
     Export:
       Name:
-        'Fn::Sub': '${AWS::StackName}-RootHostedZoneId'
-  RootHostedZoneAddress:
-    Value: !Sub "${SubDomainName}.${RootDomainName}"
-    Export:
-      Name:
-        'Fn::Sub': '${AWS::StackName}-RootHostedZoneAddress'
+        'Fn::Sub': '${AWS::StackName}-<%= site[:shortCode] %>TLSCertificateArn'
+<% end %>
