@@ -179,17 +179,25 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
                   src={sublevel.thumbnail_url}
                   className={styles.sublevelImage}
                 />
-              </div>
-              <div className={styles.sublevelTextContainer}>
-                <div className={styles.sublevelTextHeading}>
+                <div className={styles.sublevelProgressBubbleContainer}>
                   <ProgressBubble
                     level={sublevelToProgressBubbleLevel(index)}
                     disabled={true}
                     hideToolTips={true}
                     smallBubble={true}
                   />
-                  {sublevel.display_name}
                 </div>
+              </div>
+              <div className={styles.sublevelTextContainer}>
+                <Heading4
+                  className={classNames(
+                    styles[`heading${backgroundSuffix}`],
+                    styles.sublevelTextHeading
+                  )}
+                >
+                  {sublevel.display_name}
+                </Heading4>
+
                 {sublevel.description && (
                   <EnhancedSafeMarkdown
                     markdown={sublevel.description}

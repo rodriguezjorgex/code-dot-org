@@ -78,12 +78,18 @@
 
         .sublevelImageContainer {
           overflow: hidden;
+          position: relative;
 
           .sublevelImage {
             width: 800px;
             object-fit: contain;
-            aspect-ratio: 1;
             opacity: 1;
+          }
+
+          .sublevelProgressBubbleContainer {
+            position: absolute;
+            top: 4cqw;
+            right: 4cqw;
           }
         }
 
@@ -92,17 +98,14 @@
           flex-direction: column;
           flex: 1;
           gap: 3cqw;
-          padding: 3cqw 2cqw;
+          padding: 4cqw;
           box-sizing: border-box;
           container-type: size;
 
           .sublevelTextHeading {
-            display: flex;
-            gap: 10px;
-            font-size: 6cqw;
-            line-height: 1.2em;
-            align-items: center;
+            font-size: 8cqw;
             text-align: initial;
+            margin: 0;
           }
 
           .sublevelDescriptionMarkdown{
@@ -111,12 +114,12 @@
 
             p {
               margin-bottom: 1cqw;
-              font-size: 4.5cqw;
+              font-size: 6cqw;
               line-height: 1.4em;
             }
 
             ol, ul {
-              font-size: 4.5cqw;
+              font-size: 6cqw;
               line-height: 0;
               margin: 0 0 4cqw 8cqw;
             }
