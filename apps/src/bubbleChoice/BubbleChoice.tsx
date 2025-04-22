@@ -30,7 +30,7 @@ import styles from './BubbleChoice.module.scss';
 
 const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
   // The aspect ratio of each sublevel button.
-  const aspectRatio = 2.618;
+  const aspectRatio = 0.666;
 
   // The gap (in pixels) between each sublevel button.
   const gap = 15;
@@ -90,7 +90,7 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
 
   // Go through the candidates and find which will deliver the largest sublevel buttons, given
   // the current size of the container.
-  const [numRows, numColumns, imageHeight] = useMemo(() => {
+  const [numRows, numColumns, imageWidth] = useMemo(() => {
     let bestSize = -1;
     let bestNumRows = -1;
     for (const [
@@ -99,9 +99,8 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
     ] of candidateLayouts.entries()) {
       const size = Math.min(
         (containerWidth - (candidateLayoutColumns - 1) * gap) /
-          aspectRatio /
           candidateLayoutColumns,
-        (containerHeight - (candidateLayoutRows - 1) * gap) /
+        ((containerHeight - (candidateLayoutRows - 1) * gap) * aspectRatio) /
           candidateLayoutRows
       );
       if (size > bestSize) {
@@ -114,7 +113,7 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
     return [numRows, numColumns, bestSize];
   }, [candidateLayouts, containerHeight, containerWidth]);
 
-  const imageWidth = imageHeight;
+  const imageHeight = (3 / 4) * imageWidth;
 
   const sublevelToProgressBubbleLevel = (index: number) => {
     const sublevel = levelBubbleChoice.sublevels[index];
@@ -166,8 +165,8 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
                 styles[`sublevelButton${backgroundSuffix}`]
               )}
               style={{
-                width: imageWidth * aspectRatio,
-                height: imageHeight,
+                width: imageWidth,
+                height: imageWidth / aspectRatio,
               }}
               onClick={() => navigateToSublevel(sublevel)}
             >
