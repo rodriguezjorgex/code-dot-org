@@ -13,9 +13,13 @@ no_update_count = 0
 
 Pd::Session.
   includes(:workshop).
+  where(session_format: :in_person).
   find_each(batch_size: 500) do |session|
     workshop = session.workshop
     next unless workshop
+
+    # Skip sessions that already have location_name or location_address
+    next if session.location_name.present? || session.location_address.present?
 
     session.location_name = workshop.location_name
     session.location_address = workshop.location_address
