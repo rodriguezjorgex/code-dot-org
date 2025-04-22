@@ -317,15 +317,15 @@ export default class WorkshopTable extends React.Component {
     const rows = _.map(this.props.workshops.workshops, row =>
       _.merge(row, {
         enrollments: `${row.enrolled_teacher_count} / ${row.capacity}`,
-        date: row.sessions[0].start,
+        date: row.sessions[0]?.start,
         manage: {
           id: row.id,
           course: row.course,
           subject: row.subject,
           state: row.state,
-          date: row.sessions[0].start,
+          date: row.sessions[0]?.start,
           canDelete: row.can_delete,
-          endDate: row.sessions[row.sessions.length - 1].end,
+          endDate: row.sessions[row.sessions.length - 1]?.end,
         },
         sessions: row.sessions.map(s => ({...s, is_local: !row.time_zone})),
       })
