@@ -150,13 +150,12 @@ export default function RegionalWorkshopCatalog() {
           <BodyTwoText>
             Workshops are always being added. If you do not see the workshop you
             are looking for check back again soon or{' '}
-            <Button
-              text="contact your Regional Partner"
+            <a
               className={style.linkText}
-              color="purple"
               onClick={() => setShowRPContactDialog(true)}
-              styleAsText
-            />
+            >
+              contact your Regional Partner
+            </a>
             {'.'}
           </BodyTwoText>
           {availableWorkshops && (

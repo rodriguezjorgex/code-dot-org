@@ -1,7 +1,6 @@
 @import '@code-dot-org/component-library-styles/primitiveColors';
 @import '@code-dot-org/component-library-styles/colors';
 
-
 .workshopCatalog {
   background-color: var(--background-neutral-secondary);
 
@@ -101,10 +100,6 @@
 
     label {
       margin-top: 6px;
-    }
-
-    label.control-label {
-      padding: 40px;
     }
   }
   
