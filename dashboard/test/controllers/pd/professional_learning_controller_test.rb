@@ -508,7 +508,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     response_rp = response_data['regional_partner']
     response_workshops = response_data['available_workshops']
 
-    assert_nil response_rp
+    assert_nil response_rp['name']
     assert_equal [], response_workshops
   end
 
@@ -534,7 +534,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     response_rp = response_data['regional_partner']
     response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
 
-    assert_equal nearby_rp.id, response_rp['id']
+    assert_equal nearby_rp.name, response_rp['name']
     assert_equal [nearby_regional_ws_1.id, nearby_regional_ws_2.id, nearby_national_ws.id, distant_national_ws.id], response_workshop_ids
   end
 
@@ -553,7 +553,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     response_rp = response_data['regional_partner']
     response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
 
-    assert_equal rp.id, response_rp['id']
+    assert_equal rp.name, response_rp['name']
     assert_equal [not_started_ws.id], response_workshop_ids
   end
 
@@ -571,7 +571,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     response_rp = response_data['regional_partner']
     response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
 
-    assert_equal rp.id, response_rp['id']
+    assert_equal rp.name, response_rp['name']
     assert_equal [not_hidden_ws.id], response_workshop_ids
   end
 
@@ -580,9 +580,9 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     rp.mappings.find_or_create_by!(zip_code: "11111")
     pm = create :program_manager, regional_partner: rp
     test_course_offerings = [] << (create :course_offering)
-    ws_empty = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: pm, capacity: 10, num_enrollments: 0
-    ws_almost_full = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: pm, capacity: 10, num_enrollments: 9
-    create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: pm, capacity: 10, num_enrollments: 10
+    ws_empty = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: pm, capacity: 3, num_enrollments: 0
+    ws_almost_full = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: pm, capacity: 3, num_enrollments: 2
+    create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: pm, capacity: 3, num_enrollments: 3
 
     reg_ws_data_response = get :regional_workshop_data, params: {zip_code: "11111"}
     assert_response :success
@@ -590,7 +590,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     response_rp = response_data['regional_partner']
     response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
 
-    assert_equal rp.id, response_rp['id']
+    assert_equal rp.name, response_rp['name']
     assert_equal [ws_empty.id, ws_almost_full.id], response_workshop_ids
   end
 
@@ -612,7 +612,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     response_rp = response_data['regional_partner']
     response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
 
-    assert_equal rp.id, response_rp['id']
+    assert_equal rp.name, response_rp['name']
     assert_equal [byow.id], response_workshop_ids
 
     DCDO.unstub(:get)
@@ -653,7 +653,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     response_rp = response_data['regional_partner']
     response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
 
-    assert_equal rp.id, response_rp['id']
+    assert_equal rp.name, response_rp['name']
     assert_equal [summer_csd.id, summer_csp.id, summer_csa.id, byow.id], response_workshop_ids
 
     DCDO.unstub(:get)
@@ -673,7 +673,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     response_rp = response_data['regional_partner']
     response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
 
-    assert_equal rp.id, response_rp['id']
+    assert_equal rp.name, response_rp['name']
     assert_equal [first_ws.id, second_ws.id, third_ws.id], response_workshop_ids
   end
 
