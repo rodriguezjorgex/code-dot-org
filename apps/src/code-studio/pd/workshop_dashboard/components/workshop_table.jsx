@@ -129,6 +129,9 @@ export default class WorkshopTable extends React.Component {
           label: 'Subjects/Topics',
           transforms: [sortable],
         },
+        cell: {
+          formatters: [this.formatSubjectOrTopics],
+        },
       },
       {
         property: 'virtual',
@@ -240,6 +243,24 @@ export default class WorkshopTable extends React.Component {
 
   formatSessions = (_ignored, {rowData}) => {
     return <SessionTimesList sessions={rowData.sessions} />;
+  };
+
+  // Because we want Subjects and Topics to show in the same column (since they are
+  // mutually exclusive for a workshop), we want to format subjects as plain text
+  // and topics as an unordered list.
+  formatSubjectOrTopics = subjectsOrTopics => {
+    if (subjectsOrTopics.includes('Topics:')) {
+      const topics = subjectsOrTopics.slice(8).split(',');
+      return (
+        <ul>
+          {topics.map(topic => {
+            return <li>{topic}</li>;
+          })}
+        </ul>
+      );
+    } else {
+      return subjectsOrTopics;
+    }
   };
 
   formatVirtualFormat = isVirtual => {
