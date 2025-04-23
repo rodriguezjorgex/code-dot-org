@@ -660,12 +660,13 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
   end
 
   test 'regional_workshop_data returns available workshops sorted by start date of first session' do
+    first_session_start = DateTime.parse('2025-01-01T12:00:00')
     rp = create :regional_partner
     rp.mappings.find_or_create_by!(zip_code: "11111")
     pm = create :program_manager, regional_partner: rp
-    third_ws = create :workshop, course: Pd::Workshop::COURSE_CSD, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, organizer: pm, sessions: [create(:pd_session, start: DateTime.now + 10.days)]
-    second_ws = create :workshop, course: Pd::Workshop::COURSE_CSP, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, organizer: pm, sessions: [create(:pd_session, start: DateTime.now + 5.days)]
-    first_ws = create :workshop, course: Pd::Workshop::COURSE_CSA, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, organizer: pm, sessions: [create(:pd_session, start: DateTime.now)]
+    third_ws = create :workshop, course: Pd::Workshop::COURSE_CSD, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, organizer: pm, sessions: [create(:pd_session, start: first_session_start + 10.days)]
+    second_ws = create :workshop, course: Pd::Workshop::COURSE_CSP, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, organizer: pm, sessions: [create(:pd_session, start: first_session_start + 5.days)]
+    first_ws = create :workshop, course: Pd::Workshop::COURSE_CSA, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, organizer: pm, sessions: [create(:pd_session, start: first_session_start)]
 
     reg_ws_data_response = get :regional_workshop_data, params: {zip_code: "11111"}
     assert_response :success
