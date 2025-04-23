@@ -116,7 +116,7 @@ class StudentWorkSampleController < ApplicationController
     user_level_evaluations.shuffle.each do |ule|
       unless have_enough_samples || ule.code_version.nil?
         student_code = get_student_code(ule.user_id, level, unit_id, ule.code_version)
-        if student_code[:student_code]
+        if student_code && student_code[:student_code]
           code_sample = {
             level_id: level.id,
             unit_id: unit_id,
@@ -164,9 +164,12 @@ class StudentWorkSampleController < ApplicationController
       s3_filename = "#{base_dir}/#{storage_id}/#{storage_app_id}/main.json"
       s3_args = {bucket: bucket, key: s3_filename}
       s3_args[:version_id] = code_version if code_version
-      Rails.logger.info("Erin is trying to fetch student code from S3: #{s3_args}")
-      body = s3.get_object(s3_args)[:body].read
-      student_code = JSON.parse(body)['source'] if body
+      begin
+        body = s3.get_object(s3_args)[:body].read
+      rescue
+        Rails.logger.info("No code sample found in S3 with with args: #{s3_args}")
+      end
+      student_code = body ? JSON.parse(body)['source'] : nil
     end
     {
       project_id: channel_id,
