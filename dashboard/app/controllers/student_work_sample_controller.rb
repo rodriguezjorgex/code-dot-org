@@ -164,6 +164,7 @@ class StudentWorkSampleController < ApplicationController
       s3_filename = "#{base_dir}/#{storage_id}/#{storage_app_id}/main.json"
       s3_args = {bucket: bucket, key: s3_filename}
       s3_args[:version_id] = code_version if code_version
+      Rails.logger.info("Erin is trying to fetch student code from S3: #{s3_args}")
       body = s3.get_object(s3_args)[:body].read
       student_code = JSON.parse(body)['source'] if body
     end
