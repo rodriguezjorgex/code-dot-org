@@ -42,7 +42,7 @@ const LabViewsRenderer: React.FunctionComponent = () => {
   const capitalizedLessonBackground = useAppSelector(
     state =>
       capitalizeFirstLetter(
-        getCurrentLesson(state)?.background || 'Light'
+        getCurrentLesson(state)?.background || 'light'
       ) as Theme
   );
 

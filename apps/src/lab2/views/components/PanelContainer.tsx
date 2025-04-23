@@ -3,8 +3,6 @@ import {Heading2} from '@code-dot-org/component-library/typography';
 import classNames from 'classnames';
 import React from 'react';
 
-import {capitalizeFirstLetter} from '@cdo/apps/util/capitalizeFirstLetter';
-
 import moduleStyles from './panelContainer.module.scss';
 
 interface PanelContainerProps {
@@ -36,7 +34,6 @@ const PanelContainer: React.FunctionComponent<PanelContainerProps> = ({
   headerClassName,
 }) => {
   const {theme} = useTheme();
-  const capitalizedTheme = capitalizeFirstLetter(theme);
 
   return (
     <div
@@ -52,7 +49,7 @@ const PanelContainer: React.FunctionComponent<PanelContainerProps> = ({
           className={classNames(
             'panelContainerHeader',
             moduleStyles.panelContainerHeader,
-            moduleStyles[`panelContainerHeader${capitalizedTheme}`],
+            moduleStyles[`panelContainerHeader${theme}`],
             headerClassName
           )}
         >
@@ -77,7 +74,7 @@ const PanelContainer: React.FunctionComponent<PanelContainerProps> = ({
             <span
               className={classNames(
                 moduleStyles.panelContainerHeaderItemText,
-                moduleStyles[`panelContainerHeaderItemText${capitalizedTheme}`]
+                moduleStyles[`panelContainerHeaderItemText${theme}`]
               )}
             >
               {headerContent}
