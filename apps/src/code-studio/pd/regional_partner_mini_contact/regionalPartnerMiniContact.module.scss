@@ -1,0 +1,36 @@
+@import '@code-dot-org/component-library-styles/primitiveColors';
+
+.modalHeader {
+  padding-bottom: 1rem;
+  height: 2rem;
+  border-bottom: none;
+}
+
+.modalBody {
+  padding: 0 1rem 1rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+}
+
+.miniContactContainer {
+  background-color: var(--brand-aqua-30);
+  padding: 1.25rem;
+  border-radius: 0.625rem;
+  text-align: left;
+}
+
+.intro {
+  padding-bottom: 10px;
+}
+
+.error {
+  color: #c00;
+}
+
+select {
+  max-width: 500px;
+}
+
+.row {
+  padding: 0;
+}
