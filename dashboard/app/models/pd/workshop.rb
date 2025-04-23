@@ -146,7 +146,7 @@ class Pd::Workshop < ApplicationRecord
     config[:fields].each do |field_name, field_options|
       next unless field_options[:required]
       value = public_send(field_name)
-      is_invalid = value.nil? || (value.respond_to?(:empty?) && value.empty?)
+      is_invalid = value.nil? || (value.is_a?(String) && value.strip.empty?) || (value.is_a?(Array) && value.empty?)
       if is_invalid
         case field_name
         when :course_offerings
