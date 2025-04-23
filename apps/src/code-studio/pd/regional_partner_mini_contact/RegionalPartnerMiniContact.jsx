@@ -1,7 +1,8 @@
+import {Button} from '@code-dot-org/component-library/button';
 import $ from 'jquery';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Modal, FormGroup, Button, ControlLabel} from 'react-bootstrap'; // eslint-disable-line no-restricted-imports
+import {Modal, FormGroup, ControlLabel} from 'react-bootstrap'; // eslint-disable-line no-restricted-imports
 import Select from 'react-select';
 
 import 'react-select/dist/react-select.css';
@@ -89,7 +90,7 @@ export class RegionalPartnerMiniContact extends React.Component {
   };
 
   onRoleChange = change => {
-    this.setState({role: change.value});
+    this.setState({role: change?.value});
   };
 
   onSubmitComplete = results => {
@@ -144,6 +145,7 @@ export class RegionalPartnerMiniContact extends React.Component {
             required={false}
             onChange={this.handleChange}
             defaultValue={this.state.name}
+            className={style}
           />
           {this.state.errors.includes('email') && (
             <div
@@ -160,6 +162,7 @@ export class RegionalPartnerMiniContact extends React.Component {
             required={true}
             onChange={this.handleChange}
             defaultValue={this.state.email}
+            className={style}
           />
           {this.state.errors.includes('zip') && (
             <div
@@ -176,27 +179,34 @@ export class RegionalPartnerMiniContact extends React.Component {
             required={true}
             onChange={this.handleChange}
             defaultValue={this.state.zip}
+            className={style}
           />
-          <ButtonList
-            groupName="grade_levels"
-            label="Grade Level(s)"
-            type="check"
-            onChange={this.handleChange}
-            answers={GRADE_LEVEL}
-            required={false}
-            selectedItems={this.state.grade_levels}
-            suppressLineBreak
-          />
-          <FormGroup>
-            <ControlLabel>Your role</ControlLabel>
-            <Select
-              id="role"
-              value={this.state.role}
-              onChange={this.onRoleChange}
-              placeholder="-"
-              options={ROLE_MAP}
-              {...SelectStyleProps}
+          <div className={style.fieldGroup}>
+            <ButtonList
+              groupName="grade_levels"
+              label="Grade Level(s)"
+              type="check"
+              onChange={this.handleChange}
+              answers={GRADE_LEVEL}
+              required={false}
+              selectedItems={this.state.grade_levels}
+              suppressLineBreak
             />
+          </div>
+          <FormGroup className={style.fieldGroup}>
+            <ControlLabel className={style.controlLabel}>
+              Your role
+            </ControlLabel>
+            <div className={style.roleSelect}>
+              <Select
+                id="role"
+                value={this.state.role}
+                onChange={this.onRoleChange}
+                placeholder="-"
+                options={ROLE_MAP}
+                {...SelectStyleProps}
+              />
+            </div>
           </FormGroup>
           <FieldGroup
             id="notes"
@@ -206,13 +216,22 @@ export class RegionalPartnerMiniContact extends React.Component {
             componentClass="textarea"
             onChange={this.handleChange}
             defaultValue={this.state.notes}
+            className={style}
           />
-          {!this.state.submitting && (
-            <Button id="submit" onClick={this.submit}>
-              Send
-            </Button>
-          )}
-          {this.state.submitting && <span className="fa fa-spin fa-spinner" />}{' '}
+          <div className={style.submitContainer}>
+            {!this.state.submitting && (
+              <Button
+                id="submit"
+                text="Send"
+                color="purple"
+                className={style.submitButton}
+                onClick={this.submit}
+              />
+            )}
+            {this.state.submitting && (
+              <span className="fa fa-spin fa-spinner" />
+            )}{' '}
+          </div>
         </FormGroup>
       );
     }
@@ -244,7 +263,7 @@ export class RegionalPartnerMiniContactPopupLink extends React.Component {
           options: {
             user_name: results.user_name,
             email: results.email,
-            zip: `${this.props.zip || results.zip}`,
+            zip: `${this.props.zip || results.zip || ''}`,
             notes: this.props.notes || results.notes,
           },
         });
