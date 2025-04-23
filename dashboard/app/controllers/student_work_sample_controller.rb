@@ -167,7 +167,7 @@ class StudentWorkSampleController < ApplicationController
       begin
         body = s3.get_object(s3_args)[:body].read
       rescue
-        Rails.logger.info("No code sample found in S3 with with args: #{s3_args}")
+        CDO.log("No code sample found in S3 with with args: #{s3_args}")
       end
       student_code = body ? JSON.parse(body)['source'] : nil
     end
