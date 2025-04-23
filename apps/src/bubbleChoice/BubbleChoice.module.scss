@@ -9,13 +9,19 @@
   margin: 0 auto;
   gap: 15px;
   position: relative;
-  color: var(--text-neutral-primary);
+  .headingLight, .textLight {
+    color: $neutral_dark;
+  }
 
-  .heading {
+  .headingDark, .textDark {
+    color: $neutral_white;
+  }
+
+  .headingLight, .headingDark {
     margin-top: 15px;
   }
 
-  .text{
+  .textLight, .textDark {
     font-size: 14px;
   }
 
