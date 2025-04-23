@@ -67,6 +67,10 @@ Given(/^I delete the program manager, regional partner, teacher, and application
   )
 end
 
+Given(/^I get the workshop id from the current url$/) do
+  @workshop_id = @browser.current_url.split('/').last
+end
+
 Given(/^I delete the workshop$/) do
   browser_request(
     url: '/api/test/delete_workshop',
@@ -85,23 +89,14 @@ Given /^there is a facilitator named "([^"]+)" for course "([^"]+)"$/ do |name, 
   )
 end
 
-Given /^I select the "([^"]*)" facilitator at index (\d+)$/ do |name, index|
-  email = @users[name][:email]
-  facilitator = "#{name} (#{email})"
-
-  steps <<~GHERKIN
-    And I wait until element "#facilitator#{index}" is visible
-    And I select the "#{facilitator}" option in dropdown "facilitator#{index}"
-  GHERKIN
-end
-
 Given /^I open the new workshop form$/ do
   steps <<~GHERKIN
     And I am on "http://studio.code.org/pd/workshop_dashboard"
-    Then I wait until element "a:contains('New Workshop')" is visible
-    Then I press the last link with text "New Workshop"
+    Then I wait until element "h1:contains('Your Workshops')" is visible
+    Then I press "new-workshop-button"
+    Then I press the last link with text "Build Your Own Workshop"
 
-    And I wait until element "h2:contains('New Workshop')" is visible
+    And I wait until element "h1:contains('New Build Your Own Workshop')" is visible
   GHERKIN
 end
 
