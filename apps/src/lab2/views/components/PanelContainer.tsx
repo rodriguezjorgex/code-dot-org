@@ -1,10 +1,9 @@
+import {useTheme} from '@code-dot-org/component-library/common/contexts';
 import {Heading2} from '@code-dot-org/component-library/typography';
 import classNames from 'classnames';
-import React, {useContext} from 'react';
+import React from 'react';
 
 import {capitalizeFirstLetter} from '@cdo/apps/util/capitalizeFirstLetter';
-
-import {ThemeContext} from '../ThemeWrapper';
 
 import moduleStyles from './panelContainer.module.scss';
 
@@ -36,7 +35,7 @@ const PanelContainer: React.FunctionComponent<PanelContainerProps> = ({
   className,
   headerClassName,
 }) => {
-  const {theme} = useContext(ThemeContext);
+  const {theme} = useTheme();
   const capitalizedTheme = capitalizeFirstLetter(theme);
 
   return (
