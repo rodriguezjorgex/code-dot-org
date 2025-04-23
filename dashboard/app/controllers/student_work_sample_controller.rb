@@ -166,8 +166,9 @@ class StudentWorkSampleController < ApplicationController
       s3_args[:version_id] = code_version if code_version
       begin
         body = s3.get_object(s3_args)[:body].read
-      rescue
-        CDO.log.info("No code sample found in S3 with with args: #{s3_args}")
+      rescue => exception
+        Honeybadger.notify(exception, context: {message: "No code sample found in S3 with with args: #{s3_args}"})
+        return
       end
       student_code = body ? JSON.parse(body)['source'] : nil
     end
