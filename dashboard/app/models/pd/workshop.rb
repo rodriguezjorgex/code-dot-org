@@ -447,8 +447,8 @@ class Pd::Workshop < ApplicationRecord
     raise 'Workshop must have at least one session to start.' if sessions.empty?
 
     sessions.each(&:assign_code)
-    # using update_column to skip validation
-    update_column(:started_at, Time.zone.now)
+    # using update_attribute to skip validation
+    update_attribute(:started_at, Time.zone.now)
 
     # return nil in case any callers are still expecting a section
     nil
@@ -458,8 +458,8 @@ class Pd::Workshop < ApplicationRecord
   # The return value is nil.
   def end!
     return unless ended_at.nil?
-    # using update_column to skip validation
-    update_column(:ended_at, Time.zone.now)
+    # using update_attribute to skip validation
+    update_attribute(:ended_at, Time.zone.now)
 
     # We want to send exit surveys now, but that needs to be done on the
     # production-daemon machine, so we'll let the process_pd_workshop_emails
@@ -480,8 +480,8 @@ class Pd::Workshop < ApplicationRecord
       next unless !workshop.processed_at || workshop.processed_at < workshop.ended_at
       workshop.send_exit_surveys
       workshop.send_facilitator_post_surveys
-      # using update_column to skip validation
-      workshop.update_column(:processed_at, Time.zone.now)
+      # using update_attribute to skip validation
+      workshop.update_attribute(:processed_at, Time.zone.now)
     end
   end
 

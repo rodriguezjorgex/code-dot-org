@@ -214,8 +214,8 @@ class Api::V1::Pd::WorkshopsController < ApplicationController
 
   # POST /api/v1/pd/workshops/1/unstart (admin only)
   def unstart
-    # using update_column to skip validation
-    @workshop.update_column(:started_at, nil)
+    # using update_attribute to skip validation
+    @workshop.update_attribute(:started_at, nil)
     head :no_content
   end
 
@@ -227,8 +227,8 @@ class Api::V1::Pd::WorkshopsController < ApplicationController
 
   # POST /api/v1/pd/workshops/1/reopen (admin only)
   def reopen
-    # using update_column to skip validation
-    @workshop.update_column(:ended_at, nil)
+    # using update_attribute to skip validation
+    @workshop.update_attribute(:ended_at, nil)
     head :no_content
   end
 
