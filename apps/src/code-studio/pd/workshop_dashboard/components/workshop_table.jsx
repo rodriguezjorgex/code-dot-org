@@ -14,6 +14,7 @@ import color from '@cdo/apps/util/color';
 
 import {workshopShape} from '../types.js';
 import {shouldShowSurveyResults} from '../workshop_summary_utils';
+import {COURSE_BUILD_YOUR_OWN} from '../workshopConstants';
 
 import FacilitatorsList from './facilitators_list';
 import SessionTimesList from './session_times_list';
@@ -248,13 +249,13 @@ export default class WorkshopTable extends React.Component {
   // Because we want Subjects and Topics to show in the same column (since they are
   // mutually exclusive for a workshop), we want to format subjects as plain text
   // and topics as an unordered list.
-  formatSubjectOrTopics = subjectsOrTopics => {
-    if (subjectsOrTopics.includes('Topics:')) {
-      const topics = subjectsOrTopics.slice(8).split(',');
+  formatSubjectOrTopics = (subjectsOrTopics, {rowData}) => {
+    if (rowData.course === COURSE_BUILD_YOUR_OWN) {
+      const topics = subjectsOrTopics.split(',');
       return (
         <ul>
           {topics.map(topic => {
-            return <li>{topic}</li>;
+            return <li key={`topic-${topic}`}>{topic}</li>;
           })}
         </ul>
       );

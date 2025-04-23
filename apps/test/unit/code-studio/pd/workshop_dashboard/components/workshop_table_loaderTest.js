@@ -91,7 +91,7 @@ describe('WorkshopTableLoader', () => {
       defaultFakeResponseData.workshops[0].subject
     );
     expect(returnedWorkshopSubjects[1].subject).to.eql(
-      `Topics: ${defaultFakeResponseData.workshops[1].course_offering_names}`
+      defaultFakeResponseData.workshops[1].course_offering_names
     );
   });
 

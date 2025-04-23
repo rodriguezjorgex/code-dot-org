@@ -22,7 +22,7 @@ function processWorkshopData(workshopData) {
     ...workshopData,
     workshops: workshopData.workshops?.map(ws => {
       if (ws.course === COURSE_BUILD_YOUR_OWN) {
-        ws.subject = `Topics: ${ws.course_offering_names}`;
+        ws.subject = ws.course_offering_names;
       }
       return ws;
     }),
