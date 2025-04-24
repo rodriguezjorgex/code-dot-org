@@ -506,6 +506,11 @@ When /^I select the "([^"]*)" option in dropdown named "([^"]*)"( to load a new 
   select_dropdown(@browser.find_element(:css, "select[name=#{element_name}]"), option_text, load)
 end
 
+When /^I select the "([^"]*)" option in the last dropdown named "([^"]*)"( to load a new page)?$/ do |option_text, element_name, load|
+  dropdowns = @browser.find_elements(:css, "select[name=#{element_name}]")
+  select_dropdown(dropdowns.last, option_text, load)
+end
+
 When /^I select the "([^"]*)" option withing the "([^"]*)" group in dropdown "([^"]*)"( to load a new page)?$/ do |option_text, option_group, selector, load|
   select_element = @browser.find_element(:css, selector)
   expect(select_element).not_to be_nil
@@ -1628,4 +1633,8 @@ end
 And(/^I hover over selector "([^"]*)"$/) do |selector|
   element = @browser.find_element(:css, selector)
   @browser.action.move_to(element).perform
+end
+
+And(/^I clean up my records$/) do
+  clean_up_records
 end

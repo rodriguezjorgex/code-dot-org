@@ -2,13 +2,11 @@
 @eyes
 Feature: Workshop Dashboard
 
-# This test has become flaky, so skipping until we can address the cause of the flakiness
-# See https://codedotorg.atlassian.net/browse/ACQ-2623
-
 Scenario: New workshop: BYOW
   Given I am a program manager named "Test BYO PM" for regional partner "Test Partner"
   Given there is a facilitator named "Test BYO Facilitator 1" for course "Build Your Own Workshop"
   Given there is a facilitator named "Test BYO Facilitator 2" for course "Build Your Own Workshop"
+  Given there is a course offering named "Teaching Coding with AI"
   Then I open the new workshop form
   Then I open my eyes to test "New workshop: BYOW"
 
@@ -24,10 +22,13 @@ Scenario: New workshop: BYOW
   And I click selector "#courseOfferings-dropdown-button"
   And I wait until element "label:contains('Teaching Coding with AI')" is visible
   And I click selector "label:contains('Teaching Coding with AI')"
+  And I press keys "01012025" for element "input[name='date']"
+  And I select the "9:00am" option in dropdown named "start"
+  And I select the "2:00pm" option in dropdown named "end"
   And I press keys "The auditorium" for element "input[name='locationName']"
   And I press keys "123 Main St" for element "input[name='locationAddress']"
   And I click selector "button:contains('Add Date')"
-  And I select the "Virtual" option in dropdown named "format"
+  And I select the "Virtual" option in the last dropdown named "format"
   And I press keys "example.com" for element "input[name='meetingLink']"
   And I wait until the dropdown named "regionalPartnerId" has option "Test Partner"
   And I select the "Test Partner" option in dropdown named "regionalPartnerId"
