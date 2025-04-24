@@ -16,7 +16,7 @@ class Pd::RegionalPartnerMiniContactController < ApplicationController
     @script_data = {
       props: {
         options: options,
-        apiEndpoint: "/api/v1/pd/regional_partner_mini_contacts"
+        apiEndpoint: "/pd/regional_partner_mini_contacts"
       }.to_json
     }
   end

@@ -26,7 +26,7 @@ FormDefault.args = {
     grade_levels: ['6-8'],
     role: 'Teacher',
   },
-  apiEndpoint: '/dashboardapi/v1/pd/regional_partner_mini_contacts/',
+  apiEndpoint: '/pd/regional_partner_mini_contacts/',
   sourcePageId: 'homepage',
 };
 
