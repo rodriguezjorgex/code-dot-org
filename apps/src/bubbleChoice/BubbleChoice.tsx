@@ -19,27 +19,25 @@ import {
 } from '@cdo/apps/lab2/types';
 import EnhancedSafeMarkdown from '@cdo/apps/templates/EnhancedSafeMarkdown';
 import ProgressBubble from '@cdo/apps/templates/progress/ProgressBubble';
-import {capitalizeFirstLetter} from '@cdo/apps/util/capitalizeFirstLetter';
 import {useAppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
 import {LevelStatus} from '@cdo/generated-scripts/sharedConstants';
 
-import {getCurrentLesson} from '../code-studio/progressReduxSelectors';
 import {commonI18n} from '../types/locale';
 
 import styles from './BubbleChoice.module.scss';
 
 const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
-  // The aspect ratio of each sublevel button.
-  const aspectRatio = 0.666;
+  // The image has a 4:3 aspect ratio.
+  const imageAspectRatio = 4 / 3;
+
+  // The aspect ratio of each sublevel button.  It has an image above a text area,
+  // each with the same aspect ratio.
+  const aspectRatio = imageAspectRatio / 2;
 
   // The gap (in pixels) between each sublevel button.
   const gap = 15;
 
   const dispatch = useAppDispatch();
-  const background = useAppSelector(
-    state => getCurrentLesson(state)?.background || null
-  );
-  const backgroundSuffix = capitalizeFirstLetter(background || 'light');
   const levelBubbleChoice = levelProperties.levelData as BubbleChoiceLevelData;
   const sublevelsStatus = useAppSelector(state =>
     levelBubbleChoice.sublevels.map(
@@ -111,9 +109,9 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
     const numRows = bestNumRows;
     const numColumns = candidateLayouts.get(bestNumRows);
     return [numRows, numColumns, bestSize];
-  }, [candidateLayouts, containerHeight, containerWidth]);
+  }, [aspectRatio, candidateLayouts, containerHeight, containerWidth]);
 
-  const imageHeight = (3 / 4) * imageWidth;
+  const imageHeight = imageWidth / imageAspectRatio;
 
   const sublevelToProgressBubbleLevel = (index: number) => {
     const sublevel = levelBubbleChoice.sublevels[index];
@@ -137,14 +135,12 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
     <div id="bubble-choice" className={styles.bubbleChoiceContainer}>
       <div>
         {levelBubbleChoice.displayName && (
-          <Heading4 className={styles[`heading${backgroundSuffix}`]}>
+          <Heading4 className={styles.heading}>
             {levelBubbleChoice.displayName}
           </Heading4>
         )}
         {levelBubbleChoice.description && (
-          <div className={styles[`text${backgroundSuffix}`]}>
-            {levelBubbleChoice.description}
-          </div>
+          <div className={styles.text}>{levelBubbleChoice.description}</div>
         )}
       </div>
       <div className={styles.subLevelsOuterContainer} ref={containerRef}>
@@ -160,10 +156,7 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
             <button
               type="button"
               key={index}
-              className={classNames(
-                styles.sublevelButton,
-                styles[`sublevelButton${backgroundSuffix}`]
-              )}
+              className={styles.sublevelButton}
               style={{
                 width: imageWidth,
                 height: imageWidth / aspectRatio,
@@ -191,7 +184,7 @@ const BubbleChoice: React.FC<LabProps> = ({levelProperties}) => {
               <div className={styles.sublevelTextContainer}>
                 <Heading4
                   className={classNames(
-                    styles[`heading${backgroundSuffix}`],
+                    styles.heading,
                     styles.sublevelTextHeading
                   )}
                 >
