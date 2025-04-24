@@ -9,7 +9,6 @@ import {
 import {queryParams} from '@cdo/apps/code-studio/utils';
 
 window.showRegionalPartnerMiniContact = function () {
-  console.log('test for ui');
   const regionalPartnerMiniContactElement = $(
     '#regional-partner-mini-contact-container'
   );
