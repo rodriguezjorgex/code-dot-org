@@ -294,7 +294,7 @@ export class RegionalPartnerMiniContactPopupLink extends React.Component {
               {this.state.options && (
                 <RegionalPartnerMiniContact
                   options={this.state.options}
-                  apiEndpoint="/pd/regional_partner_mini_contacts/"
+                  apiEndpoint="/dashboardapi/v1/pd/regional_partner_mini_contacts/"
                   sourcePageId={this.props.sourcePageId}
                 />
               )}

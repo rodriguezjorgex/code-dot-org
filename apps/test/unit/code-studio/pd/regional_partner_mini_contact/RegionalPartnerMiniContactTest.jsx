@@ -4,7 +4,7 @@ import React from 'react';
 import {RegionalPartnerMiniContact} from '@cdo/apps/code-studio/pd/regional_partner_mini_contact/RegionalPartnerMiniContact';
 
 describe('RegionalPartnerMiniContactTest', () => {
-  const API_ENDPOINT = '/pd/regional_partner_mini_contacts';
+  const API_ENDPOINT = '/api/v1/pd/regional_partner_mini_contacts';
   const OPTIONS = {};
   const FIELD_EXPECTATIONS = {
     name: {type: 'FieldGroup', expectRequired: false},

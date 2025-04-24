@@ -33,7 +33,7 @@ window.showRegionalPartnerMiniContact = function () {
       ReactDOM.render(
         <RegionalPartnerMiniContact
           options={options}
-          apiEndpoint="/pd/regional_partner_mini_contacts/"
+          apiEndpoint="/dashboardapi/v1/pd/regional_partner_mini_contacts/"
           sourcePageId={sourcePageId}
         />,
         regionalPartnerMiniContactElement[0]
