@@ -3,7 +3,7 @@ require 'test_helper'
 class Api::V1::Pd::RegionalPartnerMiniContactsControllerTest < ActionDispatch::IntegrationTest
   test 'can create a new regional partner mini contact' do
     # Use the same state & zip as the mini-contact factory's defaults.
-    state = 'OH'
+    state = "OH"
     zip = '45242'
 
     regional_partner = create :regional_partner, name: "partner_OH_45242"
