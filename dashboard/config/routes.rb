@@ -653,16 +653,9 @@ Dashboard::Application.routes.draw do
       end
 
       # internal engineering dashboards
-      controller :dynamic_config do
-        get :dynamic_config, action: 'show', as: 'dynamic_config_state'
-
-        get :gatekeeper, action: 'gatekeeper_show', as: 'gatekeeper_show'
-        post '/gatekeeper/delete', action: 'gatekeeper_delete'
-        post '/gatekeeper/set', action: 'gatekeeper_set'
-
-        get :dcdo, action: 'dcdo_show', as: 'dcdo_show'
-        post '/dcdo/set', action: 'dcdo_set'
-      end
+      resource :dynamic_config, only: [:show], controller: :dynamic_config
+      resource :gatekeeper, only: [:show, :update, :destroy], controller: :gatekeeper
+      resource :dcdo, only: [:show, :update], controller: :dcdo
 
       controller :feature_mode do
         get :feature_mode, action: :show
@@ -879,7 +872,7 @@ Dashboard::Application.routes.draw do
     get 'professional-learning/facilitator/computer-science-discoveries', to: 'pd/professional_learning#csd'
     get 'professional-learning/facilitator/computer-science-fundamentals', to: 'pd/professional_learning#csf'
     get 'professional-learning/facilitator/computer-science-principles', to: 'pd/professional_learning#csp'
-    get 'professional-learning/facilitator/computer-science-ai-fundamentals', to: 'pd/professional_learning#csaif'
+    get 'professional-learning/facilitator/ai-fundamentals', to: 'pd/professional_learning#aif'
     get 'professional-learning/regional-partner/playbook', to: 'pd/professional_learning#rp_playbook'
     get 'professional-learning/regional_workshop_data/:zip_code', to: 'pd/professional_learning#regional_workshop_data'
 

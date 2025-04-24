@@ -27,11 +27,29 @@ test.describe('Caching Tests', () => {
     test.skip(getStage() === 'development', 'Only runs in Docker mode');
 
     const allTheThingsPage = new AllTheThingsPage(page, 'en-US');
-    const response = await allTheThingsPage.enableDraftMode();
+    const response = await allTheThingsPage.enableDraftMode(
+      process.env.DRAFT_MODE_TOKEN,
+    );
 
     const cacheControlHeader = response?.headers()['cache-control'];
     expect(cacheControlHeader).toEqual(
       'private, no-cache, no-store, max-age=0, must-revalidate',
+    );
+
+    const cookieHeader = await allTheThingsPage.page.context().cookies();
+
+    const prerenderBypassCookie = cookieHeader.find(
+      cookie => cookie.name === '__prerender_bypass',
+    );
+
+    expect(prerenderBypassCookie).toEqual(
+      expect.objectContaining({
+        name: '__prerender_bypass',
+        path: '/',
+        httpOnly: true,
+        secure: true, // Needed for SameSite=none
+        sameSite: 'None', // Allow cookie in cross-origin iframes
+      }),
     );
   });
 
