@@ -188,8 +188,6 @@ const GenericDialog: React.FunctionComponent<GenericDialogProps> = ({
                 color={
                   buttons?.confirm?.destructive
                     ? buttonColors.destructive
-                    : theme === 'Dark'
-                    ? buttonColors.white
                     : buttonColors.purple
                 }
                 text={buttons?.confirm?.text || commonI18n.dialogOK()}
