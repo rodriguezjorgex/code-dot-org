@@ -34,7 +34,8 @@ Given /^I am a program manager named "([^"]*)" for regional partner "([^"]*)"$/ 
   regional_partner = RegionalPartner.find_or_create_by(name: partner_name, group: 1, is_active: true)
 
   email, password = generate_user(pm_name)
-  FactoryBot.create(:program_manager, name: pm_name, email: email, password: password, regional_partner: regional_partner)
+  program_manager = FactoryBot.create(:program_manager, name: pm_name, email: email, password: password, regional_partner: regional_partner)
+  track_record_for_deletion('User', program_manager.id)
 
   steps "And I sign in as \"#{pm_name}\""
 end
@@ -69,6 +70,7 @@ end
 
 Given(/^I get the workshop id from the current url$/) do
   @workshop_id = @browser.current_url.split('/').last
+  track_record_for_deletion('Pd::Workshop', @workshop_id)
 end
 
 Given(/^I delete the workshop$/) do
@@ -84,9 +86,19 @@ Given /^there is a facilitator named "([^"]+)" for course "([^"]+)"$/ do |name, 
 
   email, password = generate_user(name)
 
-  FactoryBot.create(:pd_course_facilitator, course: course, facilitator:
-    FactoryBot.create(:facilitator, name: name, email: email, password: password)
-  )
+  facilitator = FactoryBot.create(:facilitator, name: name, email: email, password: password)
+  course_facilitator = FactoryBot.create(:pd_course_facilitator, course: course, facilitator: facilitator)
+  track_record_for_deletion('User', facilitator.id)
+  track_record_for_deletion('Pd::CourseFacilitator', course_facilitator.id)
+end
+
+Given /^there is a course offering named "([^"]+)"$/ do |name|
+  require_rails_env
+
+  co_key = name.parameterize(separator: '-')
+  course_offering = CourseOffering.find_by(key: co_key)
+  course_offering ||= FactoryBot.create(:course_offering, key: co_key, display_name: name)
+  track_record_for_deletion('CourseOffering', course_offering.id)
 end
 
 Given /^I open the new workshop form$/ do

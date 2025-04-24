@@ -49,6 +49,4 @@ Scenario: New workshop: BYOW
   And I close my eyes
 
   And I get the workshop id from the current url
-  And I delete the workshop
-  And I delete all users
-
+  And I clean up my records

@@ -335,27 +335,3 @@ def reset_session
   steps "And I wait for 3 seconds"
   navigate_to replace_hostname('http://studio.code.org/reset_session')
 end
-
-And(/^I delete all users$/) do
-  require_rails_env
-  puts "Deleting all users..."
-
-  if @users
-    @users.keys.each do |name|
-      user = User.find_by(name: name)
-      if user
-        # Delete associated records manually
-        user.user_geos.destroy_all
-        user.courses_as_facilitator.destroy_all
-
-        user.destroy
-        puts "Deleted user: #{name}"
-      else
-        puts "User not found: #{name}"
-      end
-    end
-    @users.clear # Clear the @users hash after deletion
-  else
-    puts "No users to delete."
-  end
-end
