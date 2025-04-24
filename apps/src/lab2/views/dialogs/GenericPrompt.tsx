@@ -1,8 +1,15 @@
-import {useTheme} from '@code-dot-org/component-library/common/contexts';
 import TextField from '@code-dot-org/component-library/textField';
 import {BodyTwoText} from '@code-dot-org/component-library/typography';
 import debounce from 'lodash/debounce';
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+
+import {Theme, ThemeContext} from '@cdo/apps/lab2/views/ThemeWrapper';
 
 import {useDialogControl} from './DialogControlContext';
 import GenericDialog, {
@@ -44,7 +51,7 @@ const GenericPromptBody: React.FunctionComponent<GenericPromptBodyProps> = ({
   handleInputChange,
   errorMessage,
 }) => {
-  const {theme} = useTheme();
+  const {theme} = useContext(ThemeContext);
 
   return (
     <>
@@ -55,7 +62,7 @@ const GenericPromptBody: React.FunctionComponent<GenericPromptBodyProps> = ({
         value={prompt}
         onChange={e => handleInputChange(e.target.value)}
         errorMessage={errorMessage}
-        color={theme === 'Dark' ? 'white' : undefined}
+        color={theme === Theme.DARK ? 'white' : undefined}
         id="uitest-prompt-field"
       />
     </>

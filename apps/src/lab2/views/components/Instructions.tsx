@@ -1,7 +1,6 @@
 import {Button} from '@code-dot-org/component-library/button';
-import {useTheme} from '@code-dot-org/component-library/common/contexts';
 import classNames from 'classnames';
-import React, {useEffect, useRef} from 'react';
+import React, {useContext, useEffect, useRef} from 'react';
 import {useSelector} from 'react-redux';
 
 import InstructorsOnly from '@cdo/apps/code-studio/components/InstructorsOnly';
@@ -16,6 +15,8 @@ import {
 import EnhancedSafeMarkdown from '@cdo/apps/templates/EnhancedSafeMarkdown';
 import {commonI18n} from '@cdo/apps/types/locale';
 import {useAppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
+
+import {ThemeContext} from '../ThemeWrapper';
 
 import PredictQuestion from './PredictQuestion';
 import PredictSummary from './PredictSummary';
@@ -77,7 +78,7 @@ const Instructions: React.FunctionComponent<InstructionsProps> = ({
 
   const dispatch = useAppDispatch();
 
-  const {theme} = useTheme();
+  const {theme} = useContext(ThemeContext);
 
   // Don't render anything if we don't have any instructions.
   if (instructionsText === undefined) {
@@ -121,8 +122,8 @@ interface InstructionsPanelProps {
   messageIndex?: number;
   /** If the instructions panel should be rendered vertically or horizontally. Defaults to vertical. */
   layout?: 'vertical' | 'horizontal';
-  /** Display theme. Defaults to Dark. */
-  theme?: 'Dark' | 'Light';
+  /** Display theme. Defaults to dark. */
+  theme?: 'dark' | 'light';
   /**
    * A callback when the user clicks on clickable text.
    */
@@ -155,7 +156,7 @@ const InstructionsPanel: React.FunctionComponent<InstructionsPanelProps> = ({
   message,
   messageIndex,
   layout = 'vertical',
-  theme = 'Dark',
+  theme = 'dark',
   handleInstructionsTextClick,
   predictSettings,
   predictResponse,
@@ -216,7 +217,6 @@ const InstructionsPanel: React.FunctionComponent<InstructionsPanelProps> = ({
   return (
     <div
       id="instructions"
-      data-theme="Light"
       className={classNames(
         moduleStyles['instructions-' + theme],
         vertical && moduleStyles.vertical,

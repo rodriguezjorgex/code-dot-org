@@ -10,5 +10,4 @@ export const BubbleChoiceEntryPoint: Lab2EntryPoint = {
       })
     )
   ),
-  themes: ['Light', 'Dark'],
 };

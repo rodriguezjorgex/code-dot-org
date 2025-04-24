@@ -9,13 +9,20 @@
   margin: 0 auto;
   gap: 15px;
   position: relative;
-  color: var(--text-neutral-primary);
 
-  .heading {
+  .headingLight, .textLight {
+    color: $neutral_dark;
+  }
+
+  .headingDark, .textDark {
+    color: $neutral_white;
+  }
+
+  .headingLight, .headingDark {
     margin-top: 15px;
   }
 
-  .text{
+  .textLight, .textDark {
     font-size: 14px;
   }
 
@@ -45,7 +52,7 @@
         flex-grow: 1;
         border-radius: 20px;
         overflow: hidden;
-        background-color: var(--background-neutral-secondary);
+        background-color: inherit;
         color: inherit;
         font-size: 16px;
         padding: inherit;
@@ -53,7 +60,14 @@
         max-width: 100%;
         max-height: 100%;
         container-type: size;
-        border: solid 1px var(--borders-neutral-primary);
+
+        &Light {
+          border: solid 1px $neutral_dark60;
+        }
+
+        &Dark {
+          border: solid 1px $neutral_dark80;
+        }
 
         &:hover {
           .sublevelImage {

@@ -30,7 +30,7 @@
   }
 }
 
-.instructions-Dark {
+.instructions-dark {
   @extend %instructions;
   background-color: $neutral_dark;
 
@@ -44,7 +44,7 @@
 
 }
 
-.instructions-Light {
+.instructions-light {
   @extend %instructions;
   background-color: $light_white;
 }
@@ -79,7 +79,7 @@
   }
 }
 
-.bubble-Dark {
+.bubble-dark {
   @extend %bubble;
   background-color: $light_gray_950;
   color: $light_white;
@@ -89,7 +89,7 @@
   }
 }
 
-.bubble-Light {
+.bubble-light {
   @extend %bubble;
   background-color: $light_white;
   color: $neutral_dark;

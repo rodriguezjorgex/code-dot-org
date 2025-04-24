@@ -3,7 +3,6 @@
  *
  * The top-level component that houses all Lab2 framework components.
  */
-import {ThemeProvider} from '@code-dot-org/component-library/common/contexts';
 import React from 'react';
 import {Provider} from 'react-redux';
 
@@ -17,12 +16,13 @@ import DialogManager from './dialogs/DialogManager';
 import Lab2Wrapper from './Lab2Wrapper';
 import LabViewsRenderer from './LabViewsRenderer';
 import MetricsAdapter from './MetricsAdapter';
+import ThemeWrapper from './ThemeWrapper';
 
 const Lab2: React.FunctionComponent = () => {
   return (
     <Provider store={getStore()}>
       <BrowserTextToSpeechWrapper>
-        <ThemeProvider>
+        <ThemeWrapper>
           <Lab2Wrapper>
             <DialogManager>
               <MetricsAdapter />
@@ -31,7 +31,7 @@ const Lab2: React.FunctionComponent = () => {
               </ProjectContainer>
             </DialogManager>
           </Lab2Wrapper>
-        </ThemeProvider>
+        </ThemeWrapper>
       </BrowserTextToSpeechWrapper>
     </Provider>
   );
