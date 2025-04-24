@@ -562,7 +562,8 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     rp.mappings.find_or_create_by!(zip_code: "11111")
     pm = create :program_manager, regional_partner: rp
     test_course_offerings = [] << (create :course_offering)
-    not_hidden_ws = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: pm
+    hidden_nil_ws = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: pm
+    hidden_false_ws = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: pm, hidden: false
     create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: pm, hidden: true
 
     reg_ws_data_response = get :regional_workshop_data, params: {zip_code: "11111"}
@@ -572,26 +573,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
 
     assert_equal rp.name, response_rp['name']
-    assert_equal [not_hidden_ws.id], response_workshop_ids
-  end
-
-  test 'regional_workshop_data only returns workshops that are not at capacity' do
-    rp = create :regional_partner
-    rp.mappings.find_or_create_by!(zip_code: "11111")
-    pm = create :program_manager, regional_partner: rp
-    test_course_offerings = [] << (create :course_offering)
-    ws_empty = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: pm, capacity: 3, num_enrollments: 0
-    ws_almost_full = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: pm, capacity: 3, num_enrollments: 2
-    create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: pm, capacity: 3, num_enrollments: 3
-
-    reg_ws_data_response = get :regional_workshop_data, params: {zip_code: "11111"}
-    assert_response :success
-    response_data = JSON.parse(reg_ws_data_response.body)['regional_workshop_data']
-    response_rp = response_data['regional_partner']
-    response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
-
-    assert_equal rp.name, response_rp['name']
-    assert_equal [ws_empty.id, ws_almost_full.id], response_workshop_ids
+    assert_equal [hidden_nil_ws.id, hidden_false_ws.id], response_workshop_ids
   end
 
   test 'regional_workshop_data does not return CSD, CSP, or CSA workshops when applications are closed' do

@@ -144,7 +144,6 @@ class Pd::ProfessionalLearningController < ApplicationController
   # the following criteria:
   # - Not started yet
   # - Not hidden
-  # - Not at capacity
   # - Considered to be in the regional partner's region (i.e. satisfies one of the following):
   #    - Has "National" participant group type
   #    - Has "Regional" participant group type and is associated with the given regional partner
@@ -155,13 +154,12 @@ class Pd::ProfessionalLearningController < ApplicationController
 
     partner, _ = RegionalPartner.find_by_zip(zip_code)
     rp_workshops = partner&.pd_workshops || []
-    national_workshops = Pd::Workshop.where(participant_group_type: "National") || []
+    national_workshops = Pd::Workshop.where(participant_group_type: "National").and(Pd::Workshop.where(hidden: false).or(Pd::Workshop.where(hidden: nil))) || []
     workshops = (rp_workshops + national_workshops).uniq(&:id)
 
     available_workshops = workshops.select do |ws|
       ws.state == Pd::Workshop::STATE_NOT_STARTED &&
         !ws.hidden &&
-        (ws.enrollments.blank? || ws.enrollments.count < ws.capacity) &&
         in_region?(ws, partner) &&
         has_allowed_course_for_regional_ws_page?(ws)
     end
