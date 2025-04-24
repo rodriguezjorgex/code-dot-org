@@ -21,7 +21,7 @@
     },
     "new_name": null,
     "family_name": null,
-    "serialized_at": "2025-04-23 21:05:57 UTC",
+    "serialized_at": "2025-04-24 00:39:29 UTC",
     "published_state": null,
     "instruction_type": null,
     "instructor_audience": null,
@@ -4211,7 +4211,7 @@
         "tips": [
           {
             "type": "teachingTip",
-            "markdown": "The images are presented in order from easiest (top left) to most difficult (bottom right). If students are struggling to pick an image to discuss with their partner, consider guiding them to choose an image based on difficulty-level."
+            "markdown": "The images are presented in order from easiest (top left) to most difficult (bottom right). If students are struggling to pick an image to discuss with their partner, consider guiding them to choose an image based on difficulty-level. If students struggle to get started and/or to visualize the shapes that make up the larger picture, consider sharing a copy of the **Digital Manipulative Support - Decomposing a Pixel Image** resource with them which should provide support for these students and allow them to get unstuck.\n"
           }
         ]
       },
@@ -10597,6 +10597,18 @@
       }
     },
     {
+      "name": "Digital Manipulative Support - Decomposing a Pixel Image",
+      "url": "https://docs.google.com/presentation/d/1k2M9ePhNgAXp3ba-fBi9aLI9Cf2SyEQoD9hABlTr-Zo/edit?usp=sharing",
+      "key": "decomposing_a_pixel_image_1",
+      "properties": {
+        "audience": "Teacher",
+        "type": "Resource"
+      },
+      "seeding_key": {
+        "resource.key": "decomposing_a_pixel_image_1"
+      }
+    },
+    {
       "name": "Decomposition",
       "url": "https://docs.google.com/presentation/d/1VHClwbKc66EJXAwzOO5E-7-ZS8tz8_lWKsD2Kt1VNbA/edit?usp=drive_link",
       "key": "decomposition",
@@ -10920,6 +10932,12 @@
       "seeding_key": {
         "lesson.key": "Decomposition",
         "resource.key": "decomposing_a_pixel_image"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "Decomposition",
+        "resource.key": "decomposing_a_pixel_image_1"
       }
     },
     {
