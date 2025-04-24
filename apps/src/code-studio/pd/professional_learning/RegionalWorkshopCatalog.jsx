@@ -7,7 +7,7 @@ import {
   BodyTwoText,
   OverlineTwoText,
 } from '@code-dot-org/component-library/typography';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import CalendarEmptyStateIllustration from '@cdo/apps/templates/teacherNavigation/images/CalendarEmptyStateIllustration.svg';
 import CalendarNotAvailable from '@cdo/apps/templates/teacherNavigation/images/CalendarNotAvailable.svg';
@@ -15,16 +15,23 @@ import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
 
 import style from './regionalWorkshopCatalog.module.scss';
 
-export default function RegionalWorkshopCatalog() {
-  const [zipCode, setZipCode] = useState('');
+export default function RegionalWorkshopCatalog(zip) {
+  const [zipCode, setZipCode] = useState(zip);
   const [hasSubmittedZip, setHasSubmittedZip] = useState(false);
   const [regionalPartnerText, setRegionalPartnerText] =
     useState('Zip code required');
-  const [regionalPartnerName, setRegionalPartnerName] = useState(false);
+  const [regionalPartnerName, setRegionalPartnerName] = useState('');
   const [regionalPartnerInfo, setRegionalPartnerInfo] = useState('');
   const [showRPInfoDialog, setShowRPInfoDialog] = useState(false);
   const [availableWorkshops, setAvailableWorkshops] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Load workshops for the given zip if one is passed in
+  useEffect(() => {
+    if (zip) {
+      handleSubmitZip();
+    }
+  });
 
   const handleSubmitZip = async () => {
     if (isSubmitting) {
