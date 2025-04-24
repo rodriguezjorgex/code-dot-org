@@ -260,7 +260,6 @@ const PackDialog: React.FunctionComponent<PackDialogProps> = ({player}) => {
               appConfig.getValue('pack-dialog-2-stacked') === 'true' &&
                 styles.bodyStacked
             )}
-            data-theme="Dark"
           >
             <div>{musicI18n.packDialogBody()}</div>
 
