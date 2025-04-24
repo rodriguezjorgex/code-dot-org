@@ -335,7 +335,6 @@ const ValidatedInstructions: React.FunctionComponent<InstructionsProps> = ({
   return (
     <div
       id="instructions"
-      data-theme="Light"
       className={classNames(
         moduleStyles['instructions-' + theme],
         vertical && moduleStyles.vertical,

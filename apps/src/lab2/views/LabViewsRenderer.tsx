@@ -50,9 +50,7 @@ const LabViewsRenderer: React.FunctionComponent = () => {
   const {setTheme} = useTheme();
   useEffect(() => {
     if (currentAppName) {
-      const supportedThemes = lab2EntryPoints[currentAppName]?.themes || [
-        'Dark',
-      ];
+      const supportedThemes = lab2EntryPoints[currentAppName]?.themes;
 
       if (supportedThemes.includes(capitalizedLessonBackground)) {
         setTheme(capitalizedLessonBackground);
