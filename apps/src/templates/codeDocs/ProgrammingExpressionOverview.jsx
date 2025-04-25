@@ -6,7 +6,7 @@ import {createVideoWithFallback} from '@cdo/apps/code-studio/videos';
 import EnhancedSafeMarkdown from '@cdo/apps/templates/EnhancedSafeMarkdown';
 import i18n from '@cdo/locale';
 
-import {embedBlocklyBlock} from '../utils/embeddedBlocklyUtils';
+import {embedBlocklyBlock} from '../utils/embeddedBlocklyRenderUtils';
 
 import Example from './Example';
 import ParametersTable from './ParametersTable';

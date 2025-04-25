@@ -5,7 +5,7 @@ import React, {useEffect, useState} from 'react';
 
 import colorUtil from '@cdo/apps/util/color';
 
-import {embedBlocklyBlock} from './utils/embeddedBlocklyUtils';
+import {embedBlocklyBlock} from './utils/embeddedBlocklyRenderUtils';
 
 export const NavigationItem = ({
   text,

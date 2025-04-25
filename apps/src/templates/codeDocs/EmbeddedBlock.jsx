@@ -2,7 +2,7 @@ import {Link} from '@dsco_/link';
 import PropTypes from 'prop-types';
 import React, {useRef, useEffect} from 'react';
 
-import {embedBlocklyBlock} from '../utils/embeddedBlocklyUtils';
+import {embedBlocklyBlock} from '../utils/embeddedBlocklyRenderUtils';
 
 export default function EmbeddedBlock({blockName, link, ariaLabel}) {
   const blockRef = useRef();
