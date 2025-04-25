@@ -7,16 +7,18 @@ import {
   BodyTwoText,
   OverlineTwoText,
 } from '@code-dot-org/component-library/typography';
-import React, {useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
+import React, {useEffect, useCallback, useState} from 'react';
 
+import {queryParams} from '@cdo/apps/code-studio/utils';
 import CalendarEmptyStateIllustration from '@cdo/apps/templates/teacherNavigation/images/CalendarEmptyStateIllustration.svg';
 import CalendarNotAvailable from '@cdo/apps/templates/teacherNavigation/images/CalendarNotAvailable.svg';
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
 
 import style from './regionalWorkshopCatalog.module.scss';
 
-export default function RegionalWorkshopCatalog(zip) {
-  const [zipCode, setZipCode] = useState(zip);
+export default function RegionalWorkshopCatalog({zipFromSchoolInfo}) {
+  const [zipCode, setZipCode] = useState('');
   const [hasSubmittedZip, setHasSubmittedZip] = useState(false);
   const [regionalPartnerText, setRegionalPartnerText] =
     useState('Zip code required');
@@ -26,54 +28,60 @@ export default function RegionalWorkshopCatalog(zip) {
   const [availableWorkshops, setAvailableWorkshops] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Load workshops for the given zip if one is passed in
+  // Load workshops for the given zip if one is present in the URL or is passed in as a prop
   useEffect(() => {
-    if (zip) {
-      handleSubmitZip();
+    const zipFromUrl = queryParams()['zip'];
+    const prepopulatedZip = zipFromUrl ? zipFromUrl : zipFromSchoolInfo;
+    if (prepopulatedZip) {
+      setZipCode(prepopulatedZip);
+      handleSubmitZip(prepopulatedZip);
     }
-  });
+  }, [zipFromSchoolInfo, handleSubmitZip]);
 
-  const handleSubmitZip = async () => {
-    if (isSubmitting) {
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      const response = await fetch(`regional_workshop_data/${zipCode}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': await getAuthenticityToken(),
-        },
-      });
-
-      if (response.ok) {
-        const jsonData = await response.json();
-        const regionalPartner =
-          jsonData.regional_workshop_data.regional_partner;
-        if (regionalPartner.name) {
-          setRegionalPartnerText(regionalPartner.name);
-          setRegionalPartnerName(regionalPartner.name);
-          setRegionalPartnerInfo(regionalPartner.additional_info);
-        } else {
-          setRegionalPartnerText('No regional partner found');
-          setRegionalPartnerName('');
-          setRegionalPartnerInfo('');
-        }
-        setAvailableWorkshops(
-          jsonData.regional_workshop_data.available_workshops
-        );
-        setHasSubmittedZip(true);
+  const handleSubmitZip = useCallback(
+    async submittedZip => {
+      if (isSubmitting) {
+        return;
       }
-    } catch (error) {
-      console.error(
-        'Error fetching regional partner and available workshops:',
-        error
-      );
-    }
-    setIsSubmitting(false);
-  };
+
+      setIsSubmitting(true);
+      try {
+        const response = await fetch(`regional_workshop_data/${submittedZip}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': await getAuthenticityToken(),
+          },
+        });
+
+        if (response.ok) {
+          const jsonData = await response.json();
+          const regionalPartner =
+            jsonData.regional_workshop_data.regional_partner;
+          if (regionalPartner.name) {
+            setRegionalPartnerText(regionalPartner.name);
+            setRegionalPartnerName(regionalPartner.name);
+            setRegionalPartnerInfo(regionalPartner.additional_info);
+          } else {
+            setRegionalPartnerText('No regional partner found');
+            setRegionalPartnerName('');
+            setRegionalPartnerInfo('');
+          }
+          setAvailableWorkshops(
+            jsonData.regional_workshop_data.available_workshops
+          );
+          setHasSubmittedZip(true);
+        }
+      } catch (error) {
+        console.error(
+          'Error fetching regional partner and available workshops:',
+          error
+        );
+      }
+      setIsSubmitting(false);
+    },
+    [isSubmitting]
+  );
 
   const RenderWorkshopContent = () => {
     if (!hasSubmittedZip) {
@@ -98,7 +106,11 @@ export default function RegionalWorkshopCatalog(zip) {
               maxLength={255}
               placeholder="12345"
             />
-            <Button text="Submit" color="purple" onClick={handleSubmitZip} />
+            <Button
+              text="Submit"
+              color="purple"
+              onClick={() => handleSubmitZip(zipCode)}
+            />
           </div>
         </div>
       );
@@ -197,7 +209,7 @@ export default function RegionalWorkshopCatalog(zip) {
               aria-label="submitZip"
               text="Submit"
               color="purple"
-              onClick={handleSubmitZip}
+              onClick={() => handleSubmitZip(zipCode)}
               isPending={isSubmitting}
             />
           </div>
@@ -243,3 +255,7 @@ export default function RegionalWorkshopCatalog(zip) {
     </div>
   );
 }
+
+RegionalWorkshopCatalog.propTypes = {
+  zipFromSchoolInfo: PropTypes.string,
+};
