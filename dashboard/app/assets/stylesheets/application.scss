@@ -4125,6 +4125,10 @@ html[dir=rtl] {
   }
 }
 
+[class$="--ResultsAttribution"] {
+  display: none;
+}
+
 #reset-predict-progress-button {
   display: 'inline-block';
   font-size: 12;
