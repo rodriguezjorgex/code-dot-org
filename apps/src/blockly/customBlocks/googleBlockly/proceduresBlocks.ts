@@ -184,7 +184,7 @@ GoogleBlockly.Extensions.register(
       renderingInFunctionEditor
     );
     // Open mini-toolbox by default unless the workspace is read-only.
-    flyoutToggleButton.setIcon(this.workspace.isReadOnly());
+    flyoutToggleButton.setIcon(this.workspace.options.readOnly);
   }
 );
 
