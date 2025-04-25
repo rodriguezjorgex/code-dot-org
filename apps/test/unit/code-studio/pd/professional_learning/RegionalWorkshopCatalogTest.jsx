@@ -59,7 +59,7 @@ const TEST_WORKSHOPS = [
 
 describe('RegionalWorkshopCatalog', () => {
   it('page defaults to telling the user they need to enter a zip code', () => {
-    render(<RegionalWorkshopCatalog zipFromSchoolInfo={null} />);
+    render(<RegionalWorkshopCatalog zipFromSchoolInfo="" />);
     screen.getByText('Enter zip code to see workshops');
 
     // No regional partner retrieved with an empty zip
@@ -78,7 +78,7 @@ describe('RegionalWorkshopCatalog', () => {
           },
         }),
     });
-    render(<RegionalWorkshopCatalog zipFromSchoolInfo={null} />);
+    render(<RegionalWorkshopCatalog zipFromSchoolInfo="" />);
 
     fireEvent.change(screen.getByRole('textbox', {name: 'zipSearch'}), {
       target: {value: zip},
@@ -122,7 +122,7 @@ describe('RegionalWorkshopCatalog', () => {
           },
         }),
     });
-    render(<RegionalWorkshopCatalog zipFromSchoolInfo={null} />);
+    render(<RegionalWorkshopCatalog zipFromSchoolInfo="" />);
 
     fireEvent.change(screen.getByRole('textbox', {name: 'zipSearch'}), {
       target: {value: zip},
@@ -186,7 +186,7 @@ describe('RegionalWorkshopCatalog', () => {
           },
         }),
     });
-    render(<RegionalWorkshopCatalog zipFromSchoolInfo={null} />);
+    render(<RegionalWorkshopCatalog zipFromSchoolInfo="" />);
 
     // Button to open dialog starts not enabled
     expect(screen.getByRole('button', {name: 'partnerInfo'})).toBeDisabled();
@@ -233,7 +233,7 @@ describe('RegionalWorkshopCatalog', () => {
         }),
     });
     setWindowLocation({search: `?zip=${zip}`});
-    render(<RegionalWorkshopCatalog zipFromSchoolInfo={null} />);
+    render(<RegionalWorkshopCatalog zipFromSchoolInfo="" />);
 
     await waitFor(() => {
       // Regional Partner name and contact
