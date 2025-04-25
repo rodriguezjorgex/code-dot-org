@@ -23,6 +23,8 @@ import {
   Errors,
 } from '../../../types';
 
+import {AddressLookupInput} from './AddressLookupInput';
+
 import commonStyles from '../../../styles.module.scss';
 import styles from '../styles.module.scss';
 
@@ -81,8 +83,9 @@ export const SessionPart: FC<{
 
   const updateSession = useCallback(
     (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+      const {name, value} = event.target;
       const update = {
-        [event.target.name]: event.target.value,
+        [name.replace('address-search', '').trim()]: value,
       };
       handleSession(update);
     },
@@ -209,13 +212,12 @@ export const SessionPart: FC<{
                     value={locationName}
                     errorMessage={errors?.locationName}
                   />
-                  <TextField
+                  <AddressLookupInput
                     label={fields.location_address.label}
                     name={fields.location_address.stateKey}
                     size="s"
                     className={classNames(
                       commonStyles.item,
-
                       commonStyles.textField
                     )}
                     onChange={updateSession}
