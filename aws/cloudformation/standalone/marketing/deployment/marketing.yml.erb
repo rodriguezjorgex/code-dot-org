@@ -593,7 +593,8 @@ Resources:
           CookiesConfig:
             CookieBehavior: whitelist
             Cookies:
-              - __prerender_bypass
+              - __prerender_bypass # Next.js Draft mode
+              - location_ # Code.org user locale
           QueryStringsConfig:
             QueryStringBehavior: none
         Comment: Cache policy for the marketing app
@@ -629,6 +630,7 @@ Resources:
           ViewerProtocolPolicy: redirect-to-https
           Compress: true
           CachePolicyId: !Ref ApplicationCachingPolicy
+          OriginRequestPolicyId: "216adef6-5c7f-47e4-b989-5492eafa07d3" # AllViewer
 
         ViewerCertificate:
           AcmCertificateArn:
