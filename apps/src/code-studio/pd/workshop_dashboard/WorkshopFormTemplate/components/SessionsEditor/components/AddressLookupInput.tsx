@@ -1,10 +1,19 @@
+import FontAwesomeV6Icon from '@code-dot-org/component-library/fontAwesomeV6Icon';
 import TextField, {
   TextFieldProps,
 } from '@code-dot-org/component-library/textField';
 import type {AddressAutofillRetrieveResponse} from '@mapbox/search-js-core';
 import {AddressAutofill} from '@mapbox/search-js-react';
-import React, {ChangeEvent, useCallback, useEffect, useState} from 'react';
+import React, {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {useSelector} from 'react-redux';
+
+import styles from '../styles.module.scss';
 
 export const AddressLookupInput = ({
   label,
@@ -23,6 +32,7 @@ export const AddressLookupInput = ({
   value: string;
   errorMessage?: string;
 }) => {
+  const inputContainerRef = useRef<HTMLDivElement>(null);
   const [fullAddress, setFullAddress] = useState<string | undefined>();
   const accessToken = useSelector(
     ({mapbox: {mapboxAccessToken}}: {mapbox: {mapboxAccessToken: string}}) =>
@@ -57,19 +67,27 @@ export const AddressLookupInput = ({
         },
       } as ChangeEvent<HTMLInputElement>);
       setFullAddress(undefined);
+      const inputElement = inputContainerRef.current?.querySelector('input');
+      inputElement?.setAttribute('data-touched', 'false');
+      inputElement?.setAttribute('data-dirty', 'false');
+      inputElement?.setAttribute('data-pristine', 'true');
     }
   }, [fullAddress, value, name, onChange]);
 
   const textField = (
-    <TextField
-      name={name}
-      label={label}
-      size={size}
-      onChange={onChange}
-      value={value}
-      className={className}
-      errorMessage={errorMessage}
-    />
+    <div ref={inputContainerRef} className={styles.locationAddressContainer}>
+      <TextField
+        name={name}
+        label={label}
+        size={size}
+        onChange={onChange}
+        value={value}
+        className={className}
+        errorMessage={errorMessage}
+        placeholder="Enter a location to see results"
+      />
+      <FontAwesomeV6Icon iconName="magnifying-glass" />
+    </div>
   );
 
   return accessToken ? (

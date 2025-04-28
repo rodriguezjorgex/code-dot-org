@@ -35,6 +35,25 @@
   }
 }
 
+.locationAddressContainer {
+  width: 100%;
+  position: relative;
+
+  input {
+    padding-right: 2rem;
+  }
+
+  i {
+    position: absolute;
+    right: 0;
+    bottom: 0.425rem;
+    inset-inline-end: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 125%;
+    width: 1.125rem;
+  }
+}
+
 .addDateButton {
   border: 1px dashed var(--borders-neutral-primary);
 }
