@@ -144,9 +144,8 @@ jobs:
       env:
         BASE_DOMAIN: ${{ vars.MARKETING_BASE_DOMAIN }}
         SUBDOMAIN_NAME: ${{ vars.MARKETING_SUBDOMAIN_NAME }}
-        MARKETING_ADDRESS: ${{ vars.MARKETING_ADDRESS }}
       run: |
-        BUCKET_NAME="$MARKETING_SUBDOMAIN_NAME.$MARKETING_BASE_DOMAIN-static-assets"
+        BUCKET_NAME="$SUBDOMAIN_NAME.$BASE_DOMAIN-static-assets"
         
         echo "Uploading static assets to $BUCKET_NAME"
         
