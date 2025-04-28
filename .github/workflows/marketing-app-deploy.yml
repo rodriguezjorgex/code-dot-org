@@ -145,11 +145,7 @@ jobs:
         BASE_DOMAIN: ${{ vars.MARKETING_BASE_DOMAIN }}
         SUBDOMAIN_NAME: ${{ vars.MARKETING_SUBDOMAIN_NAME }}
       run: |
-        if [ "$BASE_DOMAIN" = "dev-code.org" ]; then
-          BUCKET_NAME="cdo-dev-$SUBDOMAIN_NAME-static-assets"
-        else
-          BUCKET_NAME="cdo-$SUBDOMAIN_NAME-static-assets"
-        fi
+        BUCKET_NAME="$MARKETING_ADDRESS-static-assets"
         
         echo "Uploading static assets to $BUCKET_NAME"
         
