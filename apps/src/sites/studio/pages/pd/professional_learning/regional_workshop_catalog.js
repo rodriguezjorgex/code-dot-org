@@ -8,7 +8,7 @@ import getScriptData from '@cdo/apps/util/getScriptData';
 $(() => {
   const zipFromSchoolInfo = getScriptData('zipFromSchoolInfo') || '';
   ReactDOM.render(
-    <RegionalWorkshopCatalog zipFromSchoolInfo={`${zipFromSchoolInfo}`} />,
+    <RegionalWorkshopCatalog zipFromSchoolInfo={zipFromSchoolInfo} />,
     document.getElementById('regional-workshop-catalog')
   );
 });

@@ -77,8 +77,9 @@ export default function RegionalWorkshopCatalog({zipFromSchoolInfo}) {
           'Error fetching regional partner and available workshops:',
           error
         );
+      } finally {
+        setIsSubmitting(false);
       }
-      setIsSubmitting(false);
     },
     [isSubmitting]
   );
