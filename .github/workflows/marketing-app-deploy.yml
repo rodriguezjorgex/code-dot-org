@@ -144,6 +144,7 @@ jobs:
       env:
         BASE_DOMAIN: ${{ vars.MARKETING_BASE_DOMAIN }}
         SUBDOMAIN_NAME: ${{ vars.MARKETING_SUBDOMAIN_NAME }}
+        MARKETING_ADDRESS: ${{ vars.MARKETING_ADDRESS }}
       run: |
         BUCKET_NAME="$MARKETING_ADDRESS-static-assets"
         
