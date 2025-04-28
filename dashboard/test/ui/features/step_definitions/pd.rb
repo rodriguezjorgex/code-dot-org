@@ -97,7 +97,7 @@ Given /^there is a course offering named "([^"]+)"$/ do |name|
 
   co_key = name.parameterize(separator: '-')
   course_offering = CourseOffering.find_by(key: co_key)
-  course_offering ||= FactoryBot.create(:course_offering, key: co_key, display_name: name)
+  course_offering ||= FactoryBot.create(:course_offering, key: co_key, display_name: name, curriculum_type: 'Professional Learning', header: 'self_paced')
   track_record_for_deletion('CourseOffering', course_offering.id)
 end
 
