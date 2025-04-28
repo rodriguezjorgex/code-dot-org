@@ -146,7 +146,7 @@ jobs:
         SUBDOMAIN_NAME: ${{ vars.MARKETING_SUBDOMAIN_NAME }}
         MARKETING_ADDRESS: ${{ vars.MARKETING_ADDRESS }}
       run: |
-        BUCKET_NAME="$MARKETING_ADDRESS-static-assets"
+        BUCKET_NAME="$MARKETING_SUBDOMAIN_NAME.$MARKETING_BASE_DOMAIN-static-assets"
         
         echo "Uploading static assets to $BUCKET_NAME"
         
@@ -157,7 +157,7 @@ jobs:
       with:
         name: ${{ vars.MARKETING_CLOUDFORMATION_STACK_NAME }}
         template: ./aws/cloudformation/standalone/marketing/deployment/marketing.yml
-        parameter-overrides: "ContainerImageHashDigest=${{ needs.build-and-push-image.outputs.digest }},BaseDomainName=${{ vars.MARKETING_BASE_DOMAIN }},SubdomainName=${{ vars.MARKETING_SUBDOMAIN_NAME }}"
+        parameter-overrides: "ContainerImageHashDigest=${{ needs.build-and-push-image.outputs.digest }},BaseHostedZoneId=${{ vars.MARKETING_BASE_HOSTED_ZONE_ID }},BaseDomainName=${{ vars.MARKETING_BASE_DOMAIN }},SubdomainName=${{ vars.MARKETING_SUBDOMAIN_NAME }},CloudFrontTLSCertificateArn=${{ vars.MARKETING_CLOUDFRONT_TLS_CERTIFICATE_ARN }}"
         capabilities: CAPABILITY_IAM, CAPABILITY_NAMED_IAM
 
   ui-tests:
@@ -188,5 +188,5 @@ jobs:
           CONTENTFUL_SPACE_ID: ${{ vars.CONTENTFUL_SPACE_ID }}
           CONTENTFUL_DELIVERY_TOKEN: ${{ secrets.CONTENTFUL_DELIVERY_TOKEN}}
           APPLITOOLS_API_KEY: ${{ secrets.APPLITOOLS_API_KEY}}
-          MARKETING_BASE_URL: ${{ vars.MARKETING_BASE_URL }}
+          MARKETING_BASE_URL: "https://${{ vars.MARKETING_SUBDOMAIN_NAME }}.${{ vars.MARKETING_BASE_DOMAIN }}"
           DRAFT_MODE_TOKEN: ${{ secrets.DRAFT_MODE_TOKEN }}
