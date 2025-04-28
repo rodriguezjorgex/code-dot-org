@@ -1,5 +1,6 @@
 import Alert from '@code-dot-org/component-library/alert';
 import Checkbox from '@code-dot-org/component-library/checkbox';
+import {ThemeProvider} from '@code-dot-org/component-library/common/contexts';
 import {SimpleDropdown} from '@code-dot-org/component-library/dropdown';
 import {BodyFourText} from '@code-dot-org/component-library/typography';
 import classNames from 'classnames';
@@ -25,7 +26,6 @@ import EditMusicToolbox from './EditMusicToolbox';
 import RawJsonEditor from './RawJsonEditor';
 
 import moduleStyles from './edit-music-level-data.module.scss';
-
 const VALID_LIBRARIES = [
   DEFAULT_LIBRARY,
   'launch2024',
@@ -109,7 +109,7 @@ const EditMusicLevelData: React.FunctionComponent<EditMusicLevelDataProps> = ({
   const restrictedPackKeys =
     (restrictedPackOptions || []).map(pack => pack.value) || [];
   return (
-    <div>
+    <ThemeProvider>
       <input
         type="hidden"
         id="level_level_data"
@@ -421,7 +421,7 @@ const EditMusicLevelData: React.FunctionComponent<EditMusicLevelDataProps> = ({
           />
         </div>
       </CollapsibleSection>
-    </div>
+    </ThemeProvider>
   );
 };
 
