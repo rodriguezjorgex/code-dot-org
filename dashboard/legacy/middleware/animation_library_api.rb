@@ -20,14 +20,11 @@ ANIMATION_DEFAULT_MANIFEST_JSON = 'animation-manifests/manifests/defaultSprites.
 class AnimationLibraryApi < Sinatra::Base
   helpers do
     load(CDO.dir('shared', 'middleware', 'helpers', 'core.rb'))
+    load(CDO.dir('dashboard', 'legacy', 'middleware', 'helpers', 'auth_helpers.rb'))
     
-    # Verify that the user has admin or staff privileges
+    # Verify that the user has admin AND levelbuilder privileges
     def authenticate_animation_library_request!
-      # Get the current user from the session
-      user = request.env['rack.session']&.[]('user')
-      
-      # Verify that the user is logged in and has admin +levelbuilder privileges
-      unless user && user.admin? && user.levelbuilder?
+      unless admin? && levelbuilder?
         forbidden("You must be an admin, staff member, or level builder to modify animation library resources\n")
       end
     end

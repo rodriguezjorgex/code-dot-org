@@ -47,6 +47,11 @@ def admin?
   current_user && !!current_user[:admin]
 end
 
+# @returns [Boolean] true if the current user has levelbuilder permission.
+def levelbuilder?
+  has_permission?('levelbuilder')
+end
+
 # @param [String] permission - Name of the permission we're interested in
 # @returns [Boolean] true if the current user has the specified dashboard permission
 def has_permission?(permission)
