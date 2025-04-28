@@ -32,7 +32,8 @@ import Sortable from './Sortable';
 import moduleStyles from './styles/fileTabs.module.scss';
 
 export const FileTabs = React.memo(() => {
-  const {source, rearrangeFiles, setActiveFile} = useCodebridgeContext();
+  const {source, rearrangeFiles, setActiveFile, closeFile} =
+    useCodebridgeContext();
 
   const files = getOpenFiles(source);
 
@@ -74,6 +75,9 @@ export const FileTabs = React.memo(() => {
     if (event.key === 'Enter' || event.key === ' ') {
       // We don't stop event propagation here because we want the close button to work.
       setActiveFile(fileId);
+    }
+    if (event.key === 'Backspace' || event.key === 'Delete') {
+      closeFile(fileId);
     }
   }
 
