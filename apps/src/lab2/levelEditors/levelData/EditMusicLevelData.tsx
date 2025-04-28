@@ -26,6 +26,7 @@ import EditMusicToolbox from './EditMusicToolbox';
 import RawJsonEditor from './RawJsonEditor';
 
 import moduleStyles from './edit-music-level-data.module.scss';
+
 const VALID_LIBRARIES = [
   DEFAULT_LIBRARY,
   'launch2024',
