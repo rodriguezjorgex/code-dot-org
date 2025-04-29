@@ -33,7 +33,7 @@ raise 'Input directory is required' unless $options[:input_dir] && !$options[:in
 $options[:output_dir] ||= $options[:input_dir]
 
 $output_dir = File.join('/mnt/tmp-curriculum-export', 'sourced', $options[:output_dir])
-FileUtils.mkdir_p($output_dir)
+FileUtils.mkdir_p("#{$output_dir}/progress")
 
 require_relative '../../../deployment'
 
@@ -57,7 +57,7 @@ end
 $max_processes = 25
 
 def process_s3_file(bucket, key)
-  output_filename = File.join($output_dir, File.basename(key))
+  output_filename = File.join($output_dir, 'progress', File.basename(key))
 
   if File.exist?(output_filename)
     puts "Skipping #{File.basename(key)} because output file already exists: #{output_filename}"
@@ -104,16 +104,29 @@ rescue NoMethodError => exception
   nil
 end
 
+def copy_eval_files
+  start_time = Time.now
+  # copy evals directory from input_dir in s3 to output_dir in local filesystem
+  keys = list_s3_files('cdo-data-sharing-internal', "unloaded-unit-progress/#{$options[:input_dir]}/evals/")
+  return if keys.empty?
+  puts "Found #{keys.size} files in s3://cdo-data-sharing-internal/unloaded-unit-progress/#{$options[:input_dir]}/evals/"
+  system("aws s3 cp --recursive s3://cdo-data-sharing-internal/unloaded-unit-progress/#{$options[:input_dir]}/evals/ #{$output_dir}/evals/")
+  raise "Failed to copy evals files" unless $?.success?
+  puts "Copied evals files to #{$output_dir}/evals in #{(Time.now - start_time).round(2)} seconds."
+end
+
 def main
   start_time = Time.now
-  keys = list_s3_files('cdo-data-sharing-internal', "unloaded-unit-progress/#{$options[:input_dir]}/")
-  puts "Found #{keys.size} files in s3://cdo-data-sharing-internal/unloaded-unit-progress/#{$options[:input_dir]}/"
+  keys = list_s3_files('cdo-data-sharing-internal', "unloaded-unit-progress/#{$options[:input_dir]}/progress/")
+  puts "Found #{keys.size} files in s3://cdo-data-sharing-internal/unloaded-unit-progress/#{$options[:input_dir]}/progress/"
 
   keys.each do |key|
     process_s3_file('cdo-data-sharing-internal', key)
   end
 
   puts "Processed source in #{(Time.now - start_time).round(2)} seconds."
+
+  copy_eval_files
 end
 
 main
