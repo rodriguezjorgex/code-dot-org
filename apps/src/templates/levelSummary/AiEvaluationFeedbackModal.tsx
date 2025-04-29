@@ -37,7 +37,7 @@ const AiEvaluationFeedbackModal: React.FC<AiEvaluationFeedbackModalProps> = ({
       tooHigh: aiTooHigh,
       tooLow: aiTooLow,
       profanityFalsePositive: aiProfanityFalsePositive,
-      Vague: aiVague,
+      vague: aiVague,
       feedbackOther: aiFeedbackOther,
       otherContent: aiOtherContent,
     };
