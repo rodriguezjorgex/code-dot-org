@@ -42,26 +42,37 @@ module AichatSafetyHelper
       details = nil
       start_time = Time.now
       report_openai_safety_check("Start")
-      # Try twice in case of network errors or model not correctly following directions and
-      # replying with something other valid expected output.
       attempts = 1
+
       Retryable.retryable(tries: 2) do
-        messages = safety_check_messages(text, level_id)
-        response = client.request_chat_completion(messages, 1)
+        if attempts == 1
+          messages = safety_check_messages(text, level_id)
+          response = client.request_chat_completion(messages, 1)
+        else
+          response = request_structured_safety_check(text, level_id)
+        end
         raise "OpenAI request failed with status #{response.code}: #{response.body}" unless response.success?
 
-        evaluation = JSON.parse(response.body)['choices'][0]['message']['content']
+        evaluation =
+          if attempts == 1
+            JSON.parse(response.body)['choices'][0]['message']['content']
+          else
+            tool_call = JSON.parse(response.body)['choices'][0]['message']['tool_calls'][0]['function']
+            args = JSON.parse(tool_call['arguments'])
+            args['classification']
+          end
+
         unless VALID_EVALUATION_RESPONSES_SIMPLE.include?(evaluation)
           report_openai_safety_check("InvalidResponse")
           attempts += 1
           raise "Unexpected response from OpenAI: #{evaluation}"
         end
+
         if evaluation == 'INAPPROPRIATE'
-          details = {
-            evaluation: evaluation
-          }
+          details = {evaluation: evaluation}
         end
       end
+
       report_openai_safety_check("Finish", attempts)
       latency = Time.now - start_time
       report_openai_safety_latency(latency, attempts)
@@ -134,6 +145,46 @@ module AichatSafetyHelper
           content: text
         }
       ]
+    end
+
+    # Makes a structured output request to GPT for moderation classification.
+    private def request_structured_safety_check(text, level_id)
+      client.request_structured_chat_completion(
+        [
+          {
+            role: "system",
+            content: get_safety_system_prompt(level_id)
+          },
+          {
+            role: "user",
+            content: text
+          }
+        ],
+        tools: [
+          {
+            type: "function",
+            function: {
+              name: "moderation_result",
+              description: "Classify text as OK or INAPPROPRIATE for a public middle school classroom",
+              parameters: {
+                type: "object",
+                properties: {
+                  classification: {
+                    type: "string",
+                    enum: ["OK", "INAPPROPRIATE"]
+                  }
+                },
+                required: ["classification"]
+              }
+            }
+          }
+        ],
+        tool_choice: {
+          type: "function",
+          function: {name: "moderation_result"}
+        },
+        temperature: 0
+      )
     end
 
     private def report_openai_safety_check(metric_name, num_attempts = 1)
