@@ -181,6 +181,11 @@ export default class MusicValidator extends Validator {
         }
         if (
           eventData.functionContext &&
+          // Exclude 'when run' and trigger contexts.
+          eventData.functionContext.name !== 'when_run' &&
+          !Triggers.map(trigger => trigger.id).includes(
+            eventData.functionContext.name
+          ) &&
           !uniqueFunctionContexts.includes(eventData.functionContext.name)
         ) {
           uniqueFunctionContexts.push(eventData.functionContext.name);
