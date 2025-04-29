@@ -1019,4 +1019,22 @@ class Pd::Workshop < ApplicationRecord
       course_offerings: course_offerings,
     }
   end
+
+  def summarize_for_regional_workshop_page
+    {
+      id: id,
+      course: course_name,
+      subject: subject,
+      name: name,
+      capacity: capacity,
+      num_enrollments: enrollments ? enrollments.count : 0,
+      session_times: sessions&.map(&:first_session_time_regional_ws_format),
+      format: format,
+      location_name: location_name,
+      fee: fee,
+      has_prereq: prereq.present?,
+      requires_application: require_application?,
+      registration_link: registration_link
+    }
+  end
 end
