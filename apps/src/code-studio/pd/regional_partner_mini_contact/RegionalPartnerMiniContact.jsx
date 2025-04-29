@@ -263,7 +263,7 @@ export class RegionalPartnerMiniContactPopupLink extends React.Component {
           options: {
             user_name: results.user_name,
             email: results.email,
-            zip: `${this.props.zip || results.zip || ''}`,
+            zip: `${this.props.zip || results.zip}`,
             notes: this.props.notes || results.notes,
           },
         });
