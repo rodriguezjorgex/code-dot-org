@@ -65,7 +65,7 @@ export default class FieldGroup extends React.Component {
       labelWidth,
       controlWidth,
       inlineControl,
-      className,
+      style,
       ...props
     } = this.props;
 
@@ -73,11 +73,11 @@ export default class FieldGroup extends React.Component {
       <FormGroup
         controlId={id}
         validationState={validationState}
-        className={className?.fieldGroup || ''}
+        className={style?.fieldGroup || ''}
       >
-        <Row className={className?.row || ''}>
+        <Row className={style?.row || ''}>
           <Col {...labelWidth}>
-            <ControlLabel className={className?.controlLabel || ''}>
+            <ControlLabel className={style?.controlLabel || ''}>
               {label}
               {required && REQUIRED}
             </ControlLabel>
@@ -85,7 +85,7 @@ export default class FieldGroup extends React.Component {
           {inlineControl && this.renderControl(controlWidth, children, props)}
         </Row>
         {!inlineControl && (
-          <Row className={className?.row || ''}>
+          <Row className={style?.row || ''}>
             {this.renderControl(controlWidth, children, props)}
           </Row>
         )}
@@ -112,5 +112,5 @@ FieldGroup.propTypes = {
   labelWidth: PropTypes.object,
   controlWidth: PropTypes.object,
   inlineControl: PropTypes.bool,
-  className: PropTypes.object,
+  style: PropTypes.object,
 };
