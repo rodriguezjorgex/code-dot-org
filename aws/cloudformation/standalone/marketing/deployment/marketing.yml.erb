@@ -656,6 +656,9 @@ Resources:
           Compress: true
           CachePolicyId: !Ref ApplicationCachingPolicy
           OriginRequestPolicyId: "216adef6-5c7f-47e4-b989-5492eafa07d3" # AllViewer
+          FunctionAssociations:
+            - EventType: viewer-response
+              FunctionARN: !GetAtt ViewerResponseCloudFrontFunction.FunctionARN
 
         ViewerCertificate:
           AcmCertificateArn:
@@ -682,9 +685,6 @@ Resources:
             PathPattern: /api/*
             TargetOriginId: marketing-sites-application-origin
             ViewerProtocolPolicy: redirect-to-https
-            FunctionAssociations:
-              - EventType: viewer-response
-                FunctionARN: !GetAtt ViewerResponseCloudFrontFunction.FunctionARN
 
           # Path: /_next/*
           # Description: Marketing _application_ static assets
