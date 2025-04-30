@@ -42,35 +42,48 @@ module AichatSafetyHelper
       details = nil
       start_time = Time.now
       report_openai_safety_check("Start")
-      attempts = 1
+      attempts = 0
 
-      Retryable.retryable(tries: 2) do
-        if attempts == 1
-          messages = safety_check_messages(text, level_id)
-          response = client.request_chat_completion(messages, 1)
+      messages = safety_check_messages(text, level_id)
+
+      # Try once for the regular call – retry on network issues only
+      response = Retryable.retryable(tries: 2, on: StandardError) do
+        attempts += 1
+        client.request_chat_completion(messages, 1)
+      end
+
+      raise "OpenAI request failed with status #{response.code}: #{response.body}" unless response.success?
+
+      evaluation = JSON.parse(response.body)['choices'][0]['message']['content']
+
+      unless VALID_EVALUATION_RESPONSES_SIMPLE.include?(evaluation)
+        # Fallback to structured call ONCE (not retryable)
+        report_openai_safety_check("InvalidResponse")
+        attempts +=1
+
+        # Fallback to structured call (non-retryable)
+        response = request_structured_safety_check(text, level_id)
+        raise "OpenAI structured request failed with status #{response.code}: #{response.body}" unless response.success?
+
+        body = JSON.parse(response.body)
+        tool_calls = body.dig("choices", 0, "message", "tool_calls")
+
+        if tool_calls
+          tool_call = tool_calls.first["function"]
+          args = JSON.parse(tool_call["arguments"])
+          evaluation = args["classification"]
         else
-          response = request_structured_safety_check(text, level_id)
+          evaluation = body.dig("choices", 0, "message", "content")
         end
-        raise "OpenAI request failed with status #{response.code}: #{response.body}" unless response.success?
-
-        evaluation =
-          if attempts == 1
-            JSON.parse(response.body)['choices'][0]['message']['content']
-          else
-            tool_call = JSON.parse(response.body)['choices'][0]['message']['tool_calls'][0]['function']
-            args = JSON.parse(tool_call['arguments'])
-            args['classification']
-          end
 
         unless VALID_EVALUATION_RESPONSES_SIMPLE.include?(evaluation)
           report_openai_safety_check("InvalidResponse")
-          attempts += 1
-          raise "Unexpected response from OpenAI: #{evaluation}"
+          raise "Unexpected structured response from OpenAI: #{evaluation}"
         end
+      end
 
-        if evaluation == 'INAPPROPRIATE'
-          details = {evaluation: evaluation}
-        end
+      if evaluation == 'INAPPROPRIATE'
+        details = {evaluation: evaluation}
       end
 
       report_openai_safety_check("Finish", attempts)
@@ -149,7 +162,7 @@ module AichatSafetyHelper
 
     # Makes a structured output request to GPT for moderation classification.
     private def request_structured_safety_check(text, level_id)
-      client.request_structured_chat_completion(
+      AichatOpenaiHelper.request_structured_chat_completion(
         [
           {
             role: "system",

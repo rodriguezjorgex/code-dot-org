@@ -71,6 +71,30 @@ module AichatOpenaiHelper
     [response, body&.dig('usage')]
   end
 
+  def self.request_structured_chat_completion(messages, tools:, tool_choice:, temperature:)
+    http_response = client.request_chat_completion(
+      messages,
+      temperature,
+      extra: {
+        tools: tools,
+        tool_choice: tool_choice,
+        temperature: temperature
+      }
+    )
+
+    body = JSON.parse(http_response.body)
+    raise StandardError.new(body['error']) if body['error']
+
+    # Validate that either tool_calls or fallback content exists
+    has_tool_calls = body.dig("choices", 0, "message", "tool_calls")
+    fallback_content = body.dig("choices", 0, "message", "content")
+
+    unless has_tool_calls || fallback_content
+      raise StandardError.new("Unexpected structured response from OpenAI: #{body}")
+    end
+    http_response
+  end
+
   def self.get_instructions(system_prompt, level_system_prompt, retrieval_contexts)
     instructions = ""
     instructions = level_system_prompt + " " unless level_system_prompt.empty?
