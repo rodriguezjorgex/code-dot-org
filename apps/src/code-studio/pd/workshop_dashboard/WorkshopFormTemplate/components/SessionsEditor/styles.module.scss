@@ -1,4 +1,6 @@
 @import '@code-dot-org/component-library-styles/colors.scss';
+@import '@code-dot-org/component-library-styles/variables.scss';
+@import '@code-dot-org/component-library-styles/mixins.scss';
 
 .sessionRow {
   align-items: flex-end;
@@ -51,6 +53,38 @@
     font-size: 0.875rem;
     line-height: 125%;
     width: 1.125rem;
+  }
+
+  .suggestionList {
+    position: absolute;
+    top: calc(100% + 0.3rem);
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    border: 1px solid var(--borders-neutral-primary);
+    border-radius: $regular-border-radius;
+    box-shadow: 0 4px 18px 0 rgba(0 0 0 / 0.24);
+    cursor: default;
+    max-height: 20rem;
+    overflow-y: auto;
+    background-color: var(--background-neutral-primary);
+    padding: 0.25rem 0;
+    margin: 0;
+
+    .suggestionItem {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+
+      &:focus-visible {
+        @include focus-styles;
+        outline-offset: -2px;
+      }
+
+      &:hover,
+      &.active {
+        background-color: var(--background-neutral-tertiary);
+      }
+    }
   }
 }
 
