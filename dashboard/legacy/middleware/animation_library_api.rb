@@ -21,10 +21,10 @@ class AnimationLibraryApi < Sinatra::Base
   helpers do
     load(CDO.dir('shared', 'middleware', 'helpers', 'core.rb'))
     load(CDO.dir('dashboard', 'legacy', 'middleware', 'helpers', 'auth_helpers.rb'))
-    
+
     # Verify that the user has admin AND levelbuilder privileges
     def authenticate_animation_library_request!
-      unless admin? && levelbuilder?
+      unless admin? && has_permission?('levelbuilder')
         forbidden("You must be an admin, staff member, or level builder to modify animation library resources\n")
       end
     end
@@ -77,7 +77,7 @@ class AnimationLibraryApi < Sinatra::Base
   post %r{/api/v1/animation-library/level_animations/(.+)} do |animation_name|
     dont_cache
     authenticate_animation_library_request!
-    
+
     if request.content_type == 'image/png' || request.content_type == 'application/json'
       body = request.body
       key = "level_animations/#{animation_name}"
@@ -206,7 +206,7 @@ class AnimationLibraryApi < Sinatra::Base
   post %r{/api/v1/animation-library/default-spritelab-metadata/(levelbuilder|production)} do |env|
     dont_cache
     authenticate_animation_library_request!
-    
+
     if request.content_type == 'application/json'
       body = request.body.string
       case env
