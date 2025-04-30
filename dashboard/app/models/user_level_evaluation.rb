@@ -33,4 +33,7 @@ class UserLevelEvaluation < StudentWorkEvaluation
   validates :student_id, presence: true
   validates :level_id, presence: true
   validates :unit_id, presence: true
+
+  has_many :student_work_evaluation_summaries
+  has_many :user_level_skill_evaluations, through: :student_work_evaluation_summaries
 end

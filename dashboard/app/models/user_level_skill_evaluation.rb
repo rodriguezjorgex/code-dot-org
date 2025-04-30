@@ -34,4 +34,8 @@ class UserLevelSkillEvaluation < StudentWorkEvaluation
   validates :level_id, presence: true
   validates :unit_id, presence: true
   # TODO: Add validation for skill_id
+
+  has_one :student_work_evaluation_summaries
+
+  delegate :user_level_evaluation, to: :student_work_evaluation_summary
 end
