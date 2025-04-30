@@ -22,10 +22,10 @@ class AnimationLibraryApi < Sinatra::Base
     load(CDO.dir('shared', 'middleware', 'helpers', 'core.rb'))
     load(CDO.dir('dashboard', 'legacy', 'middleware', 'helpers', 'auth_helpers.rb'))
 
-    # Verify that the user has admin AND levelbuilder privileges
+    # Verify that the user has levelbuilder privileges
     def authenticate_animation_library_request!
-      unless admin? && has_permission?('levelbuilder')
-        forbidden("You must be an admin, staff member, or level builder to modify animation library resources\n")
+      unless has_permission?('levelbuilder')
+        forbidden("You must be a level builder to modify animation library resources\n")
       end
     end
   end
