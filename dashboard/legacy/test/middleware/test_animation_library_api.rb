@@ -29,6 +29,62 @@ class AnimationLibraryTest < Minitest::Test
     AWS::S3.s3 = nil
   end
 
+  # POST endpoints require both admin and levelbuilder privileges.
+  def test_post_level_animations_forbidden_without_authorization
+    post '/api/v1/animation-library/level_animations/test.png', 'DATA', 'CONTENT_TYPE' => 'image/png'
+    assert last_response.forbidden?
+  end
+
+  def test_post_level_animations_forbidden_for_admin_only
+    AnimationLibraryApi.any_instance.stubs(:admin?).returns(true)
+    AnimationLibraryApi.any_instance.stubs(:levelbuilder?).returns(false)
+    post '/api/v1/animation-library/level_animations/test.png', 'DATA', 'CONTENT_TYPE' => 'image/png'
+    assert last_response.forbidden?
+  end
+
+  def test_post_level_animations_forbidden_for_levelbuilder_only
+    AnimationLibraryApi.any_instance.stubs(:admin?).returns(false)
+    AnimationLibraryApi.any_instance.stubs(:levelbuilder?).returns(true)
+    post '/api/v1/animation-library/level_animations/test.png', 'DATA', 'CONTENT_TYPE' => 'image/png'
+    assert last_response.forbidden?
+  end
+
+  def test_post_level_animations_success_for_admin_and_levelbuilder
+    AnimationLibraryApi.any_instance.stubs(:admin?).returns(true)
+    AnimationLibraryApi.any_instance.stubs(:levelbuilder?).returns(true)
+    Aws::S3::Bucket.any_instance.stubs(:put_object)
+    post '/api/v1/animation-library/level_animations/test.png', 'DATA', 'CONTENT_TYPE' => 'image/png'
+    assert last_response.ok?
+  end
+
+  def test_post_spritelab_forbidden_without_authorization
+    post '/api/v1/animation-library/spritelab/cat/test.png', 'DATA', 'CONTENT_TYPE' => 'image/png'
+    assert last_response.forbidden?
+  end
+
+  def test_post_spritelab_success_for_admin_and_levelbuilder
+    AnimationLibraryApi.any_instance.stubs(:admin?).returns(true)
+    AnimationLibraryApi.any_instance.stubs(:levelbuilder?).returns(true)
+    Aws::S3::Bucket.any_instance.stubs(:put_object)
+    post '/api/v1/animation-library/spritelab/cat/test.png', 'DATA', 'CONTENT_TYPE' => 'image/png'
+    assert last_response.ok?
+  end
+
+  def test_post_default_spritelab_metadata_forbidden_without_authorization
+    post '/api/v1/animation-library/default-spritelab-metadata/production',
+         '{"foo":"bar"}', 'CONTENT_TYPE' => 'application/json'
+    assert last_response.forbidden?
+  end
+
+  def test_post_default_spritelab_metadata_success_for_admin_and_levelbuilder
+    AnimationLibraryApi.any_instance.stubs(:admin?).returns(true)
+    AnimationLibraryApi.any_instance.stubs(:levelbuilder?).returns(true)
+    Aws::S3::Bucket.any_instance.stubs(:put_object)
+    post '/api/v1/animation-library/default-spritelab-metadata/levelbuilder',
+         '{"foo":"bar"}', 'CONTENT_TYPE' => 'application/json'
+    assert last_response.ok?
+  end
+
   def test_get_gamelab_animation
     contents = 'TEST_ANIMATION'
     # Ensure the shared S3 client is used by stubbing the client with the expected response.
