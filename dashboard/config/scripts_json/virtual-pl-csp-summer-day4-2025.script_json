@@ -11,7 +11,7 @@
     },
     "new_name": null,
     "family_name": null,
-    "serialized_at": "2025-04-29 12:30:47 UTC",
+    "serialized_at": "2025-04-30 16:46:13 UTC",
     "published_state": null,
     "instruction_type": null,
     "instructor_audience": null,
@@ -1529,6 +1529,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "CSP U3 Hamilton Township Design Mode_1_2025"
+        ],
         "progression": "Design Mode Exploration"
       },
       "bonus": false,
@@ -1551,6 +1554,9 @@
       "activity_section_position": 2,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "CSP U3 L2 Design Mode Themes_1_2025"
+        ],
         "progression": "Design Mode Exploration"
       },
       "bonus": false,
@@ -1573,6 +1579,9 @@
       "activity_section_position": 3,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "CSP U3 L2 Design Mode Colors_1_2025"
+        ],
         "progression": "Design Mode Exploration"
       },
       "bonus": false,
@@ -1595,6 +1604,9 @@
       "activity_section_position": 4,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "CSP U3 L2 Design Mode Images_1_2025"
+        ],
         "progression": "Design Mode Exploration"
       },
       "bonus": false,
@@ -1617,6 +1629,9 @@
       "activity_section_position": 5,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "CSP U3 L2 Design Mode Icons_1_2025"
+        ],
         "progression": "Design Mode Exploration"
       },
       "bonus": false,
@@ -1639,6 +1654,9 @@
       "activity_section_position": 6,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "CSP U3 L2 Design Mode ids_1_2025"
+        ],
         "progression": "Design Mode Exploration"
       },
       "bonus": false,
@@ -1661,6 +1679,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "CSP U3 L2 Copy an App_1_2025"
+        ],
         "progression": "Copy an App"
       },
       "bonus": false,
@@ -1683,6 +1704,9 @@
       "activity_section_position": 1,
       "assessment": true,
       "properties": {
+        "level_keys": [
+          "U3L2 CSP CFU ID names_1_2025"
+        ],
         "progression": "Check For Understanding"
       },
       "bonus": false,
@@ -1705,6 +1729,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "CSP U3 Bird Quiz Storyboard_1_2025"
+        ],
         "progression": "Sample Prototype"
       },
       "bonus": false,
@@ -1727,6 +1754,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "CSP U3 L4 Design Screens_1_2025"
+        ],
         "progression": "Build Your Screens"
       },
       "bonus": false,
@@ -1749,6 +1779,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "U3 Program Investigate Sequential 1_1_2025"
+        ],
         "progression": "Code Investigation"
       },
       "bonus": false,
@@ -1771,6 +1804,9 @@
       "activity_section_position": 2,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "U3 Program Investigate Sequential 2_1_2025"
+        ],
         "progression": "Code Investigation"
       },
       "bonus": false,
@@ -1793,6 +1829,9 @@
       "activity_section_position": 3,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "U3 Program Investigate Event-Driven 1_1_2025"
+        ],
         "progression": "Code Investigation"
       },
       "bonus": false,
@@ -1815,6 +1854,9 @@
       "activity_section_position": 4,
       "assessment": true,
       "properties": {
+        "level_keys": [
+          "U3 Program Investigate Event vs Seq Predict_1_2025"
+        ],
         "progression": "Code Investigation"
       },
       "bonus": false,
@@ -1837,6 +1879,9 @@
       "activity_section_position": 5,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "U3 Program Investigate Event-Driven setScreen_1_2025"
+        ],
         "progression": "Code Investigation"
       },
       "bonus": false,
@@ -1859,6 +1904,9 @@
       "activity_section_position": 6,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "U3 Program Investigate Event-Driven 2_1_2025"
+        ],
         "progression": "Code Investigation"
       },
       "bonus": false,
@@ -1881,6 +1929,9 @@
       "activity_section_position": 7,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "U3 Program Investigate Event-Driven 3_1_2025"
+        ],
         "progression": "Code Investigation"
       },
       "bonus": false,
@@ -1903,6 +1954,9 @@
       "activity_section_position": 1,
       "assessment": true,
       "properties": {
+        "level_keys": [
+          "U3L6 CSP CFU Sequential vs Event Driven_1_2025"
+        ],
         "progression": "Check for Understanding"
       },
       "bonus": false,
@@ -1925,6 +1979,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "virtual-pl-csp-summer-day4-asynch1-01_2025"
+        ],
         "progression": "Asynchronous Overview"
       },
       "bonus": false,
@@ -1947,6 +2004,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "virtual-pl-csp-summer-day4-asynch1-02_2025"
+        ],
         "progression": "Applying Our Knowledge of Identity and Bias"
       },
       "bonus": false,
@@ -1969,6 +2029,9 @@
       "activity_section_position": 2,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "virtual-pl-csp-summer-day4-asynch1-03_2025"
+        ],
         "progression": "Applying Our Knowledge of Identity and Bias"
       },
       "bonus": false,
@@ -1991,6 +2054,9 @@
       "activity_section_position": 3,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "virtual-pl-csp-summer-day4-asynch1-04_2025"
+        ],
         "progression": "Applying Our Knowledge of Identity and Bias"
       },
       "bonus": false,
@@ -2018,7 +2084,7 @@
       "bonus": false,
       "seeding_key": {
         "script_level.level_keys": [
-          "virtual-pl-csp-summer-day4-asynch1-05_2025"
+          "virtual-pl-csp-summer-day4-asynch1-05b_2025"
         ],
         "lesson.key": "Asynchronous Part 1",
         "lesson_group.key": "lessonGroup-3",
@@ -2026,7 +2092,7 @@
         "activity_section.key": "e93fd556-d6bc-4848-bfe1-6567cf5006fe"
       },
       "level_keys": [
-        "virtual-pl-csp-summer-day4-asynch1-05_2025"
+        "virtual-pl-csp-summer-day4-asynch1-05b_2025"
       ]
     },
     {
@@ -2035,6 +2101,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "virtual-pl-csp-summer-day4-asynch1-06_2025"
+        ],
         "progression": "Previously On...U3L7"
       },
       "bonus": false,
@@ -2057,6 +2126,9 @@
       "activity_section_position": 2,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "U3 Program Practice Pt 1_2023_PL_2025"
+        ],
         "progression": "Previously On...U3L7"
       },
       "bonus": false,
@@ -2079,6 +2151,9 @@
       "activity_section_position": 3,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "U3 Program Practice Pt 2_2023_PL_2025"
+        ],
         "progression": "Previously On...U3L7"
       },
       "bonus": false,
@@ -2101,6 +2176,9 @@
       "activity_section_position": 4,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "U3 Program Practice Pt 4_2023_PL_2025"
+        ],
         "progression": "Previously On...U3L7"
       },
       "bonus": false,
@@ -2123,6 +2201,9 @@
       "activity_section_position": 5,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "U3 Program Practice Pt 6_2023_PL_2025"
+        ],
         "progression": "Previously On...U3L7"
       },
       "bonus": false,
@@ -2145,6 +2226,9 @@
       "activity_section_position": 6,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "U3 Debugging Predict_2023_PL_2025"
+        ],
         "progression": "Previously On...U3L7"
       },
       "bonus": false,
@@ -2167,6 +2251,9 @@
       "activity_section_position": 7,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "CSP U3L7 Choice_2023_PL_2025"
+        ],
         "progression": "Previously On...U3L7"
       },
       "bonus": false,
@@ -2189,6 +2276,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "CSP U3 L4 Add Code_1_2025"
+        ],
         "progression": "Add Code"
       },
       "bonus": false,
@@ -2211,6 +2301,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "CSP U3 L9 Add More Code_1_2025"
+        ],
         "progression": "Add More Code"
       },
       "bonus": false,
@@ -2233,6 +2326,9 @@
       "activity_section_position": 1,
       "assessment": true,
       "properties": {
+        "level_keys": [
+          "CSP U3 L10 Submit App_1_2025"
+        ],
         "progression": "Submit Your App"
       },
       "bonus": false,
@@ -2255,6 +2351,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "virtual-pl-csp-summer-day4-asynch2-01_2025"
+        ],
         "progression": "Asynchronous Overview"
       },
       "bonus": false,
@@ -2277,6 +2376,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "virtual-pl-csp-summer-day4-asynch2-02_2025"
+        ],
         "progression": "Recruiting And Retaining Students Gallery Walk"
       },
       "bonus": false,
@@ -2299,6 +2401,9 @@
       "activity_section_position": 2,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "virtual-pl-csp-summer-day4-asynch2-03_2025"
+        ],
         "progression": "Recruiting And Retaining Students Gallery Walk"
       },
       "bonus": false,
@@ -2321,6 +2426,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "virtual-pl-csp-summer-day4-asynch2-04_2025"
+        ],
         "progression": "Belonging and Differentiation"
       },
       "bonus": false,
@@ -2343,6 +2451,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "virtual-pl-csp-summer-day4-asynch2-05_2025"
+        ],
         "progression": "Unit 3 Connections And Conclusions"
       },
       "bonus": false,
@@ -2365,6 +2476,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "virtual-pl-csp-summer-day4-asynch2-06_2025"
+        ],
         "progression": "Breakout Groups Poll"
       },
       "bonus": false,
@@ -2649,9 +2763,9 @@
     },
     {
       "seeding_key": {
-        "level.key": "virtual-pl-csp-summer-day4-asynch1-05_2025",
+        "level.key": "virtual-pl-csp-summer-day4-asynch1-05b_2025",
         "script_level.level_keys": [
-          "virtual-pl-csp-summer-day4-asynch1-05_2025"
+          "virtual-pl-csp-summer-day4-asynch1-05b_2025"
         ],
         "lesson.key": "Asynchronous Part 1",
         "lesson_group.key": "lessonGroup-3",

@@ -4,7 +4,7 @@ description 'description here'
 
 markdown <<MARKDOWN
 <div style="position: relative; text-align: center; color: white; margin-top: 20px;">
-    <img src="https://images.code.org/052b5fc25308b850001f547503386322-image-1743815060120.png" alt="Banner image that says, Welcome to Teaching Programming with Music Lab" style="width: 100%; border-radius: 10px;">
+    <img src="https://images.code.org/8d2cd575d1cf97c6af82a4f469a8f92f-image-1746033040792.jpg" alt="Banner image that says, Welcome to Teaching Programming with Music Lab" style="width: 100%; border-radius: 10px;">
     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; width: 70%; max-width: 800px; border-radius: 10px;">
     </div>
 </div>
@@ -34,7 +34,7 @@ markdown <<MARKDOWN
 <a class="btn btn-large btn-primary" href="https://usabi.li/do/utikorbqr2kt/devjgh" target="blank" rel="noopener noreferrer">Take the Pre-Survey</a>
 </div>
 
-### **Suggested total time for this course:** 90 minutes
+### **Suggested total time for this course:** 60 minutes
 
 
 
@@ -42,4 +42,6 @@ markdown <<MARKDOWN
 ## Let's get started!
 
 <div style="clear:both"/>
+
+
 MARKDOWN
