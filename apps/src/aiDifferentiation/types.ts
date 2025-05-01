@@ -10,6 +10,8 @@ export type ChatTextMessage = {
 export type ChatPrompt = {
   label: string;
   prompt: string;
+  response?: string;
+  followUpPrompts?: ChatPrompt[];
 };
 
 export type ChatItem = ChatTextMessage | ChatPrompt[];
