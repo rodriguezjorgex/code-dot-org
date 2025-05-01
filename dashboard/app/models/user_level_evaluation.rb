@@ -34,6 +34,7 @@ class UserLevelEvaluation < StudentWorkEvaluation
   validates :level_id, presence: true
   validates :unit_id, presence: true
 
-  has_many :student_work_evaluation_summaries
-  has_many :user_level_skill_evaluations, through: :student_work_evaluation_summaries
+  def user_level_skill_evaluations
+    UserLevelSkillEvaluation.find(StudentWorkEvaluationSummary.where(student_work_evaluation_summary: self).pluck(:student_work_evaluation_id))
+  end
 end

@@ -2136,10 +2136,7 @@ FactoryBot.define do
   end
 
   factory :user_level_skill_evaluation do
-    association :student_work_evaluation_summary
-    association :user_level_evaluation
     association :student, factory: :student
-    association :requester, factory: :teacher
     association :level
     association :unit
     evaluator {"AI"}
@@ -2149,12 +2146,10 @@ FactoryBot.define do
   end
 
   factory :user_level_evaluation do
-    association :student_work_evaluation_summary
-    association :user_level_skill_evaluation
     association :student, factory: :student
-    association :requester, factory: :teacher
     association :level
     association :unit
+    code_version {"4s&7ya"}
     evaluator {"AI"}
     evaluation {"Ok"}
     evaluation_criteria {"Does the student's work on this level meet the requirements?"}

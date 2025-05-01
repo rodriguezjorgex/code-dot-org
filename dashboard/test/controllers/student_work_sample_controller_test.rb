@@ -104,4 +104,21 @@ class StudentWorkSampleControllerTest < ActionController::TestCase
   end
 
   # Fetch evaluated code sample
+  test 'can fetch code sample with evaluations' do
+    dataset_maker = create(:student_work_dataset_maker)
+    sign_in(dataset_maker)
+    level = create(:level)
+    unit = create(:script)
+    section = create(:section, script_id: unit.id)
+    student = create(:student)
+    create(:follower, section: section, student_user: student)
+    ulse = create(:user_level_skill_evaluation, student_id: student.id, level_id: level.id, unit_id: unit.id)
+    ule = create(:user_level_evaluation, student_id: student.id, level_id: level.id, unit_id: unit.id)
+    create(:student_work_evaluation_summary, student_work_evaluation_id: ulse.id, student_work_evaluation_summary_id: ule.id)
+    get :fetch_student_code_samples, params: {level_id: level.id, unit_id: unit.id, num_samples: 1, include_ai_evaluations: true}
+    assert_response :ok
+    response_json = JSON.parse(response.body)
+    assert response_json.first["student_code"], 'console.log("Hello World")'
+    assert response_json.first["evaluation"], ule.evaluation
+  end
 end

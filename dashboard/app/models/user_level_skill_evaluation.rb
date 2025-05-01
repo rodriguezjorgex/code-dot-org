@@ -35,7 +35,7 @@ class UserLevelSkillEvaluation < StudentWorkEvaluation
   validates :unit_id, presence: true
   # TODO: Add validation for skill_id
 
-  has_one :student_work_evaluation_summaries
-
-  delegate :user_level_evaluation, to: :student_work_evaluation_summary
+  def user_level_evaluation
+    UserLevelEvaluation.find(StudentWorkEvaluationSummary.where(student_work_evaluation: self).pluck(:student_work_evaluation_summary_id)).first
+  end
 end

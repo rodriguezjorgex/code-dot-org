@@ -108,13 +108,13 @@ class StudentWorkSampleController < ApplicationController
 
   def fetch_student_code_samples_with_evaluations(level, unit_id, num_samples)
     # Only user user_level_evaluations that have skills-based evaluations associated with them.
-    user_level_skill_evaluations = UserLevelSkillEvaluation.where(level_id: level.id, unit_id: unit_id).includes(:student_work_evaluation_summaries)
+    user_level_skill_evaluations = UserLevelSkillEvaluation.where(level_id: level.id, unit_id: unit_id)
 
     if user_level_skill_evaluations.empty?
       return render status: :not_found, json: "There are no skill-based evaluations for the level with id #{level.id}"
     end
 
-    user_level_evaluations = user_level_skill_evaluations.map(&:user_level_evaluation).uniq
+    user_level_evaluations = user_level_skill_evaluations.map(&:user_level_evaluation)
 
     code_samples = []
     have_enough_samples = false
