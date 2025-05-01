@@ -870,6 +870,10 @@ Dashboard::Application.routes.draw do
     get 'professional-learning/facilitator/computer-science-principles', to: 'pd/professional_learning#csp'
     get 'professional-learning/facilitator/ai-fundamentals', to: 'pd/professional_learning#aif'
     get 'professional-learning/regional-partner/playbook', to: 'pd/professional_learning#rp_playbook'
+    get 'professional-learning/application/applications_closed', to: 'pd/professional_learning#applications_closed'
+    get 'professional-learning/workshops_as_facilitator_for_pl_page', to: 'pd/professional_learning#workshops_as_facilitator_for_pl_page'
+    get 'professional-learning/workshops_as_organizer_for_pl_page', to: 'pd/professional_learning#workshops_as_organizer_for_pl_page'
+    get 'professional-learning/workshops_as_program_manager_for_pl_page', to: 'pd/professional_learning#workshops_as_program_manager_for_pl_page'
     get 'professional-learning/regional_workshop_data/:zip_code', to: 'pd/professional_learning#regional_workshop_data'
 
     namespace :pd do

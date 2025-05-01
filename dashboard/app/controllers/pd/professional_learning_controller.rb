@@ -100,12 +100,14 @@ class Pd::ProfessionalLearningController < ApplicationController
     end
   end
 
+  # GET professional-learning/application/applications_closed
   def applications_closed
     # true when teacher applications are closed site-wide
     closed = Rails.env.production? && !current_user.try(:workshop_admin?) && Gatekeeper.disallows('pd_teacher_application')
     render json: closed
   end
 
+  # GET professional-learning/workshops_as_facilitator_for_pl_page
   # Returns non-ended workshops the user is facilitating.
   def workshops_as_facilitator_for_pl_page
     workshops_as_facilitator =
@@ -120,6 +122,7 @@ class Pd::ProfessionalLearningController < ApplicationController
     render json: {status: :ok, workshops_as_facilitator: summarized_workshops_as_facilitator}
   end
 
+  # GET professional-learning/workshops_as_organizer_for_pl_page
   # Returns non-ended workshops the user is organizing.
   def workshops_as_organizer_for_pl_page
     workshops_as_organizer = current_user.
@@ -130,6 +133,7 @@ class Pd::ProfessionalLearningController < ApplicationController
     render json: {status: :ok, workshops_as_organizer: workshops_as_organizer}
   end
 
+  # GET professional-learning/workshops_as_program_manager_for_pl_page
   # Returns non-ended workshops the user is a program manager for.
   def workshops_as_program_manager_for_pl_page
     workshops_as_program_manager = Pd::Workshop.where(organizer_id: current_user.id).
