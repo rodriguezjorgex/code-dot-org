@@ -29,6 +29,8 @@ import {
   PROFESSIONAL_LEARNING_PROMPT,
   CREATE_SECTION_PROMPT,
   ADDITIONAL_HELP_PROMPT,
+  APCSP_DUMMY_CREATE,
+  APCSP_DUMMY_EXAM,
 } from './AiDiffPredefinedPrompts';
 import AiDiffSuggestedPrompts from './AiDiffSuggestedPrompts';
 import {ChatItem, ChatPrompt} from './types';
@@ -36,6 +38,8 @@ import {ChatItem, ChatPrompt} from './types';
 import style from './ai-differentiation.module.scss';
 
 const INITIAL_CHAT_MESSAGE = `Hi! I'm your AI Teaching Assistant. What can I help you with? Here are some things you can ask me.`;
+
+const APCSP_PROMPTS = [APCSP_DUMMY_CREATE, APCSP_DUMMY_EXAM];
 
 const SUGGESTED_PROMPTS = [
   [
@@ -60,6 +64,7 @@ const GENERAL_SUGGESTED_PROMPTS = [
   PROFESSIONAL_LEARNING_PROMPT,
   CREATE_SECTION_PROMPT,
   ADDITIONAL_HELP_PROMPT,
+  ...APCSP_PROMPTS,
 ];
 
 const AI_DIFF_CHAT_MESSAGE_ENDPOINT = '/ai_diff/chat_completion';
@@ -123,7 +128,25 @@ const AiDiffChat: React.FC<AiDiffChatProps> = ({
   };
 
   const onPromptSelect = (prompt: ChatPrompt) => {
-    getAIResponse(prompt.prompt, true);
+    if (prompt.response !== undefined) {
+      setMessageHistory(prevMessages => [
+        ...prevMessages,
+        {
+          role: Role.ASSISTANT,
+          chatMessageText: prompt.response ?? '',
+          status: Status.OK,
+        },
+      ]);
+    }
+    if (prompt.followUpPrompts !== undefined) {
+      setMessageHistory(prevMessages => [
+        ...prevMessages,
+        prompt.followUpPrompts ?? [],
+      ]);
+    }
+    if (!prompt.followUpPrompts && !prompt.response) {
+      getAIResponse(prompt.prompt, true);
+    }
   };
 
   const onSuggestPrompts = () => {
