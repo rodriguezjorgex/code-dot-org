@@ -109,8 +109,9 @@ export default function RegionalWorkshopCatalog() {
           </div>
           <LinkButton
             text="Contact regional partner"
+            target="_blank"
             color="purple"
-            href={'/'}
+            href={`/professional-learning/contact-regional-partner?zip=${zipCode}`}
           />
         </div>
       );
@@ -121,7 +122,15 @@ export default function RegionalWorkshopCatalog() {
           <BodyTwoText>
             Workshops are always being added. If you do not see the workshop you
             are looking for check back again soon or{' '}
-            <a href="/">contact your regional partner</a>.
+            <a
+              className={style.linkText}
+              href={`/professional-learning/contact-regional-partner?zip=${zipCode}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              contact your Regional Partner
+            </a>
+            {'.'}
           </BodyTwoText>
           {availableWorkshops && (
             <div>
@@ -208,11 +217,12 @@ export default function RegionalWorkshopCatalog() {
                   disabled={!regionalPartnerName}
                 />
                 <LinkButton
+                  text="Contact"
+                  target="_blank"
                   color="black"
                   type="secondary"
-                  href={'/'}
                   size="xs"
-                  text="Contact"
+                  href={`/professional-learning/contact-regional-partner?zip=${zipCode}`}
                   disabled={!regionalPartnerName}
                 />
               </div>

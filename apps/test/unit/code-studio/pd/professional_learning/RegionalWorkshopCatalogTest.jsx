@@ -84,6 +84,14 @@ describe('RegionalWorkshopCatalog', () => {
     await waitFor(() => {
       screen.getByText('No workshops found');
       screen.getByText('No regional partner found');
+      expect(
+        screen.getByRole('link', {
+          name: 'Contact regional partner',
+        })
+      ).toHaveAttribute(
+        'href',
+        '/professional-learning/contact-regional-partner?zip=11111'
+      );
 
       expect(fetchStub).toHaveBeenCalledWith(`regional_workshop_data/${zip}`, {
         headers: {
@@ -118,8 +126,27 @@ describe('RegionalWorkshopCatalog', () => {
     fireEvent.click(screen.getByRole('button', {name: 'submitZip'}));
 
     await waitFor(() => {
+      // Regional Partner name and contact
       screen.getByText(regionalPartnerName);
+      expect(
+        screen.getByRole('link', {
+          name: 'Contact',
+        })
+      ).toHaveAttribute(
+        'href',
+        '/professional-learning/contact-regional-partner?zip=98122'
+      );
+
+      // Workshop content is displayed
       screen.getByText('Upcoming workshops');
+      expect(
+        screen.getByRole('link', {
+          name: 'contact your Regional Partner',
+        })
+      ).toHaveAttribute(
+        'href',
+        '/professional-learning/contact-regional-partner?zip=98122'
+      );
       TEST_WORKSHOPS.forEach(ws =>
         screen.getByText(
           `Id: ${ws.id}, Title: ${ws.name}, Location: ${ws.location_name}, Participant Group Type: ${ws.participant_group_type}`

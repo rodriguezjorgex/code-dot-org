@@ -36,6 +36,11 @@ class Pd::ProfessionalLearningController < ApplicationController
     render :regional_workshop_catalog
   end
 
+  # GET professional-learning/contact-regional-partner
+  def contact_regional_partner
+    render :contact_regional_partner
+  end
+
   # GET professional-learning/facilitator/computer-science-a
   def csa
     @course_name = Pd::Workshop::COURSE_CSA

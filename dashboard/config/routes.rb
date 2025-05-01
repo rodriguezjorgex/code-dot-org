@@ -863,6 +863,7 @@ Dashboard::Application.routes.draw do
 
     get 'my-professional-learning', to: 'pd/professional_learning#index', as: 'professional_learning'
     get 'professional-learning/workshops', to: 'pd/professional_learning#workshops'
+    get 'professional-learning/contact-regional-partner', to: 'pd/professional_learning#contact_regional_partner'
     get 'professional-learning/facilitator/computer-science-a', to: 'pd/professional_learning#csa'
     get 'professional-learning/facilitator/computer-science-discoveries', to: 'pd/professional_learning#csd'
     get 'professional-learning/facilitator/computer-science-fundamentals', to: 'pd/professional_learning#csf'
