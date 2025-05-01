@@ -27,6 +27,7 @@ export const AddressLookupInput = ({
   onChange,
   value,
   errorMessage,
+  debounceDelay = 300,
 }: {
   label: string;
   name: string;
@@ -35,17 +36,20 @@ export const AddressLookupInput = ({
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   value: string;
   errorMessage?: string;
+  debounceDelay?: number;
 }) => {
   const sessionToken = useRef<SessionToken>(new SessionToken());
+  const mounted = useRef(false);
   const listboxId = sessionToken.current.id;
   const [suggestionResults, setSuggestionResults] = useState<string[]>([]);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [loading, setLoading] = useState(false);
   const accessToken = useSelector(
     ({mapbox: {mapboxAccessToken}}: {mapbox: {mapboxAccessToken: string}}) =>
       mapboxAccessToken
   );
   const autofill = useAddressAutofillCore({accessToken});
-  const debouncedValue = useDebounce(value, 300);
+  const debouncedValue = useDebounce(value, debounceDelay);
 
   const reset = () => {
     setSuggestionResults([]);
@@ -55,29 +59,37 @@ export const AddressLookupInput = ({
   const containerRef = useOutsideClick<HTMLDivElement>(reset);
 
   useEffect(() => {
-    if (debouncedValue) {
-      (async () => {
-        const {suggestions} = await autofill.suggest(debouncedValue, {
-          sessionToken: sessionToken.current,
-        });
-        const fullAddresses = suggestions
-          .map(suggestion => suggestion.full_address)
-          .filter(
-            (s?: string): s is string => typeof s === 'string' && s.length > 0
-          );
-        if (fullAddresses.includes(debouncedValue)) {
-          setSuggestionResults([]);
-        } else {
-          setSuggestionResults(fullAddresses);
-          setActiveIndex(-1);
+    if (debouncedValue && debouncedValue.length >= 3 && mounted.current) {
+      const fetchSuggestions = async () => {
+        try {
+          setLoading(true);
+          const {suggestions} = await autofill.suggest(debouncedValue, {
+            sessionToken: sessionToken.current,
+          });
+          const fullAddresses = suggestions
+            .map(suggestion => suggestion.full_address)
+            .filter(
+              (s?: string): s is string => typeof s === 'string' && s.length > 0
+            );
+          if (fullAddresses.includes(debouncedValue)) {
+            setSuggestionResults([]);
+          } else {
+            setSuggestionResults(fullAddresses);
+            setActiveIndex(-1);
+          }
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setLoading(false);
         }
-      })();
+      };
+      fetchSuggestions();
     }
+    mounted.current = true;
   }, [debouncedValue, autofill]);
 
   const handleSelectSuggestion = useCallback(
     (suggestion: string) => {
-      console.log(suggestion);
       onChange({
         target: {
           name,
@@ -105,12 +117,17 @@ export const AddressLookupInput = ({
           setActiveIndex(prev => Math.max(prev - 1, 0));
           break;
         case 'Enter':
-        case 'Space':
-          handleSelectSuggestion(suggestionResults[activeIndex]);
+        case ' ':
+          if (activeIndex >= 0) {
+            // Add a check to ensure an item is actually highlighted
+            e.preventDefault(); // Prevent the default action (change event)
+            handleSelectSuggestion(suggestionResults[activeIndex]);
+          }
           break;
         case 'Escape':
         case 'Tab':
           reset();
+          break;
       }
     }
   };
@@ -136,7 +153,11 @@ export const AddressLookupInput = ({
           activeIndex >= 0 ? `${listboxId}-item-${activeIndex}` : undefined
         }
       />
-      <FontAwesomeV6Icon iconName="magnifying-glass" aria-hidden={true} />
+      <FontAwesomeV6Icon
+        iconName={loading ? 'spinner' : 'magnifying-glass'}
+        animationType={loading ? 'spin' : undefined}
+        aria-hidden={true}
+      />
       {suggestionResults.length > 0 && (
         <ul id={listboxId} role="listbox" className={styles.suggestionList}>
           {suggestionResults.map((suggestion, index) => (
