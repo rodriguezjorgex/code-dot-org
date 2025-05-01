@@ -264,7 +264,7 @@ export function collectBlockIdsRecursively(
   ordered.push(block.id);
 
   // Handle procedure calls by traversing blocks inside its definition
-  if (block.type === 'procedures_callnoreturn') {
+  if (block.type === BlockTypes.PROCEDURE_CALL) {
     const procModel = block.getProcedureModel?.();
     if (procModel) {
       const defBlock = Blockly.Procedures.getDefinition(
