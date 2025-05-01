@@ -21141,7 +21141,7 @@ en:
             ##Welcome!
             #### This professional learning module is designed to help you prepare to teach Code.org’s Programming Fundamentals Unit.
 
-            #### The Data Science unit is part of the ***AI Foundations*** curriculum but can also stand alone for grades 9-12. Designed for flexibility, it can be seamlessly integrated into any existing curriculum, allowing teachers to introduce it at their own pace and align it with their educational goals.
+            #### The Programming Fundamentals unit is part of the ***AI Foundations*** curriculum but can also stand alone for grades 9-12. Designed for flexibility, it can be seamlessly integrated into any existing curriculum, allowing teachers to introduce it at their own pace and align it with their educational goals.
 
             #### **Find the learning that works for you**
 
@@ -23331,11 +23331,13 @@ en:
               display_name: Events
             lessonGroup-5:
               display_name: End of Course Project
-          title: Course A (2024)
+          title: Course A (2025)
           description: "Course A offers a computer science curriculum for beginning readers, including Kindergarten students. Students will learn to program using commands like loops and events. The lessons featured in this course also teach students to meaningfully collaborate with others, investigate different problem-solving techniques, persist in the face of challenging tasks, and learn about internet safety. \n\n**New to teaching CS?**\n\nGet started with our [self-paced Professional Learning](https://studio.code.org/s/k5-onlinepd-2023)."
           student_description: Learn the basics of computer science and internet safety. At the end of the course, create your very own game or story you can share.
           description_short: An introduction to computer science for pre-readers.
           description_audience: 'Ages: 4-7'
+          lessons: {}
+          name: coursea-2025
         courseb-2025:
           lesson_groups:
             csf_digcit:
@@ -23350,7 +23352,7 @@ en:
               display_name: Events
             lessonGroup-6:
               display_name: End of Course Project
-          title: Course B (2024)
+          title: Course B (2025)
           description: |-
             We developed Course B with first graders in mind. While the concepts in Course B parallel those in Course A, students learn more sophisticated unplugged activities and work through a greater variety of puzzles. Students will learn the basics of programming, collaboration techniques, investigation and critical thinking skills, persistence in the face of difficulty, and internet safety. At the end of this course, students create games in the Play Lab programming environment.
 
@@ -23360,6 +23362,8 @@ en:
           student_description: Learn the basics of computer science and internet safety. At the end of the course, create your very own game or story you can share.
           description_short: An introduction to computer science for pre-readers. Similar to Course A, but with added concept depth.
           description_audience: 'Ages: 5-8'
+          lessons: {}
+          name: courseb-2025
         coursec-2025:
           lesson_groups:
             csf_digcit:
@@ -23374,7 +23378,7 @@ en:
               display_name: Data
             end_of_course_project:
               display_name: End of Course Project
-          title: Course C (2024)
+          title: Course C (2025)
           description: |-
             We developed Course C for students in second grade. Students will create programs with sequencing, loops, and events. They will investigate problem-solving techniques and develop strategies for building positive communities both online and offline. By the end of the course, students will create interactive games that they can share.
 
@@ -23384,6 +23388,8 @@ en:
           student_description: Create programs with sequencing, loops, and events. Translate your initials into binary, investigate different problem-solving techniques, and learn how to respond to cyberbullying. At the end of the course, create your very own game or story you can share!
           description_short: Learn the basics of computer science and create your own art, stories, and games.
           description_audience: 'Ages: 6-10'
+          lessons: {}
+          name: coursec-2025
         coursed-2025:
           lesson_groups:
             lessonGroup-6:
@@ -23400,11 +23406,13 @@ en:
               display_name: Conditionals
             end_of_course_project:
               display_name: End of Course Project
-          title: Course D (2024)
+          title: Course D (2025)
           description: "We created course D for students in third grade.  The course begins with a review of the concepts found in earlier courses, including loops and events. Afterward, students will develop their understanding of algorithms, nested loops, while loops, conditionals, and more. \n\n**New to teaching CS?**\n\nGet started with our [self-paced Professional Learning](https://studio.code.org/s/k5-onlinepd-2023)."
           student_description: Learn about loops, conditionals, and events. Beyond coding, learn about digital citizenship.
           description_short: Learn about conditional statements. Create your own art, games, and even a dance party.
           description_audience: 'Ages: 7-11'
+          lessons: {}
+          name: coursed-2025
         coursee-2025:
           lesson_groups:
             csf_digcit:
@@ -23421,7 +23429,7 @@ en:
               display_name: Impacts of Computing
             end_of_course_project:
               display_name: End of Course Project
-          title: Course E (2024)
+          title: Course E (2025)
           description: |-
             We created Course E for students in fourth grade. The course begins with an introduction to the Sprite Lab programming tool. Students will learn to make fun, interactive projects that reinforce what they’ll learn about online safety. Following these lessons, students will engage in more complex coding. Students will learn about nested loops, functions, and conditionals. By the end of the course, students will combine these concepts to solve challenging puzzles. The course ends with an open-ended project where students create a game or drawing.
 
@@ -23431,6 +23439,8 @@ en:
           student_description: Start coding with algorithms, events, loops, conditionals, and functions! By the end of this course, design and create a game or drawing that you can share with your friends and family.
           description_short: Learn the basics of sprites, nested loops, and functions.
           description_audience: 'Ages: 8-12'
+          lessons: {}
+          name: coursee-2025
         coursef-2025:
           lesson_groups:
             lessonGroup-2:
@@ -23443,7 +23453,7 @@ en:
               display_name: Data and Simulations
             lessonGroup-6:
               display_name: End of Course Project
-          title: Course F (2024)
+          title: Course F (2025)
           description: |-
             We created Course F for students in the fifth grade. The course begins by looking at how users make choices in the apps they use. Students then learn to make a variety of Sprite Lab apps that also offer choices for the user. In the later lessons in the course, students will learn about variables in a variety of contexts. Students are given greater autonomy and more choices throughout this course. By the end of the course, students will have created interactive projects to share with their friends and family.
 
@@ -23453,6 +23463,8 @@ en:
           student_description: Learn to code with sprites and variables, and discuss societal impacts of computing and the internet. By the end of this course, design and create a project you can share with friends and family.
           description_short: Learn all the concepts in Computer Science Fundamentals and create your own art, story or game.
           description_audience: 'Ages: 9-13'
+          lessons: {}
+          name: coursef-2025
         express-2025:
           lesson_groups:
             csf_sequencing:
@@ -23473,11 +23485,13 @@ en:
               display_name: For Loops
             lessonGroup-9:
               display_name: End of Course Project
-          title: Express Course (2024)
+          title: Express Course (2025)
           description: Learn computer science by trying the lessons below at your own pace! Learn to create computer programs, develop problem-solving skills, and work through fun challenges! Make games and creative projects to share with friends, family, and teachers.
           student_description: Learn computer science by trying the lessons below at your own pace! Learn to create computer programs, develop problem-solving skills, and work through fun challenges! Make games and creative projects to share with friends, family, and teachers.
           description_short: 'An introduction to computer science: combines the best of our elementary school curriculum for older students.'
           description_audience: 'Ages: 9-18'
+          lessons: {}
+          name: express-2025
         pre-express-2025:
           lesson_groups:
             lessonGroup-2:
