@@ -1,4 +1,3 @@
-import {navigateToHref} from '@code-dot-org/apps/utils';
 import {
   Button,
   LinkButton,
@@ -16,10 +15,31 @@ import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
+import {navigateToHref} from '@cdo/apps/utils';
 
+import {getSessionDate, getSessionTimes} from '../sessionDateUtils';
+import {COURSE_BUILD_YOUR_OWN} from '../workshop_dashboard/workshopConstants';
 import {SUBMISSION_STATUSES} from '../workshop_enrollment/constants';
 
 import style from './regionalWorkshopCatalog.module.scss';
+
+const buildWorkshopStartText = sessions => {
+  const firstSessionDate = getSessionDate({
+    session: sessions[0],
+    format: 'MM/DD/YY',
+    isLocal: sessions[0].is_local,
+  });
+  const {startTime, endTime} = getSessionTimes({
+    session: sessions[0],
+    format: 'h:mmA',
+    isLocal: sessions[0].is_local,
+  });
+  const firstSessionDateTime = `${firstSessionDate} (${startTime}-${endTime})`;
+
+  return sessions.length > 1
+    ? `${firstSessionDateTime} + ${sessions.length - 1} More`
+    : firstSessionDateTime;
+};
 
 const RegionalWorkshopCatalogCard = ({
   id,
@@ -28,7 +48,7 @@ const RegionalWorkshopCatalogCard = ({
   name,
   capacity,
   numEnrollments,
-  sessionTimes,
+  sessions,
   format,
   locationName,
   fee,
@@ -36,58 +56,27 @@ const RegionalWorkshopCatalogCard = ({
   requiresApplication,
   customApplicationLink,
   customRegistrationLink,
+  userInfo,
+  regionalPartnerName,
 }) => {
   const seatsRemaining = capacity - numEnrollments;
   const isFull = seatsRemaining <= 0;
-  const workshopTitle = name ? name : `${course}: ${subject}`;
-  const workshopSessionsText =
-    sessionTimes.length > 1
-      ? `${sessionTimes[0]} + ${sessionTimes.length - 1} More`
-      : sessionTimes[0];
-  const prereqText = hasPrereq ? 'Has prerequisites' : 'No prerequisites';
-  const [enrollmentIsPending, setEnrollmentIsPending] = useState(false);
+  const [enrollmentPending, setEnrollmentPending] = useState(false);
 
-  const enrollInWorkshop = async () => {
-    setEnrollmentIsPending(true);
+  const enrollInBuildYourOwnWorkshop = async () => {
+    if (enrollmentPending) {
+      return;
+    }
+    setEnrollmentPending(true);
 
     try {
-      const params = {
-        // user_id: props.user_id,
-        // first_name: formState.first_name,
-        // last_name: formState.last_name,
-        // email: formState.email,
-        // school_info: buildSchoolData({
-        //   schoolId: schoolInfo.schoolId,
-        //   country: schoolInfo.country,
-        //   schoolName: schoolInfo.schoolName,
-        //   schoolZip: schoolInfo.schoolZip,
-        // }),
-        // role: getRole(),
-        // describe_role: formState.describe_role,
-        // grades_teaching: getGradesTeaching(),
-        // explain_teaching_other: formState.explain_teaching_other,
-        // explain_not_teaching: formState.explain_not_teaching,
-        // csf_course_experience: formState.csf_course_experience,
-        // csf_courses_planned: getCsfCoursesPlanned(),
-        // explain_csf_course_other: formState.explain_csf_course_other,
-        // attended_csf_intro_workshop:
-        //   ATTENDED_CSF_COURSES_OPTIONS[formState.attended_csf_intro_workshop],
-        // previous_courses: formState.previous_courses,
-        // csf_intro_intent: formState.csf_intro_intent,
-        // csf_intro_other_factors: formState.csf_intro_other_factors,
-        // years_teaching: formState.years_teaching,
-        // years_teaching_cs: formState.years_teaching_cs,
-        // taught_ap_before: formState.taught_ap_before,
-        // planning_to_teach_ap: formState.planning_to_teach_ap,
-      };
-
       const response = await fetch(`/api/v1/pd/workshops/${id}/enrollments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-CSRF-Token': await getAuthenticityToken(),
         },
-        body: JSON.stringify(params),
+        body: JSON.stringify(userInfo),
       });
 
       const result = await response.json();
@@ -120,27 +109,12 @@ const RegionalWorkshopCatalogCard = ({
         case SUBMISSION_STATUSES.SUCCESS:
           // Redirect to My PL landing page. The WORKSHOP_ENROLLMENT_COMPLETED_EVENT event will be logged
           // on that page since event logs immediately followed by redirects sometimes do not fire.
-          sessionStorage.setItem(
-            'rpName',
-            this.props.workshop.regional_partner?.name || ''
-          );
-          sessionStorage.setItem('workshopCourse', this.props.workshop.course);
-          sessionStorage.setItem(
-            'workshopSubject',
-            this.props.workshop.subject || ''
-          );
-          sessionStorage.setItem(
-            'workshopName',
-            this.props.workshop.name || ''
-          );
-          sessionStorage.setItem(
-            'workshopLocation',
-            this.props.workshop_location_for_calendar || ''
-          );
-          sessionStorage.setItem(
-            'sessionTimeInfo',
-            JSON.stringify(this.props.session_info_for_calendar)
-          );
+          sessionStorage.setItem('rpName', regionalPartnerName || '');
+          sessionStorage.setItem('workshopCourse', course);
+          sessionStorage.setItem('workshopSubject', subject || '');
+          sessionStorage.setItem('workshopName', name || '');
+          sessionStorage.setItem('workshopLocation', locationName || '');
+          sessionStorage.setItem('sessionTimeInfo', JSON.stringify(sessions));
 
           navigateToHref('/my-professional-learning');
       }
@@ -148,16 +122,17 @@ const RegionalWorkshopCatalogCard = ({
       alert(`There was an error enrolling you in the workshop: ${error}`);
       console.error(error);
     } finally {
-      setEnrollmentIsPending(false);
+      setEnrollmentPending(false);
     }
   };
 
   const RenderApplyOrEnrollButton = () => {
     if (requiresApplication) {
-      // Sends user to third-party application link if available.
       if (customApplicationLink) {
+        // Sends user to third-party application link if available.
         return (
           <LinkButton
+            aria-label="applyNow"
             text="Apply now"
             target="_blank"
             color="purple"
@@ -172,6 +147,7 @@ const RegionalWorkshopCatalogCard = ({
         // link.
         return (
           <LinkButton
+            aria-label="applyNow"
             text="Apply now"
             target="_blank"
             color="purple"
@@ -186,6 +162,7 @@ const RegionalWorkshopCatalogCard = ({
         // Sends user to third-party workshop registration link if available.
         return (
           <LinkButton
+            aria-label="enrollNow"
             text="Enroll now"
             target="_blank"
             color="purple"
@@ -196,19 +173,36 @@ const RegionalWorkshopCatalogCard = ({
           />
         );
       } else {
-        // One-click enrolls the user in the workshop and sends them to the
-        // My-PL page if no third-party workshop registration link.
-        return (
-          <Button
-            text="Enroll now"
-            target="_blank"
-            color="purple"
-            onClick={enrollInWorkshop}
-            className={style.wsCardButton}
-            isPending={enrollmentIsPending}
-            disabled={isFull}
-          />
-        );
+        if (course === COURSE_BUILD_YOUR_OWN) {
+          // One-click enrolls the user in the workshop and sends them to the
+          // My-PL page if it's a Build Your Own workshop with no third-party
+          // workshop registration link.
+          return (
+            <Button
+              aria-label="enrollNow"
+              text="Enroll now"
+              target="_blank"
+              color="purple"
+              onClick={enrollInBuildYourOwnWorkshop}
+              className={style.wsCardButton}
+              isPending={enrollmentPending}
+              disabled={isFull}
+            />
+          );
+        } else {
+          // Sends user to workshop registration page.
+          return (
+            <LinkButton
+              aria-label="enrollNow"
+              text="Enroll now"
+              target="_blank"
+              color="purple"
+              href={`/pd/workshops/${id}/enroll`}
+              className={style.wsCardButton}
+              disabled={isFull}
+            />
+          );
+        }
       }
     }
   };
@@ -234,7 +228,9 @@ const RegionalWorkshopCatalogCard = ({
               isFull ? style.fullCapacityTag : style.spotsOpenCapacityTag
             )}
           />
-          <BodyOneText className={style.wsTitle}>{workshopTitle}</BodyOneText>
+          <BodyOneText className={style.wsTitle}>
+            {name ? name : `${course}: ${subject}`}
+          </BodyOneText>
           <OverlineTwoText className={style.gradeNote}>
             FOR TEACHERS OF GRADES:
           </OverlineTwoText>
@@ -245,7 +241,7 @@ const RegionalWorkshopCatalogCard = ({
             <div className={style.infoLineIconContainer}>
               <FontAwesomeV6Icon iconName={'calendar'} />
             </div>
-            <BodyTwoText>{workshopSessionsText}</BodyTwoText>
+            <BodyTwoText>{buildWorkshopStartText(sessions)}</BodyTwoText>
           </span>
           <span className={style.infoLine}>
             <div className={style.infoLineIconContainer}>
@@ -271,18 +267,22 @@ const RegionalWorkshopCatalogCard = ({
             <div className={style.infoLineIconContainer}>
               <FontAwesomeV6Icon iconName={'arrow-up-wide-short'} />
             </div>
-            <BodyTwoText>{prereqText}</BodyTwoText>
+            <BodyTwoText>
+              {hasPrereq ? 'Has prerequisites' : 'No prerequisites'}
+            </BodyTwoText>
           </span>
         </div>
       </div>
       <div className={style.buttonContainer}>
         <LinkButton
+          aria-label="learnMore"
           text="Learn more"
           type="secondary"
           target="_blank"
           color={buttonColors.black}
           href={`/pd/workshops/${id}/enroll`}
           className={style.wsCardButton}
+          disabled={isFull}
         />
         {RenderApplyOrEnrollButton()}
       </div>
@@ -291,13 +291,20 @@ const RegionalWorkshopCatalogCard = ({
 };
 
 RegionalWorkshopCatalogCard.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   course: PropTypes.string.isRequired,
   subject: PropTypes.string,
   name: PropTypes.string,
   capacity: PropTypes.number.isRequired,
   numEnrollments: PropTypes.number.isRequired,
-  sessionTimes: PropTypes.arrayOf(PropTypes.string).isRequired,
+  sessions: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      start: PropTypes.string.isRequired,
+      end: PropTypes.string.isRequired,
+      is_local: PropTypes.bool.isRequired,
+    })
+  ).isRequired,
   format: PropTypes.string.isRequired,
   locationName: PropTypes.string,
   fee: PropTypes.string,
@@ -305,6 +312,13 @@ RegionalWorkshopCatalogCard.propTypes = {
   requiresApplication: PropTypes.bool.isRequired,
   customApplicationLink: PropTypes.string,
   customRegistrationLink: PropTypes.string,
+  userInfo: PropTypes.shape({
+    user_id: PropTypes.number.isRequired,
+    first_name: PropTypes.string,
+    last_name: PropTypes.string,
+    email: PropTypes.string.isRequired,
+  }).isRequired,
+  regionalPartnerName: PropTypes.string,
 };
 
 export default RegionalWorkshopCatalogCard;
