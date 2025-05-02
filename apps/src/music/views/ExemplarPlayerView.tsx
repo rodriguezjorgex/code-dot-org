@@ -4,6 +4,8 @@ import React, {useCallback, useEffect, useState} from 'react';
 
 import useLifecycleNotifier from '@cdo/apps/lab2/hooks/useLifecycleNotifier';
 import {LifecycleEvent} from '@cdo/apps/lab2/utils/LifecycleNotifier';
+import {EVENTS} from '@cdo/apps/metrics/AnalyticsConstants';
+import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
 import {useAppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
 
 import {DEFAULT_PACK} from '../constants';
@@ -13,7 +15,6 @@ import MusicPlayer from '../player/MusicPlayer';
 import {setIsPlaying} from '../redux/musicRedux';
 
 import moduleStyles from './ExemplarPlayer.module.scss';
-
 interface ExemplarPlayerViewProps {
   playbackEvents: PlaybackEvent[];
   title: string;
@@ -89,6 +90,13 @@ const ExemplarPlayerView: React.FunctionComponent<ExemplarPlayerViewProps> = ({
         className={moduleStyles.entry}
         key={'exemplar-player'}
         onClick={() => {
+          const analyticsData = Blockly.analyticsData;
+          analyticsReporter.sendEvent(EVENTS.EXEMPLAR_PLAYER_USED, {
+            action: exemplarIsPlaying
+              ? EVENTS.EXEMPLAR_PLAYER_STOPPED
+              : EVENTS.EXEMPLAR_PLAYER_STARTED,
+            ...analyticsData,
+          });
           exemplarIsPlaying ? onStopSong() : onPlaySong();
         }}
       >

@@ -545,7 +545,12 @@ const EVENTS = {
   BLOCKLY_SETTING_THEME: 'theme',
   BLOCKLY_SETTING_ON: 'on',
   BLOCKLY_SETTING_OFF: 'off',
+
+  // Music Lab Settings
   BLOCKLY_APP_TYPE_MUSIC: 'music',
+  EXEMPLAR_PLAYER_USED: 'Exemplar Player Used',
+  EXEMPLAR_PLAYER_STARTED: 'play',
+  EXEMPLAR_PLAYER_STOPPED: 'stop',
 
   // Teacher Navigation V2
   NAVIGATE_TO_SECTION: 'Local Nav Class Section Selected',
