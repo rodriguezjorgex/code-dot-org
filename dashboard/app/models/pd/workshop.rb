@@ -1035,7 +1035,8 @@ class Pd::Workshop < ApplicationRecord
       has_prereq: prereq.present?,
       requires_application: require_application?,
       custom_application_link: regional_partner&.link_to_partner_application,
-      custom_registration_link: registration_link
+      custom_registration_link: registration_link,
+      regional_partner_name: regional_partner&.name,
     }
   end
 end

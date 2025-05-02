@@ -172,6 +172,7 @@ export default function RegionalWorkshopCatalog({userInfo, zipFromSchoolInfo}) {
                   requires_application,
                   custom_application_link,
                   custom_registration_link,
+                  regional_partner_name,
                 }) => (
                   <RegionalWorkshopCatalogCard
                     id={id}
@@ -190,7 +191,7 @@ export default function RegionalWorkshopCatalog({userInfo, zipFromSchoolInfo}) {
                     customApplicationLink={custom_application_link}
                     customRegistrationLink={custom_registration_link}
                     userInfo={userInfo}
-                    regionalPartnerName={regionalPartnerName}
+                    regionalPartnerName={regional_partner_name}
                   />
                 )
               )}
