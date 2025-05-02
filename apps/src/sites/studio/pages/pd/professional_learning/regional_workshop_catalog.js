@@ -6,9 +6,13 @@ import RegionalWorkshopCatalog from '@cdo/apps/code-studio/pd/professional_learn
 import getScriptData from '@cdo/apps/util/getScriptData';
 
 $(() => {
-  const zipFromSchoolInfo = getScriptData('zipFromSchoolInfo') || '';
+  const userInfo = getScriptData('userInfo');
+  const zipFromSchoolInfo = getScriptData('zipFromSchoolInfo');
   ReactDOM.render(
-    <RegionalWorkshopCatalog zipFromSchoolInfo={zipFromSchoolInfo} />,
+    <RegionalWorkshopCatalog
+      userInfo={userInfo}
+      zipFromSchoolInfo={zipFromSchoolInfo}
+    />,
     document.getElementById('regional-workshop-catalog')
   );
 });

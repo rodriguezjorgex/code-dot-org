@@ -1028,7 +1028,7 @@ class Pd::Workshop < ApplicationRecord
       name: name,
       capacity: capacity,
       num_enrollments: enrollments ? enrollments.count : 0,
-      session_times: sessions&.map(&:first_session_time_regional_ws_format),
+      sessions: sessions&.map(&:session_info_for_calendar),
       format: format,
       location_name: location_name,
       fee: fee,

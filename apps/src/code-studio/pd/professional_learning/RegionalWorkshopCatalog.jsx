@@ -19,7 +19,7 @@ import RegionalWorkshopCatalogCard from './RegionalWorkshopCatalogCard';
 
 import style from './regionalWorkshopCatalog.module.scss';
 
-export default function RegionalWorkshopCatalog({zipFromSchoolInfo}) {
+export default function RegionalWorkshopCatalog({userInfo, zipFromSchoolInfo}) {
   const [zipCode, setZipCode] = useState('');
   const [hasSubmittedZip, setHasSubmittedZip] = useState(false);
   const [regionalPartnerText, setRegionalPartnerText] =
@@ -164,7 +164,7 @@ export default function RegionalWorkshopCatalog({zipFromSchoolInfo}) {
                   name,
                   capacity,
                   num_enrollments,
-                  session_times,
+                  sessions,
                   format,
                   location_name,
                   fee,
@@ -181,7 +181,7 @@ export default function RegionalWorkshopCatalog({zipFromSchoolInfo}) {
                     name={name}
                     capacity={capacity}
                     numEnrollments={num_enrollments}
-                    sessionTimes={session_times || []}
+                    sessions={sessions || []}
                     format={format}
                     locationName={location_name}
                     fee={fee || ''}
@@ -189,6 +189,8 @@ export default function RegionalWorkshopCatalog({zipFromSchoolInfo}) {
                     requiresApplication={requires_application}
                     customApplicationLink={custom_application_link}
                     customRegistrationLink={custom_registration_link}
+                    userInfo={userInfo}
+                    regionalPartnerName={regionalPartnerName}
                   />
                 )
               )}
@@ -283,5 +285,13 @@ export default function RegionalWorkshopCatalog({zipFromSchoolInfo}) {
 }
 
 RegionalWorkshopCatalog.propTypes = {
+  userInfo: PropTypes.objectOf(
+    PropTypes.shape({
+      user_id: PropTypes.number.isRequired,
+      first_name: PropTypes.string,
+      last_name: PropTypes.string,
+      email: PropTypes.string.isRequired,
+    })
+  ).isRequired,
   zipFromSchoolInfo: PropTypes.string,
 };

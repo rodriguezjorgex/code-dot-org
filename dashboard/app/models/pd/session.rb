@@ -108,14 +108,6 @@ class Pd::Session < ApplicationRecord
     "#{start_date_us_format}, #{formatted_start} - #{formatted_end} #{tz_abbreviation}".strip
   end
 
-  def first_session_time_regional_ws_format
-    formatted_date = start_time.strftime('%D').strip
-    formatted_start = start_time.strftime('%l:%M%P').strip
-    formatted_end = end_time.strftime('%l:%M%P').strip
-
-    "#{formatted_date} (#{formatted_start}-#{formatted_end})".strip
-  end
-
   def hours
     (self.end - start) / 1.hour
   end
