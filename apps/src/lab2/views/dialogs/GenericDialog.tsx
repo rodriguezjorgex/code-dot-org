@@ -1,4 +1,4 @@
-import Button, {buttonColors} from '@code-dot-org/component-library/button';
+import Button from '@code-dot-org/component-library/button';
 import {useTheme} from '@code-dot-org/component-library/common/contexts';
 import {
   BodyTwoText,
@@ -138,16 +138,29 @@ const GenericDialog: React.FunctionComponent<GenericDialogProps> = ({
   useEscapeKeyboardTrap(cancelCallback);
   useEnterKeyboardTrap(confirmCallback);
 
+  const hasBodyComponent = !!bodyComponent;
+
   return (
     <FocusTrap>
       <div className={moduleStyles['genericDialog-' + theme]}>
         {titleComponent ? (
           titleComponent
         ) : title ? (
-          <Heading3>{title}</Heading3>
+          <Heading3 className={moduleStyles.title}>{title}</Heading3>
         ) : null}
-
-        {bodyComponent || <BodyTwoText>{message}</BodyTwoText>}
+        <div
+          className={
+            hasBodyComponent
+              ? moduleStyles.bodyComponent
+              : moduleStyles.bodyText
+          }
+        >
+          {hasBodyComponent ? (
+            bodyComponent
+          ) : (
+            <BodyTwoText>{message}</BodyTwoText>
+          )}
+        </div>
         <div className={moduleStyles.buttonContainer}>
           <div className={moduleStyles.outerButtonContainer}>
             {buttons?.cancel ? (
@@ -156,9 +169,7 @@ const GenericDialog: React.FunctionComponent<GenericDialogProps> = ({
                 className={moduleStyles.cancel}
                 type="secondary"
                 disabled={buttons.cancel.disabled}
-                color={
-                  theme === 'Dark' ? buttonColors.white : buttonColors.gray
-                }
+                color={theme === 'Dark' ? 'white' : 'gray'}
                 text={buttons.cancel.text || commonI18n.cancel()}
               />
             ) : (
@@ -170,7 +181,9 @@ const GenericDialog: React.FunctionComponent<GenericDialogProps> = ({
                   onClick={neutralCallback}
                   type="secondary"
                   disabled={buttons.neutral.disabled}
-                  color={buttonColors.gray}
+                  color={
+                    buttons?.neutral?.destructive ? 'destructive' : 'white'
+                  }
                   text={buttons.neutral.text}
                 />
               )}
@@ -178,11 +191,7 @@ const GenericDialog: React.FunctionComponent<GenericDialogProps> = ({
                 onClick={confirmCallback}
                 disabled={buttons?.confirm?.disabled}
                 type="primary"
-                color={
-                  buttons?.confirm?.destructive
-                    ? buttonColors.destructive
-                    : buttonColors.purple
-                }
+                color={buttons?.confirm?.destructive ? 'destructive' : 'purple'}
                 text={buttons?.confirm?.text || commonI18n.dialogOK()}
                 id="uitest-generic-dialog-ok"
               />
