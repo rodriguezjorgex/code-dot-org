@@ -12,54 +12,69 @@ jest.mock('@cdo/apps/util/AuthenticityTokenStore', () => ({
   getAuthenticityToken: jest.fn().mockResolvedValue('authToken'),
 }));
 
+const REGIONAL_PARTNER = 'Reggie Partner';
+
+const TEST_SESSION = {
+  id: 1,
+  start: '2025-04-22T13:00:00Z',
+  end: '2025-04-22T21:00:00Z',
+  is_local: false,
+};
+
 const TEST_WORKSHOPS = [
   {
     id: 1,
-    name: 'Regional Seattle Workshop',
     course: 'Test Course 1',
     subject: 'Test Subject',
-    dates: '1/1/2000',
-    sessions: [],
-    participant_group_type: 'Regional',
-    location: 'Seattle 111',
+    name: 'Regional Seattle Workshop',
+    capacity: 5,
+    num_enrollments: 2,
+    sessions: [TEST_SESSION],
+    format: 'In-Person',
     location_name: 'Seattle Public School',
-    location_address: 'Seattle 111',
-    on_map: false,
-    funded: false,
-    virtual: false,
-    enrolled_teacher_count: 0,
-    capacity: 1,
-    facilitators: ['Mx. Facilitator'],
-    organizer: {name: 'Mx. Organizer'},
-    enrollment_code: 'ABCD',
-    status: 'Not Started',
+    fee: null,
+    has_prereq: false,
+    requires_application: false,
+    custom_application_link: null,
+    custom_registration_link: null,
+    regional_partner_name: REGIONAL_PARTNER,
   },
   {
     id: 2,
-    name: 'National Austin Workshop',
     course: 'Test Course 2',
     subject: 'Test Subject',
-    dates: '1/1/2000',
-    sessions: [],
-    participant_group_type: 'National',
-    location: 'Austin 111',
+    name: 'National Austin Workshop',
+    capacity: 5,
+    num_enrollments: 4,
+    sessions: [TEST_SESSION],
+    format: 'Virtual',
     location_name: 'Austin Public School',
-    location_address: 'Austin 111',
-    on_map: false,
-    funded: false,
-    virtual: false,
-    enrolled_teacher_count: 0,
-    capacity: 1,
-    facilitators: ['Mx. Facilitator'],
-    organizer: {name: 'Mx. Organizer'},
-    enrollment_code: 'ABCD',
-    status: 'Not Started',
+    fee: '$400',
+    has_prereq: true,
+    requires_application: true,
+    custom_application_link: null,
+    custom_registration_link: null,
+    regional_partner_name: REGIONAL_PARTNER,
   },
 ];
 
+const renderDefault = zipCode => {
+  const params = {
+    zipFromSchoolInfo: zipCode || '',
+    userInfo: {
+      user_id: 1,
+      first_name: 'Firstname',
+      last_name: 'Lastname',
+      email: 'fake@email.com',
+    },
+  };
+
+  render(<RegionalWorkshopCatalog {...params} />);
+};
+
 describe('RegionalWorkshopCatalog', () => {
   it('page defaults to telling the user they need to enter a zip code', () => {
-    render(<RegionalWorkshopCatalog zipFromSchoolInfo="" />);
+    renderDefault();
     screen.getByText('Enter zip code to see workshops');
 
     // No regional partner retrieved with an empty zip
@@ -78,7 +93,7 @@ describe('RegionalWorkshopCatalog', () => {
           },
         }),
     });
-    render(<RegionalWorkshopCatalog zipFromSchoolInfo="" />);
+    renderDefault(zip);
 
     fireEvent.change(screen.getByRole('textbox', {name: 'zipSearch'}), {
       target: {value: zip},
@@ -110,19 +125,18 @@ describe('RegionalWorkshopCatalog', () => {
 
   it('shows workshops available to that zip code', async () => {
     const zip = '98122';
-    const regionalPartnerName = 'Reggie Partner';
 
     const fetchStub = jest.spyOn(window, 'fetch').mockResolvedValue({
       ok: true,
       json: () =>
         Promise.resolve({
           regional_workshop_data: {
-            regional_partner: {name: regionalPartnerName},
+            regional_partner: {name: REGIONAL_PARTNER},
             available_workshops: TEST_WORKSHOPS,
           },
         }),
     });
-    render(<RegionalWorkshopCatalog zipFromSchoolInfo="" />);
+    renderDefault(zip);
 
     fireEvent.change(screen.getByRole('textbox', {name: 'zipSearch'}), {
       target: {value: zip},
@@ -131,7 +145,7 @@ describe('RegionalWorkshopCatalog', () => {
 
     await waitFor(() => {
       // Regional Partner name and contact
-      screen.getByText(regionalPartnerName);
+      screen.getByText(REGIONAL_PARTNER);
       expect(
         screen.getByRole('link', {
           name: 'Contact',
@@ -151,11 +165,7 @@ describe('RegionalWorkshopCatalog', () => {
         'href',
         `/professional-learning/contact-regional-partner?zip=${zip}`
       );
-      TEST_WORKSHOPS.forEach(ws =>
-        screen.getByText(
-          `Id: ${ws.id}, Title: ${ws.name}, Location: ${ws.location_name}, Participant Group Type: ${ws.participant_group_type}`
-        )
-      );
+      TEST_WORKSHOPS.forEach(ws => screen.getByText(ws.name));
 
       expect(fetchStub).toHaveBeenCalledWith(`regional_workshop_data/${zip}`, {
         headers: {
@@ -170,7 +180,6 @@ describe('RegionalWorkshopCatalog', () => {
 
   it('can open and close regional partner info dialog if regional partner is present', async () => {
     const zip = '98122';
-    const regionalPartnerName = 'Reggie Partner';
     const regionalPartnerInfo = 'Test partner info.';
 
     jest.spyOn(window, 'fetch').mockResolvedValue({
@@ -179,14 +188,14 @@ describe('RegionalWorkshopCatalog', () => {
         Promise.resolve({
           regional_workshop_data: {
             regional_partner: {
-              name: regionalPartnerName,
+              name: REGIONAL_PARTNER,
               additional_info: regionalPartnerInfo,
             },
             available_workshops: TEST_WORKSHOPS,
           },
         }),
     });
-    render(<RegionalWorkshopCatalog zipFromSchoolInfo="" />);
+    renderDefault(zip);
 
     // Button to open dialog starts not enabled
     expect(screen.getByRole('button', {name: 'partnerInfo'})).toBeDisabled();
@@ -206,38 +215,37 @@ describe('RegionalWorkshopCatalog', () => {
     // Can open dialog
     fireEvent.click(screen.getByRole('button', {name: 'partnerInfo'}));
     await waitFor(() => {
-      expect(screen.getAllByText(regionalPartnerName).length).toBe(2);
+      expect(screen.getAllByText(REGIONAL_PARTNER).length).toBe(2);
       screen.getByText(regionalPartnerInfo);
     });
 
     // Can close dialog
     fireEvent.click(screen.getByRole('button', {name: 'Return to workshops'}));
     await waitFor(() => {
-      expect(screen.getAllByText(regionalPartnerName).length).toBe(1);
+      expect(screen.getAllByText(REGIONAL_PARTNER).length).toBe(1);
       expect(screen.queryByText(regionalPartnerInfo)).toBe(null);
     });
   });
 
   it('immediately shows workshops available to given zip code if provided in url', async () => {
     const zip = '98122';
-    const regionalPartnerName = 'Reggie Partner';
 
     const fetchStub = jest.spyOn(window, 'fetch').mockResolvedValue({
       ok: true,
       json: () =>
         Promise.resolve({
           regional_workshop_data: {
-            regional_partner: {name: regionalPartnerName},
+            regional_partner: {name: REGIONAL_PARTNER},
             available_workshops: TEST_WORKSHOPS,
           },
         }),
     });
     setWindowLocation({search: `?zip=${zip}`});
-    render(<RegionalWorkshopCatalog zipFromSchoolInfo="" />);
+    renderDefault(zip);
 
     await waitFor(() => {
       // Regional Partner name and contact
-      screen.getByText(regionalPartnerName);
+      screen.getByText(REGIONAL_PARTNER);
       expect(
         screen.getByRole('link', {
           name: 'Contact',
@@ -249,11 +257,7 @@ describe('RegionalWorkshopCatalog', () => {
 
       // Workshop content is displayed
       screen.getByText('Upcoming workshops');
-      TEST_WORKSHOPS.forEach(ws =>
-        screen.getByText(
-          `Id: ${ws.id}, Title: ${ws.name}, Location: ${ws.location_name}, Participant Group Type: ${ws.participant_group_type}`
-        )
-      );
+      TEST_WORKSHOPS.forEach(ws => screen.getByText(ws.name));
 
       expect(fetchStub).toHaveBeenCalledWith(`regional_workshop_data/${zip}`, {
         headers: {
@@ -270,23 +274,22 @@ describe('RegionalWorkshopCatalog', () => {
 
   it('immediately shows workshops available to given zip code if provided as a parameter', async () => {
     const zip = '98122';
-    const regionalPartnerName = 'Reggie Partner';
 
     const fetchStub = jest.spyOn(window, 'fetch').mockResolvedValue({
       ok: true,
       json: () =>
         Promise.resolve({
           regional_workshop_data: {
-            regional_partner: {name: regionalPartnerName},
+            regional_partner: {name: REGIONAL_PARTNER},
             available_workshops: TEST_WORKSHOPS,
           },
         }),
     });
-    render(<RegionalWorkshopCatalog zipFromSchoolInfo={zip} />);
+    renderDefault(zip);
 
     await waitFor(() => {
       // Regional Partner name and contact
-      screen.getByText(regionalPartnerName);
+      screen.getByText(REGIONAL_PARTNER);
       expect(
         screen.getByRole('link', {
           name: 'Contact',
@@ -298,11 +301,7 @@ describe('RegionalWorkshopCatalog', () => {
 
       // Workshop content is displayed
       screen.getByText('Upcoming workshops');
-      TEST_WORKSHOPS.forEach(ws =>
-        screen.getByText(
-          `Id: ${ws.id}, Title: ${ws.name}, Location: ${ws.location_name}, Participant Group Type: ${ws.participant_group_type}`
-        )
-      );
+      TEST_WORKSHOPS.forEach(ws => screen.getByText(ws.name));
 
       expect(fetchStub).toHaveBeenCalledWith(`regional_workshop_data/${zip}`, {
         headers: {

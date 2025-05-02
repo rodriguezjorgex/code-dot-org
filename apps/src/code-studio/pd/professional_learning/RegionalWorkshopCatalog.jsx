@@ -286,13 +286,11 @@ export default function RegionalWorkshopCatalog({userInfo, zipFromSchoolInfo}) {
 }
 
 RegionalWorkshopCatalog.propTypes = {
-  userInfo: PropTypes.objectOf(
-    PropTypes.shape({
-      user_id: PropTypes.number.isRequired,
-      first_name: PropTypes.string,
-      last_name: PropTypes.string,
-      email: PropTypes.string.isRequired,
-    })
-  ).isRequired,
+  userInfo: PropTypes.shape({
+    user_id: PropTypes.number.isRequired,
+    first_name: PropTypes.string,
+    last_name: PropTypes.string,
+    email: PropTypes.string.isRequired,
+  }).isRequired,
   zipFromSchoolInfo: PropTypes.string,
 };
