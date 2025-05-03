@@ -93,6 +93,10 @@ class BubbleChoice < DSLDefined
     end
 
     level_properties[:levelData] = {sublevels: summary[:sublevels], displayName: summary[:display_name], description: summary[:description]}
+
+    # Overwrite the finish URL.
+    level_properties[:finishUrl] = script_level.next_level_or_redirect_path_for_user(current_user, bubble_choice_parent: true) if script_level
+
     level_properties
   end
 
