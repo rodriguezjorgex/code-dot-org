@@ -85,7 +85,7 @@ class BubbleChoice < DSLDefined
 
   def summarize_for_lab2_properties(script, script_level = nil, current_user = nil)
     level_properties = super
-    summary = summarize(script_level: @script_level, user: @view_as_user, should_localize: true)
+    summary = summarize(script_level: script_level, user: @view_as_user, should_localize: true)
 
     # Remove status since this summary should not be user-specific.
     summary[:sublevels].each do |sublevel|
@@ -94,8 +94,8 @@ class BubbleChoice < DSLDefined
 
     level_properties[:levelData] = {sublevels: summary[:sublevels], displayName: summary[:display_name], description: summary[:description]}
 
-    # Overwrite the finish URL.
-    level_properties[:finishUrl] = script_level.next_level_or_redirect_path_for_user(current_user, bubble_choice_parent: true) if script_level
+    # Overwrite the incorrect finish URL with the actual next URL.
+    level_properties[:finishUrl] = summary[:redirect_url]
 
     level_properties
   end
