@@ -1,11 +1,21 @@
 @import 'color.scss';
 
-.consoleContainer {
-  color: $white;
+%consoleContainer {
   overflow: hidden;
   height: 100%;
   white-space: pre;
+}
+
+.consoleContainerDark {
+  @extend %consoleContainer;
+  color: $white;
   background-color: $black;
+}
+
+.consoleContainerLight {
+  @extend %consoleContainer;
+  color: $black;
+  background-color: $white;
 }
 
 .consoleV2 {
