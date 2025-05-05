@@ -27,12 +27,10 @@ export default class SchoolNotFound extends Component {
     schoolType: PropTypes.string,
     fieldNames: PropTypes.object,
     showErrorMsg: PropTypes.bool,
-    showRequiredIndicators: PropTypes.bool,
     schoolNameLabel: PropTypes.string,
   };
 
   static defaultProps = {
-    showRequiredIndicators: true,
     schoolNameLabel: i18n.schoolName(),
     fieldNames: {
       schoolName: 'school_name_s',
@@ -77,8 +75,13 @@ export default class SchoolNotFound extends Component {
     );
   }
 
-  renderLabel(text) {
-    return <div style={styles.question}>{text}</div>;
+  renderLabel(text, isLabelRequired = true) {
+    return (
+      <div style={styles.question}>
+        {text}
+        {isLabelRequired && <span style={styles.asterisk}> *</span>}
+      </div>
+    );
   }
 
   render() {
@@ -97,7 +100,7 @@ export default class SchoolNotFound extends Component {
           {this.props.schoolName !== OMIT_FIELD && (
             <div style={styles.field}>
               <label>
-                {this.renderLabel(this.props.schoolNameLabel)}
+                {this.renderLabel(this.props.schoolNameLabel, false)}
                 <input
                   id="school_name"
                   type="text"
@@ -112,7 +115,7 @@ export default class SchoolNotFound extends Component {
           {this.props.schoolType !== OMIT_FIELD && (
             <div style={styles.field}>
               <label>
-                {this.renderLabel(i18n.schoolType())}
+                {this.renderLabel(i18n.schoolType(), false)}
                 <select
                   id="school_type"
                   name={this.props.fieldNames.schoolType}
