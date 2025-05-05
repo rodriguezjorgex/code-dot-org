@@ -83,9 +83,8 @@ export const SessionPart: FC<{
 
   const updateSession = useCallback(
     (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-      const {name, value} = event.target;
       const update = {
-        [name.replace('address-search', '').trim()]: value,
+        [event.target.name]: event.target.value,
       };
       handleSession(update);
     },
