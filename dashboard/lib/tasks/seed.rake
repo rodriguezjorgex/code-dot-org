@@ -77,6 +77,7 @@ namespace :seed do
     ui-test-versioned-script-2019
     ui-test-csa-family-script
     ui-test-teacher-pl-course
+    ui-test-self-paced-pl
     ui-test-facilitator-pl-course
     ui-test-single-unit-2025
     ui-test-single-unit-2026
@@ -365,6 +366,7 @@ namespace :seed do
       ui-test-csa-family-script
       ui-test-facilitator-pl-course
       ui-test-teacher-pl-course
+      ui-test-self-paced-pl
       ui-test-versioned-script-2017
       ui-test-versioned-script-2019
       ui-test-unnumbered-lessons
@@ -482,6 +484,7 @@ namespace :seed do
       ui-test-course
       ui-test-csa-family-script
       ui-test-teacher-pl-course
+      ui-test-self-paced-pl
       ui-test-facilitator-pl-course
       ui-test-single-unit-course
       ui-test-versioned-course
