@@ -24,9 +24,11 @@ import vocabulariesEditor, {
 import {getStore, registerReducers} from '@cdo/apps/redux';
 import instructionsDialog from '@cdo/apps/redux/instructionsDialog';
 import ExpandableImageDialog from '@cdo/apps/templates/lessonOverview/ExpandableImageDialog';
+import {prepareBlocklyForEmbedding} from '@cdo/apps/templates/utils/embeddedBlocklyUtils';
 import getScriptData from '@cdo/apps/util/getScriptData';
 
 $(document).ready(function () {
+  prepareBlockly();
   const lessonData = getScriptData('lesson');
   const relatedLessons = getScriptData('relatedLessons');
   const unitInfo = getScriptData('unitForLesson');
@@ -76,3 +78,14 @@ $(document).ready(function () {
     document.getElementById('edit-container')
   );
 });
+
+function prepareBlockly() {
+  const customBlocksConfig = getScriptData('customBlocksConfig');
+  if (!customBlocksConfig) {
+    return;
+  }
+  // Levelbuilders can add any blocks to any lesson, so we need to prepare
+  // all Blockly environments with documentation for embedding.
+  prepareBlocklyForEmbedding(customBlocksConfig, 'spritelab');
+  prepareBlocklyForEmbedding(undefined, 'music');
+}
