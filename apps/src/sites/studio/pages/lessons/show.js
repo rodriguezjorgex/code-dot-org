@@ -43,7 +43,10 @@ function prepareBlockly() {
   if (!customBlocksConfig) {
     return;
   }
-  prepareBlocklyForEmbedding(customBlocksConfig);
+  // Lessons can include any blocks, so we need to prepare
+  // all Blockly environments with documentation for embedding.
+  prepareBlocklyForEmbedding(customBlocksConfig, 'spritelab');
+  prepareBlocklyForEmbedding(undefined, 'music');
 }
 
 /**
