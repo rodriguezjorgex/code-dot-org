@@ -1,8 +1,4 @@
-import {
-  Button,
-  LinkButton,
-  buttonColors,
-} from '@code-dot-org/component-library/button';
+import {LinkButton} from '@code-dot-org/component-library/button';
 import FontAwesomeV6Icon from '@code-dot-org/component-library/fontAwesomeV6Icon';
 import Tags from '@code-dot-org/component-library/tags';
 import {
@@ -12,14 +8,9 @@ import {
 } from '@code-dot-org/component-library/typography';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
-
-import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
-import {navigateToHref} from '@cdo/apps/utils';
+import React from 'react';
 
 import {getSessionDate, getSessionTimes} from '../sessionDateUtils';
-import {COURSE_BUILD_YOUR_OWN} from '../workshop_dashboard/workshopConstants';
-import {SUBMISSION_STATUSES} from '../workshop_enrollment/constants';
 
 import style from './regionalWorkshopCatalog.module.scss';
 
@@ -56,154 +47,52 @@ const RegionalWorkshopCatalogCard = ({
   requiresApplication,
   customApplicationLink,
   customRegistrationLink,
-  userInfo,
-  regionalPartnerName,
 }) => {
   const seatsRemaining = capacity - numEnrollments;
   const isFull = seatsRemaining <= 0;
-  const [enrollmentPending, setEnrollmentPending] = useState(false);
 
-  const enrollInBuildYourOwnWorkshop = async () => {
-    if (enrollmentPending) {
-      return;
-    }
-    setEnrollmentPending(true);
-
-    try {
-      const response = await fetch(`/api/v1/pd/workshops/${id}/enrollments`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': await getAuthenticityToken(),
-        },
-        body: JSON.stringify(userInfo),
-      });
-
-      const result = await response.json();
-      switch (result.workshop_enrollment_status) {
-        case SUBMISSION_STATUSES.UNKNOWN_ERROR:
-          alert(result.error_message || 'Unknown error occurred');
-          break;
-        case SUBMISSION_STATUSES.DUPLICATE:
-          alert(
-            <p>
-              You are already registered, and should have received a
-              confirmation email. If you need to cancel, click{' '}
-              <a href={result.cancel_url}>{result.cancel_url}</a>
-              {'.'}
-            </p>
-          );
-          break;
-        case SUBMISSION_STATUSES.OWN:
-          alert('You are attempting to join your own workshop.');
-          break;
-        case SUBMISSION_STATUSES.CLOSED:
-          alert('Sorry, this workshop is closed.');
-          break;
-        case SUBMISSION_STATUSES.FULL:
-          alert('Sorry, this workshop is full.');
-          break;
-        case SUBMISSION_STATUSES.NOT_FOUND:
-          alert('Sorry, this workshop could not be found.');
-          break;
-        case SUBMISSION_STATUSES.SUCCESS:
-          // Redirect to My PL landing page. The WORKSHOP_ENROLLMENT_COMPLETED_EVENT event will be logged
-          // on that page since event logs immediately followed by redirects sometimes do not fire.
-          sessionStorage.setItem('rpName', regionalPartnerName || '');
-          sessionStorage.setItem('workshopCourse', course);
-          sessionStorage.setItem('workshopSubject', subject || '');
-          sessionStorage.setItem('workshopName', name || '');
-          sessionStorage.setItem('workshopLocation', locationName || '');
-          sessionStorage.setItem('sessionTimeInfo', JSON.stringify(sessions));
-
-          navigateToHref('/my-professional-learning');
-      }
-    } catch (error) {
-      alert(`There was an error enrolling you in the workshop: ${error}`);
-      console.error(error);
-    } finally {
-      setEnrollmentPending(false);
-    }
-  };
-
+  // Show the apply button if applications are required, otherwise show the
+  // enroll button. If the workshop has a third-party apply/enroll link then
+  // use that one, otherwise default to our apply/enroll links.
   const RenderApplyOrEnrollButton = () => {
     if (requiresApplication) {
-      if (customApplicationLink) {
-        // Sends user to third-party application link if available.
-        return (
-          <LinkButton
-            aria-label="applyNow"
-            text="Apply now"
-            target="_blank"
-            color="purple"
-            iconRight={{iconName: 'up-right-from-square'}}
-            href={customApplicationLink}
-            className={style.wsCardButton}
-            disabled={isFull}
-          />
-        );
-      } else {
-        // Sends user to fill out teacher application if no third-party application
-        // link.
-        return (
-          <LinkButton
-            aria-label="applyNow"
-            text="Apply now"
-            target="_blank"
-            color="purple"
-            href="/pd/application/teacher"
-            className={style.wsCardButton}
-            disabled={isFull}
-          />
-        );
-      }
+      return (
+        <LinkButton
+          aria-label="applyNow"
+          text="Apply now"
+          target="_blank"
+          color="purple"
+          iconRight={
+            customApplicationLink ? {iconName: 'up-right-from-square'} : null
+          }
+          href={
+            customApplicationLink
+              ? customApplicationLink
+              : '/pd/application/teacher'
+          }
+          className={style.wsCardButton}
+          disabled={isFull}
+        />
+      );
     } else {
-      if (customRegistrationLink) {
-        // Sends user to third-party workshop registration link if available.
-        return (
-          <LinkButton
-            aria-label="enrollNow"
-            text="Enroll now"
-            target="_blank"
-            color="purple"
-            iconRight={{iconName: 'up-right-from-square'}}
-            href={customRegistrationLink}
-            className={style.wsCardButton}
-            disabled={isFull}
-          />
-        );
-      } else {
-        if (course === COURSE_BUILD_YOUR_OWN) {
-          // One-click enrolls the user in the workshop and sends them to the
-          // My-PL page if it's a Build Your Own workshop with no third-party
-          // workshop registration link.
-          return (
-            <Button
-              aria-label="enrollNow"
-              text="Enroll now"
-              target="_blank"
-              color="purple"
-              onClick={enrollInBuildYourOwnWorkshop}
-              className={style.wsCardButton}
-              isPending={enrollmentPending}
-              disabled={isFull}
-            />
-          );
-        } else {
-          // Sends user to workshop registration page.
-          return (
-            <LinkButton
-              aria-label="enrollNow"
-              text="Enroll now"
-              target="_blank"
-              color="purple"
-              href={`/pd/workshops/${id}/enroll`}
-              className={style.wsCardButton}
-              disabled={isFull}
-            />
-          );
-        }
-      }
+      return (
+        <LinkButton
+          aria-label="enrollNow"
+          text="Enroll now"
+          target="_blank"
+          color="purple"
+          iconRight={
+            customRegistrationLink ? {iconName: 'up-right-from-square'} : null
+          }
+          href={
+            customRegistrationLink
+              ? customRegistrationLink
+              : `/pd/workshops/${id}/enroll`
+          }
+          className={style.wsCardButton}
+          disabled={isFull}
+        />
+      );
     }
   };
 
@@ -273,19 +162,7 @@ const RegionalWorkshopCatalogCard = ({
           </span>
         </div>
       </div>
-      <div className={style.buttonContainer}>
-        <LinkButton
-          aria-label="learnMore"
-          text="Learn more"
-          type="secondary"
-          target="_blank"
-          color={buttonColors.black}
-          href={`/pd/workshops/${id}/enroll`}
-          className={style.wsCardButton}
-          disabled={isFull}
-        />
-        {RenderApplyOrEnrollButton()}
-      </div>
+      <div className={style.buttonContainer}>{RenderApplyOrEnrollButton()}</div>
     </div>
   );
 };
@@ -312,13 +189,6 @@ RegionalWorkshopCatalogCard.propTypes = {
   requiresApplication: PropTypes.bool.isRequired,
   customApplicationLink: PropTypes.string,
   customRegistrationLink: PropTypes.string,
-  userInfo: PropTypes.shape({
-    user_id: PropTypes.number.isRequired,
-    first_name: PropTypes.string,
-    last_name: PropTypes.string,
-    email: PropTypes.string.isRequired,
-  }).isRequired,
-  regionalPartnerName: PropTypes.string,
 };
 
 export default RegionalWorkshopCatalogCard;

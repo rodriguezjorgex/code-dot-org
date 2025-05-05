@@ -37,7 +37,6 @@ const TEST_WORKSHOPS = [
     requires_application: false,
     custom_application_link: null,
     custom_registration_link: null,
-    regional_partner_name: REGIONAL_PARTNER,
   },
   {
     id: 2,
@@ -54,27 +53,12 @@ const TEST_WORKSHOPS = [
     requires_application: true,
     custom_application_link: null,
     custom_registration_link: null,
-    regional_partner_name: REGIONAL_PARTNER,
   },
 ];
 
-const renderDefault = zipCode => {
-  const params = {
-    zipFromSchoolInfo: zipCode || '',
-    userInfo: {
-      user_id: 1,
-      first_name: 'Firstname',
-      last_name: 'Lastname',
-      email: 'fake@email.com',
-    },
-  };
-
-  render(<RegionalWorkshopCatalog {...params} />);
-};
-
 describe('RegionalWorkshopCatalog', () => {
   it('page defaults to telling the user they need to enter a zip code', () => {
-    renderDefault();
+    render(<RegionalWorkshopCatalog zipFromSchoolInfo={null} />);
     screen.getByText('Enter zip code to see workshops');
 
     // No regional partner retrieved with an empty zip
@@ -93,7 +77,7 @@ describe('RegionalWorkshopCatalog', () => {
           },
         }),
     });
-    renderDefault(zip);
+    render(<RegionalWorkshopCatalog zipFromSchoolInfo={zip} />);
 
     fireEvent.change(screen.getByRole('textbox', {name: 'zipSearch'}), {
       target: {value: zip},
@@ -136,7 +120,7 @@ describe('RegionalWorkshopCatalog', () => {
           },
         }),
     });
-    renderDefault(zip);
+    render(<RegionalWorkshopCatalog zipFromSchoolInfo={zip} />);
 
     fireEvent.change(screen.getByRole('textbox', {name: 'zipSearch'}), {
       target: {value: zip},
@@ -195,7 +179,7 @@ describe('RegionalWorkshopCatalog', () => {
           },
         }),
     });
-    renderDefault(zip);
+    render(<RegionalWorkshopCatalog zipFromSchoolInfo={zip} />);
 
     // Button to open dialog starts not enabled
     expect(screen.getByRole('button', {name: 'partnerInfo'})).toBeDisabled();
@@ -241,7 +225,7 @@ describe('RegionalWorkshopCatalog', () => {
         }),
     });
     setWindowLocation({search: `?zip=${zip}`});
-    renderDefault(zip);
+    render(<RegionalWorkshopCatalog zipFromSchoolInfo={zip} />);
 
     await waitFor(() => {
       // Regional Partner name and contact
@@ -285,7 +269,7 @@ describe('RegionalWorkshopCatalog', () => {
           },
         }),
     });
-    renderDefault(zip);
+    render(<RegionalWorkshopCatalog zipFromSchoolInfo={zip} />);
 
     await waitFor(() => {
       // Regional Partner name and contact

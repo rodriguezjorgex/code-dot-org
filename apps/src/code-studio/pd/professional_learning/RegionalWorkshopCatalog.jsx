@@ -19,7 +19,7 @@ import RegionalWorkshopCatalogCard from './RegionalWorkshopCatalogCard';
 
 import style from './regionalWorkshopCatalog.module.scss';
 
-export default function RegionalWorkshopCatalog({userInfo, zipFromSchoolInfo}) {
+export default function RegionalWorkshopCatalog({zipFromSchoolInfo}) {
   const [zipCode, setZipCode] = useState('');
   const [hasSubmittedZip, setHasSubmittedZip] = useState(false);
   const [regionalPartnerText, setRegionalPartnerText] =
@@ -172,7 +172,6 @@ export default function RegionalWorkshopCatalog({userInfo, zipFromSchoolInfo}) {
                   requires_application,
                   custom_application_link,
                   custom_registration_link,
-                  regional_partner_name,
                 }) => (
                   <RegionalWorkshopCatalogCard
                     id={id}
@@ -190,8 +189,6 @@ export default function RegionalWorkshopCatalog({userInfo, zipFromSchoolInfo}) {
                     requiresApplication={requires_application}
                     customApplicationLink={custom_application_link}
                     customRegistrationLink={custom_registration_link}
-                    userInfo={userInfo}
-                    regionalPartnerName={regional_partner_name}
                   />
                 )
               )}
@@ -286,11 +283,5 @@ export default function RegionalWorkshopCatalog({userInfo, zipFromSchoolInfo}) {
 }
 
 RegionalWorkshopCatalog.propTypes = {
-  userInfo: PropTypes.shape({
-    user_id: PropTypes.number.isRequired,
-    first_name: PropTypes.string,
-    last_name: PropTypes.string,
-    email: PropTypes.string.isRequired,
-  }).isRequired,
   zipFromSchoolInfo: PropTypes.string,
 };

@@ -1,22 +1,12 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import React from 'react';
 
 import RegionalWorkshopCatalogCard from '@cdo/apps/code-studio/pd/professional_learning/RegionalWorkshopCatalogCard';
-import {COURSE_BUILD_YOUR_OWN} from '@cdo/apps/code-studio/pd/workshop_dashboard/workshopConstants';
-import {SUBMISSION_STATUSES} from '@cdo/apps/code-studio/pd/workshop_enrollment/constants';
-import {navigateToHref} from '@cdo/apps/utils';
 
 jest.mock('@cdo/apps/util/AuthenticityTokenStore', () => ({
   getAuthenticityToken: jest.fn().mockResolvedValue('authToken'),
 }));
-
-jest.mock('@cdo/apps/utils', () => ({
-  ...jest.requireActual('@cdo/apps/utils'),
-  navigateToHref: jest.fn(),
-}));
-
-const navigateToHrefMock = navigateToHref;
 
 const TEST_SESSION_1 = {
   id: 1,
@@ -47,13 +37,6 @@ const DEFAULT_PROPS = {
   requiresApplication: false,
   customApplicationLink: '',
   customRegistrationLink: '',
-  userInfo: {
-    user_id: 10,
-    first_name: 'Firstname',
-    last_name: 'Lastname',
-    email: 'test@email.com',
-  },
-  regionalPartnerName: 'Reggie Partner',
 };
 
 const renderDefault = (overrideProps = {}) => {
@@ -66,8 +49,7 @@ describe('RegionalWorkshopCatalog', () => {
     renderDefault({capacity: 5, numEnrollments: 5});
 
     screen.getByText('Full');
-    // Cannot find inaccessible elements (i.e. disabled links)
-    expect(screen.queryByRole('link', {name: 'learnMore'})).toEqual(null);
+    // Cannot find inaccessible link button since it's disabled
     expect(screen.queryByRole('link', {name: 'enrollNow'})).toEqual(null);
   });
 
@@ -77,7 +59,6 @@ describe('RegionalWorkshopCatalog', () => {
     screen.getByText(
       `${DEFAULT_PROPS.capacity - DEFAULT_PROPS.numEnrollments} Seats Remaining`
     );
-    expect(screen.getByRole('link', {name: 'learnMore'})).not.toBeDisabled();
     expect(screen.getByRole('link', {name: 'enrollNow'})).not.toBeDisabled();
   });
 
@@ -150,72 +131,5 @@ describe('RegionalWorkshopCatalog', () => {
         name: 'enrollNow',
       })
     ).toHaveAttribute('href', `/pd/workshops/${DEFAULT_PROPS.id}/enroll`);
-  });
-
-  describe('card with button to one-click enroll user for Build Your Own workshops', () => {
-    let fetchStub;
-
-    const renderOneClickEnrollDefault = response => {
-      fetchStub = jest.spyOn(window, 'fetch').mockResolvedValue({
-        ok: true,
-        json: () => Promise.resolve(response),
-      });
-      renderDefault({course: COURSE_BUILD_YOUR_OWN, subject: null});
-    };
-
-    const checkFetchCalledWithDesiredParams = fetchStub => {
-      expect(fetchStub).toHaveBeenCalledWith(
-        `/api/v1/pd/workshops/${DEFAULT_PROPS.id}/enrollments`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': 'authToken',
-          },
-          body: JSON.stringify(DEFAULT_PROPS.userInfo),
-        }
-      );
-    };
-
-    afterEach(() => {
-      fetchStub.mockRestore();
-      sessionStorage.clear();
-    });
-
-    it('returns success', async () => {
-      renderOneClickEnrollDefault({
-        workshop_enrollment_status: SUBMISSION_STATUSES.SUCCESS,
-      });
-
-      fireEvent.click(
-        screen.getByRole('button', {
-          name: 'enrollNow',
-        })
-      );
-
-      await waitFor(() => {
-        expect(sessionStorage.getItem('rpName', false)).toEqual(
-          DEFAULT_PROPS.regionalPartnerName
-        );
-        expect(sessionStorage.getItem('workshopCourse', false)).toEqual(
-          COURSE_BUILD_YOUR_OWN
-        );
-        expect(sessionStorage.getItem('workshopSubject', false)).toEqual('');
-        expect(sessionStorage.getItem('workshopName', false)).toEqual(
-          DEFAULT_PROPS.name
-        );
-        expect(sessionStorage.getItem('workshopLocation', false)).toEqual(
-          DEFAULT_PROPS.locationName
-        );
-        expect(sessionStorage.getItem('sessionTimeInfo', false)).toEqual(
-          JSON.stringify([TEST_SESSION_1])
-        );
-
-        checkFetchCalledWithDesiredParams(fetchStub);
-        expect(navigateToHrefMock).toHaveBeenCalledWith(
-          '/my-professional-learning'
-        );
-      });
-    });
   });
 });

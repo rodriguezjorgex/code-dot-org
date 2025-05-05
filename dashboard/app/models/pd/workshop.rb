@@ -1033,7 +1033,7 @@ class Pd::Workshop < ApplicationRecord
       location_name: location_name,
       fee: fee,
       has_prereq: prereq.present?,
-      requires_application: require_application?,
+      requires_application: require_application? || (regional_partner.present? && regional_partner.link_to_partner_application.present?),
       custom_application_link: regional_partner&.link_to_partner_application,
       custom_registration_link: registration_link,
       regional_partner_name: regional_partner&.name,
