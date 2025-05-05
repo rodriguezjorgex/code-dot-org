@@ -15,7 +15,10 @@ import {SignInState} from '@cdo/apps/templates/currentUserRedux';
 import {useAppSelector, useAppDispatch} from '@cdo/apps/util/reduxHooks';
 
 import {editorConfig} from './editorConfig';
-import {darkMode as darkModeTheme} from './editorThemes';
+import {
+  darkMode as darkModeTheme,
+  lightMode as lightModeTheme,
+} from './editorThemes';
 
 import moduleStyles from './code-editor.module.scss';
 
@@ -66,6 +69,9 @@ const CodeEditor: React.FunctionComponent<CodeEditorProps> = ({
   // This compartment controls font size settings for the editor.
   const fontSizeCompartment = useMemo(() => new Compartment(), []);
 
+  //This compartment controls the theme for the editor
+  const themeCompartment = useMemo(() => new Compartment(), []);
+
   const getFontSizeTheme = (fontSize: number) => {
     return EditorView.theme({
       '&': {
@@ -98,7 +104,9 @@ const CodeEditor: React.FunctionComponent<CodeEditorProps> = ({
       fontSizeCompartment.of(getFontSizeTheme(FontSize[editorFontSizeKey]))
     );
     if (darkMode) {
-      editorExtensions.push(darkModeTheme);
+      editorExtensions.push(themeCompartment.of(darkModeTheme));
+    } else {
+      editorExtensions.push(themeCompartment.of(lightModeTheme));
     }
     setEditorView(
       new EditorView({
@@ -129,6 +137,7 @@ const CodeEditor: React.FunctionComponent<CodeEditorProps> = ({
     fontSizeCompartment,
     editorFontSizeKey,
     editorFontSizeLoaded,
+    themeCompartment,
   ]);
 
   // When we have a new fontSizeKey, reset font size.
@@ -143,6 +152,19 @@ const CodeEditor: React.FunctionComponent<CodeEditorProps> = ({
       });
     }
   }, [editorView, fontSizeCompartment, editorFontSizeKey]);
+
+  // When we have a new theme, reset the theme.
+  useEffect(() => {
+    if (editorView) {
+      editorView.dispatch({
+        effects: [
+          themeCompartment.reconfigure(
+            darkMode ? darkModeTheme : lightModeTheme
+          ),
+        ],
+      });
+    }
+  }, [darkMode, editorView, themeCompartment]);
 
   // When we have a new channelId and/or start code, reset the editor with the start code.
   // A new channelId means we are loading a new project, and we need to reset the editor.

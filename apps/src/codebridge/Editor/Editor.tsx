@@ -1,3 +1,4 @@
+import {useTheme} from '@code-dot-org/component-library/common/contexts';
 import {BodyOneText} from '@code-dot-org/component-library/typography';
 import {useCodebridgeContext} from '@codebridge/codebridgeContext';
 import {LanguageSupport} from '@codemirror/language';
@@ -18,6 +19,7 @@ interface EditorProps {
 
 export const Editor = ({langMapping, editableFileTypes}: EditorProps) => {
   const {source, saveFile, levelProperties} = useCodebridgeContext();
+  const {theme} = useTheme();
 
   const file = getActiveFileForSource(source);
 
@@ -58,7 +60,7 @@ export const Editor = ({langMapping, editableFileTypes}: EditorProps) => {
       {file ? (
         <CodeEditor
           key={`${file.id}/${1}`}
-          darkMode={true}
+          darkMode={theme === 'Dark'}
           onCodeChange={onChange}
           startCode={file.contents}
           appName={levelProperties.appName}
