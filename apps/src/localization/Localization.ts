@@ -1,3 +1,10 @@
+import {get} from 'js-cookie';
+
+import Localize, {LocalizeOptions} from '@cdo/apps/localization/Localize';
+import experiments from '@cdo/apps/util/experiments';
+import getScriptData from '@cdo/apps/util/getScriptData';
+import {DefaultLocale} from '@cdo/generated-scripts/sharedConstants';
+
 export type TranslatableHash = {[key: string]: string};
 
 /**
@@ -12,13 +19,6 @@ export type TranslationCallbackData = {
 };
 
 export type TranslationCallback = (info: TranslationCallbackData) => void;
-
-import {get} from 'js-cookie';
-
-import Localize, {LocalizeOptions} from '@cdo/apps/localization/Localize';
-import experiments from '@cdo/apps/util/experiments';
-import getScriptData from '@cdo/apps/util/getScriptData';
-import {DefaultLocale} from '@cdo/generated-scripts/sharedConstants';
 
 /**
  * Describes an available language.
