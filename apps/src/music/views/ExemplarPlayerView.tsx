@@ -1,11 +1,10 @@
 import FontAwesomeV6Icon from '@code-dot-org/component-library/fontAwesomeV6Icon';
 import classNames from 'classnames';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 
 import useLifecycleNotifier from '@cdo/apps/lab2/hooks/useLifecycleNotifier';
 import {LifecycleEvent} from '@cdo/apps/lab2/utils/LifecycleNotifier';
-import {EVENTS} from '@cdo/apps/metrics/AnalyticsConstants';
-import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
+import AnalyticsReporter from '@cdo/apps/music/analytics/AnalyticsReporter';
 import {useAppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
 
 import {DEFAULT_PACK} from '../constants';
@@ -31,14 +30,25 @@ const ExemplarPlayerView: React.FunctionComponent<ExemplarPlayerViewProps> = ({
   const dispatch = useAppDispatch();
   const isPlaying = useAppSelector(state => state.music.isPlaying);
   const [exemplarIsPlaying, setExemplarIsPlaying] = useState<boolean>(false);
+  const analyticsReporter = useRef<AnalyticsReporter>(new AnalyticsReporter());
 
   const onMount = useCallback(async () => {
     await player.preloadSounds(playbackEvents, () => {});
+
+    analyticsReporter.current?.startSession();
   }, [player, playbackEvents]);
 
   useEffect(() => {
     onMount();
   }, [onMount]);
+
+  const {userId, userType, signInState} = useAppSelector(
+    state => state.currentUser
+  );
+
+  useEffect(() => {
+    analyticsReporter.current?.setUserProperties(userId, userType, signInState);
+  }, [userId, userType, signInState]);
 
   // Play the already compiled song with the pre-loaded sounds.
   const onPlaySong = useCallback(async () => {
@@ -90,13 +100,13 @@ const ExemplarPlayerView: React.FunctionComponent<ExemplarPlayerViewProps> = ({
         className={moduleStyles.entry}
         key={'exemplar-player'}
         onClick={() => {
-          const analyticsData = Blockly.analyticsData;
-          analyticsReporter.sendEvent(EVENTS.EXEMPLAR_PLAYER_USED, {
-            action: exemplarIsPlaying
-              ? EVENTS.EXEMPLAR_PLAYER_STOPPED
-              : EVENTS.EXEMPLAR_PLAYER_STARTED,
-            ...analyticsData,
-          });
+          const action = exemplarIsPlaying ? 'stop' : 'play';
+          analyticsReporter.current.onButtonClicked(
+            `exemplar-player-${action}`,
+            {
+              title,
+            }
+          );
           exemplarIsPlaying ? onStopSong() : onPlaySong();
         }}
       >
