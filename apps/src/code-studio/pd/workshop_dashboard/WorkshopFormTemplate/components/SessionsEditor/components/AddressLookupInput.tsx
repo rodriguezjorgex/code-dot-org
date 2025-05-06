@@ -174,7 +174,13 @@ export const AddressLookupInput = memo(
           aria-hidden={true}
         />
         {suggestionResults.length > 0 && (
-          <ul id={listboxId} role="listbox" className={styles.suggestionList}>
+          <ul
+            id={listboxId}
+            role="listbox"
+            className={classNames(styles.suggestionList, {
+              [styles.keyboardNav]: activeIndex >= 0,
+            })}
+          >
             {suggestionResults.map((suggestion, index) => (
               <li
                 key={suggestion}

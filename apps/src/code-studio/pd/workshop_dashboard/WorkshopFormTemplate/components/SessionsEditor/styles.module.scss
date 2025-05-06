@@ -71,6 +71,12 @@
     padding: 0.25rem 0;
     margin: 0;
 
+    &:not(.keyboardNav) {
+      .suggestionItem:hover {
+        background-color: var(--background-neutral-tertiary);
+      }
+    }
+
     .suggestionItem {
       padding: 0.5rem 1rem;
       cursor: pointer;
@@ -78,10 +84,6 @@
       &.active {
         @include focus-styles;
         outline-offset: -2px;
-      }
-
-      &:hover,
-      &.active {
         background-color: var(--background-neutral-tertiary);
       }
     }
