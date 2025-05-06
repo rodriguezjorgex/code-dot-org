@@ -203,8 +203,6 @@ class ScriptLevelsController < ApplicationController
       end
     end
 
-    puts "body_classes: #{@body_classes}"
-
     @rubric = @script_level.lesson.rubric
     ai_rubrics_enabled_for_user = @view_as_user&.verified_teacher? || @view_as_user&.teachers&.any?(&:verified_teacher?)
     if @rubric && ai_rubrics_enabled_for_user
