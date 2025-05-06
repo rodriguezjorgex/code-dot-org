@@ -197,18 +197,13 @@ class ScriptLevelsController < ApplicationController
     # 3. Otherwise, we use the level's background color, if it exists.
     @body_classes = @level.properties['background']
     if @script_level.level.uses_lab2? && @script_level.lesson
-      has_python_levels = @script_level.lesson.script_levels.any? {|script_level| script_level.level.is_a?(Pythonlab)}
-      theme_preference = nil
-      if has_python_levels && current_user
-        user_theme = UserPreference.find_by(user_id: current_user.id)&.theme
-        theme_preference = user_theme['global'] if user_theme
-      end
-      if theme_preference
-        @body_classes = "background-#{theme_preference.downcase}"
-      elsif @script_level.lesson.properties['background']
-        @body_classes = "background-#{@script_level.lesson.properties['background']}"
+      background = @script_level.lesson.get_background(current_user)
+      if background
+        @body_classes = "background-#{background}"
       end
     end
+
+    puts "body_classes: #{@body_classes}"
 
     @rubric = @script_level.lesson.rubric
     ai_rubrics_enabled_for_user = @view_as_user&.verified_teacher? || @view_as_user&.teachers&.any?(&:verified_teacher?)

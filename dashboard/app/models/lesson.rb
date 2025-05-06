@@ -932,6 +932,19 @@ class Lesson < ApplicationRecord
     "https://support.code.org/hc/en-us/requests/new?&tf_description=#{CGI.escape(message)}"
   end
 
+  def get_background(current_user)
+    # For now, we only use the user's theme preference if the lesson has python levels.
+    puts "hi from get_background"
+    has_python_levels = script_levels.any? {|script_level| script_level.level.is_a?(Pythonlab)}
+    theme_preference = nil
+    if has_python_levels && current_user
+      user_theme = UserPreference.find_by(user_id: current_user.id)&.theme
+      theme_preference = user_theme['global'] if user_theme
+    end
+    puts "theme_preference: #{theme_preference}, has_python_levels: #{has_python_levels}, current_user: #{current_user}"
+    theme_preference&.downcase || background
+  end
+
   # Finds the LessonActivity by id, or creates a new one if id is not specified.
   # @param activity [Hash]
   # @returns [LessonActivity]
