@@ -1,13 +1,13 @@
 import FontAwesomeV6Icon from '@code-dot-org/component-library/fontAwesomeV6Icon';
 import classNames from 'classnames';
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 
 import useLifecycleNotifier from '@cdo/apps/lab2/hooks/useLifecycleNotifier';
 import {LifecycleEvent} from '@cdo/apps/lab2/utils/LifecycleNotifier';
-import AnalyticsReporter from '@cdo/apps/music/analytics/AnalyticsReporter';
 import {useAppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
 
 import {DEFAULT_PACK} from '../constants';
+import {AnalyticsContext} from '../context';
 import {PlaybackEvent} from '../player/interfaces/PlaybackEvent';
 import MusicLibrary from '../player/MusicLibrary';
 import MusicPlayer from '../player/MusicPlayer';
@@ -30,25 +30,15 @@ const ExemplarPlayerView: React.FunctionComponent<ExemplarPlayerViewProps> = ({
   const dispatch = useAppDispatch();
   const isPlaying = useAppSelector(state => state.music.isPlaying);
   const [exemplarIsPlaying, setExemplarIsPlaying] = useState<boolean>(false);
-  const analyticsReporter = useRef<AnalyticsReporter>(new AnalyticsReporter());
+  const analyticsReporter = useContext(AnalyticsContext);
 
   const onMount = useCallback(async () => {
     await player.preloadSounds(playbackEvents, () => {});
-
-    analyticsReporter.current?.startSession();
   }, [player, playbackEvents]);
 
   useEffect(() => {
     onMount();
   }, [onMount]);
-
-  const {userId, userType, signInState} = useAppSelector(
-    state => state.currentUser
-  );
-
-  useEffect(() => {
-    analyticsReporter.current?.setUserProperties(userId, userType, signInState);
-  }, [userId, userType, signInState]);
 
   // Play the already compiled song with the pre-loaded sounds.
   const onPlaySong = useCallback(async () => {
@@ -101,12 +91,9 @@ const ExemplarPlayerView: React.FunctionComponent<ExemplarPlayerViewProps> = ({
         key={'exemplar-player'}
         onClick={() => {
           const action = exemplarIsPlaying ? 'stop' : 'play';
-          analyticsReporter.current.onButtonClicked(
-            `exemplar-player-${action}`,
-            {
-              title,
-            }
-          );
+          analyticsReporter?.onButtonClicked(`exemplar-player-${action}`, {
+            title,
+          });
           exemplarIsPlaying ? onStopSong() : onPlaySong();
         }}
       >
