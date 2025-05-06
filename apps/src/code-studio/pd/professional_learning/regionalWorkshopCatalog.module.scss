@@ -1,5 +1,6 @@
 @import '@code-dot-org/component-library-styles/primitiveColors';
 @import '@code-dot-org/component-library-styles/colors';
+@import 'breakpoints';
 
 .workshopCatalog {
   background-color: var(--background-neutral-secondary);
@@ -111,10 +112,19 @@
 
       .wsCardContainer {
         width: 100%;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
         justify-content: center;
-        grid-gap: 1.5rem;
+
+        @media screen and (min-width: $width-sm) {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-gap: 1.5rem;
+        }
+
+        @media screen and (max-width: $width-sm) {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+        }
       }
     }
 
