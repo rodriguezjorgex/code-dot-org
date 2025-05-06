@@ -179,7 +179,7 @@ describe('RegionalWorkshopCatalog', () => {
           },
         }),
     });
-    render(<RegionalWorkshopCatalog zipFromSchoolInfo={zip} />);
+    render(<RegionalWorkshopCatalog zipFromSchoolInfo="" />);
 
     // Button to open dialog starts not enabled
     expect(screen.getByRole('button', {name: 'partnerInfo'})).toBeDisabled();
