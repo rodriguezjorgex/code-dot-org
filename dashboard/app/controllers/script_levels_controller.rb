@@ -190,9 +190,25 @@ class ScriptLevelsController < ApplicationController
       end
     end
 
-    # The lesson might contain a background that should be applied to all levels.
-    lesson_background = @script_level.lesson.properties['background'] if @script_level.level.uses_lab2? && @script_level.lesson
-    @body_classes = lesson_background ? "background-#{lesson_background}" : @level.properties['background']
+    # We have a few different paths for getting the background color for the level.
+    # 1. If this is a lab2 level and the lesson contains any python lab levels, we check the user's theme preference.
+    #    If the user has a theme preference, we use that. If not, we check the lesson's background color.
+    # 2. If this is a lab2 level and the lesson does not contain any python lab levels, we use the lesson's background color, if it exists.
+    # 3. Otherwise, we use the level's background color, if it exists.
+    @body_classes = @level.properties['background']
+    if @script_level.level.uses_lab2? && @script_level.lesson
+      has_python_levels = @script_level.lesson.script_levels.any? {|script_level| script_level.level.is_a?(Pythonlab)}
+      theme_preference = nil
+      if has_python_levels && current_user
+        user_theme = UserPreference.find_by(user_id: current_user.id)&.theme
+        theme_preference = user_theme['global'] if user_theme
+      end
+      if theme_preference
+        @body_classes = "background-#{theme_preference.downcase}"
+      elsif @script_level.lesson.properties['background']
+        @body_classes = "background-#{@script_level.lesson.properties['background']}"
+      end
+    end
 
     @rubric = @script_level.lesson.rubric
     ai_rubrics_enabled_for_user = @view_as_user&.verified_teacher? || @view_as_user&.teachers&.any?(&:verified_teacher?)
