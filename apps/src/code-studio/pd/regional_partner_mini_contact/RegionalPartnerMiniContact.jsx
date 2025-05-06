@@ -145,7 +145,7 @@ export class RegionalPartnerMiniContact extends React.Component {
             required={false}
             onChange={this.handleChange}
             defaultValue={this.state.name}
-            className={style}
+            style={style}
           />
           {this.state.errors.includes('email') && (
             <div
@@ -162,7 +162,7 @@ export class RegionalPartnerMiniContact extends React.Component {
             required={true}
             onChange={this.handleChange}
             defaultValue={this.state.email}
-            className={style}
+            style={style}
           />
           {this.state.errors.includes('zip') && (
             <div
@@ -179,7 +179,7 @@ export class RegionalPartnerMiniContact extends React.Component {
             required={true}
             onChange={this.handleChange}
             defaultValue={this.state.zip}
-            className={style}
+            style={style}
           />
           <div className={style.fieldGroup}>
             <ButtonList
@@ -216,7 +216,7 @@ export class RegionalPartnerMiniContact extends React.Component {
             componentClass="textarea"
             onChange={this.handleChange}
             defaultValue={this.state.notes}
-            className={style}
+            style={style}
           />
           <div className={style.submitContainer}>
             {!this.state.submitting && (
@@ -263,7 +263,7 @@ export class RegionalPartnerMiniContactPopupLink extends React.Component {
           options: {
             user_name: results.user_name,
             email: results.email,
-            zip: `${this.props.zip || results.zip || ''}`,
+            zip: `${this.props.zip || results.zip}`,
             notes: this.props.notes || results.notes,
           },
         });
