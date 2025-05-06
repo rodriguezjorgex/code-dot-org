@@ -86,12 +86,8 @@ export const AddressLookupInput = memo(
                 (s?: string): s is string =>
                   typeof s === 'string' && s.length > 0
               );
-            if (fullAddresses.includes(debouncedValue)) {
-              setSuggestionResults([]);
-            } else {
-              setSuggestionResults(fullAddresses);
-              setActiveIndex(-1);
-            }
+            setSuggestionResults(fullAddresses);
+            setActiveIndex(-1);
           } catch (error) {
             console.error(error);
           } finally {
