@@ -64,6 +64,9 @@ export const AddressLookupInput = memo(
     const containerRef = useOutsideClick<HTMLDivElement>(reset);
 
     useEffect(() => {
+      if (!accessToken) {
+        return;
+      }
       // skip api call when component first mounts if value already exists
       // also skip when a suggestion is selected and value updates with full address
       if (skipApi.current) {
@@ -97,7 +100,7 @@ export const AddressLookupInput = memo(
         };
         fetchSuggestions();
       }
-    }, [debouncedValue, autofill]);
+    }, [debouncedValue, autofill, accessToken]);
 
     const handleSelectSuggestion = useCallback(
       (suggestion: string) => {
