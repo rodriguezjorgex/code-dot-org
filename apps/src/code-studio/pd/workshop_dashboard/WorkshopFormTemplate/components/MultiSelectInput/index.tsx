@@ -64,13 +64,11 @@ export const MultiSelectInput: React.FC<{
 
   const filteredOptions = useMemo(
     () =>
-      options
-        .filter(option =>
-          option.searchText.some(text =>
-            text.toLowerCase().includes(searchText.toLowerCase())
-          )
+      options.filter(option =>
+        option.searchText.some(text =>
+          text.toLowerCase().includes(searchText.toLowerCase())
         )
-        .slice(0, 100), // Limiting to 100 options for performance
+      ),
     [options, searchText]
   );
 
@@ -99,21 +97,14 @@ export const MultiSelectInput: React.FC<{
     }
   }, [activeIndex, filteredOptions, menuOpen]);
 
-  useEffect(() => {
-    if (activeIndex < 0 && searchText) {
-      setActiveIndex(0);
-    }
-  }, [activeIndex, searchText]);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {value} = e.currentTarget;
     setSearchText(value);
-    setActiveIndex(-1);
     if (!menuOpen && value) {
       setMenuOpen(true);
     }
     if (!value) {
-      reset();
+      setActiveIndex(-1);
     }
   };
 
@@ -167,10 +158,15 @@ export const MultiSelectInput: React.FC<{
           setActiveIndex(prev => Math.max(prev - 1, 0));
           break;
         case 'Enter':
+          // when filtering the options, Enter selects the first option
+          if (activeIndex < 0 && searchText && filteredOptions[0]) {
+            handleToggleOption(filteredOptions[0].id);
+          }
+        // fallthrough is intentional
+        // Space and Enter act the same when an option is active
+        // eslint-disable-next-line no-fallthrough
         case ' ':
           if (activeIndex >= 0 && filteredOptions[activeIndex]) {
-            // Add a check to ensure an item is actually highlighted
-            e.preventDefault(); // Prevent the default action (change event)
             handleToggleOption(filteredOptions[activeIndex].id);
           }
           break;
@@ -219,6 +215,7 @@ export const MultiSelectInput: React.FC<{
         onClick={e => {
           e.preventDefault();
           e.stopPropagation();
+          if (!menuOpen) setMenuOpen(true);
           inputRef.current?.focus();
         }}
       >
@@ -264,7 +261,6 @@ export const MultiSelectInput: React.FC<{
               onChange={handleInputChange}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
-              onClick={() => setMenuOpen(true)}
               onKeyDown={handleInputKeyDown}
               role="combobox"
               aria-autocomplete="list"
