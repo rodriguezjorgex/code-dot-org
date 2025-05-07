@@ -399,7 +399,11 @@ class RegionalPartnerSearch extends Component {
                                       {workshop.workshop_date_range_string}
                                     </div>
                                     <div>{workshop.location_name}</div>
-                                    <div>{workshop.location_address}</div>
+                                    <div>
+                                      {workshop.location_address === 'Virtual'
+                                        ? workshop.format
+                                        : workshop.location_address}
+                                    </div>
                                   </div>
                                 )
                               )}
