@@ -1,5 +1,6 @@
-@import '@code-dot-org/component-library-styles/primitiveColors';
 @import '@code-dot-org/component-library-styles/colors';
+@import '@code-dot-org/component-library-styles/primitiveColors';
+@import '@code-dot-org/component-library-styles/variables.scss';
 @import 'breakpoints';
 
 .workshopCatalog {
@@ -39,7 +40,7 @@
       justify-content: flex-end;
       background-color: var(--neutral-base-white);
       border: 1px solid var(--neutral-gray-20);
-      border-radius: 0.25rem;
+      border-radius: $regular-border-radius;
   
       .zipSearchInput {
         display: flex;
@@ -138,7 +139,7 @@
       background-color: var(--background-neutral-secondary);
       padding: 2.5rem;
       border: 1px solid var(--neutral-gray-20);
-      border-radius: 0.25rem;
+      border-radius: $regular-border-radius;
 
       .noCardsTextContainer {
         display: flex;
@@ -175,7 +176,7 @@
   flex-direction: column;
   justify-content: space-between;
   border: 1px solid var(--neutral-gray-20);
-  border-radius: 0.25rem;
+  border-radius: $regular-border-radius;
 
   .titleBlock {
     display: flex;
