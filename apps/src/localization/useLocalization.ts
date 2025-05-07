@@ -8,7 +8,7 @@ import {localization} from './Localization';
  */
 export const useLocalization = () => {
   const [locale, setLocale] = useState<string>(localization().locale);
-  
+
   useEffect(() => {
     localization().on('change', info => {
       setLocale(localization().locale);
