@@ -785,6 +785,14 @@ Outputs:
     Export:
       Name:
         'Fn::Sub': '${AWS::StackName}-StaticAssetsBucketArn'
+  ECSAutoScalingRoleArn:
+    Value:
+      Fn::GetAtt:
+        - ECSAutoScalingRole
+        - Arn
+    Export:
+      Name:
+        'Fn::Sub': '${AWS::StackName}-ECSAutoScalingRoleArn'
   FargateServiceLoadBalancerDNS:
     Value:
       Fn::GetAtt:
