@@ -465,11 +465,7 @@ Resources:
     Properties:
       MaxCapacity: 20 # Upper limit for scaling, can be increased as needed
       MinCapacity: 3 # High availability minimum
-      ResourceId: !Join
-        - '/'
-        - - "service"
-          - !Ref EcsCluster
-          - !GetAtt FargateService.Name
+      ResourceId: !Sub "service/${EcsCluster}/${FargateService.Name}"
       RoleARN: !GetAtt ECSAutoScalingRole.Arn
       ScalableDimension: ecs:service:DesiredCount
       ServiceNamespace: ecs
