@@ -123,7 +123,7 @@ const RegionalWorkshopCatalogCard = ({
           <BodyOneText className={style.wsTitle}>
             {name ? name : `${course}: ${subject}`}
           </BodyOneText>
-          {supportedGradeLevels && (
+          {supportedGradeLevels?.length > 0 && (
             <div className={style.gradeContainer}>
               <OverlineTwoText className={style.gradeNote}>
                 FOR TEACHERS OF GRADES:
