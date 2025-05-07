@@ -213,7 +213,7 @@ export class Localization {
    * @param labels - Optional set of categorical labels to attach to the text.
    */
   translatable(key: string, labels: string[] = []): string {
-    this.translate(key);
+    this.translate(key, labels);
     return key;
   }
 
