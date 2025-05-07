@@ -1,4 +1,5 @@
 @import 'color.scss';
+@import '@code-dot-org/component-library-styles/colors.scss';
 
 %consoleContainer {
   overflow: hidden;
@@ -24,10 +25,6 @@
   padding-left: 4px;
 }
 
-.errorLine {
-  color: $lightest_red;
-}
-
 .popOutGraph {
   position: fixed;
   left: 30%;
@@ -38,7 +35,7 @@
 
 .disabledInfoIcon {
   padding: 12px;
-  color: $white;
+  color: var(--text-neutral-primary);
   font-size: 16px;
 }
 
