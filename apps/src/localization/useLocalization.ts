@@ -1,4 +1,4 @@
-import {useState, useCallback, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 
 import {localization} from './Localization';
 
@@ -8,18 +8,12 @@ import {localization} from './Localization';
  */
 export const useLocalization = () => {
   const [locale, setLocale] = useState<string>(localization().locale);
-  const updateCallback = useCallback(
-    (_language: string) => {
-      setLocale(localization().locale);
-    },
-    [setLocale]
-  );
-
+  
   useEffect(() => {
     localization().on('change', info => {
-      updateCallback(info.code);
+      setLocale(localization().locale);
     });
-  }, [updateCallback]);
+  }, [setLocale]);
 
   return locale;
 };
