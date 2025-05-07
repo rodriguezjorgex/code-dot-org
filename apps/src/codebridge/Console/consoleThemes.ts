@@ -1,6 +1,7 @@
+// We can mostly use the defaults for dark theme, as the default console is
+// black with white text.
+// We override a few colors to ensure good contrast.
 export const darkTheme = {
-  background: '#000000',
-  foreground: '#FFFFFF',
   red: '#ff5f5f',
   brightBlack: '#b2b2b2',
 };
