@@ -77,13 +77,14 @@ export const MultiSelectInput: React.FC<{
     [options]
   );
 
-  const activeDescendant = useMemo(
-    () =>
-      activeIndex >= 0 && filteredOptions[activeIndex]
-        ? `${id}-option-${filteredOptions[activeIndex].id}`
-        : undefined,
-    [activeIndex, filteredOptions, id]
-  );
+  const activeDescendant = useMemo(() => {
+    if (activeIndex >= 0 && filteredOptions[activeIndex]) {
+      return `${id}-option-${filteredOptions[activeIndex].id}`;
+    }
+    if (filteredOptions.length === 1) {
+      return `${id}-option-${filteredOptions[0].id}`;
+    }
+  }, [activeIndex, filteredOptions, id]);
 
   // scrolls option into view
   // activeIndex is set when navigating the option menu
@@ -158,8 +159,8 @@ export const MultiSelectInput: React.FC<{
           setActiveIndex(prev => Math.max(prev - 1, 0));
           break;
         case 'Enter':
-          // when filtering the options, Enter selects the first option
-          if (activeIndex < 0 && searchText && filteredOptions[0]) {
+          // when filtering results in a single option, Enter selects it
+          if (activeIndex < 0 && searchText && filteredOptions.length === 1) {
             handleToggleOption(filteredOptions[0].id);
           }
         // fallthrough is intentional
@@ -292,7 +293,8 @@ export const MultiSelectInput: React.FC<{
               {filteredOptions.length > 0 ? (
                 filteredOptions.map((option, i) => {
                   const selected = isOptionSelected(option.id);
-                  const optionFocused = activeIndex === i;
+                  const optionFocused =
+                    activeIndex === i || filteredOptions.length === 1;
                   const optionHovered = isOptionHovered(option.id);
                   const optionHtmlId = `${id}-option-${option.id}`;
 
