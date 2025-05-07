@@ -351,5 +351,8 @@ declare global {
   }
 }
 
+const Localize = window.Localize;
+
 export {Localize};
-export default window.Localize;
+
+export default Localize;
