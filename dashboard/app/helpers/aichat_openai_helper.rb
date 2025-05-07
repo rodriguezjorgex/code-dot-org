@@ -77,8 +77,7 @@ module AichatOpenaiHelper
       temperature,
       extra: {
         tools: tools,
-        tool_choice: tool_choice,
-        temperature: temperature
+        tool_choice: tool_choice
       }
     )
 

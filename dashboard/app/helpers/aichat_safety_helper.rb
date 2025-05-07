@@ -57,7 +57,6 @@ module AichatSafetyHelper
       evaluation = JSON.parse(response.body)['choices'][0]['message']['content']
 
       unless VALID_EVALUATION_RESPONSES_SIMPLE.include?(evaluation)
-        # Fallback to structured call ONCE (not retryable)
         report_openai_safety_check("InvalidResponse")
         attempts +=1
 

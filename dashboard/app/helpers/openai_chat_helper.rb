@@ -10,7 +10,7 @@ module OpenaiChatHelper
       @model = model
     end
 
-    def request_chat_completion(messages, temperature = DEFAULT_TEMPERATURE)
+    def request_chat_completion(messages, temperature = DEFAULT_TEMPERATURE, extra: {})
       headers = {
         "Content-Type" => "application/json",
         "Authorization" => "Bearer #{api_key}"
@@ -20,7 +20,7 @@ module OpenaiChatHelper
         model: model,
         temperature: temperature,
         messages: messages
-      }
+      }.merge(extra)
 
       HTTParty.post(
         OPEN_AI_URL,
