@@ -8,6 +8,7 @@ export const darkTheme = {
 export const lightTheme = {
   background: '#FFFFFF',
   foreground: '#000000',
-  red: '#ff0000',
-  brightBlack: '#808080',
+  cursor: '#000000',
+  cursorAccent: '#FFFFFF',
+  selectionBackground: '#ADD6FF',
 };
