@@ -152,39 +152,39 @@ describe('AddressLookupInput Component', () => {
     );
   });
 
-  it('does not display suggestions if input value exactly matches a suggestion', async () => {
-    const suggestions = [{full_address: 'Exact Match Address'}];
+  it('does not make an api call when a suggestion is selected', async () => {
+    const suggestions = [{full_address: '123 Main St'}];
     mockSuggest.mockResolvedValue({suggestions});
 
     renderComponent();
 
     const input = screen.getByLabelText('Location Address');
     await act(async () => {
-      await userEvent.type(input, 'Exact Match Address');
+      await userEvent.type(input, '123 Main St');
     });
 
-    // Wait for potential API call and rendering
     await waitFor(() => {
+      expect(mockSuggest).toHaveBeenCalledTimes(1);
       expect(mockSuggest).toHaveBeenCalledWith(
-        'Exact Match Address',
+        '123 Main St',
         expect.any(Object)
       );
     });
 
-    // Even though suggest was called, the list should not render
-    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
-    expect(screen.getByLabelText('Location Address')).toHaveAttribute(
-      'aria-expanded',
-      'false'
-    );
+    const suggestionItem = screen.getByText('123 Main St');
+    await user.click(suggestionItem);
+
+    await waitFor(() => {
+      expect(mockSuggest).toHaveBeenCalledTimes(1);
+    });
   });
 
   it('selecting a suggestion on click, calls onChange, and hides list', async () => {
-    const suggestions = [{full_address: 'Click Me Address'}];
+    const suggestions = [{full_address: '123 Main St'}];
     mockSuggest.mockResolvedValue({suggestions});
 
     renderComponent();
-    const value = 'Click';
+    const value = '123';
 
     const input = screen.getByLabelText('Location Address');
     await act(async () => {
@@ -195,7 +195,7 @@ describe('AddressLookupInput Component', () => {
       expect(screen.getByRole('listbox')).toBeInTheDocument();
     });
 
-    const suggestionItem = screen.getByText('Click Me Address');
+    const suggestionItem = screen.getByText('123 Main St');
     await user.click(suggestionItem);
 
     expect(mockOnChange).toHaveBeenCalledTimes(value.length + 1);
@@ -203,7 +203,7 @@ describe('AddressLookupInput Component', () => {
       expect.objectContaining({
         target: expect.objectContaining({
           name: 'locationAddress',
-          value: 'Click Me Address',
+          value: '123 Main St',
         }),
       })
     );
