@@ -4,7 +4,7 @@ import FocusTrap from 'focus-trap-react';
 import React, {useState, useCallback, useRef, useEffect} from 'react';
 import {createPortal} from 'react-dom';
 
-import moduleStyles from './PopUpButton.module.scss';
+import moduleStyles from './pop-up-button.module.scss';
 
 type PopUpButtonProps = {
   iconName: string;
@@ -34,6 +34,8 @@ export const PopUpButton = ({
   const [dropdownStyles, setDropdownStyles] = useState<React.CSSProperties>({});
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const [updatedStyles, setUpdatedStyles] = useState(false);
+  // We need to set the theme here becausse the dropdown is rendered in a portal, outside of the
+  // main lab container.
   const {theme} = useTheme();
 
   const setIsOpenFalse = useCallback(() => {
