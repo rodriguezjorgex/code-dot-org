@@ -9,7 +9,7 @@ import {localization} from './Localization';
 export const useLocalization = () => {
   const [locale, setLocale] = useState<string>(localization().locale);
   const updateCallback = useCallback(
-    (language: string) => {
+    (_language: string) => {
       setLocale(localization().locale);
     },
     [setLocale]
