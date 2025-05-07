@@ -59,7 +59,7 @@ describe('AddressLookupInput Component', () => {
     // not mocking useDebounce or using fake timers because userEvent uses timers
     // to simulate keyboard interaction. instead reducing debounce delay to speed
     // up tests
-    debounceDelay: 300,
+    debounceDelay: 100,
   };
 
   const renderComponent = (props = {}) =>
