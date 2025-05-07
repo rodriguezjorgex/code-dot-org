@@ -19,20 +19,11 @@ import {useAppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
 import '@xterm/xterm/css/xterm.css';
 
 import ConsoleManager from './ConsoleManager';
+import {darkTheme, lightTheme} from './consoleThemes';
 import ControlButtons from './ControlButtons';
 import RightButtons from './RightButtons';
 
 import moduleStyles from './console.module.scss';
-
-const darkTheme = {
-  background: '#000000',
-  foreground: '#FFFFFF',
-};
-
-const lightTheme = {
-  background: '#FFFFFF',
-  foreground: '#000000',
-};
 
 // An xterm.js console component.
 const Console: React.FunctionComponent = () => {
