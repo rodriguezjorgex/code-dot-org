@@ -744,7 +744,7 @@ Resources:
       InstanceType: !Ref ConsoleInstanceType
       IamInstanceProfile: !Ref FrontendInstanceProfile
       KeyName: <%=SSH_KEY_NAME%>
-      DisableApiTermination: <%= rack_env?(:adhoc) ? stack_name.include?('bugcrowd') : true %>
+      DisableApiTermination: <%= rack_env?(:adhoc) ? false : true %>
       Tags:
         - {Key: Name, Value: <%=environment%>-console}
       BlockDeviceMappings:
