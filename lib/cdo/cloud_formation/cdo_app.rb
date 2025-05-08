@@ -48,17 +48,24 @@ module Cdo::CloudFormation
     delegate :commit, :frontends, :database, :load_balancer, :alarms, :cdn_enabled, :branch, :domain,
       to: :options
 
-    def initialize(**options)
+    public def initialize(**options)
       options[:stack_name]  ||= CDO.stack_name
       options[:filename]    ||= 'cloud_formation_stack.yml.erb'
       super(**options)
       options = @options = OpenStruct.new(options)
 
+      # For adhoc, preserve initial options via 'Op:' CloudFormation tags
+      if rack_env?(:adhoc)
+        op_tags.each {|key, val| options[key] = val if options[key].nil?}
+      end
+
       # Various option defaults.
       options.frontends     ||= rack_env?(:production)
+      # Enable database in standard envs; adhoc uses preserved tag or default off
       options.database      ||= [:staging, :test, :levelbuilder, :production].include?(rack_env)
       options.load_balancer ||= !rack_env?(:adhoc) || options.frontends
       options.alarms        ||= !rack_env?(:adhoc)
+      # Default CDN disabled in adhoc unless overridden by initial 'Op:CdnEnabled' tag
       options.cdn_enabled   ||= !rack_env?(:adhoc)
       options.branch        ||= (rack_env?(:adhoc) ? RakeUtils.git_branch : rack_env)
       options.commit        ||= `git ls-remote origin #{branch}`.split.first
@@ -76,14 +83,19 @@ module Cdo::CloudFormation
       log_resource_filter.push 'FrontendLaunchConfig', 'ASGCount'
       tags.push(key: 'environment', value: rack_env)
       tags.push(key: 'owner', value: Aws::STS::Client.new.get_caller_identity.arn) if rack_env?(:adhoc)
+      # Persist chosen options as CloudFormation tags with 'Op:' prefix
+      tags.push(key: 'Op:Database', value: options.database.to_s)
+      tags.push(key: 'Op:Frontends', value: options.frontends.to_s)
+      tags.push(key: 'Op:CdnEnabled', value: options.cdn_enabled.to_s)
+      tags.push(key: 'Op:Alarms', value: options.alarms.to_s)
     end
 
-    def render(*)
+    public def render(*)
       check_branch!
       super
     end
 
-    def check_branch!
+    public def check_branch!
       return if dry_run
       if rack_env?(:adhoc) && RakeUtils.git_branch == branch
         # Current branch is the one we're deploying to the adhoc server,
@@ -103,19 +115,19 @@ To specify an alternate branch name, run `rake adhoc:start branch=BRANCH`."
     end
 
     # Fully qualified domain name, with optional pre/postfix.
-    def subdomain(prefix = nil, postfix = nil)
+    public def subdomain(prefix = nil, postfix = nil)
       subdomain = [prefix, stack_name, postfix].compact.join('-')
       [subdomain.presence, options.domain].compact.join('.').downcase
     end
 
-    def studio_subdomain
+    public def studio_subdomain
       subdomain nil, 'studio'
     end
 
     # Lookup ACM certificate for ELB and CloudFront SSL.
     # Choose latest expiration among multiple active matching certificates.
     ACM_REGION = 'us-east-1'.freeze
-    def certificate_arn
+    public def certificate_arn
       acm = Aws::ACM::Client.new(region: ACM_REGION)
       wildcard = "*.#{domain}"
       acm.
@@ -130,7 +142,7 @@ To specify an alternate branch name, run `rake adhoc:start branch=BRANCH`."
 
     # S3 path to bootstrap script.
     # Note: Uploads bootstrap script to S3 as a side effect.
-    def bootstrap_script_path
+    public def bootstrap_script_path
       @bootstrap_script_path ||= begin
         unless dry_run
           Aws::S3::Client.new.put_object(
@@ -145,7 +157,7 @@ To specify an alternate branch name, run `rake adhoc:start branch=BRANCH`."
 
     # S3 path to subdomain SSL certificate.
     # Note: uploads certificate to S3 as a side effect.
-    def ssl_certs_path
+    public def ssl_certs_path
       @ssl_certs_path ||= begin
         unless dry_run
           Dir.chdir(aws_dir('cloudformation')) do
@@ -161,7 +173,7 @@ To specify an alternate branch name, run `rake adhoc:start branch=BRANCH`."
 
     # S3 path to cookbook package.
     # Note: uploads cookbooks to S3 as a side effect.
-    def cookbooks_path
+    public def cookbooks_path
       return nil unless CDO.chef_local_mode
       @cookbooks_path ||= begin
         unless dry_run
@@ -180,7 +192,7 @@ To specify an alternate branch name, run `rake adhoc:start branch=BRANCH`."
       end
     end
 
-    def cloudfront_config(app)
+    public def cloudfront_config(app)
       AWS::CloudFront.distribution_config(
         app.downcase.to_sym,
         subdomain('origin'),
@@ -193,6 +205,20 @@ To specify an alternate branch name, run `rake adhoc:start branch=BRANCH`."
           SslSupportMethod: 'sni-only'
         }
       )
+    end
+
+    # Fetch adhoc-specific tags prefixed with 'Op:' for preserving options
+    private def op_tags
+      client = Aws::CloudFormation::Client.new
+      tags = client.describe_stacks(stack_name: stack_name).
+                  stacks.first.tags
+      tags.each_with_object({}) do |t, memo|
+        next unless t.key.start_with?('Op:')
+        key = t.key.delete_prefix('Op:').downcase.to_sym
+        memo[key] = t.value.to_s.match?(/\A(true|1)\z/i)
+      end
+    rescue Aws::CloudFormation::Errors::ValidationError
+      {}
     end
 
     private def get_binding

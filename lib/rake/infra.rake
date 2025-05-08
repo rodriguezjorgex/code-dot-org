@@ -58,11 +58,14 @@ namespace :infra do
 
   timed_task_with_logging :deploy_stack do
     ChatClient.wrap('CloudFormation stack update') do
-      RakeUtils.system_stream_output 'QUIET=1 bundle exec rake stack:start' do |io|
+      # Use adhoc:start for adhoc environments, stack:start otherwise.
+      command = rack_env?(:adhoc) ? 'bundle exec rake adhoc:start' : 'bundle exec rake stack:start'
+      RakeUtils.system_stream_output "QUIET=1 #{command}" do |io|
         io.each do |line|
-          line = "[stack update] #{line.chomp}"
-          ChatClient.log line
-          CDO.log.info(line) if CDO.hip_chat_logging
+          prefix = rack_env?(:adhoc) ? '[adhoc update]' : '[stack update]'
+          formatted = "#{prefix} #{line.chomp}"
+          ChatClient.log formatted
+          CDO.log.info(formatted) if CDO.hip_chat_logging
         end
       end
     end
