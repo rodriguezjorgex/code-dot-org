@@ -356,4 +356,3 @@ const Localize = typeof window !== 'undefined' ? window.Localize : undefined;
 export {Localize};
 
 export default Localize;
-
