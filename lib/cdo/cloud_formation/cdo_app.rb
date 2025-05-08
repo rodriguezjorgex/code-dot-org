@@ -48,7 +48,7 @@ module Cdo::CloudFormation
     delegate :commit, :frontends, :database, :load_balancer, :alarms, :cdn_enabled, :branch, :domain,
       to: :options
 
-    public def initialize(**options)
+    def initialize(**options)
       options[:stack_name]  ||= CDO.stack_name
       options[:filename]    ||= 'cloud_formation_stack.yml.erb'
       super(**options)
@@ -90,12 +90,12 @@ module Cdo::CloudFormation
       tags.push(key: 'Op:Alarms', value: options.alarms.to_s)
     end
 
-    public def render(*)
+    def render(*)
       check_branch!
       super
     end
 
-    public def check_branch!
+    def check_branch!
       return if dry_run
       if rack_env?(:adhoc) && RakeUtils.git_branch == branch
         # Current branch is the one we're deploying to the adhoc server,
@@ -115,19 +115,19 @@ To specify an alternate branch name, run `rake adhoc:start branch=BRANCH`."
     end
 
     # Fully qualified domain name, with optional pre/postfix.
-    public def subdomain(prefix = nil, postfix = nil)
+    def subdomain(prefix = nil, postfix = nil)
       subdomain = [prefix, stack_name, postfix].compact.join('-')
       [subdomain.presence, options.domain].compact.join('.').downcase
     end
 
-    public def studio_subdomain
+    def studio_subdomain
       subdomain nil, 'studio'
     end
 
     # Lookup ACM certificate for ELB and CloudFront SSL.
     # Choose latest expiration among multiple active matching certificates.
     ACM_REGION = 'us-east-1'.freeze
-    public def certificate_arn
+    def certificate_arn
       acm = Aws::ACM::Client.new(region: ACM_REGION)
       wildcard = "*.#{domain}"
       acm.
@@ -142,7 +142,7 @@ To specify an alternate branch name, run `rake adhoc:start branch=BRANCH`."
 
     # S3 path to bootstrap script.
     # Note: Uploads bootstrap script to S3 as a side effect.
-    public def bootstrap_script_path
+    def bootstrap_script_path
       @bootstrap_script_path ||= begin
         unless dry_run
           Aws::S3::Client.new.put_object(
@@ -157,7 +157,7 @@ To specify an alternate branch name, run `rake adhoc:start branch=BRANCH`."
 
     # S3 path to subdomain SSL certificate.
     # Note: uploads certificate to S3 as a side effect.
-    public def ssl_certs_path
+    def ssl_certs_path
       @ssl_certs_path ||= begin
         unless dry_run
           Dir.chdir(aws_dir('cloudformation')) do
@@ -173,7 +173,7 @@ To specify an alternate branch name, run `rake adhoc:start branch=BRANCH`."
 
     # S3 path to cookbook package.
     # Note: uploads cookbooks to S3 as a side effect.
-    public def cookbooks_path
+    def cookbooks_path
       return nil unless CDO.chef_local_mode
       @cookbooks_path ||= begin
         unless dry_run
@@ -192,7 +192,7 @@ To specify an alternate branch name, run `rake adhoc:start branch=BRANCH`."
       end
     end
 
-    public def cloudfront_config(app)
+    def cloudfront_config(app)
       AWS::CloudFront.distribution_config(
         app.downcase.to_sym,
         subdomain('origin'),
