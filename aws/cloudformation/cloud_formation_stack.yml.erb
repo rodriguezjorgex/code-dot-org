@@ -720,7 +720,8 @@ Resources:
 <%  unless load_balancer -%>
           - !ImportValue VPC-ELBSecurityGroup # Accept HTTP traffic on daemon
 <%  end -%>
-      DisableApiTermination: <%= rack_env?(:adhoc) ? false : true %>
+      # Protect bugcrowd adhoc instance from accidental termination
+      DisableApiTermination: <%= rack_env?(:adhoc) ? stack_name.include?('bugcrowd') : true %>
 # We don't yet provision the production database cluster/instances via CloudFormation.
 <% if database && !rack_env?(:production) %>
     DependsOn: DBProxy
@@ -743,7 +744,7 @@ Resources:
       InstanceType: !Ref ConsoleInstanceType
       IamInstanceProfile: !Ref FrontendInstanceProfile
       KeyName: <%=SSH_KEY_NAME%>
-      DisableApiTermination: <%= rack_env?(:adhoc) ? false : true %>
+      DisableApiTermination: <%= rack_env?(:adhoc) ? stack_name.include?('bugcrowd') : true %>
       Tags:
         - {Key: Name, Value: <%=environment%>-console}
       BlockDeviceMappings:
