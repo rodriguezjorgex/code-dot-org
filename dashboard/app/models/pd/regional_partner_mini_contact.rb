@@ -23,6 +23,7 @@ class Pd::RegionalPartnerMiniContact < ApplicationRecord
 
   validate :validate_email
   validate :validate_notes
+  validate :validate_rp_from_zip
 
   before_save :update_regional_partner
 
@@ -69,6 +70,13 @@ class Pd::RegionalPartnerMiniContact < ApplicationRecord
     hash = sanitized_form_data_hash
 
     add_key_error(:notes) unless hash[:notes] && hash[:notes].count(' ') >= 4
+  end
+
+  private def validate_rp_from_zip
+    hash = sanitized_form_data_hash
+    rp, _ = RegionalPartner.find_by_zip(hash[:zip])
+
+    add_key_error(:regional_partner) unless rp
   end
 
   private def update_regional_partner

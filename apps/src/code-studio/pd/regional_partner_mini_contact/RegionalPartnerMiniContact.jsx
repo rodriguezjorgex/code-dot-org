@@ -125,6 +125,18 @@ export class RegionalPartnerMiniContact extends React.Component {
           in touch.
         </div>
       );
+    } else if (this.state.errors.includes('regionalPartner')) {
+      return (
+        <div
+          id={`regional-partner-mini-contact-no-rp-in-zip-${this.props.sourcePageId}`}
+          className="regional-partner-mini-contact-no-rp-in-zip"
+        >
+          Sorry we don't have a regional partner in your region at this time.
+          You can reach out to{' '}
+          <a href="mailto:support@code.org">support@code.org</a> with any
+          questions you have.
+        </div>
+      );
     } else {
       return (
         <FormGroup
