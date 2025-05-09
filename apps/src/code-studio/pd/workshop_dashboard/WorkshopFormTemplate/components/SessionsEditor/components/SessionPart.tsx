@@ -241,6 +241,7 @@ export const SessionPart: FC<{
                     label={fields.location_address.label}
                     name={fields.location_address.stateKey}
                     size="s"
+                    placeholder="Enter a location to see results"
                     className={classNames(
                       commonStyles.item,
                       commonStyles.textField
