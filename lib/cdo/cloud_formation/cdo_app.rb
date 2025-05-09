@@ -208,8 +208,10 @@ To specify an alternate branch name, run `rake adhoc:start branch=BRANCH`."
                   stacks.first.tags
       tags.each_with_object({}) do |t, memo|
         next unless t.key.start_with?('Op:')
-        key = t.key.delete_prefix('Op:').downcase.to_sym
-        memo[key] = t.value.to_s.match?(/\A(true|1)\z/i)
+        raw_key = t.key.delete_prefix('Op:')
+        # Convert 'CdnEnabled' -> 'cdn_enabled', others like 'Database' -> 'database'
+        snake = raw_key.gsub(/([a-z])([A-Z])/, '\1_\2').downcase.to_sym
+        memo[snake] = t.value.to_s.match?(/\A(true|1)\z/i)
       end
     rescue Aws::CloudFormation::Errors::ValidationError
       {}
