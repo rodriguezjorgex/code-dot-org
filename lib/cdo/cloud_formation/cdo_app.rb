@@ -54,7 +54,7 @@ module Cdo::CloudFormation
       super(**options)
       options = @options = OpenStruct.new(options)
 
-      # For adhocs, preserve initial options via 'Op:' CloudFormation tags
+      # For adhoc stacks only (for now), preserve initial options via 'Op:' CloudFormation tags
       if rack_env?(:adhoc)
         read_existing_stack_op_tags.each {|key, val| options[key] = val if options[key].nil?}
       end
