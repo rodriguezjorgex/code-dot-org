@@ -2,8 +2,6 @@ import FontAwesomeV6Icon from '@code-dot-org/component-library/fontAwesomeV6Icon
 import TextField, {
   TextFieldProps,
 } from '@code-dot-org/component-library/textField';
-import {SessionToken} from '@mapbox/search-js-core';
-import {useAddressAutofillCore} from '@mapbox/search-js-react';
 import classNames from 'classnames';
 import React, {
   ChangeEvent,
@@ -13,14 +11,13 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {useSelector} from 'react-redux';
 
 import {useDebounce} from '@cdo/apps/util/hooks/useDebounce';
 import useOutsideClick from '@cdo/apps/util/hooks/useOutsideClick';
 
-import styles from '../styles.module.scss';
+import styles from './styles.module.scss';
 
-export const AddressLookupInput = memo(
+export const AutocompleteInput = memo(
   ({
     label,
     name,
@@ -28,47 +25,44 @@ export const AddressLookupInput = memo(
     className,
     onChange,
     value,
+    fetchOptions,
     errorMessage,
+    id,
+    placeholder = 'Type to see results',
     debounceDelay = 300,
   }: {
+    id: string;
     label: string;
     name: string;
     size: TextFieldProps['size'];
     className: string;
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
     value: string;
+    fetchOptions: (value: string) => Promise<string[]>;
     errorMessage?: string;
+    placeholder?: string;
     debounceDelay?: number;
   }) => {
-    const sessionToken = useRef<SessionToken>(new SessionToken());
     const skipApi = useRef(true);
-    const listboxId = sessionToken.current.id;
-    const [suggestionResults, setSuggestionResults] = useState<string[]>([]);
+    const listboxId = id;
+    const [options, setOptions] = useState<string[]>([]);
     const [activeIndex, setActiveIndex] = useState(-1);
     const [loading, setLoading] = useState(false);
-    const accessToken = useSelector(
-      ({mapbox: {mapboxAccessToken}}: {mapbox: {mapboxAccessToken: string}}) =>
-        mapboxAccessToken
-    );
-    const autofill = useAddressAutofillCore({accessToken});
     const debouncedValue = useDebounce(value, debounceDelay);
 
     const reset = useCallback(() => {
       // reset is called on every click outside of the input
       // check for the need to reset component before changing state
-      if (!suggestionResults.length) return;
-      setSuggestionResults([]);
+      if (!options.length) return;
+      setOptions([]);
       setActiveIndex(-1);
-    }, [suggestionResults]);
+    }, [options]);
 
     const containerRef = useOutsideClick<HTMLDivElement>(reset);
 
     useEffect(() => {
-      if (!accessToken) {
-        return;
-      }
       // skip api call when component first mounts if value already exists
-      // also skip when a suggestion is selected and value updates with full address
+      // also skip when an option is selected and value updates with result
       if (skipApi.current) {
         skipApi.current = false;
         return;
@@ -77,16 +71,8 @@ export const AddressLookupInput = memo(
         const fetchSuggestions = async () => {
           try {
             setLoading(true);
-            const {suggestions} = await autofill.suggest(debouncedValue, {
-              sessionToken: sessionToken.current,
-            });
-            const fullAddresses = suggestions
-              .map(suggestion => suggestion.full_address)
-              .filter(
-                (s?: string): s is string =>
-                  typeof s === 'string' && s.length > 0
-              );
-            setSuggestionResults(fullAddresses);
+            const suggestedOptions = await fetchOptions(debouncedValue);
+            setOptions(suggestedOptions);
             setActiveIndex(-1);
           } catch (error) {
             console.error(error);
@@ -96,15 +82,15 @@ export const AddressLookupInput = memo(
         };
         fetchSuggestions();
       }
-    }, [debouncedValue, autofill, accessToken]);
+    }, [debouncedValue, fetchOptions]);
 
-    const handleSelectSuggestion = useCallback(
-      (suggestion: string) => {
+    const handleSelectOption = useCallback(
+      (option: string) => {
         skipApi.current = true;
         onChange({
           target: {
             name,
-            value: suggestion,
+            value: option,
           },
         } as ChangeEvent<HTMLInputElement>);
         reset();
@@ -114,14 +100,12 @@ export const AddressLookupInput = memo(
     );
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (suggestionResults.length > 0) {
+      if (options.length > 0) {
         const {key} = e;
         switch (key) {
           case 'ArrowDown':
             e.preventDefault();
-            setActiveIndex(prev =>
-              Math.min(prev + 1, suggestionResults.length - 1)
-            );
+            setActiveIndex(prev => Math.min(prev + 1, options.length - 1));
             break;
           case 'ArrowUp':
             e.preventDefault();
@@ -130,9 +114,8 @@ export const AddressLookupInput = memo(
           case 'Enter':
           case ' ':
             if (activeIndex >= 0) {
-              // Add a check to ensure an item is actually highlighted
-              e.preventDefault(); // Prevent the default action (change event)
-              handleSelectSuggestion(suggestionResults[activeIndex]);
+              e.preventDefault();
+              handleSelectOption(options[activeIndex]);
             }
             break;
           case 'Escape':
@@ -144,7 +127,7 @@ export const AddressLookupInput = memo(
     };
 
     return (
-      <div ref={containerRef} className={styles.locationAddressContainer}>
+      <div ref={containerRef} className={styles.autocompleteInputContainer}>
         <TextField
           name={name}
           label={label}
@@ -153,13 +136,13 @@ export const AddressLookupInput = memo(
           value={value}
           className={className}
           errorMessage={errorMessage}
-          placeholder="Enter a location to see results"
+          placeholder={placeholder}
           onKeyDown={handleKeyDown}
           autoComplete="off"
           role="combobox"
           aria-autocomplete="list"
           aria-controls={listboxId}
-          aria-expanded={suggestionResults.length > 0}
+          aria-expanded={options.length > 0}
           aria-activedescendant={
             activeIndex >= 0 ? `${listboxId}-item-${activeIndex}` : undefined
           }
@@ -169,26 +152,26 @@ export const AddressLookupInput = memo(
           animationType={loading ? 'spin' : undefined}
           aria-hidden={true}
         />
-        {suggestionResults.length > 0 && (
+        {options.length > 0 && (
           <ul
             id={listboxId}
             role="listbox"
-            className={classNames(styles.suggestionList, {
+            className={classNames(styles.optionList, {
               [styles.keyboardNav]: activeIndex >= 0,
             })}
           >
-            {suggestionResults.map((suggestion, index) => (
+            {options.map((option, index) => (
               <li
-                key={suggestion}
-                className={classNames(styles.suggestionItem, {
+                key={option}
+                className={classNames(styles.optionItem, {
                   [styles.active]: activeIndex === index,
                 })}
-                onClick={() => handleSelectSuggestion(suggestion)}
+                onClick={() => handleSelectOption(option)}
                 id={`${listboxId}-item-${index}`}
                 role="option"
                 aria-selected={activeIndex === index}
               >
-                {suggestion}
+                {option}
               </li>
             ))}
           </ul>

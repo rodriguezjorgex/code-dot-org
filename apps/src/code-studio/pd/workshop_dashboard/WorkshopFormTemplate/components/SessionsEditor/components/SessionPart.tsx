@@ -2,6 +2,8 @@ import Button from '@code-dot-org/component-library/button';
 import {SimpleDropdown} from '@code-dot-org/component-library/dropdown';
 import TextField from '@code-dot-org/component-library/textField';
 import {WithTooltip} from '@code-dot-org/component-library/tooltip';
+import {SessionToken} from '@mapbox/search-js-core';
+import {useAddressAutofillCore} from '@mapbox/search-js-react';
 import classNames from 'classnames';
 import moment from 'moment-timezone';
 import React, {
@@ -11,7 +13,9 @@ import React, {
   memo,
   useCallback,
   useMemo,
+  useRef,
 } from 'react';
+import {useSelector} from 'react-redux';
 
 import {PdSessionFormats} from '@cdo/apps/generated/pd/sharedWorkshopConstants';
 
@@ -22,8 +26,7 @@ import {
   SessionFields,
   Errors,
 } from '../../../types';
-
-import {AddressLookupInput} from './AddressLookupInput';
+import {AutocompleteInput} from '../../AutocompleteInput';
 
 import commonStyles from '../../../styles.module.scss';
 import styles from '../styles.module.scss';
@@ -55,6 +58,14 @@ export const SessionPart: FC<{
   errors,
   dispatchSessions,
 }) => {
+  const sessionToken = useRef<SessionToken>(new SessionToken());
+  const listboxId = sessionToken.current.id;
+  const accessToken = useSelector(
+    ({mapbox: {mapboxAccessToken}}: {mapbox: {mapboxAccessToken: string}}) =>
+      mapboxAccessToken
+  );
+  const autofill = useAddressAutofillCore({accessToken});
+
   const timeOptions = useMemo(() => {
     const startTime = moment().startOf('day').add(7, 'hours');
     const endTime = moment().startOf('day').add(19, 'hours');
@@ -89,6 +100,20 @@ export const SessionPart: FC<{
       handleSession(update);
     },
     [handleSession]
+  );
+
+  const fetchOptions = useCallback(
+    async (searchText: string) => {
+      const {suggestions} = await autofill.suggest(searchText, {
+        sessionToken: sessionToken.current,
+      });
+      return suggestions
+        .map(suggestion => suggestion.full_address)
+        .filter(
+          (s?: string): s is string => typeof s === 'string' && s.length > 0
+        );
+    },
+    [autofill]
   );
 
   const showAdditionalFields = useMemo(
@@ -211,7 +236,8 @@ export const SessionPart: FC<{
                     value={locationName}
                     errorMessage={errors?.locationName}
                   />
-                  <AddressLookupInput
+                  <AutocompleteInput
+                    id={listboxId}
                     label={fields.location_address.label}
                     name={fields.location_address.stateKey}
                     size="s"
@@ -220,6 +246,7 @@ export const SessionPart: FC<{
                       commonStyles.textField
                     )}
                     onChange={updateSession}
+                    fetchOptions={fetchOptions}
                     value={locationAddress}
                     errorMessage={errors?.locationAddress}
                   />

@@ -2,19 +2,8 @@ import {render, screen, waitFor, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
-import {Provider} from 'react-redux';
 
-import {AddressLookupInput} from '@cdo/apps/code-studio/pd/workshop_dashboard/WorkshopFormTemplate/components/SessionsEditor/components/AddressLookupInput';
-
-const mockSuggest = jest.fn();
-const mockAutofillCoreInstance = {suggest: mockSuggest};
-jest.mock('@mapbox/search-js-react', () => ({
-  useAddressAutofillCore: jest.fn(() => mockAutofillCoreInstance),
-}));
-
-jest.mock('@mapbox/search-js-core', () => ({
-  SessionToken: jest.fn().mockImplementation(() => ({id: 'mock-session-id'})),
-}));
+import {AutocompleteInput} from '@cdo/apps/code-studio/pd/workshop_dashboard/WorkshopFormTemplate/components/AutocompleteInput';
 
 const mockRef = React.createRef();
 jest.mock('@cdo/apps/util/hooks/useOutsideClick', () => ({
@@ -22,22 +11,14 @@ jest.mock('@cdo/apps/util/hooks/useOutsideClick', () => ({
   default: jest.fn(() => mockRef),
 }));
 
-// mock redux store
-const initialState = {mapbox: {mapboxAccessToken: 'test-token'}};
-const store = {getState: () => initialState, subscribe: () => {}};
-
-// AddressLookupInput does not manage its own state
+// AutocompleteInput does not manage its own state
 const ComponentWithState = (props = {}) => {
   const [state, setState] = useState(props.value ?? '');
   const handleChange = event => {
     setState(event.target.value);
     props.onChange(event);
   };
-  return (
-    <Provider store={store}>
-      <AddressLookupInput {...props} value={state} onChange={handleChange} />
-    </Provider>
-  );
+  return <AutocompleteInput {...props} value={state} onChange={handleChange} />;
 };
 
 ComponentWithState.propTypes = {
@@ -45,10 +26,12 @@ ComponentWithState.propTypes = {
   onChange: PropTypes.func,
 };
 
-describe('AddressLookupInput Component', () => {
+describe('AutocompleteInput Component', () => {
   let mockOnChange;
+  let mockFetchOptions;
   let user;
   const defaultProps = {
+    id: 'mock-id',
     label: 'Location Address',
     name: 'locationAddress',
     size: 's',
@@ -56,6 +39,7 @@ describe('AddressLookupInput Component', () => {
     onChange: jest.fn(),
     value: '',
     errorMessage: undefined,
+    fetchOptions: jest.fn(),
     // not mocking useDebounce or using fake timers because userEvent uses timers
     // to simulate keyboard interaction. instead reducing debounce delay to speed
     // up tests
@@ -69,8 +53,10 @@ describe('AddressLookupInput Component', () => {
     user = userEvent.setup();
     jest.clearAllMocks();
     mockOnChange = jest.fn();
+    mockFetchOptions = jest.fn();
     defaultProps.onChange = mockOnChange;
-    mockSuggest.mockResolvedValue({suggestions: []});
+    defaultProps.fetchOptions = mockFetchOptions;
+    mockFetchOptions.mockResolvedValue([]);
   });
 
   it('renders the TextField with correct initial props', () => {
@@ -79,16 +65,13 @@ describe('AddressLookupInput Component', () => {
     expect(input).toBeInTheDocument();
     expect(input).toHaveValue('Initial Value');
     expect(input).toHaveAttribute('name', 'locationAddress');
-    expect(input).toHaveAttribute(
-      'placeholder',
-      'Enter a location to see results'
-    );
+    expect(input).toHaveAttribute('placeholder', 'Type to see results');
     expect(input).toHaveAttribute('role', 'combobox');
     expect(input).toHaveAttribute('aria-autocomplete', 'list');
-    expect(input).toHaveAttribute('aria-controls', 'mock-session-id');
+    expect(input).toHaveAttribute('aria-controls', 'mock-id');
     expect(input).toHaveAttribute('aria-expanded', 'false');
     expect(input).not.toHaveAttribute('aria-activedescendant');
-    expect(screen.queryByRole('listbox')).not.toBeInTheDocument(); // No suggestions initially
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument(); // No options initially
   });
 
   it('calls onChange prop when typing in the input', async () => {
@@ -101,14 +84,14 @@ describe('AddressLookupInput Component', () => {
     expect(mockOnChange).toHaveBeenCalledTimes(newValue.length);
   });
 
-  it('calls mapbox suggest after debounce', async () => {
-    mockSuggest.mockResolvedValue({
-      suggestions: [{full_address: '123 Main St'}],
+  it('calls fetchOptions after debounce', async () => {
+    mockFetchOptions.mockResolvedValue({
+      options: ['123 Main St'],
     });
 
     renderComponent({value: '123'}); // Initial render doesn't trigger suggest
 
-    expect(mockSuggest).not.toHaveBeenCalled();
+    expect(mockFetchOptions).not.toHaveBeenCalled();
 
     const input = screen.getByLabelText('Location Address');
     await act(async () => {
@@ -117,19 +100,17 @@ describe('AddressLookupInput Component', () => {
 
     // Wait for the debounced effect and API call
     await waitFor(() => {
-      expect(mockSuggest).toHaveBeenCalledTimes(1);
-      expect(mockSuggest).toHaveBeenCalledWith('123 Main', {
-        sessionToken: expect.objectContaining({id: 'mock-session-id'}),
-      });
+      expect(mockFetchOptions).toHaveBeenCalledTimes(1);
+      expect(mockFetchOptions).toHaveBeenCalledWith('123 Main');
     });
   });
 
-  it('displays suggestions when API returns results', async () => {
-    const suggestions = [
-      {full_address: '123 Main St, Chicago, IL'},
-      {full_address: '123 South Parkway, Denver, CO'},
+  it('displays options when API returns results', async () => {
+    const options = [
+      '123 Main St, Chicago, IL',
+      '123 South Parkway, Denver, CO',
     ];
-    mockSuggest.mockResolvedValue({suggestions});
+    mockFetchOptions.mockResolvedValue(options);
 
     renderComponent();
 
@@ -152,9 +133,9 @@ describe('AddressLookupInput Component', () => {
     );
   });
 
-  it('does not make an api call when a suggestion is selected', async () => {
-    const suggestions = [{full_address: '123 Main St'}];
-    mockSuggest.mockResolvedValue({suggestions});
+  it('does not make an api call when an option is selected', async () => {
+    const options = ['123 Main St'];
+    mockFetchOptions.mockResolvedValue(options);
 
     renderComponent();
 
@@ -164,24 +145,21 @@ describe('AddressLookupInput Component', () => {
     });
 
     await waitFor(() => {
-      expect(mockSuggest).toHaveBeenCalledTimes(1);
-      expect(mockSuggest).toHaveBeenCalledWith(
-        '123 Main St',
-        expect.any(Object)
-      );
+      expect(mockFetchOptions).toHaveBeenCalledTimes(1);
+      expect(mockFetchOptions).toHaveBeenCalledWith('123 Main St');
     });
 
-    const suggestionItem = screen.getByText('123 Main St');
-    await user.click(suggestionItem);
+    const option = screen.getByText('123 Main St');
+    await user.click(option);
 
     await waitFor(() => {
-      expect(mockSuggest).toHaveBeenCalledTimes(1);
+      expect(mockFetchOptions).toHaveBeenCalledTimes(1);
     });
   });
 
-  it('selecting a suggestion on click, calls onChange, and hides list', async () => {
-    const suggestions = [{full_address: '123 Main St'}];
-    mockSuggest.mockResolvedValue({suggestions});
+  it('selecting an option on click, calls onChange, and hides list', async () => {
+    const options = ['123 Main St'];
+    mockFetchOptions.mockResolvedValue(options);
 
     renderComponent();
     const value = '123';
@@ -195,8 +173,8 @@ describe('AddressLookupInput Component', () => {
       expect(screen.getByRole('listbox')).toBeInTheDocument();
     });
 
-    const suggestionItem = screen.getByText('123 Main St');
-    await user.click(suggestionItem);
+    const option = screen.getByText('123 Main St');
+    await user.click(option);
 
     expect(mockOnChange).toHaveBeenCalledTimes(value.length + 1);
     expect(mockOnChange).toHaveBeenLastCalledWith(
@@ -220,14 +198,10 @@ describe('AddressLookupInput Component', () => {
   describe('Keyboard Navigation', () => {
     let input;
     const value = 'Address';
-    const suggestions = [
-      {full_address: 'First Address'},
-      {full_address: 'Second Address'},
-      {full_address: 'Third Address'},
-    ];
+    const options = ['First Address', 'Second Address', 'Third Address'];
 
     beforeEach(async () => {
-      mockSuggest.mockResolvedValue({suggestions});
+      mockFetchOptions.mockResolvedValue(options);
       renderComponent();
       input = screen.getByLabelText('Location Address');
       await act(async () => {
@@ -238,22 +212,16 @@ describe('AddressLookupInput Component', () => {
       });
     });
 
-    it('navigates suggestions with ArrowDown and ArrowUp', async () => {
+    it('navigates options with ArrowDown and ArrowUp', async () => {
       await user.type(input, '{arrowdown}'); // Focus first item
-      expect(input).toHaveAttribute(
-        'aria-activedescendant',
-        'mock-session-id-item-0'
-      );
+      expect(input).toHaveAttribute('aria-activedescendant', 'mock-id-item-0');
       expect(screen.getByText('First Address')).toHaveAttribute(
         'class',
         expect.stringContaining('active')
       );
 
       await user.type(input, '{arrowdown}'); // Focus second item
-      expect(input).toHaveAttribute(
-        'aria-activedescendant',
-        'mock-session-id-item-1'
-      );
+      expect(input).toHaveAttribute('aria-activedescendant', 'mock-id-item-1');
       expect(screen.getByText('Second Address')).toHaveAttribute(
         'class',
         expect.stringContaining('active')
@@ -264,10 +232,7 @@ describe('AddressLookupInput Component', () => {
       );
 
       await user.type(input, '{arrowup}'); // Focus first item again
-      expect(input).toHaveAttribute(
-        'aria-activedescendant',
-        'mock-session-id-item-0'
-      );
+      expect(input).toHaveAttribute('aria-activedescendant', 'mock-id-item-0');
       expect(screen.getByText('First Address')).toHaveAttribute(
         'class',
         expect.stringContaining('active')
@@ -278,13 +243,10 @@ describe('AddressLookupInput Component', () => {
       );
 
       await user.type(input, '{arrowup}'); // Stays on first item
-      expect(input).toHaveAttribute(
-        'aria-activedescendant',
-        'mock-session-id-item-0'
-      );
+      expect(input).toHaveAttribute('aria-activedescendant', 'mock-id-item-0');
     });
 
-    it('selects suggestion with Enter key', async () => {
+    it('selects option with Enter key', async () => {
       await user.type(input, '{arrowdown}'); // Select first
       await user.type(input, '{enter}');
 
@@ -297,7 +259,7 @@ describe('AddressLookupInput Component', () => {
       expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
     });
 
-    it('selects suggestion with Space key', async () => {
+    it('selects option with Space key', async () => {
       await user.type(input, '{arrowdown}'); // Select first
       await user.type(input, '{arrowdown}'); // Select second
       await user.type(input, ' '); // Select with space
@@ -311,14 +273,14 @@ describe('AddressLookupInput Component', () => {
       expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
     });
 
-    it('closes suggestions with Escape key', async () => {
+    it('closes menu with Escape key', async () => {
       await user.type(input, '{escape}');
 
       expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
       expect(input).toHaveAttribute('aria-expanded', 'false');
     });
 
-    it('closes suggestions with Tab key', async () => {
+    it('closes menu with Tab key', async () => {
       await user.type(input, '{tab}');
 
       expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
