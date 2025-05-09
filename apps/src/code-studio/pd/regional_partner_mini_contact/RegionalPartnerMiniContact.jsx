@@ -36,7 +36,6 @@ export class RegionalPartnerMiniContact extends React.Component {
       user_name: PropTypes.string,
       email: PropTypes.string,
       zip: PropTypes.string,
-      notes: PropTypes.string,
       grade_levels: PropTypes.array,
       role: PropTypes.string,
     }),
@@ -54,7 +53,7 @@ export class RegionalPartnerMiniContact extends React.Component {
       name: this.props.options.user_name,
       email: this.props.options.email,
       zip: this.props.options.zip,
-      notes: this.props.options.notes,
+      notes: '',
       role: this.props.options.role,
       grade_levels: this.props.options.grade_levels,
     };
@@ -147,14 +146,6 @@ export class RegionalPartnerMiniContact extends React.Component {
             defaultValue={this.state.name}
             style={style}
           />
-          {this.state.errors.includes('email') && (
-            <div
-              className={style.error}
-              id="regional-partner-mini-contact-error-email"
-            >
-              Please enter an email.
-            </div>
-          )}
           <FieldGroup
             id="email"
             label="Email"
@@ -164,12 +155,12 @@ export class RegionalPartnerMiniContact extends React.Component {
             defaultValue={this.state.email}
             style={style}
           />
-          {this.state.errors.includes('zip') && (
+          {this.state.errors.includes('email') && (
             <div
-              id="regional-partner-mini-contact-error-zip"
               className={style.error}
+              id="regional-partner-mini-contact-error-email"
             >
-              Please enter your school ZIP Code.
+              Please enter an email.
             </div>
           )}
           <FieldGroup
@@ -181,6 +172,14 @@ export class RegionalPartnerMiniContact extends React.Component {
             defaultValue={this.state.zip}
             style={style}
           />
+          {this.state.errors.includes('zip') && (
+            <div
+              id="regional-partner-mini-contact-error-zip"
+              className={style.error}
+            >
+              Please enter your school ZIP Code.
+            </div>
+          )}
           <div className={style.fieldGroup}>
             <ButtonList
               groupName="grade_levels"
@@ -212,12 +211,21 @@ export class RegionalPartnerMiniContact extends React.Component {
             id="notes"
             label="Questions or notes for your local Regional Partner"
             type="text"
-            required={false}
+            required={true}
             componentClass="textarea"
             onChange={this.handleChange}
             defaultValue={this.state.notes}
             style={style}
           />
+          {this.state.errors.includes('notes') && (
+            <div
+              id="regional-partner-mini-contact-error-zip"
+              className={style.error}
+            >
+              Please enter a message of at least 5 words for your local Regional
+              Partner.
+            </div>
+          )}
           <div className={style.submitContainer}>
             {!this.state.submitting && (
               <Button
@@ -241,7 +249,6 @@ export class RegionalPartnerMiniContact extends React.Component {
 export class RegionalPartnerMiniContactPopupLink extends React.Component {
   static propTypes = {
     zip: PropTypes.string,
-    notes: PropTypes.string,
     sourcePageId: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
   };
@@ -264,13 +271,13 @@ export class RegionalPartnerMiniContactPopupLink extends React.Component {
             user_name: results.user_name,
             email: results.email,
             zip: `${this.props.zip || results.zip}`,
-            notes: this.props.notes || results.notes,
+            notes: results.notes,
           },
         });
       })
       .fail(() => {
         this.setState({
-          options: {zip: this.props.zip, notes: this.props.notes},
+          options: {zip: this.props.zip},
         });
       });
   }

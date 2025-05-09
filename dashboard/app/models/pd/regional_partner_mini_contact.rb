@@ -18,13 +18,11 @@
 class Pd::RegionalPartnerMiniContact < ApplicationRecord
   include Pd::Form
 
-  # Most unmatched contacts are from an international source
-  UNMATCHED_FORM_EMAIL = 'team-global@code.org'
-
   belongs_to :user, optional: true
   belongs_to :regional_partner, optional: true
 
   validate :validate_email
+  validate :validate_notes
 
   before_save :update_regional_partner
 
@@ -38,24 +36,21 @@ class Pd::RegionalPartnerMiniContact < ApplicationRecord
 
     if regional_partner_id
       partner = RegionalPartner.find(regional_partner_id)
+
       regional_partner_program_managers = RegionalPartnerProgramManager.where(regional_partner: partner)
-
-      if regional_partner_program_managers.empty?
-        matched_but_no_pms = true
-        Pd::RegionalPartnerMiniContactMailer.unmatched(form, UNMATCHED_FORM_EMAIL, matched_but_no_pms).deliver_now
-      else
-        regional_partner_program_managers.each do |rp_pm|
-          Pd::RegionalPartnerMiniContactMailer.matched(form, rp_pm).deliver_now
-        end
+      regional_partner_program_managers&.each do |rp_pm|
+        Pd::RegionalPartnerMiniContactMailer.matched(form, rp_pm).deliver_now
       end
-    end
 
-    Pd::RegionalPartnerMiniContactMailer.receipt(form, regional_partner).deliver_now
+      Pd::RegionalPartnerMiniContactMailer.receipt(form, regional_partner).deliver_now
+    end
   end
 
   def self.required_fields
     [
-      :zip
+      :zip,
+      :email,
+      :notes
     ]
   end
 
@@ -67,6 +62,13 @@ class Pd::RegionalPartnerMiniContact < ApplicationRecord
     hash = sanitized_form_data_hash
 
     add_key_error(:email) unless Cdo::EmailValidator.email_address?(hash[:email])
+  end
+
+  # Ensure the notes sent to the Regional Partner are at least 5 words.
+  private def validate_notes
+    hash = sanitized_form_data_hash
+
+    add_key_error(:notes) unless hash[:notes] && hash[:notes].count(' ') >= 4
   end
 
   private def update_regional_partner
