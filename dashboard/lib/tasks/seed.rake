@@ -287,7 +287,10 @@ namespace :seed do
     update_scripts(incremental: true)
   end
 
-  # moved course offerings ui test seed after regular course offerings are seeded
+  # Moved course offerings ui test seed after regular course offerings are seeded
+  # because the regular course offerings seed task removes any course_offerings records
+  # left in the database that do not have a corresponding json file in config/course_offerings.
+  # The ui test course offerings must be seeded after so they are not accidentally removed.
   timed_task_with_logging scripts_ui_tests: SCRIPTS_DEPENDENCIES + [:course_offerings_ui_tests] do
     update_scripts(script_files: UI_TEST_SCRIPTS)
   end
