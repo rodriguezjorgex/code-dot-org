@@ -60,6 +60,9 @@ export default class CdoFieldButton extends GoogleBlockly.Field {
     return new CdoFieldButton(options);
   }
 
+  getClass(): typeof CdoFieldButton {
+    return CdoFieldButton;
+  }
   /**
    * Create the block UI for this field.
    * @override

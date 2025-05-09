@@ -66,6 +66,10 @@ export default class CdoFieldToggle extends GoogleBlockly.Field {
     return new CdoFieldToggle(options);
   }
 
+  getClass(): typeof CdoFieldToggle {
+    return CdoFieldToggle;
+  }
+
   /**
    * Create the block UI for this field.
    * @override

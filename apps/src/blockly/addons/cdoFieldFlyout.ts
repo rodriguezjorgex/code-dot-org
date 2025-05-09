@@ -37,6 +37,10 @@ export default class CdoFieldFlyout extends GoogleBlockly.Field {
     return new CdoFieldFlyout(options.flyoutKey, options);
   }
 
+  getClass(): typeof CdoFieldFlyout {
+    return CdoFieldFlyout;
+  }
+
   static getFlyoutId(block: GoogleBlockly.Block) {
     return `flyout_${block.type}_${block.id}`;
   }
