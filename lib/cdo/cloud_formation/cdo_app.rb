@@ -61,11 +61,9 @@ module Cdo::CloudFormation
 
       # Various option defaults.
       options.frontends     ||= rack_env?(:production)
-      # Enable database in standard envs; adhoc uses preserved tag or default off
       options.database      ||= [:staging, :test, :levelbuilder, :production].include?(rack_env)
       options.load_balancer ||= !rack_env?(:adhoc) || options.frontends
       options.alarms        ||= !rack_env?(:adhoc)
-      # Default CDN disabled in adhoc unless overridden by initial 'Op:CdnEnabled' tag
       options.cdn_enabled   ||= !rack_env?(:adhoc)
       options.branch        ||= (rack_env?(:adhoc) ? RakeUtils.git_branch : rack_env)
       options.commit        ||= `git ls-remote origin #{branch}`.split.first
