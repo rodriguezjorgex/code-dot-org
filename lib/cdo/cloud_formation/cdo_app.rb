@@ -221,7 +221,7 @@ To specify an alternate branch name, run `rake adhoc:start branch=BRANCH`."
       binding
     end
 
-    # Re-persist 'Op:' tags based on final option values before rendering
+    # Persist (or Re-persist) 'Op:' tags based on final option values before rendering
     private def persist_op_tags
       # Remove any existing 'Op:' tags
       tags.reject! {|t| t[:key].start_with?('Op:')}
