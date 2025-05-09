@@ -22,26 +22,17 @@ const ALL_GRADES = [
 ];
 
 const GradeLevelsBarDisplay = ({supportedGradeLevels}) => {
-  const getGradeBoxStyles = grade => {
+  const getGradeBoxStyles = (grade, prevGrade) => {
     let styles = [style.gradeBox];
-
-    if (grade === 'K') {
-      styles.push(style.kindergartenGradeBox);
-    } else if (grade === '12') {
-      styles.push(style.twelfthGradeBox);
-    }
 
     if (supportedGradeLevels.includes(grade)) {
       styles.push(style.supportedGradeBox);
-      if (grade !== 'K') {
-        const previousGrade = ALL_GRADES[ALL_GRADES.indexOf(grade) - 1];
-        if (!supportedGradeLevels.includes(previousGrade)) {
-          styles.push(style.gradeLevelDivider);
-        }
+      if (!supportedGradeLevels.includes(prevGrade)) {
+        styles.push(style.gradeLevelDivider);
       }
     } else {
       styles.push(style.unsupportedGradeBox);
-      if (grade !== 'K') {
+      if (prevGrade) {
         styles.push(style.gradeLevelDivider);
       }
     }
@@ -51,8 +42,11 @@ const GradeLevelsBarDisplay = ({supportedGradeLevels}) => {
 
   return (
     <div className={style.gradeBar}>
-      {ALL_GRADES.map(grade => (
-        <div key={`grade-${grade}`} className={getGradeBoxStyles(grade)}>
+      {ALL_GRADES.map((grade, index, arr) => (
+        <div
+          key={`grade-${grade}`}
+          className={getGradeBoxStyles(grade, arr[index - 1])}
+        >
           <BodyFourText>{grade}</BodyFourText>
         </div>
       ))}

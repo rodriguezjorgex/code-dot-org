@@ -270,12 +270,12 @@
     font-size: 0.75rem;
   }
 
-  .kindergartenGradeBox {
+  .gradeBox:first-of-type {
     border-top-left-radius: 100px;
     border-bottom-left-radius: 100px;
   }
 
-  .twelfthGradeBox {
+  .gradeBox:last-of-type {
     border-top-right-radius: 100px;
     border-bottom-right-radius: 100px;
   }
