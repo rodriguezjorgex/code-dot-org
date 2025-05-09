@@ -20,6 +20,8 @@ export const sessionCalendarShape = PropTypes.shape({
   session_format: PropTypes.string.isRequired,
   location_address: PropTypes.string,
   meeting_link: PropTypes.string,
+  description: PropTypes.string,
+  notes: PropTypes.string,
 });
 
 export default class WorkshopEnroll extends React.Component {

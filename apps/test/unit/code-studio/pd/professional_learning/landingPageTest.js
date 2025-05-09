@@ -59,6 +59,9 @@ const TEST_WORKSHOP_SESSIONS = [
   },
 ];
 
+const EXPECTED_DESCRIPTION_AND_NOTES =
+  'example.zoom.com\n\nAttendee notes:\nPark in the back\n\nDescription:\nReally great workshop';
+
 const DEFAULT_PROPS = {
   lastWorkshopSurveyUrl: 'url',
   lastWorkshopSurveyCourse: 'CS Fundamentals',
@@ -683,7 +686,7 @@ describe('LandingPage', () => {
   });
 
   describe('buildGoogleCalendarLink', () => {
-    test('creates link with UTC datetime when session is not local', () => {
+    it('creates link with UTC datetime when session is not local', () => {
       const session = {
         start: '2025-02-11T16:00:00Z', // 9 AM MST
         end: '2025-02-12T00:00:00Z', // 5 PM MST
@@ -697,7 +700,7 @@ describe('LandingPage', () => {
       );
     });
 
-    test('creates a link with local time for legacy sessions', () => {
+    it('creates a link with local time for legacy sessions', () => {
       const session = {
         start: '2025-02-11T09:00:00Z',
         end: '2025-02-11T17:00:00Z',
@@ -712,7 +715,27 @@ describe('LandingPage', () => {
       );
     });
 
-    test('creates a link with meeting link for virtual sessions', () => {
+    it('creates a link with notes and description', () => {
+      const session = {
+        start: '2025-02-11T09:00:00Z',
+        end: '2025-02-11T17:00:00Z',
+        meeting_link: 'example.zoom.com',
+        session_format: 'virtual',
+        description: 'Really great workshop',
+        notes: 'Park in the back',
+      };
+
+      const result = buildGoogleCalendarLink(session, workshopTitle);
+
+      expect(result).toContain(
+        // URLSearchParams uses + to encode spaces but encodeURIComponent uses %20
+        new URLSearchParams({
+          details: EXPECTED_DESCRIPTION_AND_NOTES,
+        }).toString()
+      );
+    });
+
+    it('creates a link with meeting link for virtual sessions', () => {
       const session = {
         start: '2025-02-11T09:00:00Z',
         end: '2025-02-11T17:00:00Z',
@@ -728,9 +751,15 @@ describe('LandingPage', () => {
           location: 'Virtual meeting: example.zoom.com',
         }).toString()
       );
+      expect(result).toContain(
+        // URLSearchParams uses + to encode spaces but encodeURIComponent uses %20
+        new URLSearchParams({
+          details: 'example.zoom.com',
+        }).toString()
+      );
     });
 
-    test('creates a link with full location info for in person sessions', () => {
+    it('creates a link with full location info for in person sessions', () => {
       const session = {
         start: '2025-02-11T09:00:00Z',
         end: '2025-02-11T17:00:00Z',
@@ -749,7 +778,7 @@ describe('LandingPage', () => {
       );
     });
 
-    test('creates a link with partial location info for in person sessions', () => {
+    it('creates a link with partial location info for in person sessions', () => {
       const session1 = {
         start: '2025-02-11T09:00:00Z',
         end: '2025-02-11T17:00:00Z',
@@ -785,7 +814,7 @@ describe('LandingPage', () => {
   });
 
   describe('buildOutlookCalendarLink', () => {
-    test('creates link with UTC datetime when session is not local', () => {
+    it('creates link with UTC datetime when session is not local', () => {
       const session = {
         start: '2025-02-11T16:00:00Z',
         end: '2025-02-12T00:00:00Z',
@@ -802,7 +831,7 @@ describe('LandingPage', () => {
       );
     });
 
-    test('creates a link with local time for legacy sessions', () => {
+    it('creates a link with local time for legacy sessions', () => {
       const session = {
         start: '2025-02-11T09:00:00Z',
         end: '2025-02-11T17:00:00Z',
@@ -820,7 +849,27 @@ describe('LandingPage', () => {
       );
     });
 
-    test('creates a link with meeting link for virtual sessions', () => {
+    it('creates a link with notes and description', () => {
+      const session = {
+        start: '2025-02-11T09:00:00Z',
+        end: '2025-02-11T17:00:00Z',
+        meeting_link: 'example.zoom.com',
+        session_format: 'virtual',
+        description: 'Really great workshop',
+        notes: 'Park in the back',
+      };
+
+      const result = buildOutlookCalendarLink(session, workshopTitle);
+
+      expect(result).toContain(
+        // URLSearchParams uses + to encode spaces but encodeURIComponent uses %20
+        new URLSearchParams({
+          body: EXPECTED_DESCRIPTION_AND_NOTES,
+        }).toString()
+      );
+    });
+
+    it('creates a link with meeting link for virtual sessions', () => {
       const session = {
         start: '2025-02-11T09:00:00Z',
         end: '2025-02-11T17:00:00Z',
@@ -836,9 +885,15 @@ describe('LandingPage', () => {
           location: 'Virtual meeting: example.zoom.com',
         }).toString()
       );
+      expect(result).toContain(
+        // URLSearchParams uses + to encode spaces but encodeURIComponent uses %20
+        new URLSearchParams({
+          body: 'example.zoom.com',
+        }).toString()
+      );
     });
 
-    test('creates a link with full location info for in person sessions', () => {
+    it('creates a link with full location info for in person sessions', () => {
       const session = {
         start: '2025-02-11T09:00:00Z',
         end: '2025-02-11T17:00:00Z',
@@ -857,7 +912,7 @@ describe('LandingPage', () => {
       );
     });
 
-    test('creates a link with partial location info for in person sessions', () => {
+    it('creates a link with partial location info for in person sessions', () => {
       const session1 = {
         start: '2025-02-11T09:00:00Z',
         end: '2025-02-11T17:00:00Z',
@@ -947,6 +1002,21 @@ describe('LandingPage', () => {
       expect(icsFileContent).toContain('END:VCALENDAR');
     });
 
+    it('creates a link with notes and description', async () => {
+      const session = {
+        start: '2025-02-11T09:00:00Z',
+        end: '2025-02-11T17:00:00Z',
+        meeting_link: 'example.zoom.com',
+        session_format: 'virtual',
+        description: 'Really great workshop',
+        notes: 'Park in the back',
+      };
+
+      buildAppleCalendarLink([session], workshopTitle);
+      const icsFileContent = await blobContentPromise;
+      expect(icsFileContent).toContain(EXPECTED_DESCRIPTION_AND_NOTES);
+    });
+
     it('creates a link with meeting link for virtual sessions', async () => {
       const session = {
         start: '2025-02-11T09:00:00Z',
@@ -979,7 +1049,7 @@ describe('LandingPage', () => {
       );
     });
 
-    test('creates a link with partial location info for in person sessions', async () => {
+    it('creates a link with partial location info for in person sessions', async () => {
       const session1 = {
         start: '2025-02-11T09:00:00Z',
         end: '2025-02-11T17:00:00Z',

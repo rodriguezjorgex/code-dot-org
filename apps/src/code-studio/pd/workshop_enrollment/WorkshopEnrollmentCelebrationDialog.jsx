@@ -65,6 +65,22 @@ export const getLocationAndDescriptionFromSession = session => {
     location = `Virtual meeting: ${session.meeting_link}`;
     description = session.meeting_link;
   }
+  const newline = '\n';
+  const doubleNewline = '\n\n';
+  if (session.notes) {
+    description += doubleNewline;
+    description += 'Attendee notes:';
+    description += newline;
+    description += session.notes;
+  }
+  if (session.description) {
+    description += doubleNewline;
+    description += 'Description:';
+    description += newline;
+    description += session.description;
+  }
+  description = description.trim();
+  location = location.trim();
   return {location, description};
 };
 

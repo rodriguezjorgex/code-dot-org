@@ -98,6 +98,8 @@ class Pd::Session < ApplicationRecord
       location_address: location_address,
       meeting_link: meeting_link,
       session_format: session_format,
+      description: workshop.description,
+      notes: workshop.notes,
     }
   end
 
