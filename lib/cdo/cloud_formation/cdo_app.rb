@@ -56,7 +56,7 @@ module Cdo::CloudFormation
 
       # For adhocs, preserve initial options via 'Op:' CloudFormation tags
       if rack_env?(:adhoc)
-        op_tags.each {|key, val| options[key] = val if options[key].nil?}
+        read_existing_stack_op_tags.each {|key, val| options[key] = val if options[key].nil?}
       end
 
       # Various option defaults.
@@ -83,15 +83,11 @@ module Cdo::CloudFormation
       log_resource_filter.push 'FrontendLaunchConfig', 'ASGCount'
       tags.push(key: 'environment', value: rack_env)
       tags.push(key: 'owner', value: Aws::STS::Client.new.get_caller_identity.arn) if rack_env?(:adhoc)
-      # Persist chosen options as CloudFormation tags with 'Op:' prefix
-      tags.push(key: 'Op:Database', value: options.database.to_s)
-      tags.push(key: 'Op:Frontends', value: options.frontends.to_s)
-      tags.push(key: 'Op:CdnEnabled', value: options.cdn_enabled.to_s)
-      tags.push(key: 'Op:Alarms', value: options.alarms.to_s)
     end
 
     def render(*)
       check_branch!
+      persist_op_tags
       super
     end
 
@@ -208,7 +204,7 @@ To specify an alternate branch name, run `rake adhoc:start branch=BRANCH`."
     end
 
     # Fetch adhoc-specific tags prefixed with 'Op:' for preserving options
-    private def op_tags
+    private def read_existing_stack_op_tags
       client = Aws::CloudFormation::Client.new
       tags = client.describe_stacks(stack_name: stack_name).
                   stacks.first.tags
@@ -223,6 +219,17 @@ To specify an alternate branch name, run `rake adhoc:start branch=BRANCH`."
 
     private def get_binding
       binding
+    end
+
+    # Re-persist 'Op:' tags based on final option values before rendering
+    private def persist_op_tags
+      # Remove any existing 'Op:' tags
+      tags.reject! {|t| t[:key].start_with?('Op:')}
+      # Re-add fresh values
+      tags.push(key: 'Op:Database', value: options.database.to_s)
+      tags.push(key: 'Op:Frontends', value: options.frontends.to_s)
+      tags.push(key: 'Op:CdnEnabled', value: options.cdn_enabled.to_s)
+      tags.push(key: 'Op:Alarms', value: options.alarms.to_s)
     end
   end
 end
