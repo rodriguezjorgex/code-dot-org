@@ -21,6 +21,18 @@ Scenario: Teacher submits inline mini-contact form after adding zip
   And I wait until element "#regional-partner-mini-contact-thanks-contact-regional-partner" is visible
   And I sign out
 
+Scenario: Teacher tries to submit inline mini-contact form after adding zip with no regional partner match
+  Given I create a teacher named "Severus"
+  And I am on "http://studio.code.org/professional-learning/contact-regional-partner"
+  And I wait until element "#regional-partner-mini-contact-form-contact-regional-partner" is visible
+  And I dismiss the language selector
+
+  # Enter invalid zip.
+  Given I scroll the "#zip" element into view
+  And I press keys "11" for element "#zip"
+  And I press "#submit" using jQuery
+  And I wait until element "#regional-partner-mini-contact-no-rp-in-zip-contact-regional-partner" is visible
+  And I sign out
 
 Scenario: Teacher submits inline mini-contact form after adding zip and email
   Given I create a teacher named "Severus"
