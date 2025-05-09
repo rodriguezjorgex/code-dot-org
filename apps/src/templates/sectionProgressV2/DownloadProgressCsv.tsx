@@ -1,15 +1,127 @@
 import {ActionDropdown} from '@code-dot-org/component-library/dropdown';
+import _ from 'lodash';
 import React from 'react';
-import {useSelector} from 'react-redux';
 
+import {EVENTS} from '@cdo/apps/metrics/AnalyticsConstants';
+import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
 import {getStore} from '@cdo/apps/redux';
 import {getFullName} from '@cdo/apps/templates/manageStudents/utils';
-import {useAppSelector} from '@cdo/apps/util/reduxHooks';
 import i18n from '@cdo/locale';
 
 import {getCurrentUnitData} from '../sectionProgress/sectionProgressRedux';
 
+import {ITEM_TYPE} from './ItemType';
+import {getLevelCellValue} from './LevelDataCell';
+
 import styles from './progress-table-v2.module.scss';
+
+export const getLevelProgressCSVData = (
+  students: {id: number; name: string; familyName?: string}[],
+  unitData: {
+    lessons: {
+      title: string;
+      relative_position: number;
+      name: string;
+      id: number;
+
+      levels: {
+        id: string;
+        bubbleText: string;
+        sublevels?: {id: string; bubbleText: string}[];
+      }[];
+    }[];
+    name: string;
+    id: number;
+  },
+  levelProgressByStudent: {
+    [studentId: number]: {[levelId: number]: {status: string} | null};
+  }
+) => {
+  const columnNames = ['Student_Name'];
+  const table = students.map(
+    student =>
+      ({
+        Student_Name: getFullName(student),
+      } as {
+        Student_Name: string;
+        [key: string]: string;
+      })
+  );
+
+  const studentIds = Object.fromEntries(
+    students.map(student => [getFullName(student), student.id])
+  );
+
+  unitData.lessons.forEach(lesson => {
+    // Add all sublevels, but not the parent choice level.
+    const levelsToInclude = lesson.levels.flatMap(level => {
+      return level.sublevels
+        ? level.sublevels.map(sublevel => ({
+            ...sublevel,
+            levelName: `${lesson.relative_position}.${level.bubbleText}${sublevel.bubbleText}`,
+          }))
+        : [
+            {
+              ...level,
+              levelName: `${lesson.relative_position}.${level.bubbleText}`,
+            },
+          ];
+    });
+
+    levelsToInclude.forEach(level => {
+      columnNames.push(level.levelName);
+
+      table.forEach(row => {
+        const progress =
+          levelProgressByStudent[studentIds[row.Student_Name]][
+            _.toNumber(level.id)
+          ];
+        row[level.levelName] = progress
+          ? getLevelCellValue(progress, level, false).title
+          : ITEM_TYPE.NO_PROGRESS.title;
+      });
+    });
+  });
+
+  return {columnNames, table};
+};
+
+const downloadLevelProgressCSV = () => {
+  const store = getStore();
+  const unitData = getCurrentUnitData(store.getState()) as {
+    lessons: {
+      title: string;
+      relative_position: number;
+      name: string;
+      id: number;
+
+      levels: {
+        id: string;
+        bubbleText: string;
+        sublevels?: {id: string; bubbleText: string}[];
+      }[];
+    }[];
+    name: string;
+    id: number;
+  };
+
+  const levelProgressByStudent =
+    store.getState().sectionProgress.studentLevelProgressByUnit[unitData.id];
+
+  const students = store.getState().teacherSections.selectedStudents;
+
+  const {columnNames, table} = getLevelProgressCSVData(
+    students,
+    unitData,
+    levelProgressByStudent
+  );
+
+  downloadCSV(`level_progress_${unitData.name}.csv`, columnNames, table);
+
+  analyticsReporter.sendEvent(EVENTS.PROGRESS_V2_DOWNLOAD_LEVEL_CSV, {
+    unitName: unitData.name,
+  });
+};
 
 // Export for testing only
 export const getLessonProgressCSVData = (
@@ -45,7 +157,7 @@ export const getLessonProgressCSVData = (
       ...lessonData,
     };
   });
-  return {unitName: unitData.name, columnNames, table};
+  return {columnNames, table};
 };
 
 const downloadLessonProgressCSV = () => {
@@ -61,12 +173,16 @@ const downloadLessonProgressCSV = () => {
 
   const students = store.getState().teacherSections.selectedStudents;
 
-  const {unitName, columnNames, table} = getLessonProgressCSVData(
+  const {columnNames, table} = getLessonProgressCSVData(
     students,
     unitData,
     lessonProgressByStudent
   );
-  downloadCSV(`lesson_progress_${unitName}.csv`, columnNames, table);
+  downloadCSV(`lesson_progress_${unitData.name}.csv`, columnNames, table);
+
+  analyticsReporter.sendEvent(EVENTS.PROGRESS_V2_DOWNLOAD_LESSON_CSV, {
+    unitName: unitData.name,
+  });
 };
 
 // A custom CSV download function that sets up a fake URL with the CSV and triggers a download
@@ -96,44 +212,31 @@ const downloadCSV = (
   URL.revokeObjectURL(url);
 };
 
-interface DownloadProgressCsvProps {}
+interface DownloadProgressCsvProps {
+  isLoading: boolean;
+}
 
-export const DownloadProgressCsv: React.FC<DownloadProgressCsvProps> = () => {
-  const unitId = useSelector(
-    (state: {unitSelection: {scriptId: number}}) => state.unitSelection.scriptId
-  );
-
-  const sectionId = useAppSelector(
-    state => state.teacherSections.selectedSectionId
-  );
-
-  const getDownloadUrl = React.useCallback(
-    (type: string) =>
-      `/teacher_dashboard/sections/${sectionId}/download_progress_csv?unit_id=${unitId}&type=${type}`,
-    [sectionId, unitId]
-  );
-
+export const DownloadProgressCsv: React.FC<DownloadProgressCsvProps> = ({
+  isLoading,
+}) => {
   return (
     <ActionDropdown
       name="download-progress-csv"
       labelText={i18n.downloadProgressCsv()}
       size="s"
+      disabled={isLoading}
       options={[
         {
           label: i18n.downloadLessonProgressCSV(),
           icon: {iconName: 'download', iconStyle: 'solid'},
           value: 'lesson',
-          onClick: () => {
-            downloadLessonProgressCSV();
-          },
+          onClick: downloadLessonProgressCSV,
         },
         {
           label: i18n.downloadLevelProgressCSV(),
           icon: {iconName: 'download', iconStyle: 'solid'},
           value: 'level',
-          onClick: () => {
-            window.open(getDownloadUrl('level'), '_blank');
-          },
+          onClick: downloadLevelProgressCSV,
         },
       ]}
       menuPlacement="right"
@@ -148,6 +251,7 @@ export const DownloadProgressCsv: React.FC<DownloadProgressCsvProps> = () => {
         size: 's',
         ariaLabel: i18n.sectionOptionsDropdown(),
         className: styles.downloadCsvDropdown,
+        isPending: isLoading,
       }}
     />
   );
