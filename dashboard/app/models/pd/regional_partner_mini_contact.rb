@@ -37,8 +37,8 @@ class Pd::RegionalPartnerMiniContact < ApplicationRecord
 
     if regional_partner_id
       partner = RegionalPartner.find(regional_partner_id)
-
       regional_partner_program_managers = RegionalPartnerProgramManager.where(regional_partner: partner)
+
       regional_partner_program_managers&.each do |rp_pm|
         Pd::RegionalPartnerMiniContactMailer.matched(form, rp_pm).deliver_now
       end
