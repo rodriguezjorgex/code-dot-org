@@ -225,7 +225,7 @@ To specify an alternate branch name, run `rake adhoc:start branch=BRANCH`."
     private def persist_op_tags
       # Remove any existing 'Op:' tags
       tags.reject! {|t| t[:key].start_with?('Op:')}
-      # Add / Re-add fresh values
+      # Add or Re-add fresh values
       tags.push(key: 'Op:Database', value: options.database.to_s)
       tags.push(key: 'Op:Frontends', value: options.frontends.to_s)
       tags.push(key: 'Op:CdnEnabled', value: options.cdn_enabled.to_s)
