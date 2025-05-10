@@ -10,6 +10,8 @@ module OpenaiChatHelper
       @model = model
     end
 
+    # Extra empty set is included to provide generic coverage to new parameters that OpenAI adds in the future
+    # Examples include response_format for json response formatting and tools for function calling
     def request_chat_completion(messages, temperature = DEFAULT_TEMPERATURE, extra: {})
       headers = {
         "Content-Type" => "application/json",

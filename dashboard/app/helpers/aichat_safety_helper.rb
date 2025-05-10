@@ -45,8 +45,11 @@ module AichatSafetyHelper
       attempts = 0
       messages = safety_check_messages(text, level_id)
 
-      # Try once for the regular call – retry on network issues only
-      response = Retryable.retryable(tries: 2, on: StandardError) do
+      # Retry only on network-related exceptions
+      response = Retryable.retryable(
+        tries: 2,
+        on: [Net::OpenTimeout, Net::ReadTimeout, SocketError, Errno::ECONNRESET]
+      ) do
         attempts += 1
         client.request_chat_completion(messages, 1)
       end
@@ -62,26 +65,26 @@ module AichatSafetyHelper
         raise "OpenAI structured request failed with status #{response.code}: #{response.body}" unless response.success?
 
         body = JSON.parse(response.body)
-        tool_calls = body.dig("choices", 0, "message", "tool_calls")
+        raw_content = body.dig("choices", 0, "message", "content")
 
-        if tool_calls
-          tool_call = tool_calls.first["function"]
-          args = JSON.parse(tool_call["arguments"])
-          evaluation = args["classification"]
-        else
-          # Edge case scenario where sturctured output doesn't return anything, use what's in content as last resort
-          evaluation = body.dig("choices", 0, "message", "content")
+        begin
+          parsed = JSON.parse(raw_content)
+        rescue JSON::ParserError
+          report_openai_safety_check("InvalidResponse")
+          raise "Structured response was not valid JSON: #{raw_content}"
         end
+
+        evaluation = parsed["classification"]
 
         unless VALID_EVALUATION_RESPONSES_SIMPLE.include?(evaluation)
           report_openai_safety_check("InvalidResponse")
-          raise "Unexpected structured response from OpenAI: #{evaluation}"
+          raise "Unexpected structured classification from OpenAI: #{evaluation}"
         end
       end
 
       if evaluation == 'INAPPROPRIATE'
         details = {evaluation: evaluation}
-        raise "Unexpected response from OpenAI: #{evaluation}"
+
       end
 
       report_openai_safety_check("Finish", attempts)
@@ -160,6 +163,21 @@ module AichatSafetyHelper
 
     # Makes a structured output request to GPT for moderation classification.
     private def request_structured_safety_check(text, level_id)
+      safety_json_schema = {
+        name: "safety_evaluation",
+        schema: {
+          type: "object",
+          properties: {
+            classification: {
+              type: "string",
+              description: "Safety classification for school appropriateness",
+              enum: ["OK", "INAPPROPRIATE"]
+            }
+          },
+          required: ["classification"]
+        }
+      }
+
       AichatOpenaiHelper.request_structured_chat_completion(
         [
           {
@@ -171,30 +189,8 @@ module AichatSafetyHelper
             content: text
           }
         ],
-        tools: [
-          {
-            type: "function",
-            function: {
-              name: "moderation_result",
-              description: "Classify text as OK or INAPPROPRIATE for a public middle school classroom",
-              parameters: {
-                type: "object",
-                properties: {
-                  classification: {
-                    type: "string",
-                    enum: ["OK", "INAPPROPRIATE"]
-                  }
-                },
-                required: ["classification"]
-              }
-            }
-          }
-        ],
-        tool_choice: {
-          type: "function",
-          function: {name: "moderation_result"}
-        },
-        temperature: 0
+        0,
+        safety_json_schema
       )
     end
 
