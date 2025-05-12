@@ -34,7 +34,8 @@ class Api::V1::Pd::RegionalPartnerMiniContactsControllerTest < ActionDispatch::I
   end
 
   test 'create returns error if zip does not match with a RP' do
-    form_data = build(:pd_regional_partner_mini_contact_hash)
+    form_data = build(:pd_regional_partner_mini_contact_hash).
+      merge("zip" => "11")
     refute_valid_form(form_data)
     response_body = JSON.parse(response.body)
     assert_equal ['regionalPartner'], response_body['errors']['form_data']
