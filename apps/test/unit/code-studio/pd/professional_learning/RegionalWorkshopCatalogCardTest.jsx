@@ -35,9 +35,8 @@ const DEFAULT_PROPS = {
   locationName: 'Test University',
   fee: '$400',
   hasPrereq: true,
-  requiresApplication: false,
-  customApplicationLink: '',
-  customRegistrationLink: '',
+  isThirdPartyRegistrationLink: false,
+  registrationLink: '/pd/workshops/1/enroll',
 };
 
 const renderDefault = (overrideProps = {}) => {
@@ -113,34 +112,22 @@ describe('RegionalWorkshopCatalog', () => {
     screen.getByText('04/22/25 (1:00PM-9:00PM) + 1 More');
   });
 
-  it('card renders button to send user to custom application link if provided and applications are required', () => {
-    const customApplicationLink = 'customapplicationlink.com';
+  it('card renders button with external link icon to send user to custom registration link if provided', () => {
+    const customRegistrationLink = 'customregistrationlink.com';
+    const externalLinkIconHTML =
+      '<i data-testid="font-awesome-v6-icon" class="fa-up-right-from-square fa-solid"></i>';
     renderDefault({
-      requiresApplication: true,
-      customApplicationLink: customApplicationLink,
+      isThirdPartyRegistrationLink: true,
+      registrationLink: customRegistrationLink,
     });
 
     expect(
-      screen.getByRole('link', {
-        name: 'applyNow',
-      })
-    ).toHaveAttribute('href', customApplicationLink);
-  });
-
-  it('card renders button to send user to teacher application if applications are required and no custom link is provided', () => {
-    renderDefault({requiresApplication: true});
-
-    expect(
-      screen.getByRole('link', {
-        name: 'applyNow',
-      })
-    ).toHaveAttribute('href', '/pd/application/teacher');
-  });
-
-  it('card renders button to send user to custom registration link if provided and applications are not required', () => {
-    const customRegistrationLink = 'customregistrationlink.com';
-    renderDefault({customRegistrationLink: customRegistrationLink});
-
+      screen
+        .getByRole('link', {
+          name: 'enrollNow',
+        })
+        .innerHTML.includes(externalLinkIconHTML)
+    ).toBe(true);
     expect(
       screen.getByRole('link', {
         name: 'enrollNow',
@@ -148,13 +135,24 @@ describe('RegionalWorkshopCatalog', () => {
     ).toHaveAttribute('href', customRegistrationLink);
   });
 
-  it('card renders button to send user to workshop registration link if applications are not required and no custom link is provided', () => {
-    renderDefault();
+  it('card renders button without external link icon to send user to default registration link if no custom link provided', () => {
+    const externalLinkIconHTML =
+      '<i data-testid="font-awesome-v6-icon" class="fa-up-right-from-square fa-solid"></i>';
+    renderDefault({
+      isThirdPartyRegistrationLink: false,
+    });
 
+    expect(
+      screen
+        .getByRole('link', {
+          name: 'enrollNow',
+        })
+        .innerHTML.includes(externalLinkIconHTML)
+    ).toBe(false);
     expect(
       screen.getByRole('link', {
         name: 'enrollNow',
       })
-    ).toHaveAttribute('href', `/pd/workshops/${DEFAULT_PROPS.id}/enroll`);
+    ).toHaveAttribute('href', DEFAULT_PROPS.registrationLink);
   });
 });
