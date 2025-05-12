@@ -47,57 +47,11 @@ const RegionalWorkshopCatalogCard = ({
   locationName,
   fee,
   hasPrereq,
-  requiresApplication,
-  customApplicationLink,
-  customRegistrationLink,
+  isThirdPartyRegistrationLink,
+  registrationLink,
 }) => {
   const seatsRemaining = capacity - numEnrollments;
   const isFull = seatsRemaining <= 0;
-
-  // Show the apply button if applications are required, otherwise show the
-  // enroll button. If the workshop has a third-party apply/enroll link then
-  // use that one, otherwise default to our apply/enroll links.
-  const RenderApplyOrEnrollButton = () => {
-    if (requiresApplication) {
-      return (
-        <LinkButton
-          aria-label="applyNow"
-          text="Apply now"
-          target="_blank"
-          color="purple"
-          iconRight={
-            customApplicationLink ? {iconName: 'up-right-from-square'} : null
-          }
-          href={
-            customApplicationLink
-              ? customApplicationLink
-              : '/pd/application/teacher'
-          }
-          className={style.wsCardButton}
-          disabled={isFull}
-        />
-      );
-    } else {
-      return (
-        <LinkButton
-          aria-label="enrollNow"
-          text="Enroll now"
-          target="_blank"
-          color="purple"
-          iconRight={
-            customRegistrationLink ? {iconName: 'up-right-from-square'} : null
-          }
-          href={
-            customRegistrationLink
-              ? customRegistrationLink
-              : `/pd/workshops/${id}/enroll`
-          }
-          className={style.wsCardButton}
-          disabled={isFull}
-        />
-      );
-    }
-  };
 
   return (
     <div className={style.workshopCatalogCard}>
@@ -171,7 +125,22 @@ const RegionalWorkshopCatalogCard = ({
           </span>
         </div>
       </div>
-      <div className={style.buttonContainer}>{RenderApplyOrEnrollButton()}</div>
+      <div className={style.buttonContainer}>
+        <LinkButton
+          aria-label="enrollNow"
+          text="Enroll now"
+          target="_blank"
+          color="purple"
+          iconRight={
+            isThirdPartyRegistrationLink
+              ? {iconName: 'up-right-from-square'}
+              : null
+          }
+          href={registrationLink}
+          className={style.wsCardButton}
+          disabled={isFull}
+        />
+      </div>
     </div>
   );
 };
@@ -196,9 +165,8 @@ RegionalWorkshopCatalogCard.propTypes = {
   locationName: PropTypes.string,
   fee: PropTypes.string,
   hasPrereq: PropTypes.bool.isRequired,
-  requiresApplication: PropTypes.bool.isRequired,
-  customApplicationLink: PropTypes.string,
-  customRegistrationLink: PropTypes.string,
+  isThirdPartyRegistrationLink: PropTypes.bool.isRequired,
+  registrationLink: PropTypes.string.isRequired,
 };
 
 export default RegionalWorkshopCatalogCard;

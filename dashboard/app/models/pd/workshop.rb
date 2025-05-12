@@ -82,6 +82,7 @@ class Pd::Workshop < ApplicationRecord
   ]
 
   before_validation :sanitize_time_zone
+  before_validation :set_registration_link
 
   validates_inclusion_of :course, in: COURSES
   validates :capacity, numericality: {only_integer: true, greater_than: 0, less_than: 10000}
@@ -183,6 +184,14 @@ class Pd::Workshop < ApplicationRecord
 
   def sanitize_time_zone
     self.time_zone = time_zone.present? && ActiveSupport::TimeZone[time_zone].present? ? time_zone : nil
+  end
+
+  def set_registration_link
+    self.registration_link = if require_application?
+                               regional_partner&.link_to_partner_application.presence || "/pd/application/teacher"
+                             else
+                               registration_link.presence || "/pd/workshops/#{id}/enroll"
+                             end
   end
 
   # Whether enrollment in this workshop requires an application
@@ -1034,9 +1043,8 @@ class Pd::Workshop < ApplicationRecord
       location_name: location_name,
       fee: fee,
       has_prereq: prereq.present?,
-      requires_application: require_application? || (regional_partner.present? && regional_partner.link_to_partner_application.present?),
-      custom_application_link: regional_partner&.link_to_partner_application,
-      custom_registration_link: registration_link,
+      is_third_party_registration_link: ["/pd/application/teacher", "/pd/workshops/#{id}/enroll"].include?(registration_link),
+      registration_link: registration_link,
       regional_partner_name: regional_partner&.name,
     }
   end
