@@ -61,7 +61,7 @@ module AichatSafetyHelper
         attempts +=1
 
         # Fallback to structured call (non-retryable)
-        response = client.request_chat_completion(messages, 0, options: {response_format: response_format})
+        response = client.request_chat_completion(messages, 0, options: {response_format: structured_response_format})
         raise "OpenAI structured request failed with status #{response.code}: #{response.body}" unless response.success?
 
         body = JSON.parse(response.body)
@@ -161,7 +161,7 @@ module AichatSafetyHelper
       ]
     end
 
-    private def response_format
+    private def structured_response_format
       {
         type: "json_schema",
         json_schema: {
