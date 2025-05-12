@@ -1706,7 +1706,6 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
     rp = create :regional_partner
     rp.update!(link_to_partner_application: 'test_application.com')
     workshop = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, subject: nil, course_offerings: [] << (create :course_offering), regional_partner_id: rp.id
-    puts workshop.to_json
 
     assert_equal "/pd/workshops/#{workshop.id}/enroll", workshop.registration_link
   end

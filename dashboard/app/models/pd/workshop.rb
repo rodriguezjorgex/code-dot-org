@@ -82,7 +82,6 @@ class Pd::Workshop < ApplicationRecord
   ]
 
   before_validation :sanitize_time_zone
-  before_validation :set_registration_link
 
   validates_inclusion_of :course, in: COURSES
   validates :capacity, numericality: {only_integer: true, greater_than: 0, less_than: 10000}
@@ -107,6 +106,9 @@ class Pd::Workshop < ApplicationRecord
   auto_strip_attributes :location_name, :location_address
 
   before_save :assign_regional_partner, if: -> {organizer_id_changed? && !regional_partner_id?}
+
+  after_create :set_registration_link
+
   def assign_regional_partner
     self.regional_partner = organizer.try {|o| o.regional_partners.first}
   end
@@ -187,7 +189,7 @@ class Pd::Workshop < ApplicationRecord
   end
 
   def set_registration_link
-    self.registration_link = if require_application?
+    self.registration_link = if [COURSE_CSD, COURSE_CSP, COURSE_CSA].include?(course) && local_summer?
                                regional_partner&.link_to_partner_application.presence || "/pd/application/teacher"
                              else
                                registration_link.presence || "/pd/workshops/#{id}/enroll"
