@@ -24097,7 +24097,9 @@ en:
           student_description: "This professional learning module is designed to help you prepare to teach Code.org's Problem Solving and Computing unit. \n\n**In this professional learning module, you will:**\n* Get an introduction to Problem Solving and Computing.\n* Learn the key problem solving frameworks utilized in the unit\n* Practice key concepts included in the unit.\n* Explore end-of-chapter projects.\n\n**Suggested time:** 40 minutes"
         self-paced-pl-teaching-csd-unit0-2025:
           lessons: {}
-          lesson_groups: {}
+          lesson_groups:
+            lessonGroup-2:
+              display_name: Welcome
           name: self-paced-pl-teaching-csd-unit0-2025
           title: Welcome
           description_audience: ''
@@ -24113,3 +24115,63 @@ en:
           description_short: short
           description: teacher overview
           student_description: student overview
+        self-paced-pl-teaching-csd-unit2-0-2025:
+          lessons: {}
+          lesson_groups:
+            lessonGroup-2:
+              display_name: Welcome
+          name: self-paced-pl-teaching-csd-unit2-0-2025
+          title: Welcome!
+          description_audience: ''
+          description_short: ''
+          description: "This module is a short introduction to both Code.org and this professional learning course. \n\n**You will:**\n* Get an introduction to Code.org and CS Discoveries.\n* Learn how to engage in this professional learning course.\n\n**Suggested Time:** 10 minutes"
+          student_description: "This module is a short introduction to both Code.org and this professional learning course. \n\n**You will:**\n* Get an introduction to Code.org and CS Discoveries.\n* Learn how to engage in this professional learning course.\n\n**Suggested Time:** 10 minutes"
+        self-paced-pl-teaching-csd-unit2-1-2025:
+          lessons: {}
+          lesson_groups: {}
+          name: self-paced-pl-teaching-csd-unit2-1-2025
+          title: Preparing to Teach Web Development
+          description_audience: ''
+          description_short: ''
+          description: |-
+            This professional learning module is designed to help you prepare to teach Code.org's Web Development unit.
+
+            **In this professional learning module, you will:**
+
+            * Get an introduction to Web Development.
+            * Practice key concepts included in the unit.
+            * Engage with Web Lab.
+            * Explore end-of-chapter projects.
+
+            **Suggested time**: 120 minutes
+          student_description: |-
+            This professional learning module is designed to help you prepare to teach Code.org's Web Development unit.
+
+            **In this professional learning module, you will:**
+
+            * Get an introduction to Web Development.
+            * Practice key concepts included in the unit.
+            * Engage with Web Lab.
+            * Explore end-of-chapter projects.
+
+            **Suggested time**: 120 minutes
+        self-paced-pl-teaching-csd-unit3-0-2025:
+          lessons: {}
+          lesson_groups:
+            lessonGroup-2:
+              display_name: Welcome
+          name: self-paced-pl-teaching-csd-unit3-0-2025
+          title: Welcome!
+          description_audience: ''
+          description_short: ''
+          description: "## Welcome\nWelcome to Code.org's free self-paced online learning for educators to get started teaching with Code.org! After completing this professional learning experience, **you'll be ready to get started teaching Code.org’s CSD Unit 3 - Teaching Interactive Animations and Games** with your students.\n\n### Find the learning that works for you\n* **Go at your own pace:** This self-paced learning experience is designed to give you control over your own learning. Suggested times are given for each lesson.  However, we encourage you to **engage with the content at your own pace.**\n\n* **Pick your content:** The content is organized in to introduce all teachers CSD Unit 3 - Teaching Interactive Animations and Games. However, if you need additional guidance on using the Code.org platform, please access the Code.org Self-Paced Professional Learning module found in the Code.org Professional Learning catalog. **Don't hesitate to engage with the content in the order that best meets your needs.** "
+          student_description: "## Welcome\nWelcome to Code.org's free self-paced online learning for educators to get started teaching with Code.org! After completing this professional learning experience, **you'll be ready to get started teaching Code.org’s CSD Unit 3 - Teaching Interactive Animations and Games** with your students.\n\n### Find the learning that works for you\n* **Go at your own pace:** This self-paced learning experience is designed to give you control over your own learning. Suggested times are given for each lesson.  However, we encourage you to **engage with the content at your own pace.**\n\n* **Pick your content:** The content is organized in to introduce all teachers CSD Unit 3 - Teaching Interactive Animations and Games. However, if you need additional guidance on using the Code.org platform, please access the Code.org Self-Paced Professional Learning module found in the Code.org Professional Learning catalog. **Don't hesitate to engage with the content in the order that best meets your needs.** "
+        self-paced-pl-teaching-csd-unit3-1-2025:
+          lessons: {}
+          lesson_groups: {}
+          name: self-paced-pl-teaching-csd-unit3-1-2025
+          title: Preparing to Teach Interactive Animations and Games
+          description_audience: ''
+          description_short: ''
+          description: "This professional learning module is designed to help you prepare to teach Code.org's Interactive Animations and Games unit. \n\n**In this professional learning module, you will:**\n* Get an introduction to Interactive Animations and Games.\n* Practice key concepts included in the unit.\n* Engage with Game Lab.\n* Explore end-of-chapter projects.\n\n**Suggested time:** 120 minutes"
+          student_description: "This professional learning module is designed to help you prepare to teach Code.org's Interactive Animations and Games unit. \n\n**In this professional learning module, you will:**\n* Get an introduction to Interactive Animations and Games.\n* Practice key concepts included in the unit.\n* Engage with Game Lab.\n* Explore end-of-chapter projects.\n\n**Suggested time:** 120 minutes"
