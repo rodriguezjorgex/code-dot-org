@@ -21,12 +21,10 @@ window.showRegionalPartnerMiniContact = function () {
     url: '/dashboardapi/v1/users/me/contact_details',
   })
     .done(results => {
-      // Casts zip to string because `zip` in the school_info model is typed as an integer,
-      // whereas `zip` in the school model and `zip` passed in as a URL param are strings.
       options = {
         user_name: results.user_name,
         email: results.email,
-        zip: `${zipFromUrlParams || results.zip}`,
+        zip: zipFromUrlParams || results.zip,
       };
     })
     .complete(() => {
