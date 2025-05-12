@@ -10,10 +10,8 @@ module OpenaiChatHelper
       @model = model
     end
 
-    # Optional "options" parameter is included to provide generic coverage
-    # for new parameters that OpenAI adds.
-    # Examples include "response_format" for JSON response formatting,
-    # and "tools" for function calling.
+    # Optional "options" parameter is included to provide generic coverage for additional OpenAI parameters.
+    # Examples include "response_format" for JSON response formatting, and "tools" for function calling.
     def request_chat_completion(messages, temperature = DEFAULT_TEMPERATURE, options: {})
       headers = {
         "Content-Type" => "application/json",
