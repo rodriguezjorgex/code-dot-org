@@ -50,7 +50,6 @@ class Pd::RegionalPartnerMiniContact < ApplicationRecord
   def self.required_fields
     [
       :zip,
-      :email,
       :notes
     ]
   end
