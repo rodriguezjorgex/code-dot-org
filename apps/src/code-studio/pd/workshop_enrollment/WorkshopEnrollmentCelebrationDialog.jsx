@@ -163,7 +163,7 @@ export const buildOutlookCalendarLink = (session, workshopTitle) => {
   const params = new URLSearchParams({
     subject: workshopTitle,
     location,
-    body: description,
+    body: description.replace(/\n/g, '<br>'),
     startdt: startTime,
     enddt: endTime,
   });

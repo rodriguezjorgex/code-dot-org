@@ -62,6 +62,9 @@ const TEST_WORKSHOP_SESSIONS = [
 const EXPECTED_DESCRIPTION_AND_NOTES =
   'example.zoom.com\n\nAttendee notes:\nPark in the back\n\nDescription:\nReally great workshop';
 
+const EXPECTED_OUTLOOK_DESCRIPTION_AND_NOTES =
+  EXPECTED_DESCRIPTION_AND_NOTES.replace(/\n/g, '<br>');
+
 const DEFAULT_PROPS = {
   lastWorkshopSurveyUrl: 'url',
   lastWorkshopSurveyCourse: 'CS Fundamentals',
@@ -864,7 +867,7 @@ describe('LandingPage', () => {
       expect(result).toContain(
         // URLSearchParams uses + to encode spaces but encodeURIComponent uses %20
         new URLSearchParams({
-          body: EXPECTED_DESCRIPTION_AND_NOTES,
+          body: EXPECTED_OUTLOOK_DESCRIPTION_AND_NOTES,
         }).toString()
       );
     });
