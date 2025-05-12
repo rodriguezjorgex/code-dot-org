@@ -61,7 +61,7 @@ module AichatSafetyHelper
         attempts +=1
 
         # Fallback to structured call (non-retryable)
-        response = request_structured_safety_check(text, level_id)
+        response = client.request_chat_completion(messages, 0, options: {response_format: response_format})
         raise "OpenAI structured request failed with status #{response.code}: #{response.body}" unless response.success?
 
         body = JSON.parse(response.body)
@@ -161,37 +161,24 @@ module AichatSafetyHelper
       ]
     end
 
-    # Makes a structured output request to GPT for moderation classification.
-    private def request_structured_safety_check(text, level_id)
-      safety_json_schema = {
-        name: "safety_evaluation",
-        schema: {
-          type: "object",
-          properties: {
-            classification: {
-              type: "string",
-              description: "Safety classification for school appropriateness",
-              enum: ["OK", "INAPPROPRIATE"]
-            }
-          },
-          required: ["classification"]
+    private def response_format
+      {
+        type: "json_schema",
+        json_schema: {
+          name: "safety_evaluation",
+          schema: {
+            type: "object",
+            properties: {
+              classification: {
+                type: "string",
+                description: "Safety classification for school appropriateness",
+                enum: ["OK", "INAPPROPRIATE"]
+              }
+            },
+            required: ["classification"]
+          }
         }
       }
-
-      AichatOpenaiHelper.request_structured_chat_completion(
-        [
-          {
-            role: "system",
-            content: get_safety_system_prompt(level_id)
-          },
-          {
-            role: "user",
-            content: text
-          }
-        ],
-        0,
-        safety_json_schema
-      )
     end
 
     private def report_openai_safety_check(metric_name, num_attempts = 1)

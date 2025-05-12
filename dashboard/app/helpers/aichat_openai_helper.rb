@@ -71,29 +71,6 @@ module AichatOpenaiHelper
     [response, body&.dig('usage')]
   end
 
-  def self.request_structured_chat_completion(messages, temperature, response_schema)
-    http_response = client.request_chat_completion(
-      messages,
-      temperature,
-      extra: {
-        response_format: {
-          type: "json_schema",
-          json_schema: response_schema
-        }
-      }
-    )
-    body = JSON.parse(http_response.body)
-    raise StandardError.new(body['error']) if body['error']
-    # Check if the returned content is a json, else throw error
-    response_json = body.dig("choices", 0, "message", "content")
-    begin
-      JSON.parse(response_json)
-    rescue JSON::ParserError
-      raise StandardError.new("Unexpected JSON response, got: #{response_json}")
-    end
-    http_response
-  end
-
   def self.get_instructions(system_prompt, level_system_prompt, retrieval_contexts)
     instructions = ""
     instructions = level_system_prompt + " " unless level_system_prompt.empty?
