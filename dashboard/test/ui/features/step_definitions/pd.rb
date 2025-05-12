@@ -52,6 +52,11 @@ Given(/^I am a program manager$/) do
   GHERKIN
 end
 
+Given(/^I have a regional partner in the zip code "([^"]*)"$/) do |zip_code|
+  regional_partner = create :regional_partner
+  regional_partner.mappings.find_or_create_by!(zip_code: zip_code)
+end
+
 Given(/^I have a regional partner with a teacher application$/) do
   response = browser_request(url: '/api/test/create_teacher_application', method: 'POST')
   data = JSON.parse(response)

@@ -4,7 +4,8 @@ Feature: Regional partner mini-contact
 
 
 Scenario: Teacher submits inline mini-contact form after adding zip
-  Given I create a teacher named "Severus"
+  Given I have a regional partner in the zip code 90210
+  And I create a teacher named "Severus"
 
   # By using a teacher account, the email field will be prepopulated.
   And I am on "http://studio.code.org/professional-learning/contact-regional-partner"
@@ -35,7 +36,8 @@ Scenario: Teacher tries to submit inline mini-contact form after adding zip with
   And I sign out
 
 Scenario: Teacher submits inline mini-contact form after adding zip and email
-  Given I create a teacher named "Severus"
+  Given I have a regional partner in the zip code 90210
+  And I create a teacher named "Severus"
   And I am on "http://studio.code.org/professional-learning/contact-regional-partner"
   And I wait until element "#regional-partner-mini-contact-form-contact-regional-partner" is visible
   And I dismiss the language selector
@@ -59,6 +61,8 @@ Scenario: Teacher submits inline mini-contact form after adding zip and email
 
 
 Scenario: Signed-out user submits pop-up mini-contact form after adding zip and email
+  Given I have a regional partner in the zip code 90210
+
   # First pop up the mini-contact form for signed-out user, and submit it.
   And I am on "http://studio.code.org/pd/application/teacher"
   And I wait until element "#regional-partner-mini-contact-popup-link-container span span" is visible
