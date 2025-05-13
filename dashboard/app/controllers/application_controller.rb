@@ -113,7 +113,14 @@ class ApplicationController < ActionController::Base
 
   # Allow cross-origin requests from code.org
   def allow_cdo_cors
-    response.headers['Access-Control-Allow-Origin']      = CDO.code_org_url '', request.protocol.chomp('//')
+    allowed_origins = [CDO.code_org_url('', request.protocol.chomp('//'))]
+    # Allows Contentful preview localhost in development
+    allowed_origins += %w[http://localhost:3001 http://localhost.code.org:3001] if Rails.env.development?
+
+    request_origin = request.headers['Origin']
+    return unless allowed_origins.include?(request_origin)
+
+    response.headers['Access-Control-Allow-Origin']      = request_origin
     response.headers['Access-Control-Allow-Methods']     = request.request_method
     response.headers['Access-Control-Allow-Headers']     = '*'
     response.headers['Access-Control-Allow-Credentials'] = 'true'
