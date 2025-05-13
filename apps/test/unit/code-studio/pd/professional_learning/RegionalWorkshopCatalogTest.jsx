@@ -35,8 +35,8 @@ const TEST_WORKSHOPS = [
     fee: null,
     has_prereq: false,
     requires_application: false,
-    custom_application_link: null,
-    custom_registration_link: null,
+    is_third_party_registration_link: false,
+    registration_link: '/pd/workshops/1/enroll',
   },
   {
     id: 2,
@@ -51,8 +51,8 @@ const TEST_WORKSHOPS = [
     fee: '$400',
     has_prereq: true,
     requires_application: true,
-    custom_application_link: null,
-    custom_registration_link: null,
+    is_third_party_registration_link: false,
+    registration_link: '/pd/workshops/2/enroll',
   },
 ];
 
