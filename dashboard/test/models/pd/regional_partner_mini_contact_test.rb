@@ -19,7 +19,7 @@ class Pd::RegionalPartnerMiniContactTest < ActiveSupport::TestCase
   test 'email is required' do
     refute valid_form? build(
       :pd_regional_partner_mini_contact_hash
-    ).merge("email" => "")
+    ).merge("zip" => @matched_zip, "email" => "")
   end
 
   test 'zip is required' do
@@ -35,13 +35,13 @@ class Pd::RegionalPartnerMiniContactTest < ActiveSupport::TestCase
   test 'notes is required' do
     refute valid_form? build(
       :pd_regional_partner_mini_contact_hash
-    ).merge("notes" => "")
+    ).merge("zip" => @matched_zip, "notes" => "")
   end
 
   test 'notes less than 5 words is invalid' do
     refute valid_form? build(
       :pd_regional_partner_mini_contact_hash
-    ).merge("notes" => "one two three four")
+    ).merge("zip" => @matched_zip, "notes" => "one two three four")
   end
 
   test 'Matches regional partner' do
