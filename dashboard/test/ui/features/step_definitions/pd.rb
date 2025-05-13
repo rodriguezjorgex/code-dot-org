@@ -54,7 +54,7 @@ end
 
 Given(/^I have a regional partner in the zip code "([^"]*)"$/) do |zip_code|
   regional_partner = create :regional_partner
-  regional_partner.mappings.find_or_create_by!(zip_code: zip_code)
+  regional_partner.mappings.find_or_create_by!(zip_code: zip_code.to_s)
 end
 
 Given(/^I have a regional partner with a teacher application$/) do
