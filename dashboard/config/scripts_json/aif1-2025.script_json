@@ -22,8 +22,8 @@
     },
     "new_name": null,
     "family_name": null,
-    "serialized_at": "2025-05-10 02:09:21 UTC",
-    "published_state": null,
+    "serialized_at": "2025-05-12 14:39:44 UTC",
+    "published_state": "in_development",
     "instruction_type": null,
     "instructor_audience": null,
     "participant_audience": null,
@@ -6485,6 +6485,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "student-eou-survey_linked_page_problemsolving-2025"
+        ],
         "progression": "End of Unit Survey"
       },
       "bonus": false,
