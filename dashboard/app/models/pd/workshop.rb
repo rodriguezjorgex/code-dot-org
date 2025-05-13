@@ -189,11 +189,12 @@ class Pd::Workshop < ApplicationRecord
   end
 
   def set_registration_link
-    self.registration_link = if [COURSE_CSD, COURSE_CSP, COURSE_CSA].include?(course) && local_summer?
-                               regional_partner&.link_to_partner_application.presence || "/pd/application/teacher"
-                             else
-                               registration_link.presence || "/pd/workshops/#{id}/enroll"
-                             end
+    reg_link = if [COURSE_CSD, COURSE_CSP, COURSE_CSA].include?(course) && local_summer?
+                 regional_partner&.link_to_partner_application.presence || "/pd/application/teacher"
+               else
+                 registration_link.presence || "/pd/workshops/#{id}/enroll"
+               end
+    update!(registration_link: reg_link)
   end
 
   # Whether enrollment in this workshop requires an application
@@ -1045,7 +1046,7 @@ class Pd::Workshop < ApplicationRecord
       location_name: location_name,
       fee: fee,
       has_prereq: prereq.present?,
-      is_third_party_registration_link: ["/pd/application/teacher", "/pd/workshops/#{id}/enroll"].include?(registration_link),
+      is_third_party_registration_link: !registration_link&.end_with?("/pd/application/teacher") && !registration_link&.end_with?("/pd/workshops/#{id}/enroll"),
       registration_link: registration_link,
       regional_partner_name: regional_partner&.name,
     }
