@@ -4,10 +4,16 @@ require 'testing/poste_assertions'
 class Pd::RegionalPartnerMiniContactTest < ActiveSupport::TestCase
   include PosteAssertions
 
-  test 'can create a new regional partner mini contact' do
+  setup do
+    @matched_zip = "90210"
+    @regional_partner = create :regional_partner
+    @regional_partner.mappings.find_or_create_by!(zip_code: @matched_zip)
+  end
+
+  test 'can create a new regional partner mini contact with a zip matched to a regional partner' do
     assert valid_form? build(
       :pd_regional_partner_mini_contact_hash
-    )
+    ).merge("zip" => @matched_zip)
   end
 
   test 'email is required' do
@@ -39,59 +45,31 @@ class Pd::RegionalPartnerMiniContactTest < ActiveSupport::TestCase
   end
 
   test 'Matches regional partner' do
-    # Use the same state & zip as the mini-contact factory's defaults.
-    state = 'OH'
-    zip = '45242'
-
-    regional_partner = create :regional_partner, name: "partner_OH_45242"
-    regional_partner.mappings.find_or_create_by!(state: state)
-    regional_partner.mappings.find_or_create_by!(zip_code: zip)
-
     regional_partner_mini_contact = create :pd_regional_partner_mini_contact,
-      form_data: build(:pd_regional_partner_mini_contact_hash).to_json
+      form_data: build(:pd_regional_partner_mini_contact_hash).merge("zip" => @matched_zip).to_json
 
-    assert_equal regional_partner.id, regional_partner_mini_contact.regional_partner_id
+    assert_equal @regional_partner.id, regional_partner_mini_contact.regional_partner_id
   end
 
   test 'Matches regional partner with integer zip' do
-    # Use the same state & zip as the mini-contact factory's defaults.
-    state = 'OH'
-    zip = '45242'
-
-    regional_partner = create :regional_partner, name: "partner_OH_45242"
-    regional_partner.mappings.find_or_create_by!(state: state)
-    regional_partner.mappings.find_or_create_by!(zip_code: zip)
-
     regional_partner_mini_contact = create :pd_regional_partner_mini_contact,
-      form_data: build(:pd_regional_partner_mini_contact_hash).merge("zip" => 45242).to_json
+      form_data: build(:pd_regional_partner_mini_contact_hash).merge("zip" => @matched_zip.to_i).to_json
 
-    assert_equal regional_partner.id, regional_partner_mini_contact.regional_partner_id
+    assert_equal @regional_partner.id, regional_partner_mini_contact.regional_partner_id
   end
 
   test 'Matches regional partner with messy zip' do
-    # Use the same state & zip as the mini-contact factory's defaults.
-    state = 'OH'
-    zip = '45242'
-
-    regional_partner = create :regional_partner, name: "partner_OH_45242"
-    regional_partner.mappings.find_or_create_by!(state: state)
-    regional_partner.mappings.find_or_create_by!(zip_code: zip)
-
     regional_partner_mini_contact = create :pd_regional_partner_mini_contact,
-      form_data: build(:pd_regional_partner_mini_contact_hash).merge("zip" => " \n 45242-1234 \n ").to_json
+      form_data: build(:pd_regional_partner_mini_contact_hash).merge("zip" => " \n #{@matched_zip}-1234 \n ").to_json
 
-    assert_equal regional_partner.id, regional_partner_mini_contact.regional_partner_id
+    assert_equal @regional_partner.id, regional_partner_mini_contact.regional_partner_id
   end
 
   # If matched and regional partner has one pm, send matched email to pm
   test 'Matched with one regional partner pm' do
-    regional_partner = create :regional_partner, name: "partner_OH_45242"
-    regional_partner.mappings.find_or_create_by!(state: 'OH')
-    regional_partner.mappings.find_or_create_by!(zip_code: '45242')
+    create :regional_partner_program_manager, regional_partner: @regional_partner
 
-    create :regional_partner_program_manager, regional_partner: regional_partner
-
-    create :pd_regional_partner_mini_contact, form_data: build(:pd_regional_partner_mini_contact_hash).to_json
+    create :pd_regional_partner_mini_contact, form_data: build(:pd_regional_partner_mini_contact_hash).merge("zip" => @matched_zip).to_json
     mail = ActionMailer::Base.deliveries.first
 
     assert_equal 'Question about Code.org program', mail.subject
@@ -102,14 +80,10 @@ class Pd::RegionalPartnerMiniContactTest < ActiveSupport::TestCase
 
   # If matched and regional partner with multiple pms, send matched email to all pms
   test 'Matched with two regional partner pms' do
-    regional_partner = create :regional_partner, name: "partner_OH_45242"
-    regional_partner.mappings.find_or_create_by!(state: 'OH')
-    regional_partner.mappings.find_or_create_by!(zip_code: '45242')
+    create :regional_partner_program_manager, regional_partner: @regional_partner
+    create :regional_partner_program_manager, regional_partner: @regional_partner
 
-    create :regional_partner_program_manager, regional_partner: regional_partner
-    create :regional_partner_program_manager, regional_partner: regional_partner
-
-    create :pd_regional_partner_mini_contact, form_data: build(:pd_regional_partner_mini_contact_hash).to_json
+    create :pd_regional_partner_mini_contact, form_data: build(:pd_regional_partner_mini_contact_hash).merge("zip" => @matched_zip).to_json
     mail = ActionMailer::Base.deliveries.first
 
     assert_equal 'Question about Code.org program', mail.subject
@@ -120,11 +94,7 @@ class Pd::RegionalPartnerMiniContactTest < ActiveSupport::TestCase
 
   # If matched but no regional partner pms, don't send program manager matched email
   test 'Matched with zero regional partner pms' do
-    regional_partner = create :regional_partner, name: "partner_OH_45242"
-    regional_partner.mappings.find_or_create_by!(state: 'OH')
-    regional_partner.mappings.find_or_create_by!(zip_code: '45242')
-
-    create :pd_regional_partner_mini_contact, form_data: build(:pd_regional_partner_mini_contact_hash).to_json
+    create :pd_regional_partner_mini_contact, form_data: build(:pd_regional_partner_mini_contact_hash).merge("zip" => @matched_zip).to_json
     mail = ActionMailer::Base.deliveries.first
 
     # Only sent the regional partner email
@@ -137,16 +107,16 @@ class Pd::RegionalPartnerMiniContactTest < ActiveSupport::TestCase
 
   test 'Receipt email does not send if user is not matched with regional partner' do
     RegionalPartner.stubs(:find_by_zip).returns([nil, nil])
-    create :pd_regional_partner_mini_contact, form_data: build(:pd_regional_partner_mini_contact_hash).to_json
+    begin
+      create :pd_regional_partner_mini_contact, form_data: build(:pd_regional_partner_mini_contact_hash).to_json
+    rescue => exception
+      assert exception.message.include?("Validation failed: Form data regionalPartner")
+    end
     assert_nil ActionMailer::Base.deliveries.last
   end
 
   test 'Receipt email sends if user is matched with regional partner' do
-    regional_partner = create :regional_partner, name: "partner_OH_45242"
-    regional_partner.mappings.find_or_create_by!(state: 'OH')
-    regional_partner.mappings.find_or_create_by!(zip_code: '45242')
-
-    create :pd_regional_partner_mini_contact, form_data: build(:pd_regional_partner_mini_contact_hash).to_json
+    create :pd_regional_partner_mini_contact, form_data: build(:pd_regional_partner_mini_contact_hash).merge("zip" => @matched_zip).to_json
     mail = ActionMailer::Base.deliveries.last
 
     assert_equal ['foo@bar.com'], mail.to
