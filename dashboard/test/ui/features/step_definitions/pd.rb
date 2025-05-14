@@ -52,8 +52,8 @@ Given(/^I am a program manager$/) do
   GHERKIN
 end
 
-Given(/^I have a regional partner in the zip code "([^"]*)"$/) do |zip_code|
-  regional_partner = create :regional_partner
+Given(/^I have a regional partner named "([^"]*)" in the zip code "([^"]*)"$/) do |partner_name, zip_code|
+  regional_partner = RegionalPartner.find_or_create_by(name: partner_name, group: 1, is_active: true)
   regional_partner.mappings.find_or_create_by!(zip_code: zip_code.to_s)
 end
 
