@@ -195,6 +195,7 @@ class Pd::Workshop < ApplicationRecord
                  registration_link.presence || "/pd/workshops/#{id}/enroll"
                end
     self.registration_link = reg_link
+    save(validate: false)
   end
 
   # Whether enrollment in this workshop requires an application
