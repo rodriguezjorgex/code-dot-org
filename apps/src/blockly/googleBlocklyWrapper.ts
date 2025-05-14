@@ -55,6 +55,7 @@ import CdoRendererGeras from './addons/cdoRendererGeras';
 import CdoRendererThrasos from './addons/cdoRendererThrasos';
 import CdoRendererZelos from './addons/cdoRendererZelos';
 import {initializeScrollbarPair} from './addons/cdoScrollbar';
+import {cleanUp} from './addons/cdoSerializationHelpers';
 import {getPointerBlockImageUrl} from './addons/cdoSpritePointer';
 import CdoTrashcan from './addons/cdoTrashcan';
 import * as cdoUtils from './addons/cdoUtils';
@@ -637,6 +638,10 @@ function initializeBlocklyWrapper(blocklyInstance: GoogleBlocklyInstance) {
   // TODO - called by StudioApp, not sure whether they're still needed.
   extendedWorkspaceSvg.setEnableToolbox = function () {};
   extendedWorkspaceSvg.traceOn = function () {};
+
+  extendedWorkspaceSvg.cleanUp = function () {
+    cleanUp(this);
+  };
 
   const extendedVariableMap = blocklyWrapper.VariableMap
     .prototype as ExtendedVariableMap;

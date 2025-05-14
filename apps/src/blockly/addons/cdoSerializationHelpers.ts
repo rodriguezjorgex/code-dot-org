@@ -11,6 +11,7 @@ import {
 } from '../types';
 import {shouldSkipHiddenWorkspace} from '../utils';
 
+import BlockColliderFrame from './blockCollider';
 import {frameSizes} from './cdoConstants';
 
 const {
@@ -155,6 +156,10 @@ export function positionBlocksOnWorkspace(
   );
 
   adjustBlockPositions(orderedBlocksSetupFirst, workspace);
+  topBlocks.forEach(block => {
+    block.colliderFrame_?.dispose();
+  });
+  cleanUp(workspace);
 }
 
 /**
@@ -221,6 +226,8 @@ function adjustBlockPositions(
  * @property {number} width - The width of the block, accounting for SVG frame width on either side
  */
 function getCollider(block: ExtendedBlockSvg): Collider {
+  block.colliderFrame_ = new BlockColliderFrame(block);
+  block.colliderFrame_?.render();
   const position = block.getRelativeToSurfaceXY();
   const size = block.getHeightWidth();
 
@@ -484,4 +491,91 @@ function blockExists(behaviorId: string, projectBlocks: JsonBlockConfig[]) {
       block.type === BLOCK_TYPES.behaviorDefinition &&
       block.extraState?.behaviorId === behaviorId
   );
+}
+
+/**
+ * Repositions blocks on the workspace to eliminate overlaps.
+ * Tries moving right first, then down if needed.
+ *
+ * @param {Blockly.WorkspaceSvg} workspace - The workspace to clean up.
+ * @param {boolean} [includeImmovableBlocks=false] - Whether immovable blocks should be repositioned.
+ */
+export function cleanUp(
+  workspace: GoogleBlockly.WorkspaceSvg,
+  includeImmovableBlocks: boolean = false
+) {
+  if (!workspace.rendered) return;
+
+  const blocks = workspace.getTopBlocks(SORT_BY_POSITION) as ExtendedBlockSvg[];
+  const orderedColliders: Collider[] = [];
+
+  const blocksToPlace: ExtendedBlockSvg[] = [];
+  blocks.forEach(block => {
+    if (includeImmovableBlocks || block.isMovable()) {
+      blocksToPlace.push(block);
+    } else {
+      insertCollider(orderedColliders, getCollider(block));
+    }
+  });
+
+  const {defaultX, defaultY} = getDefaultLocation(workspace);
+  blocksToPlace.forEach(block => {
+    let {x, y} = block.getRelativeToSurfaceXY();
+
+    // Don't overwrite x- (or y-) coordinate if it is set to something other than the default
+    // This retains partially positioned blocks (with either an x- or y-coordinate set)
+    if (x === defaultX) {
+      x = getXCoordinate(block, workspace);
+    }
+    if (y === defaultY) {
+      y = getYCoordinate(block);
+    }
+
+    // Set initial position; collision area must be updated to account for new position
+    // every time block is moved
+    block.moveTo(new Blockly.utils.Coordinate(x, y));
+    let collider = getCollider(block);
+
+    orderedColliders.forEach(orderedCollider => {
+      // For blocks that are not left-aligned, try to move them to the right
+      if (x !== defaultX) {
+        const {viewWidth} = workspace.getMetrics();
+        if (collider.x + collider.width > viewWidth) {
+          // If the block is off the right side of the workspace, move it to the left
+          block.moveTo(
+            new Blockly.utils.Coordinate(viewWidth - collider.width, y)
+          );
+          collider = getCollider(block);
+        }
+        if (isOverlapping(collider, orderedCollider)) {
+          // Try to move the block to the right more if there's room
+          const {viewWidth = 0} = workspace.getMetrics();
+          const maxRight = viewWidth - WORKSPACE_PADDING;
+          if (
+            maxRight - collider.width >
+            orderedCollider.x + orderedCollider.width + WORKSPACE_PADDING
+          ) {
+            x = orderedCollider.x + orderedCollider.width + WORKSPACE_PADDING;
+            block.moveTo(new Blockly.utils.Coordinate(x, y));
+            collider = getCollider(block);
+          }
+        }
+      }
+      // After making horizontal adjustments, check for overlaps again and move the block down
+      // if necessary.
+      if (isOverlapping(collider, orderedCollider)) {
+        y =
+          orderedCollider.y +
+          orderedCollider.height +
+          getSpaceBetweenBlocks(block);
+        block.moveTo(new Blockly.utils.Coordinate(x, y));
+        collider = getCollider(block);
+      }
+    });
+    insertCollider(orderedColliders, collider);
+  });
+
+  blocks.forEach(block => {
+    block.colliderFrame_?.dispose();
+  });
 }
