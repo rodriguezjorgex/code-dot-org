@@ -275,8 +275,7 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
         facilitators={workshopFormState.facilitators}
         regionalPartnerId={workshopFormState.regionalPartnerId}
         errors={workshopErrors}
-        regionalPartnerData={regionalPartnerData ?? []}
-        facilitatorData={facilitatorData}
+        organizerId={workshopFormState.organizerId}
         dispatchWorkshop={dispatchWorkshop}
         config={workshopConfig}
       />
