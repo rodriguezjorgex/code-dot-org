@@ -5,7 +5,6 @@ import React, {FC, memo, useCallback, useEffect, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 
-import {useAuthToken} from '@cdo/apps/util/hooks/useAuthToken';
 import {useFetch} from '@cdo/apps/util/useFetch';
 
 import {MultiSelectInput, OptionId} from '../components/MultiSelectInput';
@@ -27,12 +26,8 @@ export const PartnerFacilitator: FC<PartnerFacilitatorProps> = ({
   organizerId,
 }) => {
   const {workshopId} = useParams();
-  const {options} = useAuthToken();
   const {data: organizerData} = useFetch<PotentialOrganizer[]>(
-    workshopId && options
-      ? `/api/v1/pd/workshops/${workshopId}/potential_organizers`
-      : '',
-    options
+    workshopId ? `/api/v1/pd/workshops/${workshopId}/potential_organizers` : ''
   );
 
   const {data: facilitatorData} = useFetch<Facilitator[]>(
