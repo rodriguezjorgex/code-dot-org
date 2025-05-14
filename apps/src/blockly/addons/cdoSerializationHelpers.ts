@@ -11,7 +11,6 @@ import {
 } from '../types';
 import {shouldSkipHiddenWorkspace} from '../utils';
 
-import BlockColliderFrame from './blockCollider';
 import {frameSizes} from './cdoConstants';
 
 const {
@@ -23,7 +22,7 @@ const {
 const SVG_FRAME_HEIGHT = BLOCK_HEADER_HEIGHT + MARGIN_TOP + MARGIN_BOTTOM;
 const SVG_FRAME_TOP_PADDING = BLOCK_HEADER_HEIGHT + MARGIN_TOP;
 const SORT_BY_POSITION = true;
-const VERTICAL_SPACE_BETWEEN_BLOCKS = 10;
+const SPACE_BETWEEN_BLOCKS = 10;
 
 export function hasBlocks(
   workspaceSerialization: WorkspaceSerialization | null
@@ -70,7 +69,7 @@ function getYCoordinate(block: ExtendedBlockSvg) {
  * @returns {number} Vertical space in pixels; either the default or the default plus extra to accomodate an SVG frame.
  */
 function getSpaceBetweenBlocks(block: ExtendedBlockSvg) {
-  let verticalSpace = VERTICAL_SPACE_BETWEEN_BLOCKS;
+  let verticalSpace = SPACE_BETWEEN_BLOCKS;
   if (block.functionalSvg_) {
     verticalSpace += SVG_FRAME_TOP_PADDING;
   }
@@ -156,9 +155,6 @@ export function positionBlocksOnWorkspace(
   );
 
   adjustBlockPositions(orderedBlocksSetupFirst, workspace);
-  topBlocks.forEach(block => {
-    block.colliderFrame_?.dispose();
-  });
   cleanUp(workspace);
 }
 
@@ -226,8 +222,6 @@ function adjustBlockPositions(
  * @property {number} width - The width of the block, accounting for SVG frame width on either side
  */
 function getCollider(block: ExtendedBlockSvg): Collider {
-  block.colliderFrame_ = new BlockColliderFrame(block);
-  block.colliderFrame_?.render();
   const position = block.getRelativeToSurfaceXY();
   const size = block.getHeightWidth();
 
@@ -536,46 +530,37 @@ export function cleanUp(
     block.moveTo(new Blockly.utils.Coordinate(x, y));
     let collider = getCollider(block);
 
+    const {viewWidth} = workspace.getMetrics();
+    const maximumX = viewWidth - SPACE_BETWEEN_BLOCKS;
+    const blockOutOfBounds = collider.x + collider.width > maximumX;
+    if (blockOutOfBounds) {
+      x = maximumX - collider.width;
+      block.moveTo(new Blockly.utils.Coordinate(x, y));
+      collider = getCollider(block);
+    }
+
     orderedColliders.forEach(orderedCollider => {
-      // For blocks that are not left-aligned, try to move them to the right
-      if (x !== defaultX) {
-        const {viewWidth} = workspace.getMetrics();
-        if (collider.x + collider.width > viewWidth) {
-          // If the block is off the right side of the workspace, move it to the left
-          block.moveTo(
-            new Blockly.utils.Coordinate(viewWidth - collider.width, y)
-          );
-          collider = getCollider(block);
-        }
-        if (isOverlapping(collider, orderedCollider)) {
-          // Try to move the block to the right more if there's room
-          const {viewWidth = 0} = workspace.getMetrics();
-          const maxRight = viewWidth - WORKSPACE_PADDING;
-          if (
-            maxRight - collider.width >
-            orderedCollider.x + orderedCollider.width + WORKSPACE_PADDING
-          ) {
-            x = orderedCollider.x + orderedCollider.width + WORKSPACE_PADDING;
-            block.moveTo(new Blockly.utils.Coordinate(x, y));
-            collider = getCollider(block);
-          }
-        }
-      }
-      // After making horizontal adjustments, check for overlaps again and move the block down
-      // if necessary.
       if (isOverlapping(collider, orderedCollider)) {
-        y =
-          orderedCollider.y +
-          orderedCollider.height +
-          getSpaceBetweenBlocks(block);
+        let candidateX = x;
+        const nextAvailableX =
+          orderedCollider.x + orderedCollider.width + SPACE_BETWEEN_BLOCKS;
+        const resultingEndX = nextAvailableX + collider.width;
+        if (resultingEndX < maximumX) {
+          candidateX = nextAvailableX;
+        }
+        const candidateY =
+          orderedCollider.y + orderedCollider.height + SPACE_BETWEEN_BLOCKS;
+        const deltaX = candidateX - x;
+        const deltaY = candidateY - y;
+        if (deltaX > 0 && deltaX < deltaY) {
+          x = candidateX;
+        } else {
+          y = candidateY;
+        }
         block.moveTo(new Blockly.utils.Coordinate(x, y));
         collider = getCollider(block);
       }
     });
     insertCollider(orderedColliders, collider);
-  });
-
-  blocks.forEach(block => {
-    block.colliderFrame_?.dispose();
   });
 }
