@@ -21,7 +21,7 @@
     "name": "Safari",
     "browserName": "Safari",
     "browserVersion": "16",
-    "platformName": "macOS 11.00"
+    "platformName": "macOS 12.00"
   },
   {
     "name": "Firefox",
