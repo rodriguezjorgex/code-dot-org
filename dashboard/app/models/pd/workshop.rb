@@ -107,7 +107,7 @@ class Pd::Workshop < ApplicationRecord
 
   before_save :assign_regional_partner, if: -> {organizer_id_changed? && !regional_partner_id?}
 
-  after_save :set_registration_link
+  after_create :set_registration_link
 
   def assign_regional_partner
     self.regional_partner = organizer.try {|o| o.regional_partners.first}
