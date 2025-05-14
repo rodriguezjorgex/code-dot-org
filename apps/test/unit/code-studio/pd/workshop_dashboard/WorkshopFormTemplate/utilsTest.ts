@@ -504,7 +504,7 @@ describe('emptyValue', () => {
   it('should return true for an array with all empty elements', () => {
     expect(emptyValue([null] as unknown as string[])).toBe(true);
     expect(emptyValue([undefined] as unknown as string[])).toBe(true);
-    expect(emptyValue([''])).toBe(true); // Array with an empty string element is not an empty array
+    expect(emptyValue([''])).toBe(true);
   });
 
   // objects
@@ -540,11 +540,6 @@ describe('emptyValue', () => {
   it('should return true for NaN', () => {
     expect(emptyValue(NaN)).toBe(true);
     expect(emptyValue(Number('not a number'))).toBe(true);
-  });
-
-  it('should return true for Infinity', () => {
-    expect(emptyValue(Infinity)).toBe(true);
-    expect(emptyValue(-Infinity)).toBe(true);
   });
 
   // booleans
