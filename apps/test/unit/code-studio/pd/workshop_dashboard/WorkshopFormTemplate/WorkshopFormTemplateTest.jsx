@@ -10,14 +10,11 @@ import {
 } from '@cdo/apps/code-studio/pd/workshop_dashboard/WorkshopFormTemplate';
 import {workshopLabel} from '@cdo/apps/code-studio/pd/workshop_dashboard/WorkshopFormTemplate/utils';
 import {WorkshopCourseConfigs} from '@cdo/apps/generated/pd/sharedWorkshopConstants';
-import {useAuthToken} from '@cdo/apps/util/hooks/useAuthToken';
 import {useFetch} from '@cdo/apps/util/useFetch';
 
 jest.mock('@cdo/apps/util/useFetch');
-jest.mock('@cdo/apps/util/hooks/useAuthToken');
 
 const mockedUseFetch = useFetch;
-const mockedUseAuthToken = useAuthToken;
 
 // mock redux store
 const initialState = {
@@ -58,7 +55,6 @@ describe('WorkshopFormTemplate', () => {
       subscribe: () => {},
     };
     mockedUseFetch.mockReturnValue({data: null, loading: false, error: null});
-    mockedUseAuthToken.mockReturnValue({options: {}, authToken: '123'});
   });
 
   it.each(testConfigs)('renders the form for %s', (_, config) => {
@@ -165,7 +161,9 @@ describe('WorkshopFormTemplate', () => {
         }
       });
 
-      const expectedErrorLength = Object.values(config.fields).length;
+      const expectedErrorLength = Object.values(config.fields).filter(
+        f => f.required
+      ).length;
 
       expect(screen.getAllByText(REQUIRED_ERROR)).toHaveLength(
         expectedErrorLength
