@@ -35,6 +35,7 @@ FactoryBot.define do
     on_map {true}
     funded {false}
     legacyForm2025 {true}
+    registration_link {'/pd/application/teacher'}
 
     #
     # Traits
