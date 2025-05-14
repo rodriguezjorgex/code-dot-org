@@ -27,7 +27,6 @@ import Schedule from './sections/Schedule';
 import {
   Errors,
   FieldConfig,
-  Facilitator,
   SessionErrors,
   SessionFormState,
   Workshop,
@@ -52,7 +51,6 @@ export const VALIDATION_ERROR =
 
 export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
   config,
-  regionalPartnerData,
 }) => {
   const navigate = useNavigate();
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -62,14 +60,6 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
 
   const {data: workshop} = useFetch<Workshop>(
     workshopId ? `/api/v1/pd/workshops/${workshopId}` : ''
-  );
-
-  const {data: facilitatorData} = useFetch<Facilitator[]>(
-    workshopConfig?.label
-      ? `/api/v1/pd/course_facilitators?course=${encodeURIComponent(
-          workshopConfig.label
-        )}`
-      : ''
   );
 
   const [workshopFormState, dispatchWorkshop] = useReducer(workshopReducer, {
@@ -85,8 +75,7 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
     organizerId: null,
     prereq: '',
     hasPrereq: false,
-    regionalPartnerId:
-      regionalPartnerData?.length === 1 ? regionalPartnerData[0].id : null,
+    regionalPartnerId: null,
     registrationLink: '',
     subject: '',
     suppressEmail: false,

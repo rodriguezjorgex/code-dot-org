@@ -17,6 +17,31 @@ export const PartnerFacilitator: FC<PartnerFacilitatorProps> = ({
   regionalPartnerData,
   facilitatorData,
 }) => {
+  const {data: facilitatorData} = useFetch<Facilitator[]>(
+    label
+      ? `/api/v1/pd/course_facilitators?course=${encodeURIComponent(label)}`
+      : ''
+  );
+
+  const regionalPartnerData = useSelector(
+    ({
+      regionalPartners: {regionalPartners},
+    }: {
+      regionalPartners: {regionalPartners: RegionalPartner[]};
+    }) => regionalPartners
+  );
+
+  useEffect(() => {
+    if (regionalPartnerData?.length === 1) {
+      dispatchWorkshop({
+        type: 'UPDATE_WORKSHOP',
+        payload: {
+          regionalPartnerId: regionalPartnerData[0].id,
+        },
+      });
+    }
+  }, [regionalPartnerData, dispatchWorkshop]);
+
   const regionalPartnerOptions = useMemo(() => {
     const options = [{value: '', text: 'None'}];
 
