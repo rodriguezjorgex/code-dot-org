@@ -85,14 +85,9 @@ class Pd::Workshop < ApplicationRecord
   validates_length_of :location_name, :location_address, maximum: 255
   validate :sessions_must_start_on_separate_days
   validate :subject_must_be_valid_for_course
-  validate :not_funded_subjects_must_not_be_funded
   validate :valid_registration_link_format, if: :registration_link
   validate :valid_grades
   validate :config_validation
-
-  validates :funding_type,
-    inclusion: {in: FUNDING_TYPES, if: :funded_csf?},
-    absence: {unless: :funded_csf?}
 
   before_create :set_registration_link
 
@@ -114,12 +109,6 @@ class Pd::Workshop < ApplicationRecord
   def subject_must_be_valid_for_course
     unless SUBJECTS[course]&.include?(subject) || (!SUBJECTS[course] && !subject)
       errors.add(:subject, 'must be a valid option for the course')
-    end
-  end
-
-  def not_funded_subjects_must_not_be_funded
-    if NOT_FUNDED_SUBJECTS.include?(subject) && funded?
-      errors.add :properties, 'Admin/Counselor - Welcome workshop must not be funded'
     end
   end
 
@@ -866,10 +855,6 @@ class Pd::Workshop < ApplicationRecord
     course == COURSE_CSF && subject == SUBJECT_CSF_201
   end
 
-  def funded_csf?
-    course == COURSE_CSF && funded
-  end
-
   def future_or_current_teachercon_or_fit?
     [
       Pd::Workshop::SUBJECT_TEACHER_CON,
@@ -878,7 +863,11 @@ class Pd::Workshop < ApplicationRecord
       state != Pd::Workshop::STATE_ENDED
   end
 
+  # deprecated
   def funding_summary
+    # funded is no longer a required field
+    # new workshops will not have a funding_summary
+    return '' if funded.nil?
     (funded ? 'Yes' : 'No') + (funding_type.present? ? ": #{funding_type}" : '')
   end
 
