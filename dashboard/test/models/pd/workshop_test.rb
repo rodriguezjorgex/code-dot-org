@@ -1643,7 +1643,7 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
   end
 
   test 'workshop config_validation' do
-    workshop = build :pd_workshop
+    workshop = build :pd_workshop, grades: nil, name: nil, description: nil
 
     refute workshop.valid?
     assert_includes workshop.errors.full_messages, 'Please select at least one grade level'
