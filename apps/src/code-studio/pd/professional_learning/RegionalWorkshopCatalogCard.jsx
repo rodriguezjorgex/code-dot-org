@@ -165,9 +165,7 @@ const RegionalWorkshopCatalogCard = ({
             text="Enroll now"
             target="_blank"
             color="purple"
-            iconRight={
-              customRegistrationLink ? {iconName: 'up-right-from-square'} : null
-            }
+            iconRight={enrollButtonIconRight}
             href={customRegistrationLink || `/pd/workshops/${id}/enroll`}
             className={style.wsCardButton}
             disabled={isFull}
