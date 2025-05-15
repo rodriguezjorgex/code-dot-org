@@ -46,7 +46,6 @@ import {CdoFieldImageDropdown} from './addons/cdoFieldImageDropdown';
 import CdoFieldLabel from './addons/cdoFieldLabel';
 import CdoFieldNumber from './addons/cdoFieldNumber';
 import CdoFieldParameter from './addons/cdoFieldParameter';
-import CdoFieldTextInput from './addons/cdoFieldTextInput';
 import CdoFieldToggle from './addons/cdoFieldToggle';
 import CdoFieldVariable from './addons/cdoFieldVariable';
 import initializeGenerator from './addons/cdoGenerator';
@@ -278,7 +277,6 @@ function initializeBlocklyWrapper(blocklyInstance: GoogleBlocklyInstance) {
     ['field_variable', 'FieldVariable', CdoFieldVariable],
     ['field_dropdown', 'FieldDropdown', CdoFieldDropdown],
     ['field_number', 'FieldNumber', CdoFieldNumber],
-    ['field_textinput', 'FieldTextInput', CdoFieldTextInput],
     // CdoFieldBitmap and CdoFieldColour extend from plugins.
     // We know they're fields, so it's safe to cast as unknown.
     [
@@ -315,7 +313,6 @@ function initializeBlocklyWrapper(blocklyInstance: GoogleBlocklyInstance) {
   blocklyWrapper.FieldAnimationDropdown = CdoFieldAnimationDropdown;
   blocklyWrapper.FieldAngleDropdown = CdoFieldAngleDropdown;
   blocklyWrapper.FieldAngleTextInput = CdoFieldAngleTextInput;
-  blocklyWrapper.FieldTextInput = CdoFieldTextInput;
 
   blocklyWrapper.blockly_.registry.register(
     blocklyWrapper.blockly_.registry.Type.FLYOUTS_VERTICAL_TOOLBOX,
