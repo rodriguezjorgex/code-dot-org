@@ -1042,6 +1042,7 @@ class Pd::Workshop < ApplicationRecord
       location_name: location_name,
       fee: fee,
       has_prereq: prereq.present?,
+      description: description,
       custom_registration_link: registration_link,
       regional_partner_name: regional_partner&.name,
     }

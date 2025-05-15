@@ -57,6 +57,9 @@ const RegionalWorkshopCatalogCard = ({
   const enrollButtonIconRight = customRegistrationLink
     ? {iconName: 'up-right-from-square'}
     : null;
+  const enrollButtonHref = customRegistrationLink
+    ? customRegistrationLink
+    : `/pd/workshops/${id}/enroll`;
 
   return (
     <>
@@ -70,7 +73,7 @@ const RegionalWorkshopCatalogCard = ({
             useAsLink: true,
             target: '_blank',
             iconRight: enrollButtonIconRight,
-            href: customRegistrationLink,
+            href: enrollButtonHref,
             disabled: isFull,
           }}
           secondaryButtonProps={{
@@ -166,11 +169,7 @@ const RegionalWorkshopCatalogCard = ({
             target="_blank"
             color="purple"
             iconRight={enrollButtonIconRight}
-            href={
-              customRegistrationLink
-                ? customRegistrationLink
-                : `/pd/workshops/${id}/enroll`
-            }
+            href={enrollButtonHref}
             className={style.wsCardButton}
             disabled={isFull}
           />
