@@ -234,7 +234,7 @@ export class RegionalPartnerMiniContact extends React.Component {
           />
           {this.state.errors.includes('notes') && (
             <div
-              id="regional-partner-mini-contact-error-zip"
+              id="regional-partner-mini-contact-error-notes"
               className={style.error}
             >
               Please enter a message of at least 5 words for your local Regional
