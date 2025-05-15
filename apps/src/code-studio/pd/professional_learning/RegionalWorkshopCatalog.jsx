@@ -170,7 +170,7 @@ export default function RegionalWorkshopCatalog({zipFromSchoolInfo}) {
                   location_name,
                   fee,
                   has_prereq,
-                  registration_link,
+                  custom_registration_link,
                 }) => (
                   <RegionalWorkshopCatalogCard
                     id={id}
@@ -186,7 +186,7 @@ export default function RegionalWorkshopCatalog({zipFromSchoolInfo}) {
                     locationName={location_name}
                     fee={fee || ''}
                     hasPrereq={has_prereq}
-                    registrationLink={registration_link}
+                    customRegistrationLink={custom_registration_link}
                   />
                 )
               )}

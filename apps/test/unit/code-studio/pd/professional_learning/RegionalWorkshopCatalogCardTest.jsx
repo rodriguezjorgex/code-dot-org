@@ -35,7 +35,7 @@ const DEFAULT_PROPS = {
   locationName: 'Test University',
   fee: '$400',
   hasPrereq: true,
-  registrationLink: null,
+  customRegistrationLink: null,
 };
 
 const renderDefault = (overrideProps = {}) => {
@@ -115,7 +115,7 @@ describe('RegionalWorkshopCatalog', () => {
     const customRegistrationLink = 'customregistrationlink.com';
     const externalLinkIconHTML =
       '<i data-testid="font-awesome-v6-icon" class="fa-up-right-from-square fa-solid"></i>';
-    renderDefault({registrationLink: customRegistrationLink});
+    renderDefault({customRegistrationLink: customRegistrationLink});
 
     expect(
       screen

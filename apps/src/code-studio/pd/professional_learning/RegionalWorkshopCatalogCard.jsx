@@ -47,7 +47,7 @@ const RegionalWorkshopCatalogCard = ({
   locationName,
   fee,
   hasPrereq,
-  registrationLink,
+  customRegistrationLink,
 }) => {
   const seatsRemaining = capacity - numEnrollments;
   const isFull = seatsRemaining <= 0;
@@ -131,9 +131,9 @@ const RegionalWorkshopCatalogCard = ({
           target="_blank"
           color="purple"
           iconRight={
-            registrationLink ? {iconName: 'up-right-from-square'} : null
+            customRegistrationLink ? {iconName: 'up-right-from-square'} : null
           }
-          href={registrationLink || `/pd/workshops/${id}/enroll`}
+          href={customRegistrationLink || `/pd/workshops/${id}/enroll`}
           className={style.wsCardButton}
           disabled={isFull}
         />
@@ -162,7 +162,7 @@ RegionalWorkshopCatalogCard.propTypes = {
   locationName: PropTypes.string,
   fee: PropTypes.string,
   hasPrereq: PropTypes.bool.isRequired,
-  registrationLink: PropTypes.string,
+  customRegistrationLink: PropTypes.string,
 };
 
 export default RegionalWorkshopCatalogCard;
