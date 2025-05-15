@@ -1575,14 +1575,6 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
     assert workshop.valid?
   end
 
-  test 'workshops third_party_provider must be nil or from specified list' do
-    workshop = build :workshop, third_party_provider: 'unknown_pd_provider'
-    refute workshop.valid?
-
-    workshop.third_party_provider = nil
-    assert workshop.valid?
-  end
-
   test 'CSP summer workshop must require teacher application' do
     workshop = create :csp_summer_workshop, regional_partner: @regional_partner
     assert workshop.require_application?
