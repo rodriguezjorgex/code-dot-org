@@ -42,10 +42,6 @@ export default class FieldChord extends GoogleBlockly.Field {
     this.backgroundElement = null;
   }
 
-  getClass(): typeof FieldChord {
-    return FieldChord;
-  }
-
   saveState() {
     return this.getValue();
   }

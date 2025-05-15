@@ -50,10 +50,6 @@ export default class FieldTune extends GoogleBlockly.Field {
     this.backgroundElement = null;
   }
 
-  getClass(): typeof FieldTune {
-    return FieldTune;
-  }
-
   saveState() {
     return this.getValue();
   }

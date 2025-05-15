@@ -10383,7 +10383,7 @@ __metadata:
     babel-plugin-add-module-exports: "npm:^1.0.4"
     babel-plugin-dynamic-import-node: "npm:^2.3.3"
     babel-plugin-syntax-async-functions: "npm:^6.13.0"
-    blockly: "npm:12.0.0-beta.6"
+    blockly: "npm:12.0.0-beta.7"
     bootstrap-sass: "npm:^3.4.1"
     browser-process-hrtime: "npm:0.1.2"
     buffer: "npm:^6.0.3"
@@ -10601,12 +10601,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"blockly@npm:12.0.0-beta.6":
-  version: 12.0.0-beta.6
-  resolution: "blockly@npm:12.0.0-beta.6"
+"blockly@npm:12.0.0-beta.7":
+  version: 12.0.0-beta.7
+  resolution: "blockly@npm:12.0.0-beta.7"
   dependencies:
     jsdom: "npm:26.1.0"
-  checksum: 10/c1e51069087440283bc4eb322bd20cfede2984ed9c70f36c0cd6c9b7a382498d1a1cab5532115f7e838dc34b3d4cc06b8f3e810f61e90d7fb9c092ed58faaaaa
+  checksum: 10/8488f0aa90658c1b86c0f93e2c8130bb40b9db3ed0323b56de57705c731d2d726c15853b0d584289061e8a24e3e1d803a5e7e497cc111494ac886e8a9a9ced21
   languageName: node
   linkType: hard
 
