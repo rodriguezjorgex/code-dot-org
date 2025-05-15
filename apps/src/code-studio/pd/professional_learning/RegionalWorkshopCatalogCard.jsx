@@ -166,7 +166,11 @@ const RegionalWorkshopCatalogCard = ({
             target="_blank"
             color="purple"
             iconRight={enrollButtonIconRight}
-            href={customRegistrationLink || `/pd/workshops/${id}/enroll`}
+            href={
+              customRegistrationLink
+                ? customRegistrationLink
+                : `/pd/workshops/${id}/enroll`
+            }
             className={style.wsCardButton}
             disabled={isFull}
           />
