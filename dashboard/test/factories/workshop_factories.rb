@@ -28,12 +28,12 @@ FactoryBot.define do
     end
 
     association :organizer, factory: :workshop_organizer
-    location_name {'Hogwarts School of Witchcraft and Wizardry'}
     course {Pd::Workshop::COURSES.first}
     subject {Pd::Workshop::SUBJECTS[course].try(&:first)}
     capacity {10}
-    on_map {true}
-    funded {false}
+    name {'Cool workshop'}
+    description {'A really cool workshop'}
+    grades {['K', '1']}
 
     #
     # Traits
