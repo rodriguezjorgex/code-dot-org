@@ -199,7 +199,6 @@ export const READ_ONLY_PROPERTIES = [
   'FieldMultilineInput',
   'FieldRectangularDropdown',
   'fieldRegistry',
-  'FieldTextInput',
   'fish_locale',
   'Flyout',
   'FunctionalBlockUtils',
