@@ -74,11 +74,7 @@ class Pd::Workshop < ApplicationRecord
     # If true, our system will not send enrollees reminders related to this workshop.
     # If the subject is not in the MUST_SUPPRESS_EMAIL_SUBJECTS constant, this attribute
     # can be set to be true or false from the UI
-    'suppress_email',
-    # TODO: ACQ-3081
-    # temporary flag that skips some of the config based workshop validation if the
-    # flag indicating workshop is created or updated via the legacy form
-    'legacyForm2025'
+    'suppress_email'
   ]
 
   before_validation :sanitize_time_zone
@@ -89,15 +85,10 @@ class Pd::Workshop < ApplicationRecord
   validates_length_of :location_name, :location_address, maximum: 255
   validate :sessions_must_start_on_separate_days
   validate :subject_must_be_valid_for_course
-  # TODO: ACQ-3081 remove on_map & funded validation when we are ready to remove the legacy form
-  validates_inclusion_of :on_map, in: [true, false], if: :legacyForm2025?
-  validates_inclusion_of :funded, in: [true, false], if: :legacyForm2025?
-  validates_inclusion_of :third_party_provider, in: %w(friday_institute), allow_nil: true
   validate :not_funded_subjects_must_not_be_funded
   validate :valid_registration_link_format, if: :registration_link
-
-  validate :config_validation, unless: :legacyForm2025?
   validate :valid_grades
+  validate :config_validation
 
   validates :funding_type,
     inclusion: {in: FUNDING_TYPES, if: :funded_csf?},

@@ -1650,27 +1650,9 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
     assert_equal nil, workshop.time_zone
   end
 
-  test 'config_validation is skipped when legacyForm2025 is true' do
-    workshop = build :pd_workshop, legacyForm2025: true
+  test 'workshop config_validation' do
+    workshop = build :pd_workshop
 
-    # Ensure the workshop is valid even if it would fail config_validation
-    assert workshop.valid?
-  end
-
-  test 'config_validation is called when legacyForm2025 is false' do
-    workshop = build :pd_workshop, legacyForm2025: false
-
-    # newly required fields missing in factory definition of workshop
-    refute workshop.valid?
-    assert_includes workshop.errors.full_messages, 'Please select at least one grade level'
-    assert_includes workshop.errors.full_messages, 'Name is required'
-    assert_includes workshop.errors.full_messages, 'Description is required'
-  end
-
-  test 'config_validation is called when legacyForm2025 is nil' do
-    workshop = build :pd_workshop, legacyForm2025: nil
-
-    # newly required fields missing in factory definition of workshop
     refute workshop.valid?
     assert_includes workshop.errors.full_messages, 'Please select at least one grade level'
     assert_includes workshop.errors.full_messages, 'Name is required'

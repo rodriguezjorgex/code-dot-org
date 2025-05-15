@@ -1397,7 +1397,6 @@ class Api::V1::Pd::WorkshopsControllerTest < ActionController::TestCase
       capacity: 10,
       virtual: false,
       suppress_email: false,
-      legacyForm2025: true,
       sessions_attributes: [
         {
           start: session_start,

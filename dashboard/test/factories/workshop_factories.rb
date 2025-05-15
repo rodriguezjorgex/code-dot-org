@@ -34,7 +34,6 @@ FactoryBot.define do
     capacity {10}
     on_map {true}
     funded {false}
-    legacyForm2025 {true}
 
     #
     # Traits
