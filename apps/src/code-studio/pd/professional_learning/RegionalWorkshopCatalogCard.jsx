@@ -133,7 +133,11 @@ const RegionalWorkshopCatalogCard = ({
           iconRight={
             customRegistrationLink ? {iconName: 'up-right-from-square'} : null
           }
-          href={customRegistrationLink || `/pd/workshops/${id}/enroll`}
+          href={
+            customRegistrationLink
+              ? customRegistrationLink
+              : `/pd/workshops/${id}/enroll`
+          }
           className={style.wsCardButton}
           disabled={isFull}
         />
