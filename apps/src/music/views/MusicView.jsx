@@ -632,6 +632,7 @@ class UnconnectedMusicView extends React.Component {
         .getProcedures()
         .filter(p => !Blockly.Procedures.getDefinition(p.getName(), workspace))
         .forEach(p => procedureMap.delete(p.id));
+      workspace.cleanUp(true);
     }
     // Update undo status when blocks change.
     this.props.setUndoStatus({

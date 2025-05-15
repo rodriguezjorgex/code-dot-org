@@ -639,8 +639,8 @@ function initializeBlocklyWrapper(blocklyInstance: GoogleBlocklyInstance) {
   extendedWorkspaceSvg.setEnableToolbox = function () {};
   extendedWorkspaceSvg.traceOn = function () {};
 
-  extendedWorkspaceSvg.cleanUp = function () {
-    cleanUp(this);
+  extendedWorkspaceSvg.cleanUp = function (includeImmovableBlocks?: boolean) {
+    cleanUp(this, includeImmovableBlocks);
   };
 
   const extendedVariableMap = blocklyWrapper.VariableMap
