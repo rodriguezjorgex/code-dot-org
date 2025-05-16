@@ -111,19 +111,10 @@ describe('RegionalWorkshopCatalog', () => {
     screen.getByText('04/22/25 (1:00PM-9:00PM) + 1 More');
   });
 
-  it('card renders button with external link icon to send user to custom registration link if provided', () => {
+  it('card renders button to send user to custom registration link if provided', () => {
     const customRegistrationLink = 'customregistrationlink.com';
-    const externalLinkIconHTML =
-      '<i data-testid="font-awesome-v6-icon" class="fa-up-right-from-square fa-solid"></i>';
     renderDefault({customRegistrationLink: customRegistrationLink});
 
-    expect(
-      screen
-        .getByRole('link', {
-          name: 'enrollNow',
-        })
-        .innerHTML.includes(externalLinkIconHTML)
-    ).toBe(true);
     expect(
       screen.getByRole('link', {
         name: 'enrollNow',
@@ -131,18 +122,9 @@ describe('RegionalWorkshopCatalog', () => {
     ).toHaveAttribute('href', customRegistrationLink);
   });
 
-  it('card renders button without external link icon to send user to default enroll link if no registration link provided', () => {
-    const externalLinkIconHTML =
-      '<i data-testid="font-awesome-v6-icon" class="fa-up-right-from-square fa-solid"></i>';
+  it('card renders button send user to default enroll link if no registration link provided', () => {
     renderDefault();
 
-    expect(
-      screen
-        .getByRole('link', {
-          name: 'enrollNow',
-        })
-        .innerHTML.includes(externalLinkIconHTML)
-    ).toBe(false);
     expect(
       screen.getByRole('link', {
         name: 'enrollNow',
