@@ -447,30 +447,15 @@ class Api::V1::Pd::WorkshopsControllerTest < ActionController::TestCase
 
   test 'cannot update a Build Your Own Workshop without pl topics' do
     sign_in create :admin
-    session_start = tomorrow_at 9
-    session_end = session_start + 8.hours
-    byo_params =
+    workshop = create :pd_workshop, participant_group_type: 'Regional', course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, subject: nil, course_offerings: [] << (create :course_offering)
+    byo_params_with_nil_course_offerings =
       {
-        location_address: 'Seattle, WA',
-        on_map: true,
-        funded: false,
         course: Pd::Workshop::COURSE_BUILD_YOUR_OWN,
-        course_offerings: [] << (create :course_offering),
+        course_offerings: nil,
         subject: nil,
-        capacity: 10,
-        virtual: false,
-        suppress_email: false,
-        sessions_attributes: [
-          {
-            start: session_start,
-            end: session_end
-          }
-        ]
       }
 
-    workshop = create :pd_workshop, funded: false, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, subject: nil, course_offerings: [] << (create :course_offering)
-
-    put :update, params: {id: workshop.id, pd_workshop: byo_params.merge(course_offerings: nil)}
+    put :update, params: {id: workshop.id, pd_workshop: byo_params_with_nil_course_offerings}
     assert_response :bad_request
   end
 
