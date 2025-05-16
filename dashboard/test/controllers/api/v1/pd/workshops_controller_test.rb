@@ -447,10 +447,9 @@ class Api::V1::Pd::WorkshopsControllerTest < ActionController::TestCase
 
   test 'cannot update a Build Your Own Workshop without pl topics' do
     sign_in create :admin
-    workshop = create :pd_workshop, participant_group_type: 'Regional', course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, subject: nil, course_offerings: [] << (create :course_offering)
+    workshop = create :byo_workshop
     byo_params_with_nil_course_offerings =
       {
-        course: Pd::Workshop::COURSE_BUILD_YOUR_OWN,
         course_offerings: nil,
         subject: nil,
       }

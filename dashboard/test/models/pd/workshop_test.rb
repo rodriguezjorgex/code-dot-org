@@ -317,14 +317,9 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
   end
 
   test 'end workshop sends exit surveys to facilitators for Build Your Own workshops' do
-    byo_workshop = create :pd_workshop,
+    byo_workshop = create :byo_workshop,
       :ended,
-      funded: false,
-      course: Pd::Workshop::COURSE_BUILD_YOUR_OWN,
-      subject: nil,
-      course_offerings: [] << (create :course_offering),
-      num_facilitators: 1,
-      participant_group_type: 'Regional'
+      num_facilitators: 1
     byo_workshop.start!
 
     Pd::Workshop.any_instance.expects(:send_exit_surveys)
@@ -529,13 +524,9 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
   end
 
   test 'friendly name' do
-    workshop = create :pd_workshop,
-      course: Pd::Workshop::COURSE_BUILD_YOUR_OWN,
-      subject: nil,
+    workshop = create :byo_workshop,
       name: "Test Workshop",
-      course_offerings: [] << (create :course_offering),
       num_facilitators: 1,
-      participant_group_type: 'Regional',
       sessions: [create(:pd_session, start: Date.new(2016, 9, 1), location_name: 'Code.org', location_address: 'Seattle, WA', session_format: 'in_person')]
 
     # with name ending in 'Workshop'

@@ -122,8 +122,6 @@ FactoryBot.define do
 
       course {Pd::Workshop::COURSE_CSF}
       capacity {30}          # Average capacity
-      on_map {true}          # About 60% are on the map
-      funded               # About 90% are funded
       num_sessions {1}       # Most have 1 session
       num_facilitators {1}   # Most have 1 facilitator
       each_session_hours {7} # The most common session length
@@ -152,8 +150,6 @@ FactoryBot.define do
       csp
 
       capacity {30}          # Average capacity
-      on_map {false}         # Never on the map
-      funded               # More than half are funded
       num_facilitators {2}   # Most have 2 facilitators
 
       # Some specific academic year workshops are usually two days instead of one.
@@ -267,8 +263,6 @@ FactoryBot.define do
       course {Pd::Workshop::COURSE_FACILITATOR}
       subject {nil}
       capacity {100}         # Typical capacity
-      on_map {false}         # Never on map
-      funded {false}         # Never funded
       num_sessions {2}       # Most have 2 sessions
       num_facilitators {0}   # Most have no facilitators
       each_session_hours {8} # The most common session length
@@ -279,8 +273,6 @@ FactoryBot.define do
       subject {Pd::Workshop::SUBJECT_FIT}
       course {Pd::Workshop::COURSE_CSP} # CSD is also valid
       capacity {100}         # Typical capacity
-      on_map {false}         # Never on map
-      funded               # Sometimes funded (50%)
       num_sessions {2}       # Most have 2 sessions
       num_facilitators {2}   # Most have 2 facilitators
       each_session_hours {8} # The most common session length
@@ -290,8 +282,6 @@ FactoryBot.define do
       course {Pd::Workshop::COURSE_ADMIN}
       subject {nil}
       capacity {35}          # Average capacity
-      on_map {false}         # Never on map
-      funded               # More than half are funded
       num_sessions {1}       # Most have 1 session
       num_facilitators {0}   # Most have no facilitators
       each_session_hours {2} # The most common session length
@@ -301,8 +291,6 @@ FactoryBot.define do
       course {Pd::Workshop::COURSE_ADMIN_COUNSELOR}
       subject {Pd::Workshop::SUBJECT_ADMIN_COUNSELOR_WELCOME}
       capacity {35}          # Average capacity
-      on_map {false}         # Never on map
-      funded {false}         # Never funded
       num_sessions {1}       # Most have 1 session
       num_facilitators {1}   # Want to work with facilitators
       each_session_hours {2} # Not sure on session length
@@ -312,11 +300,34 @@ FactoryBot.define do
       course {Pd::Workshop::COURSE_COUNSELOR}
       subject {nil}
       capacity {40}          # Average capacity
-      on_map {false}         # Never on map
-      funded               # All funded
       num_sessions {1}       # Most have 1 session
       num_facilitators {0}   # Most have no facilitators
       each_session_hours {6} # The most common session length
+    end
+
+    factory :byo_workshop do
+      course {Pd::Workshop::COURSE_BUILD_YOUR_OWN}
+      subject {nil}
+      participant_group_type {'Regional'}
+      capacity {40}          # Average capacity
+      num_sessions {1}       # Most have 1 session
+      num_facilitators {0}   # Most have no facilitators
+      each_session_hours {6} # The most common session length
+
+      transient do
+        course_offerings {[]} # Allow overriding course offerings
+      end
+
+      after(:build) do |workshop, evaluator|
+        if evaluator.course_offerings.empty?
+          # Create a default course offering if none are provided
+          workshop.course_offerings << build(:course_offering)
+        else
+          evaluator.course_offerings.each do |offering|
+            workshop.course_offerings << offering
+          end
+        end
+      end
     end
   end
 end

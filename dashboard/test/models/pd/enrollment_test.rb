@@ -139,12 +139,7 @@ class Pd::EnrollmentTest < ActiveSupport::TestCase
     local_summer_workshop = create :csp_summer_workshop, :ended
     local_summer_enrollment = create :pd_enrollment, workshop: local_summer_workshop
 
-    byo_workshop = create :pd_workshop,
-      :ended,
-      funded: false,
-      course: Pd::Workshop::COURSE_BUILD_YOUR_OWN,
-      subject: nil,
-      course_offerings: [] << (create :course_offering)
+    byo_workshop = create :byo_workshop, :ended
     byo_enrollment = create :pd_enrollment, workshop: byo_workshop
 
     studio_url = ->(path) {CDO.studio_url(path, CDO.default_scheme)}
@@ -616,7 +611,7 @@ class Pd::EnrollmentTest < ActiveSupport::TestCase
     teacher = create :teacher
     assert_empty teacher.permissions
 
-    workshop = create :workshop, course: Pd::SharedWorkshopConstants::COURSE_BUILD_YOUR_OWN
+    workshop = create :byo_workshop
     create :pd_enrollment, workshop: workshop, user: teacher
 
     assert teacher.permission? UserPermission::AUTHORIZED_TEACHER
