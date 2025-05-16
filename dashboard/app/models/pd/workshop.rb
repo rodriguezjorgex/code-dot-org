@@ -82,7 +82,6 @@ class Pd::Workshop < ApplicationRecord
   validates_inclusion_of :course, in: COURSES
   validates :capacity, numericality: {only_integer: true, greater_than: 0, less_than: 10000}
   validates_length_of :notes, maximum: 65535
-  validates_length_of :location_name, :location_address, maximum: 255
   validate :sessions_must_start_on_separate_days
   validate :subject_must_be_valid_for_course
   validate :valid_registration_link_format, if: :registration_link
@@ -90,9 +89,6 @@ class Pd::Workshop < ApplicationRecord
   validate :config_validation
 
   before_create :set_registration_link
-
-  before_save :process_location, if: -> {location_address_changed?}
-  auto_strip_attributes :location_name, :location_address
 
   before_save :assign_regional_partner, if: -> {organizer_id_changed? && !regional_partner_id?}
   def assign_regional_partner
