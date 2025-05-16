@@ -68,11 +68,11 @@ Then, you can programmatically ask the localization engine for a translation for
 the relevant string using:
 
 ```typescript
-import Localization from '@cdo/apps/localization';
+import localization from '@cdo/apps/localization';
 
-Localization.on('change', (info) => {
+localization.on('change', (info) => {
   console.log("updating the language to", info.code, "rtl?" info.rtl);
-  const myLocalizedString: string = Localization.translate("my english string");
+  const myLocalizedString: string = localization.translate("my english string");
 });
 ```
 
@@ -91,12 +91,12 @@ them and swap them out as your component updates!
 
 ```typescript
 import React from 'react'
-import {useLocalization} from '@cdo/apps/localization';
+import localization, {useLocalization} from '@cdo/apps/localization';
 
 const MyComponent: React.FunctionComponent = () => {
   const locale = useLocalization();
 
-  const myLocalizedString = Localization.translate("my english string");
+  const myLocalizedString = localization.translate("my english string");
 
   return (
     <span>The current language code is: {locale} and the localized message is {myLocalizedString}</span>
