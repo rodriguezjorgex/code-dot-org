@@ -1196,8 +1196,7 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
   end
 
   test 'date_and_location_name with no location but with sessions' do
-    workshop = build :workshop, num_sessions: 5, sessions_from: Date.new(2017, 3, 30),
-      processed_location: nil
+    workshop = build :workshop, num_sessions: 5, sessions_from: Date.new(2017, 3, 30)
 
     assert_equal 'March 30 - April 3, 2017, Location TBA', workshop.date_and_location_name
   end
