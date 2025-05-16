@@ -89,9 +89,8 @@ class StudentWorkSampleController < ApplicationController
   end
 
   def fetch_student_code_samples_without_evaluations(level, unit_id, num_samples)
-    # We want to pull samples from students who have been assigned to work on the level.
-    sections = Section.where(script_id: unit_id)
-    student_ids = Follower.where(section: sections).pluck(:student_user_id)
+    # Find users who have worked on this level.
+    student_ids = UserLevel.where(level_id: level.id, script_id: unit_id).pluck(:user_id)
     code_samples = []
     have_enough_samples = false
     student_ids.shuffle.each do |student_id|
@@ -158,8 +157,7 @@ class StudentWorkSampleController < ApplicationController
     # For project-template-backed levels, we need to use the channel_token for the associated project template level.
     level_id_for_channel_token = level.project_template_level ? level.project_template_level.id : level.id
     channel_token = ChannelToken.where(storage_id: storage_id, level_id: level_id_for_channel_token, script_id: unit_id).last
-    user_level = UserLevel.where(user_id: user_id, level_id: level.id, script_id: unit_id).last
-    if user_level && channel_token
+    if channel_token
       storage_app_id = channel_token.storage_app_id
       channel_id = storage_encrypt_channel_id(storage_id, storage_app_id)
       s3_filename = "#{base_dir}/#{storage_id}/#{storage_app_id}/main.json"
