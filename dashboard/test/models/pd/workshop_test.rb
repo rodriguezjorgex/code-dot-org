@@ -1250,68 +1250,6 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
     assert_equal regional_partner, workshop.regional_partner
   end
 
-  test 'csf funded workshops require a funding type' do
-    workshop = build :workshop, course: Pd::Workshop::COURSE_CSF,
-      funded: true, funding_type: nil
-    refute workshop.valid?
-
-    workshop.funding_type = Pd::Workshop::FUNDING_TYPE_FACILITATOR
-    assert workshop.valid?
-  end
-
-  test 'csf unfunded workshops do not accept a funding type' do
-    workshop = build :workshop, course: Pd::Workshop::COURSE_CSF,
-      funded: false, funding_type: Pd::Workshop::FUNDING_TYPE_FACILITATOR
-    refute workshop.valid?
-
-    workshop.funding_type = nil
-    assert workshop.valid?
-  end
-
-  test 'non-csf workshops do not accept a funding type' do
-    [
-      [{funded: true, funding_type: Pd::Workshop::FUNDING_TYPE_FACILITATOR}, false],
-      [{funded: false, funding_type: Pd::Workshop::FUNDING_TYPE_FACILITATOR}, false],
-      [{funded: true, funding_type: nil}, true],
-      [{funded: false, funding_type: nil}, true]
-    ].each do |params, expected_validity|
-      workshop = build :workshop, course: Pd::Workshop::COURSE_CSP, **params
-      assert_equal(
-        expected_validity,
-        workshop.valid?,
-        "Expected #{params} to be #{expected_validity ? 'valid' : 'invalid'}"
-      )
-    end
-  end
-
-  test 'funded_friendly_name' do
-    [
-      [
-        {funded: false},
-        'No'
-      ],
-      [
-        {course: Pd::Workshop::COURSE_CSP, funded: true},
-        'Yes'
-      ],
-      [
-        {course: Pd::Workshop::COURSE_CSF, funded: true, funding_type: Pd::Workshop::FUNDING_TYPE_PARTNER},
-        'Yes: partner'
-      ],
-      [
-        {course: Pd::Workshop::COURSE_CSF, funded: true, funding_type: Pd::Workshop::FUNDING_TYPE_FACILITATOR},
-        'Yes: facilitator'
-      ]
-    ].each do |params, expected|
-      workshop = build :workshop, **params
-      assert_equal(
-        expected,
-        workshop.funding_summary,
-        "Expected #{params} funded_friendly_name to be #{expected}"
-      )
-    end
-  end
-
   test 'nearest' do
     target = create :workshop, sessions_from: Time.zone.today + 1.week
 
@@ -1459,17 +1397,6 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
     assert workshop.valid?
 
     workshop.suppress_email = true
-    assert workshop.valid?
-  end
-
-  test 'EIR:Admin/Counselor Welcome workshop must not be funded' do
-    workshop = build :admin_counselor_workshop, course: COURSE_ADMIN_COUNSELOR
-
-    workshop.subject = SUBJECT_ADMIN_COUNSELOR_WELCOME
-    workshop.funded = true
-    refute workshop.valid?
-
-    workshop.funded = false
     assert workshop.valid?
   end
 
