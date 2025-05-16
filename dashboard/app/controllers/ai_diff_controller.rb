@@ -81,6 +81,42 @@ class AiDiffController < ApplicationController
     contexts
   end
 
+  # POST /ai_diff/curriculum_courses
+  def curriculum_courses
+    begin
+      params.require([:context])
+    rescue ActionController::ParameterMissing
+      return render status: :bad_request, json: {}
+    end
+
+    courses = []
+    if params[:context] == SharedConstants::AI_DIFF_CONTEXT[:GENERAL]
+      get_active_sections.each do |c|
+        courses.push(*c[:course_names])
+      end
+    else
+      begin
+        params.require([:context, :contextId])
+      rescue ActionController::ParameterMissing
+        return render status: :bad_request, json: {}
+      end
+      case params[:context]
+      when SharedConstants::AI_DIFF_CONTEXT[:LESSON]
+        lesson = Lesson.find_by(id: params[:contextId])
+        unit = Unit.find_by(id: lesson&.script_id)
+        unit_group = unit&.unit_groups&.first
+      when SharedConstants::AI_DIFF_CONTEXT[:UNIT]
+        unit = Unit.find_by(id: params[:contextId])
+        unit_group = unit&.unit_groups&.first
+      when SharedConstants::AI_DIFF_CONTEXT[:COURSE]
+        unit_group = UnitGroup.find_by(id: params[:contextId])
+      end
+      courses.push(*(unit_group.present? ? [unit_group.name, unit_group.family_name] : ([unit&.name, unit&.family_name] if unit.present?)))
+    end
+
+    render(status: :ok, json: {courses: courses})
+  end
+
   # Certain types of PII detected by Amazon Comprehend are actually allowed
   # for use in chat messages. We allow teachers to ask about lessons themed
   # on a favorite named celebrity, or how to help students at certain ages. etc.
