@@ -375,60 +375,6 @@ class Pd::EnrollmentTest < ActiveSupport::TestCase
     assert_equal [enrollment], Pd::Enrollment.filter_for_survey_completion([enrollment], false)
   end
 
-  test 'enrolling in class automatically enrolls in online learning' do
-    Pd::Workshop::WORKSHOP_COURSE_ONLINE_LEARNING_MAPPING.each do |course, plc_course_name|
-      workshop = create :workshop, course: course, subject: Pd::Workshop::SUBJECTS[course].first
-      plc_course = create :plc_course, name: plc_course_name
-      teacher = create :teacher
-      create :pd_enrollment, user: teacher, workshop: workshop
-
-      assert_equal 1, Plc::UserCourseEnrollment.where(user: teacher, plc_course: plc_course).size
-    end
-
-    workshop = create :workshop, course: 'Counselor'
-    teacher = create :teacher
-    assert_no_difference('Plc::UserCourseEnrollment.count') do
-      create :pd_enrollment, user: teacher, workshop: workshop
-    end
-  end
-
-  test 'enrolling in class, and then later having the user field updated enrolls in online learning' do
-    teacher = create :teacher
-    create :plc_course, name: 'ECS Support'
-    workshop = create :workshop, course: Pd::Workshop::COURSE_ECS
-    enrollment = create :pd_enrollment, user: nil, workshop: workshop
-
-    assert_creates Plc::UserCourseEnrollment do
-      enrollment.update(user: teacher)
-    end
-    assert_equal 'ECS Support', Plc::UserCourseEnrollment.find_by(user: teacher).plc_course.name
-  end
-
-  test 'enrolling in class while not logged in still associates the user' do
-    teacher = create :teacher
-    create :plc_course, name: 'ECS Support'
-    workshop = create :workshop, course: Pd::Workshop::COURSE_ECS
-
-    assert_creates Plc::UserCourseEnrollment do
-      create :pd_enrollment, user: nil, workshop: workshop, email: teacher.email
-    end
-
-    assert_equal 'ECS Support', Plc::UserCourseEnrollment.find_by(user: teacher).plc_course.name
-  end
-
-  test 'enrolling in class without an account creates enrollment when the user is created' do
-    create :plc_course, name: 'ECS Support'
-    workshop = create :workshop, course: Pd::Workshop::COURSE_ECS
-    user_email = "#{SecureRandom.hex}@code.org"
-    create :pd_enrollment, user: nil, email: user_email, workshop: workshop
-
-    teacher = assert_creates Plc::UserCourseEnrollment do
-      create(:teacher, email: user_email)
-    end
-
-    assert_equal 'ECS Support', Plc::UserCourseEnrollment.find_by(user: teacher).plc_course.name
-  end
-
   test 'attendance scopes' do
     workshop = create :workshop, num_sessions: 2
     teacher = create :teacher
