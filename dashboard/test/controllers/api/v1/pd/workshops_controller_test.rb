@@ -1389,14 +1389,14 @@ class Api::V1::Pd::WorkshopsControllerTest < ActionController::TestCase
     session_end = session_start + 8.hours
     {
       location_address: 'Seattle, WA',
-      on_map: true,
-      funded: true,
-      funding_type: Pd::Workshop::FUNDING_TYPE_PARTNER,
       course: Pd::Workshop::COURSE_CSF,
       subject: Pd::Workshop::SUBJECT_CSF_101,
       capacity: 10,
       virtual: false,
       suppress_email: false,
+      name: 'Cool workshop',
+      description: 'This is a great workshop',
+      grades: ['K', '1'],
       sessions_attributes: [
         {
           start: session_start,
