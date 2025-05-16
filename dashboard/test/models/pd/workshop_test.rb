@@ -356,14 +356,15 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
     Pd::Workshop.process_ends
   end
 
-  test 'account_required_for_attendance?' do
+  # counselor_workshop and admin_workshop have been archived so it no longer passes validation
+  # create a regular workshop and update_columns without validating to test function
+  test 'account_required_for_attendance' do
     normal_workshop = create :workshop, :ended
     counselor_workshop = create :workshop, :ended
     counselor_workshop.update_columns(course: Pd::Workshop::COURSE_COUNSELOR, subject: nil)
     admin_workshop = create :workshop, :ended
     admin_workshop.update_columns(course: Pd::Workshop::COURSE_ADMIN, subject: nil)
-    admin_counselor_workshop = create :workshop, :ended
-    admin_counselor_workshop.update_columns(course: Pd::Workshop::COURSE_ADMIN_COUNSELOR, subject: Pd::Workshop::SUBJECT_ADMIN_COUNSELOR_WELCOME)
+    admin_counselor_workshop = create :admin_counselor_workshop, :ended
 
     assert normal_workshop.account_required_for_attendance?
     refute counselor_workshop.account_required_for_attendance?
