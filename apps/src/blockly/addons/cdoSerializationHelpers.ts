@@ -222,6 +222,7 @@ function adjustBlockPositions(
  * @property {number} width - The width of the block, accounting for SVG frame width on either side
  */
 function getCollider(block: ExtendedBlockSvg): Collider {
+  const workspace = block.workspace as GoogleBlockly.WorkspaceSvg;
   const position = block.getRelativeToSurfaceXY();
   const size = block.getHeightWidth();
 
@@ -230,6 +231,9 @@ function getCollider(block: ExtendedBlockSvg): Collider {
     ...size,
   };
 
+  if (workspace.RTL) {
+    collider.x -= collider.width; // shift x to be left edge in RTL
+  }
   // SVG frames require us to account for additional height and width
   if (block.functionalSvg_) {
     collider.x -= SVG_FRAME_SIDE_PADDING;
@@ -532,29 +536,57 @@ export function cleanUp(
 
     const {viewWidth} = workspace.getMetrics();
     const maximumX = viewWidth - SPACE_BETWEEN_BLOCKS;
-    const blockOutOfBounds = collider.x + collider.width > maximumX;
+    const blockOutOfBounds = workspace.RTL
+      ? collider.x - collider.width < 0
+      : collider.x + collider.width > maximumX;
     if (blockOutOfBounds) {
-      x = maximumX - collider.width;
+      x = workspace.RTL ? collider.width : maximumX - collider.width;
       block.moveTo(new Blockly.utils.Coordinate(x, y));
       collider = getCollider(block);
     }
 
     orderedColliders.forEach(orderedCollider => {
       if (isOverlapping(collider, orderedCollider)) {
+        // Prioritize moving the block down unless it is already to the right of
+        // the one it overlaps.
+        const idealDirection = workspace.RTL
+          ? orderedCollider.x <= collider.x
+            ? 'down'
+            : 'horizontal'
+          : orderedCollider.x >= collider.x
+          ? 'down'
+          : 'horizontal';
+
+        let canMoveHorizontally = false;
         let candidateX = x;
-        const nextAvailableX =
-          orderedCollider.x + orderedCollider.width + SPACE_BETWEEN_BLOCKS;
-        const resultingEndX = nextAvailableX + collider.width;
-        if (resultingEndX < maximumX) {
-          candidateX = nextAvailableX;
-        }
         const candidateY =
           orderedCollider.y + orderedCollider.height + SPACE_BETWEEN_BLOCKS;
-        const deltaX = candidateX - x;
-        const deltaY = candidateY - y;
-        if (deltaX > 0 && deltaX < deltaY) {
+
+        if (idealDirection === 'horizontal') {
+          if (workspace.RTL) {
+            // If the workspace is RTL, we need to check if we can move left
+            const potentialNewRight = orderedCollider.x - SPACE_BETWEEN_BLOCKS;
+            const potentialNewLeft = potentialNewRight - collider.width;
+            // The block must be able to fit to the left without leaving the view area.
+            if (potentialNewLeft >= 0) {
+              canMoveHorizontally = true;
+              candidateX = potentialNewRight;
+            }
+          } else {
+            const potentialNewLeft =
+              orderedCollider.x + orderedCollider.width + SPACE_BETWEEN_BLOCKS;
+            const potentialNewRight = potentialNewLeft + collider.width;
+            // The block must be able to fit to the right without leaving the view area.
+            if (potentialNewRight < maximumX) {
+              canMoveHorizontally = true;
+              candidateX = potentialNewLeft;
+            }
+          }
+        }
+        if (idealDirection === 'horizontal' && canMoveHorizontally) {
           x = candidateX;
         } else {
+          // If we can't move horizontally, we have to move down.
           y = candidateY;
         }
         block.moveTo(new Blockly.utils.Coordinate(x, y));
