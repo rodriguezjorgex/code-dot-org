@@ -133,7 +133,7 @@ class Pd::Workshop < ApplicationRecord
   end
 
   def config_validation
-    config = Pd::SharedWorkshopConstants::WORKSHOP_COURSE_CONFIGS.find do |c|
+    config = WORKSHOP_COURSE_CONFIGS.find do |c|
       c[:label] == course
     end
 
@@ -186,9 +186,9 @@ class Pd::Workshop < ApplicationRecord
   def format
     has_in_person_session = sessions.any? {|session| session.session_format == "in_person"}
     if virtual?
-      has_in_person_session ? Pd::SharedWorkshopConstants::WORKSHOP_FORMATS[:hybrid] : Pd::SharedWorkshopConstants::WORKSHOP_FORMATS[:virtual]
+      has_in_person_session ? WORKSHOP_FORMATS[:hybrid] : WORKSHOP_FORMATS[:virtual]
     else
-      Pd::SharedWorkshopConstants::WORKSHOP_FORMATS[:in_person]
+      WORKSHOP_FORMATS[:in_person]
     end
   end
 
