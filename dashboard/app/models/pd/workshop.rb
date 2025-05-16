@@ -387,12 +387,15 @@ class Pd::Workshop < ApplicationRecord
   end
 
   def friendly_name
-    start_time = sessions.empty? ? '' : sessions.first.start.strftime('%m/%d/%y')
+    first_session = sessions.first
+    start_time = first_session&.start&.strftime('%m/%d/%y')
+    session_location_name = first_session&.location_name
     course_title = name.presence || (subject ? "#{course} #{subject}" : course)
     course_title += ' workshop' unless course_title.downcase.end_with?('workshop')
 
     # Limit the friendly name to 255 chars
-    name = "#{course_title} on #{start_time} at #{location_name}"
+    name = "#{course_title} on #{start_time}"
+    name += " at #{session_location_name}" if session_location_name.present?
     name += " in #{friendly_location}" if friendly_location.present?
     name[0...255]
   end
@@ -421,10 +424,10 @@ class Pd::Workshop < ApplicationRecord
   # 3. known variant of TBA or no location address at all: 'Location TBA'
   # 4. unprocessable location that is not TBA: use user-entered string
   def friendly_location
-    return 'Virtual Workshop' if location_address_virtual? || virtual?
-    return "#{location_city} #{location_state}" if processed_location
-    return 'Location TBA' if location_address_tba? || !location_address.presence
-    return location_address
+    return 'Virtual Workshop' if virtual?
+    first_session = sessions.first
+    return 'Location TBA' unless first_session&.location_address.presence
+    return first_session.location_address
   end
 
   # Returns date and location (only date if no location specified)
