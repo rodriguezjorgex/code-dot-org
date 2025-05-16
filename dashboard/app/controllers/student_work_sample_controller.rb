@@ -81,14 +81,6 @@ class StudentWorkSampleController < ApplicationController
       return render status: :not_found, json: "Unit with id #{unit_id}"
     end
 
-    if student_work_params[:include_ai_evaluations]
-      fetch_student_code_samples_with_evaluations(level, unit_id, num_samples)
-    else
-      fetch_student_code_samples_without_evaluations(level, unit_id, num_samples)
-    end
-  end
-
-  def fetch_student_code_samples_without_evaluations(level, unit_id, num_samples)
     # Find users who have worked on this level.
     student_ids = UserLevel.where(level_id: level.id, script_id: unit_id).pluck(:user_id)
     code_samples = []
@@ -97,51 +89,14 @@ class StudentWorkSampleController < ApplicationController
       unless have_enough_samples
         student_code = get_student_code(student_id, level, unit_id)
         if student_code[:student_code]
-          code_samples << {level_id: level.id, unit_id: unit_id, user_id: student_id, project_id: student_code[:project_id], student_code: student_code[:student_code]}
-        end
-        have_enough_samples = code_samples.length >= num_samples
-      end
-    end
-    render json: code_samples
-  end
-
-  def fetch_student_code_samples_with_evaluations(level, unit_id, num_samples)
-    # Only user user_level_evaluations that have skills-based evaluations associated with them.
-    user_level_skill_evaluations = UserLevelSkillEvaluation.where(level_id: level.id, unit_id: unit_id)
-
-    if user_level_skill_evaluations.empty?
-      return render status: :not_found, json: "There are no skill-based evaluations for the level with id #{level.id}"
-    end
-
-    user_level_evaluations = user_level_skill_evaluations.map(&:user_level_evaluation).compact
-
-    code_samples = []
-    have_enough_samples = false
-    user_level_evaluations.shuffle.each do |ule|
-      unless have_enough_samples || ule.code_version.nil?
-        student_code = get_student_code(ule.user_id, level, unit_id, ule.code_version)
-        if student_code && student_code[:student_code]
-          code_sample = {
+          code_samples << {
             level_id: level.id,
             unit_id: unit_id,
-            student_id: ule.student_id,
+            student_id: student_id,
             project_id: student_code[:project_id],
-            code_version: student_code[:code_version],
-            student_code: student_code[:student_code],
-            evaluation: ule.evaluation,
-            reasoning: ule.reasoning,
-            evaluation_criteria: ule.evaluation_criteria,
-          }
-          # TODO: Use skill id instead of counter when we have Skills
-          counter = 1
-          ule.user_level_skill_evaluations.each do |ulse|
-            code_sample["skill_evaluation_#{counter}"] = ulse.evaluation
-            code_sample["skill_evaluation_criteria_#{counter}"] = ulse.evaluation_criteria
-            code_sample["skill_evaluation_reasoning_#{counter}"] = ulse.reasoning
-            counter += 1
-          end
+            student_work: student_code[:student_code]
+          }.transform_keys {|key| key.to_s.camelize(:lower)}
         end
-        code_samples << code_sample
         have_enough_samples = code_samples.length >= num_samples
       end
     end
@@ -183,7 +138,6 @@ class StudentWorkSampleController < ApplicationController
       :level_id,
       :unit_id,
       :num_samples,
-      :include_ai_evaluations,
     )
   end
 end
