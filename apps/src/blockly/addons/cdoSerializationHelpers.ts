@@ -22,7 +22,7 @@ const {
 const SVG_FRAME_HEIGHT = BLOCK_HEADER_HEIGHT + MARGIN_TOP + MARGIN_BOTTOM;
 const SVG_FRAME_TOP_PADDING = BLOCK_HEADER_HEIGHT + MARGIN_TOP;
 const SORT_BY_POSITION = true;
-const VERTICAL_SPACE_BETWEEN_BLOCKS = 10;
+const SPACE_BETWEEN_BLOCKS = 10;
 
 export function hasBlocks(
   workspaceSerialization: WorkspaceSerialization | null
@@ -69,7 +69,7 @@ function getYCoordinate(block: ExtendedBlockSvg) {
  * @returns {number} Vertical space in pixels; either the default or the default plus extra to accomodate an SVG frame.
  */
 function getSpaceBetweenBlocks(block: ExtendedBlockSvg) {
-  let verticalSpace = VERTICAL_SPACE_BETWEEN_BLOCKS;
+  let verticalSpace = SPACE_BETWEEN_BLOCKS;
   if (block.functionalSvg_) {
     verticalSpace += SVG_FRAME_TOP_PADDING;
   }
@@ -155,6 +155,7 @@ export function positionBlocksOnWorkspace(
   );
 
   adjustBlockPositions(orderedBlocksSetupFirst, workspace);
+  cleanUp(workspace);
 }
 
 /**
@@ -484,4 +485,82 @@ function blockExists(behaviorId: string, projectBlocks: JsonBlockConfig[]) {
       block.type === BLOCK_TYPES.behaviorDefinition &&
       block.extraState?.behaviorId === behaviorId
   );
+}
+
+/**
+ * Repositions blocks on the workspace to eliminate overlaps.
+ * Tries moving right first, then down if needed.
+ *
+ * @param {Blockly.WorkspaceSvg} workspace - The workspace to clean up.
+ * @param {boolean} [includeImmovableBlocks=false] - Whether immovable blocks should be repositioned.
+ */
+export function cleanUp(
+  workspace: GoogleBlockly.WorkspaceSvg,
+  includeImmovableBlocks: boolean = false
+) {
+  if (!workspace.rendered) return;
+
+  const blocks = workspace.getTopBlocks(SORT_BY_POSITION) as ExtendedBlockSvg[];
+  const orderedColliders: Collider[] = [];
+
+  const blocksToPlace: ExtendedBlockSvg[] = [];
+  blocks.forEach(block => {
+    if (includeImmovableBlocks || block.isMovable()) {
+      blocksToPlace.push(block);
+    } else {
+      insertCollider(orderedColliders, getCollider(block));
+    }
+  });
+
+  const {defaultX, defaultY} = getDefaultLocation(workspace);
+  blocksToPlace.forEach(block => {
+    let {x, y} = block.getRelativeToSurfaceXY();
+
+    // Don't overwrite x- (or y-) coordinate if it is set to something other than the default
+    // This retains partially positioned blocks (with either an x- or y-coordinate set)
+    if (x === defaultX) {
+      x = getXCoordinate(block, workspace);
+    }
+    if (y === defaultY) {
+      y = getYCoordinate(block);
+    }
+
+    // Set initial position; collision area must be updated to account for new position
+    // every time block is moved
+    block.moveTo(new Blockly.utils.Coordinate(x, y));
+    let collider = getCollider(block);
+
+    const {viewWidth} = workspace.getMetrics();
+    const maximumX = viewWidth - SPACE_BETWEEN_BLOCKS;
+    const blockOutOfBounds = collider.x + collider.width > maximumX;
+    if (blockOutOfBounds) {
+      x = maximumX - collider.width;
+      block.moveTo(new Blockly.utils.Coordinate(x, y));
+      collider = getCollider(block);
+    }
+
+    orderedColliders.forEach(orderedCollider => {
+      if (isOverlapping(collider, orderedCollider)) {
+        let candidateX = x;
+        const nextAvailableX =
+          orderedCollider.x + orderedCollider.width + SPACE_BETWEEN_BLOCKS;
+        const resultingEndX = nextAvailableX + collider.width;
+        if (resultingEndX < maximumX) {
+          candidateX = nextAvailableX;
+        }
+        const candidateY =
+          orderedCollider.y + orderedCollider.height + SPACE_BETWEEN_BLOCKS;
+        const deltaX = candidateX - x;
+        const deltaY = candidateY - y;
+        if (deltaX > 0 && deltaX < deltaY) {
+          x = candidateX;
+        } else {
+          y = candidateY;
+        }
+        block.moveTo(new Blockly.utils.Coordinate(x, y));
+        collider = getCollider(block);
+      }
+    });
+    insertCollider(orderedColliders, collider);
+  });
 }
