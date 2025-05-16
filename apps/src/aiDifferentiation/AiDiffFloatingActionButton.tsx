@@ -12,6 +12,7 @@ import aiFabWithIcon from '@cdo/static/ai-bot-ta.png';
 
 import {EVENTS, PLATFORMS} from '../metrics/AnalyticsConstants';
 import analyticsReporter from '../metrics/AnalyticsReporter';
+import HttpClient from '../util/HttpClient';
 
 import AiDiffContainer from './AiDiffContainer';
 
@@ -53,6 +54,23 @@ const AiDiffFloatingActionButton: React.FC<AiDiffFloatingActionButtonProps> = ({
     JSON.parse(tryGetSessionStorage(sessionStorageKey, isFirstSession)) ||
       isFirstSession
   );
+
+  const [curriculumCourses, setCurriculumCourses] = useState();
+
+  useEffect(() => {
+    const body = JSON.stringify({
+      context: context,
+      contextId: scriptId,
+    });
+    HttpClient.post(`/ai_diff/curriculum_courses`, body, true, {
+      'Content-Type': 'application/json',
+    })
+      .then(response => response.json())
+      .then(json => {
+        setCurriculumCourses(json.courses);
+      })
+      .catch(error => console.log(error));
+  }, [context, scriptId]);
 
   const [isFabImageLoaded, setIsFabImageLoaded] = useState(false);
 
@@ -104,6 +122,7 @@ const AiDiffFloatingActionButton: React.FC<AiDiffFloatingActionButtonProps> = ({
         scriptId={scriptId}
         scriptName={scriptName}
         unitDisplayName={unitDisplayName}
+        curriculumCourses={curriculumCourses}
       />
     </div>
   );
