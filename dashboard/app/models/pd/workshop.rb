@@ -394,7 +394,8 @@ class Pd::Workshop < ApplicationRecord
     course_title += ' workshop' unless course_title.downcase.end_with?('workshop')
 
     # Limit the friendly name to 255 chars
-    name = "#{course_title} on #{start_time}"
+    name = course_title.to_s
+    name += " on #{start_time}" if start_time.present?
     name += " at #{session_location_name}" if session_location_name.present?
     name += " in #{friendly_location}" if friendly_location.present?
     name[0...255]
