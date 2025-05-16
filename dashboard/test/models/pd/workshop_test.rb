@@ -358,9 +358,12 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
 
   test 'account_required_for_attendance?' do
     normal_workshop = create :workshop, :ended
-    counselor_workshop = create :counselor_workshop, :ended
-    admin_workshop = create :admin_workshop, :ended
-    admin_counselor_workshop = create :admin_counselor_workshop, :ended
+    counselor_workshop = create :workshop, :ended
+    counselor_workshop.update_columns(course: Pd::Workshop::COURSE_COUNSELOR, subject: nil)
+    admin_workshop = create :workshop, :ended
+    admin_workshop.update_columns(course: Pd::Workshop::COURSE_ADMIN, subject: nil)
+    admin_counselor_workshop = create :workshop, :ended
+    admin_counselor_workshop.update_columns(course: Pd::Workshop::COURSE_ADMIN_COUNSELOR, subject: Pd::Workshop::SUBJECT_ADMIN_COUNSELOR_WELCOME)
 
     assert normal_workshop.account_required_for_attendance?
     refute counselor_workshop.account_required_for_attendance?
@@ -378,7 +381,8 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
   end
 
   test 'send_exit_surveys with attendance but no account gets email for counselor or admin' do
-    workshop = create :counselor_workshop, :ended
+    workshop = create :workshop, :ended
+    workshop.update_columns(course: Pd::Workshop::COURSE_COUNSELOR, subject: nil)
 
     enrollment = create :pd_enrollment, workshop: workshop
     create :pd_attendance_no_account, session: workshop.sessions.first, enrollment: enrollment
