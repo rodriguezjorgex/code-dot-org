@@ -19,7 +19,9 @@ FactoryBot.define do
       virtual {false}
       num_facilitators {0}
       sessions_from {Time.zone.today + 9.hours} # Start time of the first session, then one per day after that.
-      session_location {nil}
+      session_location_name {nil}
+      session_location_address {nil}
+      session_meeting_link {nil}
       each_session_hours {6}
       num_enrollments {0}
       enrolled_and_attending_users {0}
@@ -76,7 +78,9 @@ FactoryBot.define do
             start: evaluator.sessions_from + i.days,
             duration_hours: evaluator.each_session_hours,
             session_format: evaluator.virtual ? 'virtual' : 'in_person',
-            location_name: evaluator.session_location
+            location_name: evaluator.session_location_name,
+            location_address: evaluator.session_location_address,
+            meeting_link: evaluator.session_meeting_link
           }]
           params.prepend :with_assigned_code if evaluator.assign_session_code
           workshop.sessions << build(:pd_session, *params)
