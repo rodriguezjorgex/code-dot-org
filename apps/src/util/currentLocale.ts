@@ -1,5 +1,5 @@
-import Localization from '@cdo/apps/localization';
+import localization from '@cdo/apps/localization';
 
 export default () => {
-  return Localization.locale;
+  return localization.locale;
 };
