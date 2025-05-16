@@ -524,17 +524,14 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
   end
 
   test 'friendly name' do
-    Geocoder.expects(:search).returns([])
     workshop = create :pd_workshop,
       course: Pd::Workshop::COURSE_BUILD_YOUR_OWN,
       subject: nil,
       name: "Test Workshop",
       course_offerings: [] << (create :course_offering),
       num_facilitators: 1,
-      location_name: 'Code.org',
-      location_address: 'Seattle, WA',
       participant_group_type: 'Regional',
-      sessions: [create(:pd_session, start: Date.new(2016, 9, 1))]
+      sessions: [create(:pd_session, start: Date.new(2016, 9, 1), location_name: 'Code.org', location_address: 'Seattle, WA', session_format: 'in_person')]
 
     # with name ending in 'Workshop'
     assert_equal 'Test Workshop on 09/01/16 at Code.org in Seattle, WA', workshop.friendly_name
@@ -544,15 +541,15 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
     assert_equal 'New Name workshop on 09/01/16 at Code.org in Seattle, WA', workshop.friendly_name
 
     # with course that doesn't require a name, and no subject
-    workshop.update!(course: Pd::Workshop::COURSE_ADMIN, name: '')
+    workshop.update_columns(course: Pd::Workshop::COURSE_ADMIN, name: '')
     assert_equal 'Admin workshop on 09/01/16 at Code.org in Seattle, WA', workshop.friendly_name
 
     # with subject
-    workshop.update!(course: Pd::Workshop::COURSE_ECS, subject: Pd::Workshop::SUBJECT_ECS_UNIT_5)
+    workshop.update_columns(course: Pd::Workshop::COURSE_ECS, subject: Pd::Workshop::SUBJECT_ECS_UNIT_5)
     assert_equal 'Exploring Computer Science Unit 5 - Data workshop on 09/01/16 at Code.org in Seattle, WA', workshop.friendly_name
 
     # truncated at 255 chars
-    workshop.update!(location_name: "blah" * 60)
+    workshop.sessions.first.update!(location_name: "blah" * 60)
     assert workshop.friendly_name.start_with? 'Exploring Computer Science Unit 5 - Data workshop on 09/01/16 at blahblahblah'
     assert workshop.friendly_name.length == 255
   end
@@ -1228,12 +1225,12 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
   end
 
   test 'friendly_location with no location returns tba' do
-    workshop = build :workshop, location_address: '', processed_location: nil
+    workshop = build :workshop
     assert_equal 'Location TBA', workshop.friendly_location
   end
 
   test 'friendly_location with virtual location' do
-    workshop = build :workshop, location_address: 'virtual', processed_location: nil
+    workshop = build :workshop, virtual: true
     assert_equal 'Virtual Workshop', workshop.friendly_location
   end
 
