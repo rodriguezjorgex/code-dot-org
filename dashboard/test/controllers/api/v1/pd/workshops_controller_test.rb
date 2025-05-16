@@ -16,18 +16,14 @@ class Api::V1::Pd::WorkshopsControllerTest < ActionController::TestCase
 
     @workshop = create(
       :workshop,
-      :funded,
       organizer: @organizer,
       facilitators: [@facilitator],
       regional_partner: @regional_partner,
-      on_map: true
     )
     @organizer_workshop = create(
       :workshop,
-      :funded,
       organizer: @workshop_organizer,
       facilitators: [@facilitator],
-      on_map: true,
       num_sessions: 0
     )
 
