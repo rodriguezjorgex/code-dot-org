@@ -28,6 +28,7 @@ interface AiDiffContainerProps {
   scriptId?: number;
   scriptName?: string;
   unitDisplayName?: string;
+  curriculumCourses?: string[];
 }
 
 const AiDiffContainer: React.FC<AiDiffContainerProps> = ({
@@ -37,6 +38,7 @@ const AiDiffContainer: React.FC<AiDiffContainerProps> = ({
   scriptId,
   scriptName,
   unitDisplayName,
+  curriculumCourses,
 }) => {
   const [showWelcomeExperience, setShowWelcomeExperience] = useState(true);
 
@@ -140,14 +142,18 @@ const AiDiffContainer: React.FC<AiDiffContainerProps> = ({
               scriptId={scriptId}
               scriptName={scriptName}
               unitDisplayName={unitDisplayName}
+              curriculumCourses={curriculumCourses}
             />
           ) : (
-            <AiDiffChat
-              context={context}
-              scriptId={scriptId}
-              scriptName={scriptName}
-              unitDisplayName={unitDisplayName}
-            />
+            curriculumCourses && (
+              <AiDiffChat
+                context={context}
+                scriptId={scriptId}
+                scriptName={scriptName}
+                unitDisplayName={unitDisplayName}
+                curriculumCourses={curriculumCourses}
+              />
+            )
           )}
         </div>
       </div>
