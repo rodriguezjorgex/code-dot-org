@@ -64,7 +64,6 @@ const GENERAL_SUGGESTED_PROMPTS = [
   PROFESSIONAL_LEARNING_PROMPT,
   CREATE_SECTION_PROMPT,
   ADDITIONAL_HELP_PROMPT,
-  ...APCSP_PROMPTS,
 ];
 
 const AI_DIFF_CHAT_MESSAGE_ENDPOINT = '/ai_diff/chat_completion';
@@ -78,6 +77,7 @@ interface AiDiffChatProps {
   initialChatMessage?: string;
   suggestedPrompts?: ChatPrompt[];
   disableEndButtons?: boolean;
+  curriculumCourses?: string[];
 }
 
 const AiDiffChat: React.FC<AiDiffChatProps> = ({
@@ -91,6 +91,7 @@ const AiDiffChat: React.FC<AiDiffChatProps> = ({
     ? GENERAL_SUGGESTED_PROMPTS
     : SUGGESTED_PROMPTS[0],
   disableEndButtons = false,
+  curriculumCourses = [],
 }) => {
   const reportingData = React.useMemo(() => {
     return {
@@ -107,13 +108,15 @@ const AiDiffChat: React.FC<AiDiffChatProps> = ({
 
   const [suggestionPage, setSuggestionPage] = useState(0);
 
+  const isCSP = curriculumCourses.includes('csp');
+
   const [messageHistory, setMessageHistory] = useState<ChatItem[]>([
     {
       role: Role.ASSISTANT,
       chatMessageText: initialChatMessage,
       status: Status.OK,
     },
-    suggestedPrompts,
+    isCSP ? suggestedPrompts.concat(APCSP_PROMPTS) : suggestedPrompts,
   ]);
 
   const onMessageSend = (message: string) => {
@@ -151,12 +154,14 @@ const AiDiffChat: React.FC<AiDiffChatProps> = ({
 
   const onSuggestPrompts = () => {
     const nextPage = (suggestionPage + 1) % SUGGESTED_PROMPTS.length;
+    const newSuggestions =
+      context === AiDiffContext.GENERAL
+        ? GENERAL_SUGGESTED_PROMPTS
+        : SUGGESTED_PROMPTS[nextPage];
     setSuggestionPage(nextPage);
     setMessageHistory(prevMessages => [
       ...prevMessages,
-      context === AiDiffContext.GENERAL
-        ? GENERAL_SUGGESTED_PROMPTS
-        : SUGGESTED_PROMPTS[nextPage],
+      isCSP ? newSuggestions.concat(APCSP_PROMPTS) : newSuggestions,
     ]);
   };
 
