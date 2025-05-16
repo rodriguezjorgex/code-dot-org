@@ -666,68 +666,6 @@ class Pd::Workshop < ApplicationRecord
     end
   end
 
-  def location_address_tba?
-    %w(tba tbd n/a).include?(location_address.try(:downcase))
-  end
-
-  def location_address_virtual?
-    ['virtual', 'virtual workshop'].include? location_address.try(:downcase)
-  end
-
-  def process_location
-    result = nil
-
-    unless location_address.blank? || location_address_tba? || location_address_virtual?
-      begin
-        Geocoder.with_errors do
-          # Geocoder can raise a number of errors including SocketError, with a common base of StandardError
-          # See https://github.com/alexreisner/geocoder#error-handling
-          Retryable.retryable(on: StandardError) do
-            result = Geocoder.search(location_address).try(:first)
-          end
-        end
-      rescue StandardError => exception
-        # Log geocoding errors to honeybadger but don't fail
-        Honeybadger.notify(exception,
-          error_message: 'Error geocoding workshop location_address',
-          context: {
-            pd_workshop_id: id,
-            location_address: location_address
-          }
-        )
-      end
-    end
-
-    unless result
-      self.processed_location = nil
-      return
-    end
-
-    self.processed_location = {
-      latitude: result.latitude,
-      longitude: result.longitude,
-      city: result.city,
-      state: result.state,
-      formatted_address: result.formatted_address
-    }.to_json
-  end
-
-  # Retrieve a single location value (like city or state) from the processed
-  # location hash. Attribute can be passed as a string or symbol
-  def get_processed_location_value(key)
-    return unless processed_location
-    location_hash = JSON.parse processed_location
-    location_hash[key.to_s]
-  end
-
-  def location_city
-    get_processed_location_value('city')
-  end
-
-  def location_state
-    get_processed_location_value('state')
-  end
-
   # Min number of days a teacher must attend for it to count.
   # @return [Integer]
   def min_attendance_days
