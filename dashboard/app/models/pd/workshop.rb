@@ -1047,4 +1047,37 @@ class Pd::Workshop < ApplicationRecord
       regional_partner_name: regional_partner&.name,
     }
   end
+
+  def summarize_for_marketing_page
+    facilitators_info = facilitators.map do |facilitator|
+      bio_file = pegasus_dir("sites.v3/code.org/views/workshop_affiliates/#{facilitator.id}_bio.md")
+      {
+        name: facilitator.name,
+        email: facilitator.email,
+        bio: File.exist?(bio_file) ? File.read(bio_file) : nil
+      }
+    end
+
+    {
+      id: id,
+      course: course_name,
+      subject: subject,
+      course_offerings: course_offerings&.map(&:display_name),
+      name: name,
+      capacity: capacity,
+      num_enrollments: enrollments ? enrollments.count : 0,
+      grade_levels: grades,
+      sessions: sessions&.map(&:session_info_for_calendar),
+      format: format,
+      location_name: location_name,
+      fee: fee,
+      prereq: prereq,
+      description: description,
+      notes: notes,
+      custom_registration_link: registration_link,
+      regional_partner_name: regional_partner&.name,
+      organizer: organizer&.pluck(:name, :email),
+      facilitators: facilitators_info
+    }
+  end
 end
