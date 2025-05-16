@@ -97,6 +97,7 @@ class Pd::Workshop < ApplicationRecord
   validate :valid_registration_link_format, if: :registration_link
 
   validate :config_validation, unless: :legacyForm2025?
+  validate :valid_grades
 
   validates :funding_type,
     inclusion: {in: FUNDING_TYPES, if: :funded_csf?},
@@ -161,6 +162,14 @@ class Pd::Workshop < ApplicationRecord
           errors.add(field_name, "is required")
         end
       end
+    end
+  end
+
+  def valid_grades
+    return if grades.blank?
+    invalid_grades = Array(grades) - WORKSHOP_GRADE_LEVELS
+    if invalid_grades.any?
+      errors.add(:base, "Grade levels contains invalid grades: #{invalid_grades.join(', ')}")
     end
   end
 
