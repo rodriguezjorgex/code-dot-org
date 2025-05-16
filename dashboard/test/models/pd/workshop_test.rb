@@ -1078,66 +1078,6 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
     refute @workshop.organizer_or_facilitator?(another_facilitator)
   end
 
-  test 'process_location is called when location_address changes' do
-    @workshop.expects(:process_location).once
-    @workshop.update!(location_address: '1501 4th Ave, Seattle WA')
-
-    # Changing another field does not process location
-    @workshop.expects(:process_location).never
-    @workshop.update!(location_name: 'Code.org')
-
-    # Setting location_address to the same value does not process location
-    @workshop.expects(:process_location).never
-    @workshop.update!(location_address: '1501 4th Ave, Seattle WA')
-  end
-
-  test 'process_location' do
-    mock_geocoder_result = [
-      OpenStruct.new(
-        latitude: 47.610183,
-        longitude: -122.337401,
-        city: 'Seattle',
-        state: 'WA',
-        formatted_address: '1501 4th Ave, Seattle, WA 98101, USA'
-      )
-    ]
-    expected_processed_location = '{"latitude":47.610183,"longitude":-122.337401,"city":"Seattle","state":"WA","formatted_address":"1501 4th Ave, Seattle, WA 98101, USA"}'
-    Honeybadger.expects(:notify).never
-
-    # Normal lookup
-    Geocoder.expects(:search).with('1501 4th Ave, Seattle WA').returns(mock_geocoder_result)
-    @workshop.location_address = '1501 4th Ave, Seattle WA'
-    @workshop.process_location
-    assert_equal expected_processed_location, @workshop.processed_location
-
-    # Nonexistent location clears processed_location
-    Geocoder.expects(:search).with('nonexistent location').returns([])
-    @workshop.location_address = 'nonexistent location'
-    @workshop.process_location
-    assert_nil @workshop.processed_location
-
-    # Don't bother looking up blank addresses, TBA/TBDs, or virtual locations
-    ['', 'tba', 'TBA', 'tbd', 'N/A', 'virtual', 'Virtual workshop'].each do |address|
-      Geocoder.expects(:search).never
-      @workshop.location_address = address
-      @workshop.process_location
-      assert_nil @workshop.processed_location
-    end
-
-    # Retry on errors
-    Geocoder.expects(:search).with('1501 4th Ave, Seattle WA').raises(SocketError).then.returns(mock_geocoder_result).twice
-    @workshop.location_address = '1501 4th Ave, Seattle WA'
-    @workshop.process_location
-    assert_equal expected_processed_location, @workshop.processed_location
-
-    # Repeated errors are logged to honeybadger
-    Honeybadger.expects(:notify).once
-    Geocoder.expects(:search).with('1501 4th Ave, Seattle WA').raises(SocketError).twice
-    @workshop.location_address = '1501 4th Ave, Seattle WA'
-    @workshop.process_location
-    assert_nil @workshop.processed_location
-  end
-
   test 'suppress_reminders? is true for certain subjects by default' do
     suppressed = [
       # workshop subject is deprecated so validation must be skipped
@@ -1262,21 +1202,6 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
     assert_equal 'March 30 - April 3, 2017', workshop.friendly_date_range
   end
 
-  test 'date_and_location_name with processed location and sessions' do
-    workshop = build :workshop, num_sessions: 5, sessions_from: Date.new(2017, 3, 30),
-      processed_location: {city: 'Seattle', state: 'WA'}.to_json
-
-    assert_equal 'March 30 - April 3, 2017, Seattle WA', workshop.date_and_location_name
-  end
-
-  test 'date_and_location_name with processed location but no sessions' do
-    workshop = build :workshop,
-      processed_location: {city: 'Seattle', state: 'WA'}.to_json,
-      num_sessions: 0
-
-    assert_equal 'Dates TBA, Seattle WA', workshop.date_and_location_name
-  end
-
   test 'date_and_location_name with no location but with sessions' do
     workshop = build :workshop, num_sessions: 5, sessions_from: Date.new(2017, 3, 30),
       processed_location: nil
@@ -1285,48 +1210,21 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
   end
 
   test 'date_and_location_name with no location nor sessions' do
-    workshop = create :workshop, processed_location: nil, num_sessions: 0
+    workshop = create :workshop, num_sessions: 0
 
     assert_equal 'Dates TBA, Location TBA', workshop.date_and_location_name
   end
 
   test 'date_and_location_name for teachercon' do
-    workshop = build :workshop, :teachercon, num_sessions: 5, sessions_from: Date.new(2017, 3, 30),
-      processed_location: {city: 'Seattle', state: 'WA'}.to_json
+    workshop = build :workshop, :teachercon, num_sessions: 5, sessions_from: Date.new(2017, 3, 30), session_location_address: 'Seattle WA'
 
     assert_equal 'March 30 - April 3, 2017, Seattle WA TeacherCon', workshop.date_and_location_name
   end
 
   test 'date_and_location_name with virtual location and sessions' do
-    workshop = build :workshop, num_sessions: 5, sessions_from: Date.new(2017, 3, 30),
-      location_address: 'virtual'
-    workshop.process_location
+    workshop = build :workshop, num_sessions: 5, sessions_from: Date.new(2017, 3, 30), virtual: true
 
     assert_equal 'March 30 - April 3, 2017, Virtual Workshop', workshop.date_and_location_name
-  end
-
-  test 'date_and_location_name with virtual location but no sessions' do
-    workshop = build :workshop, num_sessions: 0, sessions_from: Date.new(2017, 3, 30),
-      location_address: 'virtual'
-    workshop.process_location
-
-    assert_equal 'Dates TBA, Virtual Workshop', workshop.date_and_location_name
-  end
-
-  test 'friendly_location TBA' do
-    workshop = build :workshop, location_address: 'tba'
-    assert_equal 'Location TBA', workshop.friendly_location
-  end
-
-  test 'friendly_location with a city and state' do
-    workshop = build :workshop, location_address: 'Seattle, WA',
-      processed_location: {city: 'Seattle', state: 'WA'}.to_json
-    assert_equal 'Seattle WA', workshop.friendly_location
-  end
-
-  test 'friendly_location with an unprocessable location address returns the address as entered' do
-    workshop = build :workshop, location_address: 'my custom unprocessable location', processed_location: nil
-    assert_equal 'my custom unprocessable location', workshop.friendly_location
   end
 
   test 'friendly_location with no location returns tba' do
