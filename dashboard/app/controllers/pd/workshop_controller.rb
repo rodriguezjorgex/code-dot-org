@@ -1,13 +1,12 @@
 module Pd
   class WorkshopController < ApplicationController
-    before_action :authenticate_user!
-
+    # GET /pd/workshop/:workshop_id
     def index
       if !current_user
         @script_data = {
           props: {
-            new_account_url: "/users/sign_up/login_type?user_type=teacher&user_return_to=/pd/workshop/#{@workshop_info.id}",
-            existing_account_url: "/users/sign_in?user_return_to=/pd/workshop/#{@workshop_info.id}"
+            new_account_url: "/users/sign_up/login_type?user_type=teacher&user_return_to=/pd/workshop/#{params[:workshop_id]}",
+            existing_account_url: "/users/sign_in?user_return_to=/pd/workshop/#{params[:workshop_id]}"
           }.to_json
         }
         render :logged_out

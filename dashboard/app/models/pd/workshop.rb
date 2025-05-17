@@ -1076,7 +1076,7 @@ class Pd::Workshop < ApplicationRecord
       notes: notes,
       custom_registration_link: registration_link,
       regional_partner_name: regional_partner&.name,
-      organizer: organizer&.pluck(:name, :email),
+      organizer: organizer&.slice(:name, :email),
       facilitators: facilitators_info
     }
   end
