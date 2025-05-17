@@ -3659,84 +3659,84 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@blockly/block-shareable-procedures@npm:~5.0.9":
-  version: 5.0.9
-  resolution: "@blockly/block-shareable-procedures@npm:5.0.9"
+"@blockly/block-shareable-procedures@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "@blockly/block-shareable-procedures@npm:6.0.0"
   peerDependencies:
-    blockly: ^11.0.0
-  checksum: 10/6a45d002ea76bd4696a079382e781d2bc285f4fcec80a2ae4666829615e315f6112c160c31a809f0a265ffd4b9891b51786451000fc1a0faac173e75902a1b9c
+    blockly: ^12.0.0
+  checksum: 10/6e68996ed4d0c9cd713caa3a1effbea9dbf35464337986e4d33f3215d41d225a26ceb974fb649bc5087f82e56004f0ca25e5d7e731171506f9205e3e9a3a932b
   languageName: node
   linkType: hard
 
-"@blockly/field-bitmap@npm:^5.0.9":
-  version: 5.0.9
-  resolution: "@blockly/field-bitmap@npm:5.0.9"
+"@blockly/field-bitmap@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "@blockly/field-bitmap@npm:6.0.0"
   peerDependencies:
-    blockly: ^11.0.0
-  checksum: 10/4792b59b3340b40008e01480db93b49888cf0d49ae6fa571e3eadfb02e65cf37f9faa9940dd03e4606548dab863787dafcccd8f9818296d445a1f2fa9ac3c489
+    blockly: ^12.0.0
+  checksum: 10/9f884372b71137faf1334233b555ccbcb2c2e032163981dadc3207dc6d0339647b0044fb1d6e51b52ef4cc0747607a4db93c40daf5807c9ce52255b46fa169cd
   languageName: node
   linkType: hard
 
-"@blockly/field-colour@npm:^5.0.9":
-  version: 5.0.9
-  resolution: "@blockly/field-colour@npm:5.0.9"
+"@blockly/field-colour@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "@blockly/field-colour@npm:6.0.0"
   peerDependencies:
-    blockly: ^11.0.0
-  checksum: 10/32fdf42af460f98340ce21d28eceed6919b48bdeb57e9d12a04cb7c20e3716a86840edd318b4ef217e3391a4aeadfdbcdd6d81e781adfe5116a4686ddf81ce90
+    blockly: ^12.0.0
+  checksum: 10/68c7a35928662d8d22557e2ba78aec94085267d4c4386941cfef8cee153bca67cecad4c400ebbc696315e31ed6ed933b7d2da9bc3492a109f4caa5ba83102f72
   languageName: node
   linkType: hard
 
-"@blockly/field-grid-dropdown@npm:~5.0.9":
-  version: 5.0.9
-  resolution: "@blockly/field-grid-dropdown@npm:5.0.9"
+"@blockly/field-grid-dropdown@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "@blockly/field-grid-dropdown@npm:6.0.0"
   peerDependencies:
-    blockly: ^11.0.0
-  checksum: 10/b559bb731b0d1e8fbf0d5026f7defd1f5dda821cbda368dbce069b0b146ba093c2eef571c309f2e8e5b62e5f231d7aae671f6ec246470aa152526397bf4f5b9b
+    blockly: ^12.0.0
+  checksum: 10/6991831c57df701e40affdea375d9ea45d359af85f3511a14168f248ee3f9e18f28bc6776f2af369f71482e94831128914385d5c74c96885f6ec95a696a0765f
   languageName: node
   linkType: hard
 
-"@blockly/keyboard-experiment@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "@blockly/keyboard-experiment@npm:0.0.1"
+"@blockly/keyboard-experiment@npm:~0.0.7":
+  version: 0.0.7
+  resolution: "@blockly/keyboard-experiment@npm:0.0.7"
   peerDependencies:
-    blockly: ^11.1.0
-  checksum: 10/f293da46256de87998b9104da94d4bf27abdfd4a80958ed94843d4cb2980038a82f0f95f9ff552148f883680a3d02e34f32195583d5f1fe95b8384ea5581f279
+    blockly: ^12.0.0-beta.4
+  checksum: 10/f0e1e3459928278116af1461f72b238d2a1174ee9597eb7f766136ec9d9cc901fd4e9fbb69cc006fc38a79b6376979d148366fc1d4c8b89fa2e3ea274b1315b0
   languageName: node
   linkType: hard
 
-"@blockly/plugin-cross-tab-copy-paste@npm:~6.0.9":
-  version: 6.0.9
-  resolution: "@blockly/plugin-cross-tab-copy-paste@npm:6.0.9"
+"@blockly/plugin-cross-tab-copy-paste@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "@blockly/plugin-cross-tab-copy-paste@npm:7.0.0"
   peerDependencies:
-    blockly: ^11.0.0
-  checksum: 10/96755b491e0de99ce6bac3f28de375a811a47880ec78a2e2a7012702ee6a488d7902edc6c217bf47a43797a82f9c7e16ecc917d1858d36662393760b94897461
+    blockly: ^12.0.0
+  checksum: 10/ee932fa221c4ea2c32c37c76cc4337e94ae4ef0b498f6164443fe6d7c9c49b278eebac2159dea377e398d27ffbaeaa14c4d40a3d4c0ff2599917809336779545
   languageName: node
   linkType: hard
 
-"@blockly/plugin-scroll-options@npm:~6.0.9":
-  version: 6.0.9
-  resolution: "@blockly/plugin-scroll-options@npm:6.0.9"
+"@blockly/plugin-scroll-options@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "@blockly/plugin-scroll-options@npm:7.0.0"
   peerDependencies:
-    blockly: ^11.0.0
-  checksum: 10/76e8b469f3859c988ad035af8b06dac81c53afb586bae6e9f3be95513f61a85af1aa87a2a9c69da278d55e38edfc273293dc09893fc81318cd0a1e11115379a6
+    blockly: ^12.0.0
+  checksum: 10/8332216f7655df514378f29f3a227e62cdccb5dafef8913b6f070e302edeaf49fda77b7fee6194afea07722d1b7a37e935416e5df531618a947239648ccb1761
   languageName: node
   linkType: hard
 
-"@blockly/theme-dark@npm:7.0.7":
-  version: 7.0.7
-  resolution: "@blockly/theme-dark@npm:7.0.7"
+"@blockly/theme-dark@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@blockly/theme-dark@npm:8.0.0"
   peerDependencies:
-    blockly: ^11.0.0
-  checksum: 10/711fe8c88411c5b0037b9e0fb0c03031e0b2aaf9ab7e35ae70fe59917032f890723b2614578f958846aea12badc8da863ab03b78d3edf06a170c9a45941d35be
+    blockly: ^12.0.0
+  checksum: 10/ad743b1969074465ca7895d54fd74ea6eae7b890f1648992e8f35f402d97e3e01e6904c078ac1b5340909a5cae8c77223ad0160792c6fe3400a1dd4937fd54a5
   languageName: node
   linkType: hard
 
-"@blockly/theme-highcontrast@npm:6.0.7":
-  version: 6.0.7
-  resolution: "@blockly/theme-highcontrast@npm:6.0.7"
+"@blockly/theme-highcontrast@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "@blockly/theme-highcontrast@npm:7.0.0"
   peerDependencies:
-    blockly: ^11.0.0
-  checksum: 10/a90cef89ecafb8f0d9d8af6382495f9cde4b5e3a249cd97898ba93550cdf0aa52438a740a996fa9d7ea989f04f2f5bac52972d67134fda20910db575c41ce5f5
+    blockly: ^12.0.0
+  checksum: 10/0320b1169e359e07a7797221cae086ae21eab03b0cc00148e0aa2d10b92ae344979f7647e7bdc5eb614eaf8aaea149c4c0f1e453e916be28282a939341cf7e2e
   languageName: node
   linkType: hard
 
@@ -10285,15 +10285,15 @@ __metadata:
     "@babel/polyfill": "npm:^7.12.1"
     "@babel/preset-env": "npm:^7.26.0"
     "@babel/preset-react": "npm:^7.25.9"
-    "@blockly/block-shareable-procedures": "npm:~5.0.9"
-    "@blockly/field-bitmap": "npm:^5.0.9"
-    "@blockly/field-colour": "npm:^5.0.9"
-    "@blockly/field-grid-dropdown": "npm:~5.0.9"
-    "@blockly/keyboard-experiment": "npm:^0.0.1"
-    "@blockly/plugin-cross-tab-copy-paste": "npm:~6.0.9"
-    "@blockly/plugin-scroll-options": "npm:~6.0.9"
-    "@blockly/theme-dark": "npm:7.0.7"
-    "@blockly/theme-highcontrast": "npm:6.0.7"
+    "@blockly/block-shareable-procedures": "npm:^6.0.0"
+    "@blockly/field-bitmap": "npm:^6.0.0"
+    "@blockly/field-colour": "npm:^6.0.0"
+    "@blockly/field-grid-dropdown": "npm:^6.0.0"
+    "@blockly/keyboard-experiment": "npm:~0.0.7"
+    "@blockly/plugin-cross-tab-copy-paste": "npm:^7.0.0"
+    "@blockly/plugin-scroll-options": "npm:^7.0.0"
+    "@blockly/theme-dark": "npm:^8.0.0"
+    "@blockly/theme-highcontrast": "npm:^7.0.0"
     "@cdo/interpreted": "link:../dashboard/config/libraries"
     "@code-dot-org/artist": "npm:0.2.1"
     "@code-dot-org/blockly": "npm:4.0.14"
