@@ -6,12 +6,14 @@ module Pd::Payment
 
     setup do
       # TIME_CONSTRAINTS: COURSE_ECS => {SUBJECT_ECS_PHASE_4 => {min_days: 2, max_days: 3, max_hours: 18}}
-      @workshop = create :workshop, :ended,
+      @workshop = build :workshop, :ended,
         on_map: true, funded: true,
         course: Pd::Workshop::COURSE_ECS,
         subject: Pd::Workshop::SUBJECT_ECS_PHASE_4,
         num_sessions: 3,
         num_facilitators: 2
+
+      @workshop.save(validate: false)
 
       # One unqualified teacher, below min attendance
       create :pd_workshop_participant, workshop: @workshop,
