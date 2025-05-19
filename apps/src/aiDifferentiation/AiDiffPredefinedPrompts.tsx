@@ -170,7 +170,7 @@ export const APCSP_CREATE_PT_PREPARATION = {
 export const APCSP_DUMMY_CREATE = {
   label: 'Create task support',
   prompt: '',
-  response: `Let’s chat about the Create Task!  Here are some ideas you can ask me, or type your question below`,
+  response: `Let’s chat about the Create Task! Here are some ideas you can ask me, or type your question below`,
   followUpPrompts: [
     APCSP_CREATE_PT_AI,
     APCSP_CREATE_PT_COLLAB,
