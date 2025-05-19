@@ -94,7 +94,7 @@ const CodeEditor: React.FunctionComponent<CodeEditorProps> = ({
       ...editorConfig,
 
       onEditorUpdate,
-      autocompletion({defaultKeymap: false}),
+      autocompletion(),
       ...editorConfigExtensions,
     ];
 
