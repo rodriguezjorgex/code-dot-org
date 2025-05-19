@@ -267,8 +267,12 @@ function initializeBlocklyWrapper(blocklyInstance: GoogleBlocklyInstance) {
   });
 
   // Installs colour_picker, colour_rgb, colour_random, and colour_blend blocks.
-  // These are exclusively provided via the FieldColour plugin as of Blockly v11.
-  installFieldColourBlocks({javascript: javascriptGenerator});
+  // Unit tests may attempt to install multiple times, which is currently unsafe.
+  try {
+    installFieldColourBlocks({javascript: javascriptGenerator});
+  } catch (e) {
+    console.warn(e);
+  }
 
   type registrableFieldType = GoogleBlockly.fieldRegistry.RegistrableField;
   // elements in this list should be structured as follows:
