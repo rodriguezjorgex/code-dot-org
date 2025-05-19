@@ -132,6 +132,17 @@ const SettingsDropdown: React.FunctionComponent<SettingsDropdownProps> = ({
     }
   };
 
+  const handleThemeChange = (value: Theme) => {
+    setTheme(value);
+    if (signInState === SignInState.SignedIn) {
+      new UserPreferences().setGlobalTheme(value);
+    }
+    sendCodebridgeAnalyticsEvent(EVENTS.CODEBRIDGE_THEME_CHANGE, appName, {
+      levelPath: window.location.pathname,
+      theme: value,
+    });
+  };
+
   const availableThemes: string[] = useMemo(() => {
     if (!appName || !lab2EntryPoints[appName]) {
       return [];
@@ -219,7 +230,7 @@ const SettingsDropdown: React.FunctionComponent<SettingsDropdownProps> = ({
           <SimpleDropdown
             labelText={'Theme'}
             isLabelVisible={false}
-            onChange={event => setTheme(event.target.value as Theme)}
+            onChange={event => handleThemeChange(event.target.value as Theme)}
             items={themeDropdownOptions}
             selectedValue={theme}
             name={'theme'}

@@ -4,10 +4,12 @@
  * helps facilitate level-switching between labs without page reloads.
  */
 import {useTheme, Theme} from '@code-dot-org/component-library/common/contexts';
-import React, {Suspense, useEffect} from 'react';
+import React, {Suspense, useEffect, useMemo} from 'react';
 
 import {getCurrentLesson} from '@cdo/apps/code-studio/progressReduxSelectors';
 import {queryParams} from '@cdo/apps/code-studio/utils';
+import UserPreferences from '@cdo/apps/lib/util/UserPreferences';
+import {Level} from '@cdo/apps/types/progressTypes';
 import {capitalizeFirstLetter} from '@cdo/apps/util/capitalizeFirstLetter';
 import {useAppSelector} from '@cdo/apps/util/reduxHooks';
 
@@ -38,12 +40,17 @@ const LabViewsRenderer: React.FunctionComponent = () => {
   );
 
   const isViewingExemplar = getAppOptionsViewingExemplar();
+  const lesson = useAppSelector(state => getCurrentLesson(state));
+  console.log({lesson});
 
-  const capitalizedLessonBackground = useAppSelector(
-    state =>
-      capitalizeFirstLetter(
-        getCurrentLesson(state)?.background || 'light'
-      ) as Theme
+  const capitalizedLessonBackground = useMemo(
+    () => capitalizeFirstLetter(lesson?.background || 'light') as Theme,
+    [lesson]
+  );
+
+  const useThemeUserPreference = useMemo(
+    () => lesson?.levels.some((level: Level) => level.app === 'pythonlab'),
+    [lesson]
   );
 
   // Set the theme for the current app.
@@ -51,14 +58,31 @@ const LabViewsRenderer: React.FunctionComponent = () => {
   useEffect(() => {
     if (currentAppName) {
       const supportedThemes = lab2EntryPoints[currentAppName]?.themes;
+      if (useThemeUserPreference) {
+        const fetchAndSetTheme = async () => {
+          const userTheme = await new UserPreferences().getGlobalTheme();
+          if (userTheme && supportedThemes?.includes(userTheme)) {
+            setTheme(userTheme);
+          } else if (supportedThemes?.includes(capitalizedLessonBackground)) {
+            setTheme(capitalizedLessonBackground);
+          } else {
+            setTheme(supportedThemes[0]);
+          }
+        };
 
-      if (supportedThemes.includes(capitalizedLessonBackground)) {
+        fetchAndSetTheme();
+      } else if (supportedThemes.includes(capitalizedLessonBackground)) {
         setTheme(capitalizedLessonBackground);
       } else {
         setTheme(supportedThemes[0]);
       }
     }
-  }, [currentAppName, setTheme, capitalizedLessonBackground]);
+  }, [
+    currentAppName,
+    setTheme,
+    capitalizedLessonBackground,
+    useThemeUserPreference,
+  ]);
 
   // Do not render lab view if project is blocked and user is not a project validator.
   if (!currentAppName || (isBlocked && !isProjectValidator)) {
