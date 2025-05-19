@@ -1,12 +1,11 @@
 import {Button} from '@code-dot-org/component-library/button';
+import {useTheme} from '@code-dot-org/component-library/common/contexts';
 import classNames from 'classnames';
 import markdownToTxt from 'markdown-to-txt';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import Typist from 'react-typist';
 
-import {capitalizeFirstLetter} from '@cdo/apps/blockly/utils';
 import TextToSpeech from '@cdo/apps/lab2/views/components/TextToSpeech';
-import {LessonBackground} from '@cdo/apps/types/progressTypes';
 
 import {queryParams} from '../code-studio/utils';
 import FontAwesome from '../legacySharedComponents/FontAwesome';
@@ -32,7 +31,6 @@ const childrenAreaHeight = 70;
 
 interface PanelsProps {
   panels: Panel[];
-  background: LessonBackground;
   onContinue: (nextUrl?: string) => void;
   onSkip?: () => void;
   targetWidth: number;
@@ -57,7 +55,6 @@ interface PanelsProps {
  */
 const PanelsView: React.FunctionComponent<PanelsProps> = ({
   panels,
-  background,
   onContinue,
   onSkip,
   targetWidth,
@@ -74,6 +71,8 @@ const PanelsView: React.FunctionComponent<PanelsProps> = ({
   >(undefined);
   const [typingDone, setTypingDone] = useState(false);
   const {cancel} = useBrowserTextToSpeech();
+  const {theme} = useTheme();
+  console.log({theme});
 
   const lastPanelStartTime = useRef<number>(Date.now());
 
@@ -167,7 +166,7 @@ const PanelsView: React.FunctionComponent<PanelsProps> = ({
     return null;
   }
 
-  const backgroundSuffix = capitalizeFirstLetter(background || 'dark');
+  const backgroundSuffix = theme;
 
   const previousPanel =
     panel.fadeInOverPrevious &&
