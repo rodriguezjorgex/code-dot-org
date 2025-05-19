@@ -205,6 +205,7 @@ export const READ_ONLY_PROPERTIES = [
   'FunctionalBlockUtils',
   'FunctionalTypeColors',
   'FunctionEditor',
+  'FocusManager',
   'gamelab_locale',
   'Generator',
   'geras',

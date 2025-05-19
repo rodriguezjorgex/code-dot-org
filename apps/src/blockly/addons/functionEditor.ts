@@ -320,6 +320,8 @@ export default class FunctionEditor {
 
     // Make the function editor workspace the active/focused workspace.
     Blockly.common.setMainWorkspace(this.editorWorkspace);
+    // Focus the procedure block.
+    Blockly.FocusManager.getFocusManager().focusNode(this.block!);
   }
 
   /**
