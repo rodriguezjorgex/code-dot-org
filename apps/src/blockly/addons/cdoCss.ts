@@ -54,7 +54,6 @@ export default function initializeCss(blocklyWrapper: BlocklyWrapperType) {
       fill: ${color.neutral_dark} !important;
     }
     .fieldAngleDropDownContainer .blocklyAngleHelperContainer {
-      box-shadow: 4px 4px 6px #bbb;
       border-width: 1px;
       float: right;
     }
@@ -63,7 +62,6 @@ export default function initializeCss(blocklyWrapper: BlocklyWrapperType) {
     }
     .fieldAngleDropDownContainer .blocklyMenu::after {
       content: '';
-      border-left: 1px solid #949ca2;
       position: absolute;
       height: 80%;
       right: 0;
