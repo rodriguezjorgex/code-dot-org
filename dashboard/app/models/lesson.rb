@@ -932,8 +932,13 @@ class Lesson < ApplicationRecord
     "https://support.code.org/hc/en-us/requests/new?&tf_description=#{CGI.escape(message)}"
   end
 
+  # For now, the lesson background color is determined by the following rules:
+  # 1. If this lesson contains any python lab levels, we check the user's theme preference.
+  #    If the user has a theme preference, we use that. If not, we check the lesson's background color.
+  # 2. If the lesson does not contain any python lab levels, we use the lesson's background color, if it exists.
+  # We are doing this because only python lab levels have the option to set a theme preference. Eventually,
+  # we would like all levels to have this option, and we can simplify this logic.
   def get_background(current_user)
-    # For now, we only use the user's theme preference if the lesson has python levels.
     has_python_levels = script_levels.any? {|script_level| script_level.level.is_a?(Pythonlab)}
     theme_preference = nil
     if has_python_levels && current_user
