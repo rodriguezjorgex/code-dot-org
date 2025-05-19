@@ -1,4 +1,4 @@
-import {render, screen} from '@testing-library/react';
+import {fireEvent, render, screen, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import React from 'react';
 
@@ -35,6 +35,7 @@ const DEFAULT_PROPS = {
   locationName: 'Test University',
   fee: '$400',
   hasPrereq: true,
+  description: 'Test description',
   customRegistrationLink: null,
 };
 
@@ -109,6 +110,22 @@ describe('RegionalWorkshopCatalog', () => {
     });
 
     screen.getByText('04/22/25 (1:00PM-9:00PM) + 1 More');
+  });
+
+  it('card renders Learn More button that opens dialog with description', async () => {
+    renderDefault();
+
+    expect(screen.queryByText(DEFAULT_PROPS.description)).toBe(null);
+    expect(screen.queryByRole('button', {name: 'closeLearnMoreDialog'})).toBe(
+      null
+    );
+
+    fireEvent.click(screen.getByRole('button', {name: 'learnMore'}));
+
+    await waitFor(() => {
+      screen.getByText(DEFAULT_PROPS.description);
+      screen.getByRole('button', {name: 'closeLearnMoreDialog'});
+    });
   });
 
   it('card renders button to send user to custom registration link if provided', () => {
