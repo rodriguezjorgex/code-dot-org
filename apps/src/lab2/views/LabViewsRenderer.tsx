@@ -9,6 +9,7 @@ import React, {Suspense, useEffect, useMemo} from 'react';
 import {getCurrentLesson} from '@cdo/apps/code-studio/progressReduxSelectors';
 import {queryParams} from '@cdo/apps/code-studio/utils';
 import UserPreferences from '@cdo/apps/lib/util/UserPreferences';
+import {SignInState} from '@cdo/apps/templates/currentUserRedux';
 import {Level} from '@cdo/apps/types/progressTypes';
 import {capitalizeFirstLetter} from '@cdo/apps/util/capitalizeFirstLetter';
 import {useAppSelector} from '@cdo/apps/util/reduxHooks';
@@ -41,12 +42,15 @@ const LabViewsRenderer: React.FunctionComponent = () => {
 
   const isViewingExemplar = getAppOptionsViewingExemplar();
   const lesson = useAppSelector(state => getCurrentLesson(state));
-  console.log({lesson});
+  const {signInState} = useAppSelector(state => state.currentUser);
 
-  const capitalizedLessonBackground = useMemo(
-    () => capitalizeFirstLetter(lesson?.background || 'light') as Theme,
-    [lesson]
-  );
+  const capitalizedLessonBackground = useMemo(() => {
+    if (lesson?.background) {
+      return capitalizeFirstLetter(lesson.background) as Theme;
+    } else {
+      return undefined;
+    }
+  }, [lesson]);
 
   // We only use the global user preference for theme if the current lesson has
   // at least one python lab level.
@@ -62,14 +66,17 @@ const LabViewsRenderer: React.FunctionComponent = () => {
       const supportedThemes = lab2EntryPoints[currentAppName]?.themes;
 
       const setThemeHelper = () => {
-        if (supportedThemes.includes(capitalizedLessonBackground)) {
+        if (
+          capitalizedLessonBackground &&
+          supportedThemes.includes(capitalizedLessonBackground)
+        ) {
           setTheme(capitalizedLessonBackground);
         } else {
           setTheme(supportedThemes[0]);
         }
       };
 
-      if (useThemeUserPreference) {
+      if (useThemeUserPreference && signInState === SignInState.SignedIn) {
         const fetchAndSetTheme = async () => {
           const userTheme = await new UserPreferences().getGlobalTheme();
           if (userTheme && supportedThemes.includes(userTheme)) {
@@ -89,6 +96,7 @@ const LabViewsRenderer: React.FunctionComponent = () => {
     setTheme,
     capitalizedLessonBackground,
     useThemeUserPreference,
+    signInState,
   ]);
 
   // Do not render lab view if project is blocked and user is not a project validator.
