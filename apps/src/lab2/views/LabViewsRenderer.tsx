@@ -48,6 +48,8 @@ const LabViewsRenderer: React.FunctionComponent = () => {
     [lesson]
   );
 
+  // We only use the global user preference for theme if the current lesson has
+  // at least one python lab level.
   const useThemeUserPreference = useMemo(
     () => lesson?.levels.some((level: Level) => level.app === 'pythonlab'),
     [lesson]
@@ -58,23 +60,28 @@ const LabViewsRenderer: React.FunctionComponent = () => {
   useEffect(() => {
     if (currentAppName) {
       const supportedThemes = lab2EntryPoints[currentAppName]?.themes;
+
+      const setThemeHelper = () => {
+        if (supportedThemes.includes(capitalizedLessonBackground)) {
+          setTheme(capitalizedLessonBackground);
+        } else {
+          setTheme(supportedThemes[0]);
+        }
+      };
+
       if (useThemeUserPreference) {
         const fetchAndSetTheme = async () => {
           const userTheme = await new UserPreferences().getGlobalTheme();
-          if (userTheme && supportedThemes?.includes(userTheme)) {
+          if (userTheme && supportedThemes.includes(userTheme)) {
             setTheme(userTheme);
-          } else if (supportedThemes?.includes(capitalizedLessonBackground)) {
-            setTheme(capitalizedLessonBackground);
           } else {
-            setTheme(supportedThemes[0]);
+            setThemeHelper();
           }
         };
 
         fetchAndSetTheme();
-      } else if (supportedThemes.includes(capitalizedLessonBackground)) {
-        setTheme(capitalizedLessonBackground);
       } else {
-        setTheme(supportedThemes[0]);
+        setThemeHelper();
       }
     }
   }, [
