@@ -4,23 +4,23 @@ class Pd::WorkshopControllerTest < ActionController::TestCase
     @workshop = create :workshop
   end
 
-  test 'non-logged-in users are prompted with sign in gate' do
+  test 'logged-out users can view workshop marketing page' do
     get :index, params: {workshop_id: @workshop.id}
 
     assert_response :success
-    assert_template :logged_out
+    assert_template :index
   end
 
-  test 'student users are prompted with account upgrade gate' do
+  test 'students can view workshop marketing page' do
     student = create :student
     sign_in student
     get :index, params: {workshop_id: @workshop.id}
 
     assert_response :success
-    assert_template :students_cannot_enroll
+    assert_template :index
   end
 
-  test 'teacher users are prompted with sign in gate' do
+  test 'teachers can view workshop marketing page' do
     teacher = create :teacher
     sign_in teacher
     get :index, params: {workshop_id: @workshop.id}
