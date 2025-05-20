@@ -39,14 +39,20 @@ const LabViewsRenderer: React.FunctionComponent = () => {
 
   const isViewingExemplar = getAppOptionsViewingExemplar();
 
-  const capitalizedLessonBackground = useAppSelector(state => {
-    const background = getCurrentLesson(state)?.background;
-    if (background) {
-      return capitalizeFirstLetter(background) as Theme;
-    } else {
-      return undefined;
-    }
-  });
+  // const capitalizedLessonBackground = useAppSelector(state => {
+  //   const background = getCurrentLesson(state)?.background;
+  //   if (background) {
+  //     return capitalizeFirstLetter(background) as Theme;
+  //   } else {
+  //     return undefined;
+  //   }
+  // });
+  const capitalizedLessonBackground = useAppSelector(
+    state =>
+      capitalizeFirstLetter(
+        getCurrentLesson(state)?.background || 'dark'
+      ) as Theme
+  );
 
   // Set the theme for the current app.
   const {setTheme} = useTheme();
@@ -54,10 +60,7 @@ const LabViewsRenderer: React.FunctionComponent = () => {
     if (currentAppName) {
       const supportedThemes = lab2EntryPoints[currentAppName]?.themes;
 
-      if (
-        capitalizedLessonBackground &&
-        supportedThemes.includes(capitalizedLessonBackground)
-      ) {
+      if (supportedThemes.includes(capitalizedLessonBackground)) {
         setTheme(capitalizedLessonBackground);
       } else {
         setTheme(supportedThemes[0]);
