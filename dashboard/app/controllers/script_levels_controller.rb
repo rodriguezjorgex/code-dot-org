@@ -195,7 +195,7 @@ class ScriptLevelsController < ApplicationController
     # 3. Otherwise, we use the level's background color, if it exists.
     @body_classes = @level.properties['background']
     if @script_level.level.uses_lab2? && @script_level.lesson
-      background = @script_level.lesson.get_background(current_user)
+      background = @script_level.lesson.get_background_for_user(current_user)
       if background
         @body_classes = "background-#{background}"
       end

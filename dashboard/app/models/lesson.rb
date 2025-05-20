@@ -938,14 +938,25 @@ class Lesson < ApplicationRecord
   # 2. If the lesson does not contain any python lab levels, we use the lesson's background color, if it exists.
   # We are doing this because only python lab levels have the option to set a theme preference. Eventually,
   # we would like all levels to have this option, and we can simplify this logic.
-  def get_background(current_user)
+  def get_background_for_user(current_user)
     has_python_levels = script_levels.any? {|script_level| script_level.level.is_a?(Pythonlab)}
     theme_preference = nil
+    theme_default = has_python_levels ? 'dark' : nil
     if has_python_levels && current_user
       user_theme = UserPreference.find_by(user_id: current_user.id)&.theme
       theme_preference = user_theme['global'] if user_theme
+    elsif !has_python_levels
+      music_count = script_levels.count {|script_level| script_level.level.is_a?(Music)}
+      aichat_count = script_levels.count {|script_level| script_level.level.is_a?(Aichat)}
+      if music_count > aichat_count
+        theme_default = 'dark'
+      elsif aichat_count > music_count
+        theme_default = 'light'
+      elsif music_count == aichat_count && music_count > 0
+        theme_default = 'dark'
+      end
     end
-    theme_preference&.downcase || background
+    theme_preference&.downcase || background || theme_default
   end
 
   # Finds the LessonActivity by id, or creates a new one if id is not specified.

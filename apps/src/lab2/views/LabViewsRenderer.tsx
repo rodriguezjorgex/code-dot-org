@@ -3,7 +3,7 @@
  * currently active Lab (determined by the current app name). This
  * helps facilitate level-switching between labs without page reloads.
  */
-import {useTheme, Theme} from '@code-dot-org/component-library/common/contexts';
+import {useTheme} from '@code-dot-org/component-library/common/contexts';
 import React, {Suspense, useEffect, useMemo} from 'react';
 
 import {getCurrentLesson} from '@cdo/apps/code-studio/progressReduxSelectors';
@@ -11,7 +11,6 @@ import {queryParams} from '@cdo/apps/code-studio/utils';
 import UserPreferences from '@cdo/apps/lib/util/UserPreferences';
 import {SignInState} from '@cdo/apps/templates/currentUserRedux';
 import {Level} from '@cdo/apps/types/progressTypes';
-import {capitalizeFirstLetter} from '@cdo/apps/util/capitalizeFirstLetter';
 import {useAppSelector} from '@cdo/apps/util/reduxHooks';
 
 import {lab2EntryPoints} from '../../../lab2EntryPoints';
@@ -44,13 +43,6 @@ const LabViewsRenderer: React.FunctionComponent = () => {
   const lesson = useAppSelector(state => getCurrentLesson(state));
   const {signInState} = useAppSelector(state => state.currentUser);
 
-  const capitalizedLessonBackground = useAppSelector(
-    state =>
-      capitalizeFirstLetter(
-        getCurrentLesson(state)?.background || 'dark'
-      ) as Theme
-  );
-
   // We only use the global user preference for theme if the current lesson has
   // at least one python lab level.
   const useThemeUserPreference = useMemo(
@@ -58,15 +50,23 @@ const LabViewsRenderer: React.FunctionComponent = () => {
     [lesson]
   );
 
-  // Set the theme for the current app.
+  // Ensure the current theme is supported by the current lab.
   const {setTheme} = useTheme();
   useEffect(() => {
     if (currentAppName) {
       const supportedThemes = lab2EntryPoints[currentAppName]?.themes;
 
       const setThemeHelper = () => {
-        if (supportedThemes.includes(capitalizedLessonBackground)) {
-          setTheme(capitalizedLessonBackground);
+        // If the body has a class, use that to set the theme if its supported by the lab.
+        // Otherwise, use the first supported theme.
+        // We will only run this if we are not using the user preference, so it's safe to pull
+        // from the body class, as the user cannot dynamically change the theme.
+        const bodyClassList = document.body.classList;
+        const bodyTheme = bodyClassList.contains('background-light')
+          ? 'Light'
+          : 'Dark';
+        if (supportedThemes.includes(bodyTheme)) {
+          setTheme(bodyTheme);
         } else {
           setTheme(supportedThemes[0]);
         }
@@ -87,13 +87,7 @@ const LabViewsRenderer: React.FunctionComponent = () => {
         setThemeHelper();
       }
     }
-  }, [
-    currentAppName,
-    setTheme,
-    capitalizedLessonBackground,
-    useThemeUserPreference,
-    signInState,
-  ]);
+  }, [currentAppName, setTheme, useThemeUserPreference, signInState]);
 
   // Do not render lab view if project is blocked and user is not a project validator.
   if (!currentAppName || (isBlocked && !isProjectValidator)) {
