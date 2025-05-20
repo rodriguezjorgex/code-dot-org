@@ -4,25 +4,22 @@ import color from '@cdo/apps/util/color';
 import {BlocklyWrapperType} from '../types';
 export default function initializeCss(blocklyWrapper: BlocklyWrapperType) {
   blocklyWrapper.Css.register(
-    `.fieldGridDropDownContainer.blocklyMenu .blocklyMenuItem {
-      padding: 0px;
+    `.blocklyFieldGrid {
+      margin: 5px;
+    }
+    .blocklyFieldGrid .blocklyFieldGridItem {
       border: none;
+      padding: 0px;
+      margin: 0px;
     }
-    .fieldGridDropDownContainer .blocklyMenuItem.blocklyMenuItemSelected {
-      background-color: white;
-    }
-    /* A special class for image dropdown fields with all-white images */
-    .transparentContainer .blocklyMenuItem.blocklyMenuItemSelected {
-      background-color: rgba(1, 1, 1, 0.25);
-    }
-    /* Change look of focus/highlighted cell */
-    .fieldGridDropDownContainer .blocklyMenuItem.blocklyMenuItemHighlight {
-      box-shadow: 0 0 0 4px hsla(0.57, 10%, 34%, .2);
-    }
-    .blocklyMenuItemContent > img {
+    .blocklyFieldGrid .blocklyFieldGridItem img {
+      opacity: 1;
       object-fit: contain;
     }
-
+    .blocklyFieldGridContainer {
+      padding: 0px;
+      overflow: auto;
+    }
     .blocklyFlyoutButton {
       fill: ${color.brand_secondary_default};
       cursor: pointer;
