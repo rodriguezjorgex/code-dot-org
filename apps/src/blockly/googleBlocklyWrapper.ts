@@ -391,7 +391,20 @@ function initializeBlocklyWrapper(blocklyInstance: GoogleBlocklyInstance) {
   });
   Object.defineProperty(blocklyWrapper, 'selected', {
     get: function () {
-      return this.blockly_.getSelected();
+      // In the event that the block is no longer focused, we can
+      // potentially use the workspace's focused node.
+      // This allows `Blockly.selected` to work from the dev console.
+      const focusedNode = this.FocusableTreeTraverser.findFocusedNode(
+        // common.getMainWorkspace() gets the currently active workspace,
+        // as opposed to the student's "primary" workspace.
+        Blockly.common.getMainWorkspace()
+      );
+      if (Blockly.isSelectable(focusedNode)) {
+        return focusedNode;
+      }
+      // If the focused node is not selectable, fall back to the
+      // getSelected() method.
+      return Blockly.getSelected();
     },
   });
   Object.defineProperty(blocklyWrapper, 'BlockFieldHelper', {
