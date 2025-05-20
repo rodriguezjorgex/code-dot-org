@@ -1,9 +1,9 @@
+import Button, {buttonColors} from '@code-dot-org/component-library/button';
+import {Heading4} from '@code-dot-org/component-library/typography';
 import React, {useState} from 'react';
-import {ControlLabel, Fade, FormControl, FormGroup} from 'react-bootstrap';
+import {ControlLabel, Fade, FormControl, FormGroup} from 'react-bootstrap'; // eslint-disable-line no-restricted-imports
 import {connect} from 'react-redux';
 
-import Button, {buttonColors} from '@cdo/apps/componentLibrary/button/Button';
-import {Heading4} from '@cdo/apps/componentLibrary/typography';
 import {STATE_CODES} from '@cdo/apps/geographyConstants';
 import {EVENTS, PLATFORMS} from '@cdo/apps/metrics/AnalyticsConstants';
 import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
@@ -11,7 +11,7 @@ import AccessibleDialog from '@cdo/apps/sharedComponents/AccessibleDialog';
 import {bulkSet} from '@cdo/apps/templates/manageStudents/manageStudentsRedux';
 import {BulkSetModalProps} from '@cdo/apps/templates/manageStudents/Table/UsStateColumn/interface';
 import SafeMarkdown from '@cdo/apps/templates/SafeMarkdown';
-import {selectedSection} from '@cdo/apps/templates/teacherDashboard/teacherSectionsReduxSelectors';
+import {selectedSectionSelector} from '@cdo/apps/templates/teacherDashboard/teacherSectionsReduxSelectors';
 import {RootState} from '@cdo/apps/types/redux';
 import {CapLinks} from '@cdo/generated-scripts/sharedConstants';
 import i18n from '@cdo/locale';
@@ -110,7 +110,7 @@ const BulkSetModal: React.FC<BulkSetModalProps> = ({
 export default connect(
   (state: RootState) => ({
     currentUser: state.currentUser,
-    section: selectedSection(state),
+    section: selectedSectionSelector(state),
   }),
   dispatch => ({
     bulkSet(studentsData: {usState: string | null}) {

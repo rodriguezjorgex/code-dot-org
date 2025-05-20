@@ -29,10 +29,7 @@ module Services
           user_params[:email_preference_form_kind] = '0'
 
           if user_params[:school_info_attributes].present?
-            if SharedConstants::NON_SCHOOL_OPTIONS.to_h.value?(user_params[:school_info_attributes]['schoolId'])
-              user_params[:school_info_attributes]['schoolId'] = nil
-            end
-            user_params[:school_info_attributes].transform_keys!(&:underscore).permit(:school_id, :school_name, :school_type, :school_zip, :school_state, :country, :full_address)
+            user_params[:school_info_attributes].permit(:school_id, :school_name, :school_type, :zip, :country)
           end
         when ::User::TYPE_STUDENT
           if user_params[:parent_email_preference_email].present?
@@ -43,7 +40,7 @@ module Services
             user_params[:parent_email_preference_source] = EmailPreference::ACCOUNT_SIGN_UP
           end
         end
-
+        user_params[:terms_of_service_version] = ::User::TERMS_OF_SERVICE_VERSIONS.last
         user_params[:data_transfer_agreement_accepted] = user_params[:data_transfer_agreement_accepted] == '1'
         if user_params[:data_transfer_agreement_required] && user_params[:data_transfer_agreement_accepted]
           user_params[:data_transfer_agreement_request_ip] = request.ip
@@ -62,12 +59,13 @@ module Services
           :email,
           :hashed_email,
           :name,
+          :educator_role,
           :email_preference_opt_in_required,
           :email_preference_opt_in,
           :email_preference_request_ip,
           :email_preference_source,
           :email_preference_form_kind,
-          {school_info_attributes: [:schoolId, :schoolName, :schoolType, :schoolZip, :schoolState, :country, :fullAddress]},
+          {school_info_attributes: [:school_id, :school_name, :school_type, :zip, :country]},
           :age,
           :gender,
           :us_state,
@@ -81,7 +79,8 @@ module Services
           :data_transfer_agreement_request_ip,
           :data_transfer_agreement_source,
           :data_transfer_agreement_kind,
-          :data_transfer_agreement_at
+          :data_transfer_agreement_at,
+          :terms_of_service_version
         ]
       end
     end

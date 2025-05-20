@@ -83,6 +83,7 @@ export interface ProgressState {
   courseVersionId: number | undefined;
   unitDescription: string | undefined;
   unitStudentDescription: string | undefined;
+  unitHasUnnumberedLessons: boolean;
   changeFocusAreaPath: string | undefined;
   unitCompleted: boolean | undefined;
 }
@@ -146,6 +147,7 @@ const initialState: ProgressState = {
   courseVersionId: undefined,
   unitDescription: undefined,
   unitStudentDescription: undefined,
+  unitHasUnnumberedLessons: false,
   changeFocusAreaPath: undefined,
   unitCompleted: undefined,
 };
@@ -176,6 +178,7 @@ const progressSlice = createSlice({
       state.unitTitle = action.payload.unitTitle;
       state.unitDescription = action.payload.unitDescription;
       state.unitStudentDescription = action.payload.unitStudentDescription;
+      state.unitHasUnnumberedLessons = action.payload.unitHasUnnumberedLessons;
       state.courseId = action.payload.courseId;
       state.courseVersionId = action.payload.courseVersionId;
       state.currentLessonId = currentLessonId;
@@ -282,7 +285,7 @@ const progressSlice = createSlice({
     setLessonExtrasEnabled(state, action: PayloadAction<boolean>) {
       state.lessonExtrasEnabled = action.payload;
     },
-    setViewAsUserId(state, action: PayloadAction<number>) {
+    setViewAsUserId(state, action: PayloadAction<number | null>) {
       state.viewAsUserId = action.payload;
     },
   },
@@ -299,6 +302,12 @@ const progressSlice = createSlice({
 
 // Thunks
 type ProgressThunkAction = ThunkAction<void, RootState, undefined, AnyAction>;
+type AsyncProgressThunkAction = ThunkAction<
+  Promise<void>,
+  RootState,
+  undefined,
+  AnyAction
+>;
 
 export const queryUserProgress =
   (userId: string, mergeProgress: boolean = true): ProgressThunkAction =>
@@ -324,6 +333,10 @@ export function navigateToLevelId(levelId: string): ProgressThunkAction {
     const currentLevel = getCurrentLevel(getState());
 
     if (canChangeLevelInPage(currentLevel, newLevel)) {
+      // If the requested level is the same as the current level, don't do anything.
+      if (state.currentLevelId === levelId) {
+        return;
+      }
       updateBrowserForLevelNavigation(state, newLevel.path, levelId);
       // Notify the Lab2 system that the level is changing.
       notifyLevelChange(currentLevel.id, levelId);
@@ -354,9 +367,9 @@ export function navigateToNextLevel(): ProgressThunkAction {
 
 // The user has successfully completed the level and the page
 // will not be reloading. Currently only used by Lab2 labs.
-export function sendSuccessReport(appType: string): ProgressThunkAction {
+export function sendSuccessReport(appType: string): AsyncProgressThunkAction {
   return (dispatch, getState) => {
-    sendReportHelper(appType, TestResults.ALL_PASS, dispatch, getState);
+    return sendReportHelper(appType, TestResults.ALL_PASS, dispatch, getState);
   };
 }
 
@@ -365,9 +378,9 @@ export function sendSuccessReport(appType: string): ProgressThunkAction {
 export function sendProgressReport(
   appType: string,
   result: TestResults
-): ProgressThunkAction {
+): AsyncProgressThunkAction {
   return (dispatch, getState) => {
-    sendReportHelper(appType, result, dispatch, getState);
+    return sendReportHelper(appType, result, dispatch, getState);
   };
 }
 
@@ -431,11 +444,11 @@ function sendReportHelper(
   const state = getState().progress;
   const levelId = state.currentLevelId;
   if (!state.currentLessonId || !levelId) {
-    return;
+    return Promise.resolve();
   }
   const scriptLevelId = getCurrentScriptLevelId(getState());
   if (!scriptLevelId) {
-    return;
+    return Promise.resolve();
   }
 
   // The server does not appear to use the user ID parameter,
@@ -450,7 +463,7 @@ function sendReportHelper(
     ...extraData,
   };
 
-  fetch(`/milestone/${userId}/${scriptLevelId}/${levelId}`, {
+  return fetch(`/milestone/${userId}/${scriptLevelId}/${levelId}`, {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
@@ -461,6 +474,12 @@ function sendReportHelper(
       // Update the progress store by merging in this
       // particular result immediately.
       dispatch(mergeResults({[levelId]: result}));
+      // If the level is the sublevel of a bubble level,
+      // also update the status of the parent level.
+      const currentLevel = getCurrentLevel(getState());
+      if (currentLevel.parentLevelId) {
+        dispatch(mergeResults({[currentLevel.parentLevelId]: result}));
+      }
     }
   });
 }

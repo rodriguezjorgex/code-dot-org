@@ -10,7 +10,6 @@ import isRtl from '@cdo/apps/code-studio/isRtlRedux';
 import progressRedux from '@cdo/apps/code-studio/progressRedux';
 import verifiedInstructor from '@cdo/apps/code-studio/verifiedInstructorRedux';
 import viewAs from '@cdo/apps/code-studio/viewAsRedux';
-import DCDO from '@cdo/apps/dcdo';
 import {getStore, registerReducers} from '@cdo/apps/redux';
 import locales, {setLocaleCode} from '@cdo/apps/redux/localesRedux';
 import unitSelection, {setScriptId} from '@cdo/apps/redux/unitSelectionRedux';
@@ -25,9 +24,11 @@ import sectionAssessments from '@cdo/apps/templates/sectionAssessments/sectionAs
 import sectionProgress from '@cdo/apps/templates/sectionProgress/sectionProgressRedux';
 import sectionStandardsProgress from '@cdo/apps/templates/sectionProgress/standards/sectionStandardsProgressRedux';
 import progressV2Feedback from '@cdo/apps/templates/sectionProgressV2/progressV2FeedbackRedux';
+import {TeacherHomepage} from '@cdo/apps/templates/studioHomepages/teacherHomepageV2/TeacherHomepage';
 import stats from '@cdo/apps/templates/teacherDashboard/statsRedux';
 import TeacherDashboard from '@cdo/apps/templates/teacherDashboard/TeacherDashboard';
 import teacherSections, {
+  setAuthProviders,
   selectSection,
   setRosterProvider,
   setRosterProviderName,
@@ -35,8 +36,9 @@ import teacherSections, {
   setStudentsForCurrentSection,
 } from '@cdo/apps/templates/teacherDashboard/teacherSectionsRedux';
 import {sectionProviderName} from '@cdo/apps/templates/teacherDashboard/teacherSectionsReduxSelectors';
+import {setSelectedSectionData} from '@cdo/apps/templates/teacherNavigation/selectedSectionLoader';
+import {showV2TeacherDashboard} from '@cdo/apps/templates/teacherNavigation/TeacherNavFlagUtils';
 import TeacherNavigationRouter from '@cdo/apps/templates/teacherNavigation/TeacherNavigationRouter';
-import experiments from '@cdo/apps/util/experiments';
 
 const script = document.querySelector('script[data-dashboard]');
 const scriptData = JSON.parse(script.dataset.dashboard);
@@ -46,6 +48,8 @@ const {
   localeCode,
   hasSeenStandardsReportInfo,
   canViewStudentAIChatMessages,
+  sectionOrder,
+  providers,
 } = scriptData;
 
 $(document).ready(function () {
@@ -72,14 +76,11 @@ $(document).ready(function () {
   store.dispatch(
     setCurrentUserHasSeenStandardsReportInfo(hasSeenStandardsReportInfo)
   );
-  store.dispatch(setSections(sections));
+  store.dispatch(setSections(sections, false, sectionOrder));
   store.dispatch(setLocaleCode(localeCode));
+  store.dispatch(setAuthProviders(providers));
 
   const showAITutorTab = canViewStudentAIChatMessages;
-
-  const showV2TeacherDashboard =
-    DCDO.get('teacher-local-nav-v2', false) ||
-    experiments.isEnabled('teacher-local-nav-v2');
 
   // When removing v1TeacherDashboard after v2 launch, remove `selectedSection` from api response.
   const getV1TeacherDashboard = () => {
@@ -133,16 +134,37 @@ $(document).ready(function () {
     );
   };
 
-  ReactDOM.render(
-    <Provider store={store}>
-      {!showV2TeacherDashboard ? (
-        getV1TeacherDashboard()
-      ) : (
+  const getV2TeacherDashboard = () => {
+    // If a teacher has no sections, we will send them directly to the homepage to bypass
+    // all of the section loading logic in the TeacherNavigationRouter.
+    if (sections.length === 0) {
+      return <TeacherHomepage />;
+    } else {
+      const selectedSectionFromList = window.location.pathname.includes(
+        '/teacher_dashboard/home'
+      )
+        ? sections[0]
+        : sections.find(s => s.id === section.id);
+      const selectedSection = {...selectedSectionFromList, ...section};
+
+      store.dispatch(selectSection(selectedSection.id));
+
+      setSelectedSectionData(selectedSection);
+
+      return (
         <TeacherNavigationRouter
           studioUrlPrefix={scriptData.studioUrlPrefix}
           showAITutorTab={showAITutorTab}
         />
-      )}
+      );
+    }
+  };
+
+  ReactDOM.render(
+    <Provider store={store}>
+      {!showV2TeacherDashboard()
+        ? getV1TeacherDashboard()
+        : getV2TeacherDashboard()}
     </Provider>,
     document.getElementById('teacher-dashboard')
   );

@@ -28,6 +28,19 @@ FactoryBot.define do
         create(:course_version, :with_unit_group, course_offering: course_offering)
       end
     end
+
+    factory :csp_course_offering do
+      sequence(:key, 'a') {|c| "csp-course-offering-#{c}"}
+      sequence(:display_name, 'a') {|c| "csp-course-offering-#{c}"}
+      assignable {true}
+      grade_levels {"9,10,11,12"}
+
+      trait :with_units do
+        after(:create) do |csp_course_offering|
+          create(:course_version, :with_csp_unit, course_offering: csp_course_offering)
+        end
+      end
+    end
   end
 
   factory :course_version do
@@ -43,9 +56,16 @@ FactoryBot.define do
     trait :with_unit do
       association(:content_root, factory: :script, is_course: true)
     end
+
+    trait :with_csp_unit do
+      association(:content_root, factory: :csp_script, is_course: true)
+    end
   end
 
   factory :unit_group_unit do
+    after(:create) do |unit_group_unit|
+      unit_group_unit.script.update!(original_unit_group: unit_group_unit.unit_group) if unit_group_unit.script.original_unit_group_id.nil?
+    end
   end
 
   factory :unit_group do
@@ -56,6 +76,15 @@ FactoryBot.define do
     instruction_type {"teacher_led"}
     participant_audience {"student"}
     instructor_audience {"teacher"}
+
+    factory :single_unit_course do
+      transient do
+        unit {nil}
+      end
+      after(:create) do |unit_group, evaluator|
+        create :unit_group_unit, unit_group: unit_group, script: (evaluator.unit || create(:unit, original_unit_group: unit_group)), position: 1
+      end
+    end
   end
 
   factory :experiment do
@@ -102,7 +131,7 @@ FactoryBot.define do
   factory :studio_person do
   end
 
-  factory :user do
+  factory :user, class: Student do
     birthday {Time.zone.today - 21.years}
     email {"#{user_type}_#{SecureRandom.uuid}@code.org"}
     password {"00secret"}
@@ -118,13 +147,16 @@ FactoryBot.define do
       after(:create, &:demigrate_from_multi_auth)
     end
 
-    factory :teacher do
+    factory :teacher, class: Teacher do
       user_type {User::TYPE_TEACHER}
       birthday {Date.new(1980, 3, 14)}
       factory :admin do
         google_sso_provider
         password {nil}
         after(:create) {|user| user.update(admin: true)}
+      end
+      trait :with_educator_role do
+        educator_role {SharedConstants::EDUCATOR_ROLES.first[:value]}
       end
       trait :with_school_info do
         school_info
@@ -166,6 +198,19 @@ FactoryBot.define do
         after(:create) do |ai_tutor_access|
           ai_tutor_access.permission = UserPermission::AI_TUTOR_ACCESS
           ai_tutor_access.save
+        end
+      end
+      factory :ai_iteration_tools_user do
+        after(:create) do |ai_iteration_tools_user|
+          ai_iteration_tools_user.permission = UserPermission::AI_TUTOR_ACCESS
+          ai_iteration_tools_user.permission = UserPermission::LEVELBUILDER
+          ai_iteration_tools_user.save
+        end
+      end
+      factory :student_work_dataset_maker do
+        after(:create) do |student_work_dataset_maker|
+          student_work_dataset_maker.permission = UserPermission::STUDENT_WORK_ACCESS
+          student_work_dataset_maker.save
         end
       end
       factory :facilitator do
@@ -276,9 +321,14 @@ FactoryBot.define do
       end
     end
 
-    factory :student do
+    factory :student, class: Student do
       user_type {User::TYPE_STUDENT}
       birthday {Time.zone.today - 17.years}
+
+      trait :sponsored do
+        encrypted_password {nil}
+        provider {User::PROVIDER_SPONSORED}
+      end
 
       factory :young_student do
         birthday {Time.zone.today - 10.years}
@@ -345,6 +395,13 @@ FactoryBot.define do
           section = create :section, login_type: Section::LOGIN_TYPE_EMAIL
           create :follower, student_user: user, section: section
           user.reload
+        end
+      end
+
+      trait :in_google_section do
+        after(:create) do |user|
+          section = create :section, login_type: Section::LOGIN_TYPE_GOOGLE_CLASSROOM
+          section.add_student user
         end
       end
 
@@ -438,7 +495,7 @@ FactoryBot.define do
 
       factory :cpa_non_compliant_student, traits: [:U13, :in_colorado], aliases: %i[non_compliant_child] do
         trait :predates_policy do
-          created_at {Policies::ChildAccount.state_policies.dig('CO', :start_date).ago(1.second)}
+          created_at {Policies::ChildAccount::StatePolicies.state_policies.dig('CO', :start_date).ago(1.second)}
         end
 
         trait :in_grace_period do
@@ -457,7 +514,7 @@ FactoryBot.define do
     end
 
     # We have some tests which want to create student accounts which don't have any authentication setup.
-    # Using this will put the user into an invalid state.
+    # Using this will put the user into an invalid state unless they have another authentication option.
     trait :without_encrypted_password do
       after(:create) do |user|
         user.encrypted_password = nil
@@ -466,11 +523,27 @@ FactoryBot.define do
       end
     end
 
+    # The user factory creates an email authentication option by default. This trait will remove that option.
+    # For testing SSO users who have an email address but not an email authentication option.
+    trait :without_email_auth_option do
+      after(:create) do |user|
+        ao = user.authentication_options.find_by(credential_type: AuthenticationOption::EMAIL)
+        ao&.destroy
+        user.save
+        # Reload to ensure that further uses of the pre-loaded user don't see the now-destroyed auth option
+        user.reload
+      end
+    end
+
     trait :with_lti_auth do
       after(:create) do |user|
         user.lms_landing_opted_out = true
         user.authentication_options.destroy_all
-        lti_auth = create(:lti_authentication_option, user: user)
+        user.reload
+        lti_user_id = create(:lti_user_identity, user: user)
+        user.lti_user_identities << lti_user_id
+        auth_id = lti_user_id.lti_integration.issuer + "|" + lti_user_id.lti_integration.client_id + "|" + lti_user_id.subject
+        lti_auth = create(:lti_authentication_option, user: user, authentication_id: auth_id)
         user.authentication_options << lti_auth
         user.lti_roster_sync_enabled = true
         user.save!
@@ -561,6 +634,7 @@ FactoryBot.define do
             oauth_token_expiration: '999999'
           }.to_json
         )
+        user.reload
       end
     end
 
@@ -578,6 +652,7 @@ FactoryBot.define do
             oauth_token_expiration: '999999'
           }.to_json
         )
+        user.reload
       end
     end
 
@@ -593,6 +668,13 @@ FactoryBot.define do
             oauth_token: 'some-clever-token'
           }.to_json
         )
+        user.reload
+      end
+    end
+
+    trait :with_lti_authentication_option do
+      after(:create) do |user|
+        create(:lti_authentication_option, user: user)
       end
     end
 
@@ -633,6 +715,11 @@ FactoryBot.define do
     sequence(:email) {|n| "testuser#{n}@example.com.xx"}
     credential_type {AuthenticationOption::EMAIL}
     authentication_id {SecureRandom.uuid}
+
+    after(:create) do |auth_option|
+      # Ensure that the original user model reloads the auth options list
+      auth_option.user&.reload
+    end
 
     factory :google_authentication_option do
       credential_type {AuthenticationOption::GOOGLE}
@@ -749,6 +836,13 @@ FactoryBot.define do
     trait :with_instructions do
       after(:create) do |level|
         level.properties['long_instructions'] = 'Write a loop.'
+        level.save!
+      end
+    end
+
+    trait :with_starter_code do
+      after(:create) do |level|
+        level.properties['start_blocks'] = 'const isCode = true;'
         level.save!
       end
     end
@@ -1037,15 +1131,6 @@ FactoryBot.define do
       end
     end
 
-    factory :csc_script do
-      after(:create) do |csc_script|
-        csc_script.curriculum_umbrella = Curriculum::SharedCourseConstants::CURRICULUM_UMBRELLA.CSC
-        csc_script.save!
-        course_offering = CourseOffering.add_course_offering(csc_script)
-        course_offering.update!(marketing_initiative: 'CSC')
-      end
-    end
-
     factory :hoc_script do
       is_course {true}
       sequence(:version_year) {|n| "bogus-hoc-version-year-#{n}"}
@@ -1068,6 +1153,20 @@ FactoryBot.define do
     factory :pl_unit do
       participant_audience {"teacher"}
       instructor_audience {"facilitator"}
+    end
+
+    factory :foundations_of_cs_script do
+      after(:create) do |foundations_of_cs_script|
+        foundations_of_cs_script.curriculum_umbrella = Curriculum::SharedCourseConstants::CURRICULUM_UMBRELLA.foundations_of_cs
+        foundations_of_cs_script.save!
+      end
+    end
+
+    factory :foundations_of_programming_script do
+      after(:create) do |foundations_of_programming_script|
+        foundations_of_programming_script.curriculum_umbrella = Curriculum::SharedCourseConstants::CURRICULUM_UMBRELLA.foundations_of_programming
+        foundations_of_programming_script.save!
+      end
     end
   end
 
@@ -1168,6 +1267,13 @@ FactoryBot.define do
       after(:create) do |csf_script_level|
         csf_script_level.script.curriculum_umbrella = 'CSF'
         csf_script_level.save
+      end
+    end
+
+    factory :csp_script_level do
+      after(:create) do |csp_script_level|
+        csp_script_level.script.curriculum_umbrella = 'CSP'
+        csp_script_level.save
       end
     end
 
@@ -1334,7 +1440,7 @@ FactoryBot.define do
   end
 
   factory :follower do
-    association :student_user, factory: :student
+    association :student_user, factory: %i[student sponsored]
 
     transient do
       section {nil}
@@ -1482,9 +1588,19 @@ FactoryBot.define do
 
   factory :school_info_non_us, class: SchoolInfo do
     country {'GB'}
-    school_type {SchoolInfo::SCHOOL_TYPE_PUBLIC}
-    full_address {'31 West Bank, London, England'}
     school_name {'Grazebrook'}
+  end
+
+  factory :school_info_us_non_nces, class: SchoolInfo do
+    country {'US'}
+    school_name {'Non NCES School'}
+    zip {'12345'}
+  end
+
+  factory :school_info_us_non_school_setting, class: SchoolInfo do
+    country {'US'}
+    school_type {SchoolInfo::SCHOOL_TYPE_NO_SCHOOL_SETTING}
+    zip {'12345'}
   end
 
   factory :school_info_us, class: SchoolInfo do
@@ -1809,8 +1925,6 @@ FactoryBot.define do
     association :teacher
   end
 
-  factory :donor_school
-
   factory :contact_rollups_raw do
     sequence(:email) {|n| "contact_#{n}@example.domain"}
     sequence(:sources) {|n| "dashboard.table_#{n}"}
@@ -2019,6 +2133,32 @@ FactoryBot.define do
     other_content {'other'}
   end
 
+  factory :student_work_evaluation_summary do
+    student_work_evaluation_id {1}
+    student_work_evaluation_summary_id {1}
+  end
+
+  factory :user_level_skill_evaluation do
+    association :student, factory: :student
+    association :level
+    association :unit
+    evaluator {"AI"}
+    evaluation {"Great"}
+    evaluation_criteria {"Does the student's work on this level demonstrate the skill?"}
+    reasoning {"The student's work demonstrated the skill."}
+  end
+
+  factory :user_level_evaluation do
+    association :student, factory: :student
+    association :level
+    association :unit
+    code_version {"4s&7ya"}
+    evaluator {"AI"}
+    evaluation {"Ok"}
+    evaluation_criteria {"Does the student's work on this level meet the requirements?"}
+    reasoning {"The student's did some of what they were supposed to."}
+  end
+
   factory :potential_teacher do
     association :script
     name {"foosbars"}
@@ -2044,5 +2184,21 @@ FactoryBot.define do
     level_id {1}
     script_id {1}
     project_id {1}
+  end
+
+  factory :aidiff_thread do
+    association :user
+    external_id {"1234"}
+    llm_version {"dummy_llm"}
+    unit_id {1}
+    level_id {1}
+  end
+
+  factory :aidiff_message do
+    association :aidiff_thread, factory: :aidiff_thread
+    external_id {"1234"}
+    role {:assistant}
+    content {"Lorem ipsum"}
+    is_preset {false}
   end
 end

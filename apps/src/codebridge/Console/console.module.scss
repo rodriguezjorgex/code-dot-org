@@ -1,7 +1,7 @@
 @import 'color.scss';
+@import '@code-dot-org/component-library-styles/colors.scss';
 
 .consoleContainer {
-  grid-area: console;
   color: $white;
   overflow: hidden;
   height: 100%;
@@ -9,14 +9,10 @@
   background-color: $black;
 }
 
-.console {
-  font-family:'Courier New', Courier, monospace;
-  overflow-y: scroll;
-  user-select: text;
-}
-
-.errorLine {
-  color: $lightest_red;
+.consoleV2 {
+  flex-grow: 1;
+  overflow: hidden;
+  padding-left: 4px;
 }
 
 .popOutGraph {
@@ -29,16 +25,22 @@
 
 .disabledInfoIcon {
   padding: 12px;
-  color: $white;
+  color: var(--text-neutral-primary);
   font-size: 16px;
 }
 
 .consoleHeader {
   height: 40px;
   min-height: 40px;
+
+  & > div {
+    height: 40px;
+  }
 }
 
-.controlButton {
+// Using button to increase specificity of this class
+// (this allows it to take precedence over the component library button styles)
+button.controlButton {
   margin: 8px 8px 8px 4px;
 }
 

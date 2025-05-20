@@ -2,14 +2,37 @@
   "pages": {
     "homepage": [
       "hoc2024-soon-hoc",
-      "hoc2023-actual-hoc",
       "pl-launch-superhero",
       "curriculum-launch-2024",
-      "best-of-stem-2024"
+      "best-of-stem-2024",
+      "music-lab-banner"
     ]
   },
 
   "banners": {
+    "music-lab-banner": {
+      "dcdo": "music-lab-banner",
+      "class": "music-lab-banner homepage",
+      "desktopImage": "/images/music-lab/music-lab-homepage-banner-bg.png",
+      "mobileImage": "/images/music-lab/music-lab-homepage-banner-bg.png",
+      "leftImage": "/images/music-lab/music-lab-homepage-banner-left.png",
+      "rightImage": "/images/music-lab/music-lab-homepage-banner-right.png",
+      "actions": [
+        {
+          "type": "music-lab-banner",
+          "text_overline": "music_lab.banner2.overline",
+          "text_h1": "music_lab.banner2.heading",
+          "text_desc": "music_lab.banner2.desc",
+          "button_label_primary": "music_lab.button.try_music_lab",
+          "button_url_primary": "https://studio.code.org/s/music-jam-2024/reset",
+          "button_label_secondary": "music_lab.button.learn_more",
+          "button_url_secondary": "/music",
+          "text_desc_02": "music_lab.in_partnership_with",
+          "logo_list_01": "/images/avatars/amazon_future_engineer_light.png",
+          "logo_list_01_alt": "music_lab.amazon_future_engineer"
+        }
+      ]
+    },
     "hoc2024-soon-hoc": {
       "hoc_modes": ["soon-hoc"],
       "class": "hoc-banner homepage",
@@ -24,38 +47,6 @@
           "button_link": "https://hourofcode.com/events",
           "button_text": "hoc_2024.button_host_an_event",
           "img_src": "/images/banners/banner-hoc-2024.png"
-        }
-      ]
-    },
-    "hoc2023-actual-hoc": {
-      "hoc_modes": ["actual-hoc"],
-      "class": "hoc-banner homepage",
-      "desktopImage": "/images/hoc2023-codeorg-hero-banner.png",
-      "mobileImage": "/images/hoc2023-codeorg-hero-banner-mobile.png",
-      "leftImage": "/images/hoc2023-codeorg-hero-banner-left.svg",
-      "rightImage": "/images/hoc2023-codeorg-hero-banner-right.svg",
-      "actions": [
-        {
-          "type": "text",
-          "text": "homepage_hero_hoc_is_here"
-        },
-        {
-          "type": "heading",
-          "text": "curriculum_name_dance_party_ai_edition"
-        },
-        {
-          "type": "heading-two",
-          "text": "codeorg_homepage_hoc2023_body"
-        },
-        {
-          "type": "cta_button_solid_yellow",
-          "text": "hoc2022_cta_primary",
-          "url": "/dance"
-        },
-        {
-          "type": "cta_button_solid_white",
-          "text": "hoc2022_cta_secondary",
-          "url": "https://hourofcode.com/learn"
         }
       ]
     },

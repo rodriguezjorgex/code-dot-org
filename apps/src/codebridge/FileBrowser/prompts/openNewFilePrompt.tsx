@@ -1,10 +1,10 @@
-import {getNextFileId} from '@codebridge/codebridgeContext';
 import {NewFileFunction} from '@codebridge/codebridgeContext/types';
 import {DEFAULT_FOLDER_ID} from '@codebridge/constants';
-import {ProjectType, FolderId, ProjectFile} from '@codebridge/types';
+import {FolderId, ProjectFile} from '@codebridge/types';
 import {validateFileName} from '@codebridge/utils';
 
 import codebridgeI18n from '@cdo/apps/codebridge/locale';
+import {MultiFileSource} from '@cdo/apps/lab2/types';
 import {
   DialogType,
   DialogControlInterface,
@@ -16,10 +16,11 @@ type OpenNewFilePromptArgsType = {
   folderId?: FolderId;
   dialogControl: Pick<DialogControlInterface, 'showDialog'>;
   newFile: NewFileFunction;
-  projectFiles: ProjectType['files'];
+  projectFiles: MultiFileSource['files'];
   sendCodebridgeAnalyticsEvent: (eventName: string) => unknown;
   isStartMode: boolean;
   validationFile: ProjectFile | undefined;
+  validFileTypes?: string[];
 };
 
 export const openNewFilePrompt = async ({
@@ -30,6 +31,7 @@ export const openNewFilePrompt = async ({
   sendCodebridgeAnalyticsEvent,
   isStartMode,
   validationFile,
+  validFileTypes,
 }: OpenNewFilePromptArgsType) => {
   const results = await dialogControl.showDialog({
     type: DialogType.GenericPrompt,
@@ -41,6 +43,7 @@ export const openNewFilePrompt = async ({
         projectFiles,
         isStartMode,
         validationFile,
+        validFileTypes,
       }),
   });
   if (results.type !== 'confirm') {
@@ -48,15 +51,7 @@ export const openNewFilePrompt = async ({
   }
   const fileName = extractUserInput(results);
 
-  const files = Object.values(projectFiles);
-  // The validation file is in the project files in start mode.
-  if (validationFile && !isStartMode) {
-    files.push(validationFile);
-  }
-  const fileId = getNextFileId(files);
-
   newFile({
-    fileId,
     fileName,
     folderId,
   });

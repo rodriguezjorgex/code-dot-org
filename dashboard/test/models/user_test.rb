@@ -5,6 +5,7 @@ require 'timecop'
 
 class UserTest < ActiveSupport::TestCase
   include ProjectsTestUtils
+  include Minitest::RSpecMocks
   self.use_transactional_test_case = true
 
   class UsStateCodeTest < ActiveSupport::TestCase
@@ -329,28 +330,28 @@ class UserTest < ActiveSupport::TestCase
     assert_equal hashed_email, teacher.read_attribute(:hashed_email)
   end
 
-  test 'email_for_enrollments returns user.email if user has no latest accepted application' do
+  test 'alternate_email returns nil if user has no latest accepted application' do
     user = create :teacher
-    assert_equal user.email_for_enrollments, user.email
+    assert user.alternate_email.blank?
   end
 
-  test 'email_for_enrollments returns user.email if users latest accepted application has no alternate email' do
+  test 'alternate_email returns nil if users latest accepted application has no alternate email' do
     user = create :teacher
-    application = create :pd_teacher_application, user: user
+    application = create :pd_teacher_application, user: user, status: 'accepted'
     application_form_data = application.form_data_hash
-    application_form_data['alternateEmail'] = nil
+    application_form_data['alternateEmail'] = ''
     application.update!(form_data_hash: application_form_data)
 
     assert application.form_data_hash['alternateEmail'].blank?
-    assert_equal user.email_for_enrollments, user.email
+    assert user.alternate_email.blank?
   end
 
-  test 'email_for_enrollments returns app alternate email if users latest accepted application has alternate email' do
+  test 'alternate_email returns app alternate email if users latest accepted application has alternate email' do
     user = create :teacher
     application = create :pd_teacher_application, user: user, status: 'accepted'
     app_alternate_email = application.form_data_hash['alternateEmail']
 
-    assert_equal user.email_for_enrollments, app_alternate_email
+    assert_equal user.alternate_email, app_alternate_email
   end
 
   test "log in with password with pepper" do
@@ -394,18 +395,6 @@ class UserTest < ActiveSupport::TestCase
     assert user.errors[:name].empty?
   end
 
-  test "cannot build user with panda in email" do
-    user = build :user, email: "#{panda_panda}@panda.org"
-    refute user.valid?
-    assert user.errors[:email].length == 1
-  end
-
-  test "cannot build user with invalid email" do
-    user = build :user, email: 'foo@bar@com'
-    refute user.valid?
-    assert user.errors[:email].length == 1
-  end
-
   test "cannot build user with no type" do
     user = build :user, user_type: nil
     refute user.valid?
@@ -422,32 +411,6 @@ class UserTest < ActiveSupport::TestCase
     user = build :user, user_type: 'invalid_type'
     refute user.valid?
     assert user.errors[:user_type].length == 1
-  end
-
-  test "cannot create user with duplicate email" do
-    # actually create a user
-    User.create!(@good_data)
-
-    # Now create second user
-    user = User.create(@good_data)
-    assert_equal ['Email has already been taken'], user.errors.full_messages
-
-    # Now create second user with duplicate email with different case
-    user = User.create(@good_data.merge(email: @good_data[:email].upcase))
-    assert_equal ['Email has already been taken'], user.errors.full_messages
-  end
-
-  test "cannot create young user with duplicate email" do
-    # actually create a user
-    User.create!(@good_data_young)
-
-    # Now create second user
-    user = User.create(@good_data_young.merge(hashed_email: User.hash_email(@good_data_young[:email])))
-    assert_equal ['Email has already been taken'], user.errors.full_messages
-
-    # Now create second user with duplicate username with different case
-    user = User.create(@good_data_young.merge(hashed_email: User.hash_email(@good_data_young[:email].upcase)))
-    assert_equal ['Email has already been taken'], user.errors.full_messages
   end
 
   test 'cannot create user when a user with the same credentials exists' do
@@ -507,8 +470,9 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "email does not have to be unique when existing user has LTI authentication" do
-    user = create :teacher, :with_lti_auth
-    dupe_user = create(:teacher, email: user.email)
+    email = "duplicated_email@foo.com"
+    create :teacher, :with_lti_auth, email: email
+    dupe_user = create(:teacher, email: email)
     assert dupe_user.valid?
   end
 
@@ -663,7 +627,7 @@ class UserTest < ActiveSupport::TestCase
     # (including deleted ones and those created when user was a teacher)
     user.update!(user_type: User::TYPE_STUDENT)
     user.authentication_options << create(:authentication_option, email: 'third@email.com')
-    user.reload
+    user = User.find(user.id)
     all_auth_options = user.authentication_options.with_deleted
     assert_equal 3, all_auth_options.count
     all_auth_options.each do |ao|
@@ -815,6 +779,44 @@ class UserTest < ActiveSupport::TestCase
     refute_nil user.errors[:email]
   end
 
+  test "can create teacher user with a valid educator_role" do
+    user = create :teacher, :with_educator_role
+    assert user.valid?
+    assert_empty user.errors[:educator_role]
+  end
+
+  test "cannot create teacher user with an invalid educator_role" do
+    user = build(:teacher, educator_role: "fake_role")
+    refute user.save
+    assert_includes user.errors[:educator_role], "is not included in the list"
+  end
+
+  test "cannot create student user with an educator_role" do
+    user = assert_does_not_create(User) do
+      User.create(@good_data.merge({educator_role: SharedConstants::EDUCATOR_ROLES.first[:value]}))
+    end
+    refute_nil user.errors[:educator_role]
+  end
+
+  test "teachers with a valid educator_role can change user_type to student" do
+    user = create :teacher, :with_educator_role
+    user.set_user_type(User::TYPE_STUDENT)
+    assert user.valid?
+  end
+
+  test "LTI users with school_info_id should have a user_school_info entry" do
+    lti_integration = create :lti_integration
+    auth_id = "#{lti_integration[:issuer]}|#{lti_integration[:client_id]}|#{SecureRandom.alphanumeric}"
+    user = build :teacher
+    user.authentication_options << build(:lti_authentication_option, user: user, authentication_id: auth_id)
+    user.school_info = create :school_info
+    user.save
+
+    assert_equal 1, user.user_school_infos.count
+    assert_equal user.id, user.user_school_infos.first.user_id
+    assert_equal user.school_info_id, user.user_school_infos.first.school_info_id
+  end
+
   test "LTI users should have a LtiUserIdentity when created" do
     lti_integration = create :lti_integration
     auth_id = "#{lti_integration[:issuer]}|#{lti_integration[:client_id]}|#{SecureRandom.alphanumeric}"
@@ -908,10 +910,18 @@ class UserTest < ActiveSupport::TestCase
     # login by username still works
     user = create :user
     assert_equal user, User.find_for_authentication(login: user.username)
+    Cdo::Metrics.
+      expects(:put).
+      with('User', 'LoginByUsername', 1, includes(:Environment)).
+      once
 
     # login by email still works
     email_user = create :user, email: 'not@an.email'
     assert_equal email_user, User.find_for_authentication(login: 'not@an.email')
+    Cdo::Metrics.
+      expects(:put).
+      with('User', 'LoginByEmail', 1, includes(:Environment)).
+      once
 
     # login by hashed email
     hashed_email_user = create :user, age: 4
@@ -943,12 +953,9 @@ class UserTest < ActiveSupport::TestCase
     email = 'test@foo.bar'
     migrated_student = create(:student, email: email)
 
-    legacy_student = build(:student, email: email)
-    # ignore "Email has already been taken" error
-    assert_raises(ActiveRecord::RecordInvalid) do
-      legacy_student.save(validate: false)
-    end
-    legacy_student.demigrate_from_multi_auth
+    legacy_student = build(:user, :demigrated, email: email)
+    # skip validation since we're creating a second user with the same email
+    legacy_student.save(validate: false)
     assert_equal legacy_student.hashed_email, migrated_student.hashed_email
 
     looked_up_user = User.find_for_authentication(hashed_email: User.hash_email(email))
@@ -969,273 +976,6 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 'tester', user.username
   end
 
-  test 'can get next_unpassed_visible_progression_level, no progress, none hidden' do
-    user = create :user
-    script = create(:script, :with_levels, levels_count: 3)
-    assert_equal(1, user.next_unpassed_visible_progression_level(script).chapter)
-  end
-
-  test 'can get next_unpassed_visible_progression_level, progress, none hidden' do
-    user = create :user
-    script = create(:script, :with_levels, levels_count: 3)
-    second_script_level = script.get_script_level_by_chapter(2)
-    UserLevel.create(
-      user: user,
-      level: second_script_level.level,
-      script: script,
-      attempts: 1,
-      best_result: Activity::MINIMUM_PASS_RESULT
-    )
-    assert_equal(3, user.next_unpassed_visible_progression_level(script).chapter)
-  end
-
-  test 'can get next_unpassed_visible_progression_level, user skips level, none hidden' do
-    user = create :user
-    script = create(:script, :with_levels, levels_count: 3)
-
-    first_script_level = script.get_script_level_by_chapter(1)
-    UserLevel.create(
-      user: user,
-      level: first_script_level.level,
-      script: script,
-      attempts: 1,
-      best_result: Activity::MINIMUM_PASS_RESULT
-    )
-
-    third_script_level = script.get_script_level_by_chapter(3)
-    UserLevel.create(
-      user: user,
-      level: third_script_level.level,
-      script: script,
-      attempts: 1,
-      best_result: Activity::MINIMUM_PASS_RESULT
-    )
-
-    assert_equal(2, user.next_unpassed_visible_progression_level(script).chapter)
-  end
-
-  test 'can get next_unpassed_visible_progression_level, out of order progress, none hidden' do
-    user = create :user
-    script = create(:script, :with_levels, levels_count: 5)
-
-    first_script_level = script.get_script_level_by_chapter(1)
-    UserLevel.create(
-      user: user,
-      level: first_script_level.level,
-      script: script,
-      attempts: 1,
-      best_result: Activity::MINIMUM_PASS_RESULT
-    )
-
-    third_script_level = script.get_script_level_by_chapter(3)
-    UserLevel.create(
-      user: user,
-      level: third_script_level.level,
-      script: script,
-      attempts: 1,
-      best_result: Activity::MINIMUM_PASS_RESULT
-    )
-
-    second_script_level = script.get_script_level_by_chapter(2)
-    UserLevel.create(
-      user: user,
-      level: second_script_level.level,
-      script: script,
-      attempts: 1,
-      best_result: Activity::MINIMUM_PASS_RESULT
-    )
-
-    assert_equal(4, user.next_unpassed_visible_progression_level(script).chapter)
-  end
-
-  test 'can get next_unpassed_visible_progression_level, completed script, none hidden' do
-    user = create :user
-    script = create(:script, :with_levels, levels_count: 5)
-
-    script.script_levels.each do |sl|
-      UserLevel.create(
-        user: user,
-        level: sl.level,
-        script: script,
-        attempts: 1,
-        best_result: Activity::MINIMUM_PASS_RESULT
-      )
-    end
-
-    assert_equal(1, user.next_unpassed_visible_progression_level(script).chapter)
-  end
-
-  test 'can get next_unpassed_visible_progression_level, last level complete, but script not complete, none hidden' do
-    user = create :user
-    script = create(:script, :with_levels, levels_count: 5)
-
-    script.script_levels.take(3).each do |sl|
-      UserLevel.create(
-        user: user,
-        level: sl.level,
-        script: script,
-        attempts: 1,
-        best_result: Activity::MINIMUM_PASS_RESULT
-      )
-    end
-
-    UserLevel.create(
-      user: user,
-      level: script.script_levels.last.level,
-      script: script,
-      attempts: 1,
-      best_result: Activity::MINIMUM_PASS_RESULT
-    )
-
-    assert_equal(4, user.next_unpassed_visible_progression_level(script).chapter)
-  end
-
-  test 'can get next_unpassed_progression_level if not completed any unplugged levels' do
-    user = create(:user)
-    script = create(:script)
-    [:unplugged, :level, :unplugged, :level, :unplugged].each do |type|
-      level = create(type)
-      script_level = create(:script_level, levels: [level], script: script)
-      create(:lesson_group, lessons: [script_level.lesson], script: script)
-    end
-
-    script.script_levels.each do |script_level|
-      #next if script_level.chapter > 4
-      next if script_level.level.game.unplugged? # skip all unplugged
-      UserLevel.create(
-        user: user,
-        level: script_level.level,
-        script: script,
-        attempts: 1,
-        best_result: Activity::MINIMUM_PASS_RESULT
-      )
-    end
-    assert_equal(4, user.next_unpassed_progression_level(script).chapter)
-  end
-
-  test 'can get next_unpassed_progression_level, not tainted by other user progress' do
-    user = create :user
-    other_user = create :user
-    script = create(:script, :with_levels, levels_count: 5)
-    script.script_levels.each do |script_level|
-      UserLevel.create(
-        user: other_user,
-        level: script_level.level,
-        script: script,
-        attempts: 1,
-        best_result: Activity::MINIMUM_PASS_RESULT
-      )
-    end
-    assert_equal(1, user.next_unpassed_progression_level(script).chapter)
-  end
-
-  test 'can get next_unpassed_progression_level when most recent level is not passed' do
-    user = create :user
-    script = create(:script, :with_levels, levels_count: 5)
-
-    script.script_levels.each do |script_level|
-      next if script_level.chapter != 3
-      UserLevel.create(
-        user: user,
-        level: script_level.level,
-        script: script,
-        attempts: 1,
-        best_result: Activity::MINIMUM_FINISHED_RESULT
-      )
-    end
-
-    # The level we most recently had progress on we did not pass, so that's
-    # where we should go
-    assert_equal(3, user.next_unpassed_progression_level(script).chapter)
-  end
-
-  test 'can get next_unpassed_progression_level when most recent level is last level' do
-    user = create :user
-    script = create(:script, :with_levels, levels_count: 5)
-
-    script_level = script.script_levels.last
-    UserLevel.create(
-      user: user,
-      level: script_level.level,
-      script: script,
-      attempts: 1,
-      best_result: Activity::MINIMUM_PASS_RESULT
-    )
-
-    # User's most recent progress is on last level in script. There's nothing
-    # following it, so just return to the last level
-    assert_equal(script_level.chapter, user.next_unpassed_progression_level(script).chapter)
-  end
-
-  test 'can get next_unpassed_progression_level when most recent level is only followed by unplugged levels' do
-    user = create :user
-    script = create :script
-    lesson_group = create :lesson_group, script: script
-    lesson = create :lesson, script: script, lesson_group: lesson_group
-
-    script_levels = [
-      create(:script_level, script: script, lesson: lesson, levels: [create(:maze)]),
-      create(:script_level, script: script, lesson: lesson, levels: [create(:maze)]),
-      create(:script_level, script: script, lesson: lesson, levels: [create(:unplugged)]),
-    ]
-    create :user_script, user: user, script: script
-
-    UserLevel.create(
-      user: user,
-      level: script_levels[1].level,
-      script: script,
-      attempts: 1,
-      best_result: Activity::MINIMUM_PASS_RESULT
-    )
-
-    # User's most recent progress is on second last level of script, but none of
-    # the levels after it are "progression" levels. Just return to the last level
-    # we made progress on.
-    assert_equal(2, user.next_unpassed_progression_level(script).chapter)
-  end
-
-  test 'can get next_unpassed_progression_level when most recent level not a progression level' do
-    user = create :user
-    script = create :script
-    lesson_group = create :lesson_group, script: script
-    lesson = create :lesson, script: script, lesson_group: lesson_group
-
-    script_levels = [
-      create(:script_level, script: script, lesson: lesson, levels: [create(:maze)]),
-      create(:script_level, script: script, lesson: lesson, levels: [create(:unplugged)]),
-      create(:script_level, script: script, lesson: lesson, levels: [create(:unplugged)]),
-      create(:script_level, script: script, lesson: lesson, levels: [create(:maze)]),
-    ]
-    create :user_script, user: user, script: script
-
-    UserLevel.create(
-      user: user,
-      level: script_levels[1].level,
-      script: script,
-      attempts: 1,
-      best_result: Activity::MINIMUM_PASS_RESULT
-    )
-
-    # User's most recent progress is on unplugged level, that is followed by another
-    # unplugged level. We should end up at the first non unplugged level
-    assert_equal(4, user.next_unpassed_progression_level(script).chapter)
-  end
-
-  test 'can get next_unpassed_progression_level when we have no progress' do
-    user = create :user
-    script = create :script
-    lesson_group = create :lesson_group, script: script
-    lesson = create :lesson, script: script, lesson_group: lesson_group
-
-    create(:script_level, script: script, lesson: lesson, levels: [create(:maze)])
-    create(:script_level, script: script, lesson: lesson, levels: [create(:maze)])
-    create :user_script, user: user, script: script
-
-    # User's most recent progress is on unplugged level, that is followed by another
-    # unplugged level. We should end up at the first non unplugged level
-    assert_equal(1, user.next_unpassed_progression_level(script).chapter)
-  end
-
   def create_level_group(sub_level_name)
     level_group_dsl = <<~DSL
       name 'LevelGroupLevel1'
@@ -1244,110 +984,6 @@ class UserTest < ActiveSupport::TestCase
       level '#{sub_level_name}'
     DSL
     LevelGroup.create_from_level_builder({}, {name: 'LevelGroupLevel1', dsl_text: level_group_dsl})
-  end
-
-  test 'can get next_unpassed_progression_level when last updated user_level is inside a level group' do
-    user = create :user
-    script = create :script
-    sub_level_name = 'sublevel1'
-    lesson_group = create :lesson_group, script: script
-    lesson = create :lesson, script: script, lesson_group: lesson_group
-
-    sub_level1 = create :text_match, name: sub_level_name
-    level_group = create_level_group(sub_level_name)
-
-    create(:script_level, script: script, levels: [level_group], lesson: lesson)
-    create :user_script, user: user, script: script
-
-    # Create a UserLevel for our level_group and sublevel, the sublevel is more recent
-    user_level1 = UserLevel.create(
-      user: user,
-      level: level_group,
-      script: script,
-      attempts: 1,
-      best_result: Activity::MINIMUM_PASS_RESULT,
-      updated_at: Time.now - 1
-    )
-
-    user_level2 = UserLevel.create(
-      user: user,
-      level: sub_level1,
-      script: script,
-      attempts: 1,
-      best_result: Activity::MINIMUM_PASS_RESULT,
-      updated_at: Time.now
-    )
-
-    assert(user_level1.updated_at < user_level2.updated_at)
-
-    next_script_level = user.next_unpassed_progression_level(script)
-    refute next_script_level.nil?
-  end
-
-  test 'completed_progression_levels returns false if not all progression levels have a passing result' do
-    user = create :user
-    script = create(:script, :with_levels, levels_count: 3)
-
-    # Only complete the first one
-    UserLevel.create(
-      user: user,
-      level: script.script_levels.first.level,
-      script: script,
-      attempts: 1,
-      best_result: Activity::MINIMUM_PASS_RESULT
-    )
-
-    refute(user.completed_progression_levels?(script))
-  end
-
-  test 'completed_progression_levels returns true if all progression levels have a passing result' do
-    user = create :user
-    script = create(:script, :with_levels, levels_count: 3)
-
-    script.script_levels.each do |sl|
-      UserLevel.create(
-        user: user,
-        level: sl.level,
-        script: script,
-        attempts: 1,
-        best_result: Activity::MINIMUM_PASS_RESULT
-      )
-    end
-
-    assert(user.completed_progression_levels?(script))
-  end
-
-  test 'completed_progression_levels returns true if all progression levels with contained levels have a passing result' do
-    user = create :user
-    script = create(:script, :with_levels, levels_count: 3)
-
-    # Set up the first level to have contained_levels
-    contained_level = create :free_response, name: 'contained level'
-    level_with_contained_levels = script.script_levels.first.level
-    level_with_contained_levels.contained_level_names = [contained_level.name]
-    level_with_contained_levels.save!
-
-    # User progress in contained_level
-    UserLevel.create(
-      user: user,
-      level: level_with_contained_levels.contained_levels.first,
-      script: script,
-      attempts: 1,
-      best_result: Activity::MINIMUM_PASS_RESULT
-    )
-
-    # User progress in remaining levels
-    script.script_levels.drop(1).each do |sl|
-      UserLevel.create(
-        user: user,
-        level: sl.level,
-        script: script,
-        attempts: 1,
-        best_result: Activity::MINIMUM_PASS_RESULT
-      )
-    end
-
-    assert(user.completed_progression_levels?(script))
   end
 
   test 'track_level_progress does not record quiz or survey responses for partner when pairing' do
@@ -1402,12 +1038,6 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 100, user_level.best_result
     partner_level = UserLevel.find_by(user: partner, script: script, level: level)
     assert_equal 100, partner_level.best_result
-  end
-
-  test 'user is created with secret picture and word' do
-    assert @user.secret_picture
-    assert @user.secret_words
-    assert @user.secret_words !~ /SecretWord/ # using the actual word not the object to_s
   end
 
   test 'students have hashed email not plaintext email' do
@@ -1470,7 +1100,7 @@ class UserTest < ActiveSupport::TestCase
 
     user.set_user_type(User::TYPE_STUDENT)
     user.save!
-    user.reload
+    user = User.find(user.id)
 
     assert user.email.blank?
     assert user.hashed_email.present?
@@ -1487,7 +1117,7 @@ class UserTest < ActiveSupport::TestCase
 
     user.set_user_type(User::TYPE_STUDENT)
     user.save!
-    user.reload
+    user = User.find(user.id)
 
     refute user.school_info.present?
   end
@@ -1498,7 +1128,7 @@ class UserTest < ActiveSupport::TestCase
 
     user.set_user_type(User::TYPE_STUDENT)
     user.save!
-    user.reload
+    user = User.find(user.id)
 
     assert user.full_address.nil?
   end
@@ -1539,7 +1169,7 @@ class UserTest < ActiveSupport::TestCase
     user = create :student, terms_of_service_version: 1
     user.set_user_type(User::TYPE_TEACHER, 'tos@example.com')
     user.save!
-    user.reload
+    user = User.find(user.id)
 
     assert_nil user.terms_of_service_version
   end
@@ -1553,7 +1183,7 @@ class UserTest < ActiveSupport::TestCase
       user.set_user_type(User::TYPE_TEACHER, 'fakeemail@example.com')
       user.save!
     end
-    user.reload
+    user = User.find(user.id)
     assert user.studio_person
     assert_equal 'fakeemail@example.com', user.studio_person.emails
   end
@@ -1564,7 +1194,8 @@ class UserTest < ActiveSupport::TestCase
     assert_destroys(StudioPerson) do
       user.set_user_type(User::TYPE_STUDENT)
     end
-    assert_nil user.reload.studio_person
+    user = User.find(user.id)
+    assert_nil user.studio_person
   end
 
   test 'changing from teacher to student does not clear terms_of_service_version' do
@@ -1603,7 +1234,7 @@ class UserTest < ActiveSupport::TestCase
     @student.update!(races: 'white,closed_dialog')
     @student.reload
     assert_equal 'closed_dialog', @student.races
-    assert_nil @student.urm
+    refute @student.urm
   end
 
   test 'sanitize_race_data sanitizes too many races' do
@@ -1612,7 +1243,7 @@ class UserTest < ActiveSupport::TestCase
     student.update!(races: 'american_indian,asian,black,hawaiian,hispanic,white')
     student.reload
     assert_equal 'nonsense', student.races
-    assert_nil student.urm
+    refute student.urm
   end
 
   test 'sanitize_race_data sanitizes non-races' do
@@ -1879,15 +1510,6 @@ class UserTest < ActiveSupport::TestCase
       created_at: completed_date,
       updated_at: completed_date
     )
-  end
-
-  test 'sponsored? is true for migrated user with no authentication options' do
-    student = create :student_in_picture_section
-    student.migrate_to_multi_auth
-    student.reload
-
-    assert_empty student.authentication_options
-    assert student.sponsored?
   end
 
   test 'should_disable_user_type? true if user_type present and oauth_provided_user_type' do
@@ -2509,7 +2131,7 @@ class UserTest < ActiveSupport::TestCase
   test 'downgrade_to_student sets user_type to student and clears cleartext emails' do
     user = create :teacher
     assert user.downgrade_to_student
-    user.reload
+    user = User.find(user.id)
     assert_equal User::TYPE_STUDENT, user.user_type
     assert_empty user.email
   end
@@ -2559,7 +2181,7 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 2, user.authentication_options.count
 
     assert user.upgrade_to_teacher('example@email.com', email_preference_params)
-    user.reload
+    user = User.find(user.id)
     assert_equal User::TYPE_TEACHER, user.user_type
     assert_equal 2, user.authentication_options.count
     assert_equal 'example@email.com', user.email
@@ -2579,7 +2201,7 @@ class UserTest < ActiveSupport::TestCase
 
     email_preference_params = email_preference_params(email_preference_opt_in: 'yes')
     assert user.upgrade_to_teacher('example@email.com', email_preference_params)
-    user.reload
+    user = User.find(user.id)
     auth_option.reload
     assert_equal User::TYPE_TEACHER, user.user_type
     assert_equal 2, user.authentication_options.count
@@ -2597,7 +2219,7 @@ class UserTest < ActiveSupport::TestCase
     user = User.create(@good_data.merge(parent_email: parent_email))
     assert_equal parent_email, user.parent_email
     assert user.upgrade_to_teacher('example@email.com', email_preference_params)
-    user.reload
+    user = User.find(user.id)
     assert_nil user.parent_email
   end
 
@@ -2610,7 +2232,7 @@ class UserTest < ActiveSupport::TestCase
 
     assert user.upgrade_to_teacher('example@email.com', email_preference_params)
 
-    user.reload
+    user = User.find(user.id)
     assert_nil user.family_name
   end
 
@@ -3020,6 +2642,36 @@ class UserTest < ActiveSupport::TestCase
     ).level_source_id
   end
 
+  test 'track_level_progress stores locale with support flag when provided' do
+    user_level_params = {
+      user_id: @user.id,
+      level_id: @csf_script_level.level_id,
+      script_id: @csf_script_level.script_id,
+    }
+
+    level_progress_params = {
+      **user_level_params,
+      level_source_id: nil,
+      new_result: 100,
+      submitted: false,
+    }
+
+    User.track_level_progress(**level_progress_params)
+    refute_nil user_level = UserLevel.find_by(user_level_params)
+    assert_nil user_level.locale
+    assert_nil user_level.locale_supported
+
+    current_locale = 'uk-UA'
+    User.track_level_progress(**level_progress_params.merge(locale: current_locale))
+    assert_equal current_locale, user_level.reload.locale
+    assert_equal false, user_level.locale_supported
+
+    @csf_script_level.script.update!(supported_locales: [current_locale])
+    User.track_level_progress(**level_progress_params.merge(locale: current_locale))
+    assert_equal current_locale, user_level.reload.locale
+    assert_equal true, user_level.locale_supported
+  end
+
   test 'can create user with same name as deleted user' do
     create(:user, :deleted, name: 'Same Name')
     assert_creates(User) do
@@ -3243,29 +2895,6 @@ class UserTest < ActiveSupport::TestCase
     assert_nil student.days_since_first_sign_in
   end
 
-  test 'new users must have valid email addresses' do
-    assert_creates User do
-      create :user, email: 'valid@example.net'
-    end
-
-    e = assert_raises ActiveRecord::RecordInvalid do
-      create :user, email: 'invalid@incomplete'
-    end
-    assert_equal 'Validation failed: Email does not appear to be a valid e-mail address', e.message
-  end
-
-  test 'existing users with invalid email addresses are still allowed' do
-    user_with_invalid_email = build :user, email: 'invalid@incomplete'
-    user_with_invalid_email.save!(validate: false)
-
-    assert user_with_invalid_email.valid?
-
-    # Update another field
-    user_with_invalid_email.name = 'updated name'
-    assert user_with_invalid_email.valid?
-    assert user_with_invalid_email.save
-  end
-
   test 'no personal email for under 13 users' do
     user = create :young_student
     assert user.no_personal_email?
@@ -3373,9 +3002,9 @@ class UserTest < ActiveSupport::TestCase
       name: 'test user'
     }
 
-    user = assert_creates(User) do
-      User.find_or_create_teacher params, @admin
-    end
+    user = User.find_or_create_teacher params, @admin
+    assert user
+    user = User.find(user.id)
     assert user.teacher?
     assert_equal @admin, user.invited_by
   end
@@ -3838,7 +3467,9 @@ class UserTest < ActiveSupport::TestCase
         user_type: 'student'
       },
     )
-    params = {}
+    params = {
+      'roster_synced' => true
+    }
 
     assert_creates(User) do
       user = User.from_omniauth(auth, params)
@@ -3848,6 +3479,7 @@ class UserTest < ActiveSupport::TestCase
       assert_equal 'fake oauth token', user.primary_contact_info.data_hash[:oauth_token]
       assert_equal 'fake refresh token', user.primary_contact_info.data_hash[:oauth_refresh_token]
       assert_equal User::TYPE_STUDENT, user.user_type
+      assert_equal true, user.roster_synced
     end
   end
 
@@ -3872,6 +3504,7 @@ class UserTest < ActiveSupport::TestCase
       assert_equal 'fake oauth token', user.primary_contact_info.data_hash[:oauth_token]
       assert_equal 'fake refresh token', user.primary_contact_info.data_hash[:oauth_refresh_token]
       assert_equal 'google_oauth2', user.primary_contact_info.credential_type
+      assert_nil user.roster_synced
     end
   end
 
@@ -3899,52 +3532,15 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 'fake refresh token', google_auth_option.data_hash[:oauth_refresh_token]
   end
 
-  test 'managing_own_credentials? is true for users with email logins' do
-    user = create :user
-    assert user.managing_own_credentials?
-  end
-
-  test 'managing_own_credentials? is true for students with email logins' do
-    user = create :student
-    assert user.managing_own_credentials?
-  end
-
-  test 'managing_own_credentials? is false for users with oauth logins' do
-    user = create :user, :sso_provider
-    refute user.managing_own_credentials?
-  end
-
-  test 'managing_own_credentials? is false for students with sponsored logins' do
-    user = create :student_in_picture_section
-    refute user.managing_own_credentials?
-  end
-
-  test 'password_required? is false if user is not creating their own account' do
-    user = create :student, :without_encrypted_password
-    user.expects(:managing_own_credentials?).returns(false)
-    refute user.password_required?
-  end
-
-  test 'new users require a password if no authentication provided' do
-    assert_raises(ActiveRecord::RecordInvalid) do
-      user = create :user, password: nil
-      refute user.errors[:password].empty?
-    end
-  end
-
-  test 'password_required? is true for user changing their password' do
-    user = create :user
-    user.password = "mypassword"
-    user.password_confirmation = "mypassword"
-    assert user.password_required?
-  end
-
   test 'summarize' do
     latest_permission_request_sent_at = 1.month.ago.change(usec: 0)
     create(:parental_permission_request, user: @student, updated_at: latest_permission_request_sent_at)
 
     us_state = 'CO'
     @student.update!(us_state: us_state)
+
+    secret_picture = SecretPicture.random
+    @student.secret_picture = secret_picture
 
     assert_equal(
       {
@@ -3959,14 +3555,14 @@ class UserTest < ActiveSupport::TestCase
         gender_teacher_input: nil,
         birthday: @student.birthday,
         secret_words: @student.secret_words,
-        secret_picture_name: @student.secret_picture.name,
-        secret_picture_path: @student.secret_picture.path,
+        secret_picture_name: secret_picture.name,
+        secret_picture_path: secret_picture.path,
         location: "/v2/users/#{@student.id}",
         age: @student.age,
         sharing_disabled: false,
         has_ever_signed_in: @student.has_ever_signed_in?,
         ai_tutor_access_denied: !!@student.ai_tutor_access_denied,
-        at_risk_age_gated: false,
+        at_risk_age_gated_date: nil,
         child_account_compliance_state: @student.cap_status,
         latest_permission_request_sent_at: latest_permission_request_sent_at,
         us_state: us_state,
@@ -4082,6 +3678,7 @@ class UserTest < ActiveSupport::TestCase
     assert (create :facilitator).lesson_extras_enabled?(script)
   end
 
+  #TODO: Move HiddenIds tests cases to integration/end-to-end tests https://codedotorg.atlassian.net/browse/P20-1477
   class HiddenIds < ActiveSupport::TestCase
     setup_all do
       @teacher = create :teacher
@@ -4820,7 +4417,8 @@ class UserTest < ActiveSupport::TestCase
 
   test 'dependent_students for teacher: does not return students with personal logins' do
     section = create :section
-    create(:follower, section: section)
+    student = create :student
+    create(:follower, section: section, student_user: student)
 
     assert_empty section.teacher.dependent_students
   end
@@ -5516,6 +5114,152 @@ class UserTest < ActiveSupport::TestCase
       it 'does not call CAP compliance removing service' do
         expect_cap_compliance_removing.never
         update_us_state
+      end
+    end
+  end
+
+  describe '.at_risk_age_gated_date' do
+    let(:user) {create(:student)}
+    let(:at_risk_age_gated_date) {user.at_risk_age_gated_date}
+    let(:compliant) {false}
+    let(:lockout_date) {DateTime.now}
+
+    before do
+      allow(Policies::ChildAccount).to receive(:compliant?).with(user, future: true).and_return(compliant)
+      allow(Policies::ChildAccount::StatePolicies).to receive(:state_policy).with(user).and_return({lockout_date: lockout_date})
+    end
+
+    it 'returns the policy lockout date' do
+      _(at_risk_age_gated_date).must_equal lockout_date
+    end
+
+    context 'when compliant' do
+      let(:compliant) {true}
+
+      it 'returns nil' do
+        _(at_risk_age_gated_date).must_equal nil
+      end
+    end
+  end
+
+  describe 'generation of secret picture on creation' do
+    let(:user) {build(:user)}
+
+    let(:user_is_sponsored) {true}
+
+    before do
+      user.stubs(:sponsored?).returns(user_is_sponsored)
+    end
+
+    it 'generates secret picture' do
+      _(user.secret_picture_id).must_be_nil
+      user.save! && user.reload
+      _(user.secret_picture).must_be_instance_of SecretPicture
+    end
+
+    context 'when user is not sponsored' do
+      let(:user_is_sponsored) {false}
+
+      it 'does not generate secret picture' do
+        _(user.secret_picture_id).must_be_nil
+        _ {user.save!}.wont_change -> {user.secret_picture_id}
+      end
+    end
+  end
+
+  describe 'generation of secret words on creation' do
+    let(:user) {build(:user)}
+
+    let(:user_is_sponsored) {true}
+
+    before do
+      user.stubs(:sponsored?).returns(user_is_sponsored)
+    end
+
+    it 'generates secret words' do
+      _(user.secret_words).must_be_nil
+
+      user.save!
+      user.reload
+
+      _(user.secret_words).wont_be_nil
+      _(user.secret_words).wont_match /SecretWord/ # using the actual word not the object to_s
+    end
+
+    context 'when user is not sponsored' do
+      let(:user_is_sponsored) {false}
+
+      it 'does not generates secret word' do
+        _(user.secret_words).must_be_nil
+        _ {user.save!}.wont_change -> {user.secret_words}
+      end
+    end
+  end
+
+  describe '.authenticate_with_section_and_secret_words' do
+    subject(:authenticate_with_section_and_secret_words) do
+      described_class.authenticate_with_section_and_secret_words(section: section, params: params)
+    end
+
+    let!(:student) {create(:student, secret_words: secret_words)}
+    let!(:section) {create(:section, login_type: section_login_type)}
+    let!(:follower) {create(:follower, section: section, student_user: student)}
+
+    let(:section_login_type) {Section::LOGIN_TYPE_WORD}
+    let(:secret_words) {'secret words'}
+    let(:params) {{user_id: student.id, secret_words: secret_words}}
+
+    it 'returns student' do
+      _authenticate_with_section_and_secret_words.must_equal student
+    end
+
+    context 'when :secret_words param is blank' do
+      let(:secret_words) {nil}
+
+      it 'returns nil' do
+        _authenticate_with_section_and_secret_words.must_be_nil
+      end
+    end
+
+    context 'when section login_type in not word' do
+      let(:section_login_type) {Section::LOGIN_TYPE_PICTURE}
+
+      it 'returns nil' do
+        _authenticate_with_section_and_secret_words.must_be_nil
+      end
+    end
+  end
+
+  describe '.authenticate_with_section_and_secret_picture' do
+    subject(:authenticate_with_section_and_secret_picture) do
+      described_class.authenticate_with_section_and_secret_picture(section: section, params: params)
+    end
+
+    let!(:student) {create(:student, secret_picture_id: secret_picture_id)}
+    let!(:section) {create(:section, login_type: section_login_type)}
+    let!(:follower) {create(:follower, section: section, student_user: student)}
+
+    let(:section_login_type) {Section::LOGIN_TYPE_PICTURE}
+    let(:secret_picture_id) {SecretPicture.first.id}
+    let(:params) {{user_id: student.id, secret_picture_id: secret_picture_id}}
+
+    it 'returns student' do
+      _authenticate_with_section_and_secret_picture.must_equal student
+    end
+
+    context 'when :secret_picture_id param is blank' do
+      let(:secret_picture_id) {nil}
+
+      it 'returns nil' do
+        _authenticate_with_section_and_secret_picture.must_be_nil
+      end
+    end
+
+    context 'when section login_type in not picture' do
+      let(:section_login_type) {Section::LOGIN_TYPE_WORD}
+
+      it 'returns nil' do
+        _authenticate_with_section_and_secret_picture.must_be_nil
       end
     end
   end

@@ -55,15 +55,14 @@ const CODE_STUDIO_ENTRIES = {
   'sessions/lockout': './src/sites/studio/pages/sessions/lockout.js',
   'devise/sessions/new': './src/sites/studio/pages/devise/sessions/new.js',
   'devise/sessions/_login': './src/sites/studio/pages/devise/sessions/_login.js',
-  'devise/registrations/_sign_up': './src/sites/studio/pages/devise/registrations/_sign_up.js',
   'devise/registrations/login_type': './src/sites/studio/pages/devise/registrations/login_type.js',
   'devise/registrations/finish_student_account': './src/sites/studio/pages/devise/registrations/finish_student_account.js',
   'devise/registrations/finish_teacher_account': './src/sites/studio/pages/devise/registrations/finish_teacher_account.js',
   'devise/shared/_oauth_links': './src/sites/studio/pages/devise/shared/_oauth_links.js',
-  'devise/registrations/_finish_sign_up': './src/sites/studio/pages/devise/registrations/_finish_sign_up.js',
   'devise/registrations/edit': './src/sites/studio/pages/devise/registrations/edit.js',
   'devise/registrations/account_type': './src/sites/studio/pages/devise/registrations/account_type.js',
-  'followers/student_user_new': './src/sites/studio/pages/followers/student_user_new.js',
+  'followers/students_cannot_join': './src/sites/studio/pages/followers/students_cannot_join.js',
+  'followers/join_logged_out': './src/sites/studio/pages/followers/join_logged_out.js',
   'essential': './src/sites/studio/pages/essential.js',
   'home/_homepage': './src/sites/studio/pages/home/_homepage.js',
   'layouts/_parent_email_banner': './src/sites/studio/pages/layouts/_parent_email_banner.js',
@@ -101,7 +100,6 @@ const CODE_STUDIO_ENTRIES = {
   'lti/v1/dynamic_registration': './src/sites/studio/pages/lti/v1/dynamic_registration.js',
   'lti/v1/sync_course': './src/sites/studio/pages/lti/v1/sync_course.js',
   'lti/v1/upgrade_account': './src/sites/studio/pages/lti/v1/upgrade_account.js',
-  'maker/home': './src/sites/studio/pages/maker/home.js',
   'maker/setup': './src/sites/studio/pages/maker/setup.js',
   'projects/featured': './src/sites/studio/pages/projects/featured.js',
   'projects/index': './src/sites/studio/pages/projects/index.js',
@@ -125,7 +123,7 @@ const CODE_STUDIO_ENTRIES = {
 
 // prettier-ignore
 const INTERNAL_ENTRIES = {
-  'ai_tutor/tester': './src/sites/studio/pages/ai_tutor/tester.js',
+  'ai_iteration/tools': './src/sites/studio/pages/ai_iteration/tools.js',
   'blocks/edit': './src/sites/studio/pages/blocks/edit.js',
   'blocks/index': './src/sites/studio/pages/blocks/index.js',
   'course_offerings/edit': './src/sites/studio/pages/course_offerings/edit.js',
@@ -147,14 +145,18 @@ const INTERNAL_ENTRIES = {
   'levels/editors/fields/_bubble_choice_sublevel': './src/sites/studio/pages/levels/editors/fields/_bubble_choice_sublevel.js',
   'levels/editors/fields/_blockly': './src/sites/studio/pages/levels/editors/fields/_blockly.js',
   'levels/editors/fields/_callouts': './src/sites/studio/pages/levels/editors/fields/_callouts.js',
+  'levels/editors/fields/_child_level_bubble_choice_fields': './src/sites/studio/pages/levels/editors/fields/_child_level_bubble_choice_fields.js',
   'levels/editors/fields/_droplet': './src/sites/studio/pages/levels/editors/fields/_droplet.js',
+  'levels/editors/fields/_exemplar': './src/sites/studio/pages/levels/editors/fields/_exemplar.js',
   'levels/editors/fields/_grid': './src/sites/studio/pages/levels/editors/fields/_grid.js',
   'levels/editors/fields/_music_level_data': './src/sites/studio/pages/levels/editors/fields/_music_level_data.js',
+  'levels/editors/fields/_neighborhood_settings': './src/sites/studio/pages/levels/editors/fields/_neighborhood_settings.js',
   'levels/editors/fields/_panels': './src/sites/studio/pages/levels/editors/fields/_panels.js',
   'levels/editors/fields/_poetry_fields': './src/sites/studio/pages/levels/editors/fields/_poetry_fields.js',
   'levels/editors/fields/_predict_settings': './src/sites/studio/pages/levels/editors/fields/_predict_settings.js',
   'levels/editors/fields/_preload_assets': './src/sites/studio/pages/levels/editors/fields/_preload_assets.js',
   'levels/editors/fields/_special_level_types': './src/sites/studio/pages/levels/editors/fields/_special_level_types.js',
+  'levels/editors/fields/_starter_assets': './src/sites/studio/pages/levels/editors/fields/_starter_assets.js',
   'levels/editors/fields/_validation_code': './src/sites/studio/pages/levels/editors/fields/_validation_code.js',
   'levels/editors/fields/_validations': './src/sites/studio/pages/levels/editors/fields/_validations.js',
   'levels/editors/fields/_video': './src/sites/studio/pages/levels/editors/fields/_video.js',
@@ -222,9 +224,8 @@ const PEGASUS_ENTRIES = {
   'code.org/views/tabs_section': './src/sites/code.org/pages/views/tabs_section.js',
   'code.org/views/classy_embed_form': './src/sites/code.org/pages/views/classy_embed_form.js',
   'code.org/public/poetry': './src/sites/code.org/pages/public/poetry.js',
-  'code.org/public/teach': './src/sites/code.org/pages/public/teach.js',
-  'code.org/public/students': './src/sites/code.org/pages/public/students.js',
   'code.org/public/cms-demo': './src/sites/code.org/pages/public/cms-demo.js',
+  'code.org/public/embeddable_census_map': './src/sites/code.org/pages/public/embeddable_census_map.js',
 
   // hourofcode.com
   'hourofcode.com/views/theme_common_head_after': './src/sites/hourofcode.com/pages/views/theme_common_head_after.js',
@@ -241,6 +242,7 @@ const PROFESSIONAL_DEVELOPMENT_ENTRIES = {
   'pd/_jotform_loader': './src/sites/studio/pages/pd/_jotform_loader.js',
   'pd/_jotform_embed': './src/sites/studio/pages/pd/_jotform_embed.js',
 
+  'pd/workshop/index': './src/sites/studio/pages/pd/workshop/index.js',
   'pd/workshop_dashboard/index': './src/sites/studio/pages/pd/workshop_dashboard/index.js',
   'pd/pre_workshop_survey/new': './src/sites/studio/pages/pd/pre_workshop_survey/new.js',
   'pd/teachercon_survey/new': './src/sites/studio/pages/pd/teachercon_survey/new.js',
@@ -252,8 +254,10 @@ const PROFESSIONAL_DEVELOPMENT_ENTRIES = {
   'pd/workshop_enrollment/students_cannot_enroll': './src/sites/studio/pages/pd/workshop_enrollment/students_cannot_enroll.js',
   'pd/workshop_enrollment/new': './src/sites/studio/pages/pd/workshop_enrollment/new.js',
   'pd/workshop_enrollment/cancel': './src/sites/studio/pages/pd/workshop_enrollment/cancel.js',
+  'pd/session_attendance/attendance_recorded': './src/sites/studio/pages/pd/session_attendance/attendance_recorded.js',
 
-  'pd/professional_learning_landing/index': './src/sites/studio/pages/pd/professional_learning_landing/index.js',
+  'pd/professional_learning/index': './src/sites/studio/pages/pd/professional_learning/index.js',
+  'pd/professional_learning/regional_workshop_catalog': './src/sites/studio/pages/pd/professional_learning/regional_workshop_catalog.js',
   'pd/regional_partner_mini_contact/new': './src/sites/studio/pages/pd/regional_partner_mini_contact/new.js',
 
   'pd/international_opt_in/new': './src/sites/studio/pages/pd/international_opt_in/new.js',
@@ -275,6 +279,11 @@ const PROFESSIONAL_DEVELOPMENT_ENTRIES = {
 const SHARED_ENTRIES = {
   cookieBanner: './src/cookieBanner/cookieBanner.js',
   userHeaderEventLogger: './src/userHeaderEventLogger/userHeaderEventLogger.js',
+  statsigWebAnalytics: './src/metrics/statsigWebAnalytics.js',
+  'global_edition/region_reset_button':
+    './src/globalEdition/regionResetButton.js',
+  'global_edition/region_switch_confirm':
+    './src/globalEdition/regionSwitchConfirm.js',
 };
 
 // prettier-ignore

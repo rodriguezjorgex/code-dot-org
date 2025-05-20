@@ -1,19 +1,24 @@
 import {MoveFileFunction} from '@codebridge/codebridgeContext/types';
-import {ProjectFile, ProjectType, FileId} from '@codebridge/types';
-import {findFolder, getErrorMessage, validateFileName} from '@codebridge/utils';
+import {ProjectFile, FileId} from '@codebridge/types';
+import {
+  getFolderPath,
+  getPossibleDestinationFoldersForFile,
+} from '@codebridge/utils';
 
 import codebridgeI18n from '@cdo/apps/codebridge/locale';
+import {MultiFileSource} from '@cdo/apps/lab2/types';
 import {
   DialogType,
   DialogControlInterface,
   extractUserInput,
 } from '@cdo/apps/lab2/views/dialogs';
+import {GenericDropdownProps} from '@cdo/apps/lab2/views/dialogs/GenericDropdown';
 import {EVENTS} from '@cdo/apps/metrics/AnalyticsConstants';
 
 type OpenMoveFilePromptArgsType = {
   fileId: FileId;
-  projectFiles: ProjectType['files'];
-  projectFolders: ProjectType['folders'];
+  projectFiles: MultiFileSource['files'];
+  projectFolders: MultiFileSource['folders'];
   dialogControl: Pick<DialogControlInterface, 'showDialog'>;
   moveFile: MoveFileFunction;
   isStartMode: boolean;
@@ -32,48 +37,37 @@ export const openMoveFilePrompt = async ({
   sendCodebridgeAnalyticsEvent,
 }: OpenMoveFilePromptArgsType) => {
   const file = projectFiles[fileId];
+
+  // iterate over all the folders in the project AND the default folder, which isn't actually in the list.
+  const possibleDestinationFolders: GenericDropdownProps['items'] =
+    getPossibleDestinationFoldersForFile({
+      file,
+      projectFiles,
+      projectFolders,
+      isStartMode,
+      validationFile,
+    })
+      .map(f => ({value: f.id, text: getFolderPath(f.id, projectFolders)}))
+      .sort((a, b) => a.text.localeCompare(b.text));
+
+  if (!possibleDestinationFolders.length) {
+    return;
+  }
+
   const results = await dialogControl?.showDialog({
-    type: DialogType.GenericPrompt,
+    type: DialogType.GenericDropdown,
     title: codebridgeI18n.moveFilePrompt(),
-    placeholder: codebridgeI18n.rootFolder(),
-    requiresPrompt: false,
-
-    validateInput: (destinationFolderName: string) => {
-      try {
-        const folderId = findFolder(destinationFolderName.split('/'), {
-          folders: Object.values(projectFolders),
-          required: true,
-        });
-
-        return validateFileName({
-          fileName: file.name,
-          folderId,
-          projectFiles,
-          isStartMode,
-          validationFile,
-        });
-      } catch (e) {
-        return getErrorMessage(e);
-      }
-    },
+    selectedValue: possibleDestinationFolders[0].value,
+    items: possibleDestinationFolders,
+    dropdownLabel: '',
   });
 
   if (results.type !== 'confirm') {
     return;
   }
 
-  const destinationFolderName = extractUserInput(results) || '';
-  try {
-    const folderId = findFolder(destinationFolderName.split('/'), {
-      folders: Object.values(projectFolders),
-      required: true,
-    });
-    moveFile(fileId, folderId);
-  } catch (e) {
-    dialogControl?.showDialog({
-      type: DialogType.GenericAlert,
-      title: getErrorMessage(e),
-    });
-  }
+  const destinationFolderId = extractUserInput(results);
+  moveFile(fileId, destinationFolderId);
+
   sendCodebridgeAnalyticsEvent(EVENTS.CODEBRIDGE_MOVE_FILE);
 };

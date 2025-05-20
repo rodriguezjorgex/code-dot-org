@@ -3,52 +3,101 @@
 // This is a React client for a panels level.  Note that this is
 // only used for levels that use Lab2.
 
-import React, {useCallback} from 'react';
-
 import {
-  sendSuccessReport,
-  navigateToNextLevel,
-} from '@cdo/apps/code-studio/progressRedux';
+  Identify,
+  identify,
+  setSessionId,
+  track,
+} from '@amplitude/analytics-browser';
+import React, {useCallback, useEffect, useRef} from 'react';
+
+import continueOrFinishLesson from '@cdo/apps/lab2/progress/continueOrFinishLesson';
 import {useDialogControl, DialogType} from '@cdo/apps/lab2/views/dialogs';
 import {useAppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
 
+import {sendSuccessReport} from '../code-studio/progressRedux';
+import {
+  getCurrentLevel,
+  getCurrentLesson,
+} from '../code-studio/progressReduxSelectors';
 import {queryParams} from '../code-studio/utils';
+import useLifecycleNotifier from '../lab2/hooks/useLifecycleNotifier';
+import {LabProps} from '../lab2/types';
+import {LifecycleEvent} from '../lab2/utils';
+import MusicAnalyticsReporter from '../music/analytics/AnalyticsReporter';
 import useWindowSize from '../util/hooks/useWindowSize';
 
 import PanelsView from './PanelsView';
 import {PanelsLevelProperties} from './types';
 
-const appName = 'panels';
+// Temporary solution for sending analytics for Hour of Code 2024.
+// We are also temporarily sending panel analytics for the Elementary Music Lab Pilot
+// TODO: Remove/consolidate reporters
+const VALID_SCRIPT_NAMES = ['music-jam-2024', 'pilot-elem-music-lab'];
+function isValidScriptName() {
+  return VALID_SCRIPT_NAMES.some(name =>
+    window.location.pathname.includes(name)
+  );
+}
+const resetAnalyticsSession = () => {
+  if (!isValidScriptName()) {
+    return;
+  }
 
-const PanelsLabView: React.FunctionComponent = () => {
+  setSessionId(Date.now());
+};
+const sendAnalyticsEvent = async (event: string, data?: object) => {
+  // Checking the script name to keep this scoped to included scripts only.
+  if (!isValidScriptName()) {
+    return;
+  }
+
+  // We use the Music Analytics reporter so that analytics for the
+  // HOC progression are reported to the same project, and to avoid
+  // API key issues.
+  try {
+    await MusicAnalyticsReporter.initialize();
+    track(event, data);
+  } catch (error) {
+    // Expected on local environments.
+    console.warn(error);
+  }
+};
+const updateAnalyticsProperty = (key: string, value: string) => {
+  if (!isValidScriptName()) {
+    return;
+  }
+
+  const identifyEvent = new Identify();
+  identifyEvent.set(key, value);
+  identify(identifyEvent);
+};
+
+const PanelsLabView: React.FunctionComponent<
+  LabProps<PanelsLevelProperties>
+> = ({levelProperties}) => {
   const dispatch = useAppDispatch();
 
-  const panels = useAppSelector(
-    state =>
-      (state.lab.levelProperties as PanelsLevelProperties | undefined)?.panels
+  const {panels, appName, skipUrl, offerBrowserTts} = levelProperties;
+  const background = useAppSelector(
+    state => getCurrentLesson(state)?.background || null
   );
-  const currentAppName = useAppSelector(
-    state => state.lab.levelProperties?.appName
-  );
-  const skipUrl = useAppSelector(state => state.lab.levelProperties?.skipUrl);
-  const offerTts =
-    useAppSelector(state => state.lab.levelProperties?.offerTts) ||
-    queryParams('show-tts') === 'true';
+  const currentLevelId = useAppSelector(state => state.progress.currentLevelId);
 
   const dialogControl = useDialogControl();
 
   const onContinue = useCallback(
     (nextUrl?: string) => {
       if (nextUrl) {
-        // This is a short-term solution for the Music Lab progression in incubation.  We will not attempt
-        // to send a success report for a level that uses this feature.
+        // This is a short-term solution for the Music Lab progression in incubation.
+        // Send a success report so we turn the bubble green.
+        dispatch(sendSuccessReport(appName));
         window.location.href = nextUrl;
       } else {
-        dispatch(sendSuccessReport(appName));
-        dispatch(navigateToNextLevel());
+        dispatch(continueOrFinishLesson());
       }
     },
-    [dispatch]
+    [dispatch, appName]
   );
 
   const onSkip = useCallback(() => {
@@ -64,20 +113,73 @@ const PanelsLabView: React.FunctionComponent = () => {
     }
   }, [dialogControl, skipUrl]);
 
+  const startTime = useRef<number | null>(null);
+  useEffect(() => {
+    resetAnalyticsSession();
+    sendAnalyticsEvent('Panels Level Started');
+    startTime.current = Date.now();
+  }, [panels]);
+
+  useLifecycleNotifier(LifecycleEvent.LevelChangeRequested, () => {
+    if (startTime.current) {
+      sendAnalyticsEvent('Panels Level Completed', {
+        timeSpentSeconds: (Date.now() - startTime.current) / 1000,
+      });
+      startTime.current = null;
+    }
+  });
+
+  const onChangePanel = (
+    source: 'button' | 'bubble',
+    currentPanel: number,
+    nextPanel: number,
+    timeSpentOnPanelSeconds: number
+  ) => {
+    sendAnalyticsEvent(
+      source === 'button'
+        ? 'Panels Next Button Clicked'
+        : 'Panels Bubble Clicked',
+      {
+        currentPanel,
+        nextPanel,
+        timeSpentOnPanelSeconds,
+      }
+    );
+  };
+
+  const onClickContinue = (
+    currentPanel: number,
+    timeSpentOnPanelSeconds: number
+  ) => {
+    sendAnalyticsEvent('Panels Continue Button Clicked', {
+      currentPanel,
+      timeSpentOnPanelSeconds,
+    });
+  };
+
+  const levelPath = useAppSelector(state => getCurrentLevel(state)?.path);
+  useEffect(() => {
+    updateAnalyticsProperty('levelPath', levelPath);
+  }, [levelPath]);
+
   const [windowWidth, windowHeight] = useWindowSize();
 
-  if (!panels || currentAppName !== appName) {
+  if (!panels) {
     return <div />;
   }
 
   return (
     <PanelsView
       panels={panels}
+      background={background}
       onContinue={onContinue}
       onSkip={skipUrl ? onSkip : undefined}
       targetWidth={windowWidth}
       targetHeight={windowHeight}
-      offerTts={offerTts}
+      offerBrowserTts={offerBrowserTts || queryParams('show-tts') === 'true'}
+      levelId={currentLevelId}
+      onChangePanel={onChangePanel}
+      onClickContinue={onClickContinue}
     />
   );
 };

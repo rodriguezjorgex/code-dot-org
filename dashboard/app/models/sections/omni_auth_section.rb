@@ -25,13 +25,16 @@
 #  participant_type     :string(255)      default("student"), not null
 #  lti_integration_id   :bigint
 #  ai_tutor_enabled     :boolean          default(FALSE)
+#  avatar_color         :integer
+#  avatar_emoji         :integer
 #
 # Indexes
 #
-#  fk_rails_20b1e5de46        (course_id)
-#  fk_rails_f0d4df9901        (lti_integration_id)
-#  index_sections_on_code     (code) UNIQUE
-#  index_sections_on_user_id  (user_id)
+#  fk_rails_20b1e5de46          (course_id)
+#  fk_rails_f0d4df9901          (lti_integration_id)
+#  index_sections_on_code       (code) UNIQUE
+#  index_sections_on_script_id  (script_id)
+#  index_sections_on_user_id    (user_id)
 #
 
 class OmniAuthSection < Section
@@ -61,7 +64,7 @@ class OmniAuthSection < Section
     oauth_section.update(hidden: false) if oauth_section.hidden
 
     oauth_students = students.map do |student|
-      User.from_omniauth(student, {'user_type' => User::TYPE_STUDENT})
+      User.from_omniauth(student, {'user_type' => User::TYPE_STUDENT, 'roster_synced' => true})
     end
 
     oauth_section.set_exact_student_list(oauth_students)

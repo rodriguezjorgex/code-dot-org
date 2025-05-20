@@ -1,11 +1,19 @@
-import GoogleBlockly, {BlockSvg, DropDownDiv, Field} from 'blockly/core';
+import * as GoogleBlockly from 'blockly/core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {InstrumentEventValue} from '../player/interfaces/InstrumentEvent';
-import {getNoteName} from '../utils/Notes';
-import {generateGraphDataFromTune, TuneGraphEvent} from '../utils/Tunes';
-import TunePanel, {TunePanelProps} from '../views/TunePanel';
+import MusicRegistry from '../MusicRegistry';
+import {
+  InstrumentEventValue,
+  InstrumentTickEvent,
+} from '../player/interfaces/InstrumentEvent';
+import {getNoteName, convertRelativeToAbsolutePitch} from '../utils/Notes';
+import {
+  generateGraphDataFromTune,
+  isNoteAvailableInScaleMode,
+  TuneGraphEvent,
+} from '../utils/Tunes';
+import InstrumentGrid from '../views/InstrumentGrid';
 
 const color = require('@cdo/apps/util/color');
 const experiments = require('@cdo/apps/util/experiments');
@@ -21,10 +29,11 @@ interface FieldTuneOptions {
 
 /**
  * A custom field that renders the tune selection UI, used in the
- * "play_tune" block. The UI is rendered by {@link TunePanel}.
+ * "play_tune" block. The UI is rendered by {@link InstrumentGrid}.
  */
-export default class FieldTune extends Field {
-  static fromJson(options: FieldTuneOptions) {
+export default class FieldTune extends GoogleBlockly.Field {
+  static fromJson(_options: GoogleBlockly.FieldConfig) {
+    const options = _options as FieldTuneOptions;
     return new FieldTune(options);
   }
 
@@ -70,7 +79,7 @@ export default class FieldTune extends Field {
   }
 
   applyColour() {
-    const style = (this.sourceBlock_ as BlockSvg).style;
+    const style = (this.sourceBlock_ as GoogleBlockly.BlockSvg).style;
     if (this.borderRect_) {
       this.borderRect_.setAttribute('stroke', style.colourTertiary);
       this.borderRect_.setAttribute('fill', 'transparent');
@@ -109,8 +118,22 @@ export default class FieldTune extends Field {
       this.backgroundElement
     );
 
+    const {events, scaleMode} = this.getValue();
+    const key = MusicRegistry.player.getKey();
+
+    const mapFn = (event: InstrumentTickEvent) => ({
+      ...event,
+      note: convertRelativeToAbsolutePitch(key, event.note),
+    });
+
+    const notes = events
+      .map(mapFn)
+      .filter((event: InstrumentTickEvent) =>
+        isNoteAvailableInScaleMode(key, event.note, scaleMode)
+      );
+
     const graphNotes: TuneGraphEvent[] = generateGraphDataFromTune({
-      value: this.getValue(),
+      notes,
       width: FIELD_WIDTH,
       height: FIELD_HEIGHT,
       numOctaves: 3,
@@ -152,12 +175,18 @@ export default class FieldTune extends Field {
     super.showEditor_();
 
     const editor = this.createDropdown();
-    DropDownDiv.getContentDiv().appendChild(editor);
+    GoogleBlockly.DropDownDiv.getContentDiv().appendChild(editor);
 
-    const style = (this.sourceBlock_ as BlockSvg).style;
-    DropDownDiv.setColour(style.colourPrimary, style.colourTertiary);
+    const style = (this.sourceBlock_ as GoogleBlockly.BlockSvg).style;
+    GoogleBlockly.DropDownDiv.setColour(
+      style.colourPrimary,
+      style.colourTertiary
+    );
 
-    DropDownDiv.showPositionedByField(this, this.disposeDropdown.bind(this));
+    GoogleBlockly.DropDownDiv.showPositionedByField(
+      this,
+      this.disposeDropdown.bind(this)
+    );
   }
 
   private createDropdown(): HTMLDivElement {
@@ -179,15 +208,23 @@ export default class FieldTune extends Field {
     }
 
     ReactDOM.render(
-      React.createElement<TunePanelProps>(TunePanel, {
-        initValue: this.getValue(),
+      React.createElement(InstrumentGrid, {
+        // Make a copy of the value object so that we don't overwrite Blockly's data.
+        initialValue: JSON.parse(JSON.stringify(this.getValue())),
+        editorType: 'notes',
         onChange: this.onValueChange,
+        lengthMeasures: 1,
       }),
       this.newDiv
     );
   }
 
   private disposeDropdown() {
+    if (!this.newDiv) {
+      return;
+    }
+
+    ReactDOM.unmountComponentAtNode(this.newDiv);
     this.newDiv = null;
   }
 

@@ -1,7 +1,7 @@
+import Button from '@code-dot-org/component-library/button';
 import React, {useEffect, useState} from 'react';
 
 import {ExtraLinksLevelData, ExtraLinksProjectData} from '@cdo/apps/lab2/types';
-import Button from '@cdo/apps/legacySharedComponents/Button';
 import HttpClient from '@cdo/apps/util/HttpClient';
 import {useAppSelector} from '@cdo/apps/util/reduxHooks';
 
@@ -13,10 +13,7 @@ import moduleStyles from './extra-links.module.scss';
 
 interface ExtraLinksProps {
   levelId: number;
-}
-
-interface PermissionResponse {
-  permissions: string[];
+  positionRightOfFooter?: boolean;
 }
 
 interface ExtraLinksData {
@@ -25,15 +22,10 @@ interface ExtraLinksData {
 }
 
 async function fetchExtraLinksData(
+  permissions: string[],
   levelId: number,
   channelId?: string
 ): Promise<ExtraLinksData> {
-  // Fetch permissions.
-  const permissionsResponse = await HttpClient.fetchJson<PermissionResponse>(
-    '/api/v1/users/current/permissions'
-  );
-  const {permissions} = permissionsResponse.value;
-
   // Fetch level link data.
   let levelLinkData: ExtraLinksLevelData | undefined;
   if (
@@ -68,6 +60,7 @@ async function fetchExtraLinksData(
 // then display a modal with the link data.
 const ExtraLinks: React.FunctionComponent<ExtraLinksProps> = ({
   levelId,
+  positionRightOfFooter,
 }: ExtraLinksProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [extraLinksData, setExtraLinksData] = useState<ExtraLinksData | null>(
@@ -79,13 +72,15 @@ const ExtraLinks: React.FunctionComponent<ExtraLinksProps> = ({
     state => state.lab.channel && state.lab.channel.id
   );
 
+  const permissions = useAppSelector(state => state.lab.permissions);
+
   useEffect(() => {
     setIsLoading(true);
-    fetchExtraLinksData(levelId, channelId).then(data => {
+    fetchExtraLinksData(permissions, levelId, channelId).then(data => {
       setExtraLinksData(data);
       setIsLoading(false);
     });
-  }, [levelId, channelId]);
+  }, [permissions, levelId, channelId]);
   const {levelLinkData, projectLinkData} = extraLinksData || {};
 
   if (isLoading || (!levelLinkData && !projectLinkData)) {
@@ -97,7 +92,13 @@ const ExtraLinks: React.FunctionComponent<ExtraLinksProps> = ({
       <Button
         onClick={() => setIsModalOpen(true)}
         text={'Extra Links'}
-        className={moduleStyles.extraLinksButton}
+        className={
+          positionRightOfFooter
+            ? moduleStyles.buttonRightOfFooter
+            : moduleStyles.extraLinksButton
+        }
+        size={'s'}
+        id={'uitest-extra-links-button'}
       />
       {levelLinkData && (
         <ExtraLinksModal

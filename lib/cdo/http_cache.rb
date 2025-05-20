@@ -56,14 +56,13 @@ class HttpCache
     'language_',
     # Experiment flag used to debug the onetrust cookie experience.
     'onetrust_cookie_scripts',
-    # Feature flag for the Colorado Privacy Act (CPA)
-    'cpa_experience',
     # Page mode, for A/B experiments and feature-flag rollouts.
     'pm'
   ].freeze
 
   # A list of script levels that should not be cached, even though they are
   # in a cacheable script
+  # TODO TEACH-1634 support the /courses/ path
   UNCACHED_UNIT_LEVEL_PATHS = [
     '/s/dance-2019/lessons/1/levels/10',
     '/s/dance-ai-2023/lessons/1/levels/10',
@@ -86,7 +85,6 @@ class HttpCache
     starwarsblocks
     mc
     frozen
-    gumball
     minecraft
     hero
     sports
@@ -101,6 +99,7 @@ class HttpCache
     hello-world-emoji-2021
     hello-world-space-2022
     hello-world-soccer-2022
+    music-jam-2024
     outbreak
   ).map do |script_name|
     # Most scripts use the default route pattern.
@@ -149,6 +148,10 @@ class HttpCache
       default_cookies << Rack::GeolocationOverride::KEY
     end
 
+    # Allows setting of Global Edition Region via cookies. See: Rack::GlobalEdition
+    require 'cdo/rack/global_edition'
+    default_cookies << Rack::GlobalEdition::REGION_KEY
+
     # These cookies are allowlisted on all session-specific (not cached) pages.
     allowlisted_cookies = [
       'hour_of_code',
@@ -160,13 +163,23 @@ class HttpCache
       'rack.session',
       'remember_user_token',
       '__profilin', # Used by rack-mini-profiler
+      'statsig_stable_id',
       session_key,
       storage_id,
+      'sign_up_user_type',
     ].concat(default_cookies)
 
     {
       pegasus: {
         behaviors: [
+          # NextJS assets path for the marketing app
+          {
+            path: '/_next/static/*',
+            proxy: 'marketing',
+            headers: [],
+            cookies: default_cookies,
+            include_marketing_router_lambda: true,
+          },
           {
             # Serve Sprockets-bundled assets directly from the S3 bucket synced via `assets:precompile`.
             #
@@ -225,12 +238,13 @@ class HttpCache
             query: false,
             headers: ALLOWLISTED_HEADERS,
             cookies: default_cookies
-          }
+          },
         ],
         # Remaining Pegasus paths are cached, and vary only on language, country, and default cookies.
         default: {
           headers: LANGUAGE_HEADER + COUNTRY_HEADER,
-          cookies: default_cookies
+          cookies: default_cookies,
+          include_marketing_router_lambda: true,
         }
       },
       dashboard: {

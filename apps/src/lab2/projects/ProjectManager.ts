@@ -91,7 +91,8 @@ export default class ProjectManager {
     }
 
     this.lastChannel = channel;
-    return {sources, channel};
+    const abuseScore = await this.channelsStore.getAbuseScore(channel);
+    return {sources, channel, abuseScore};
   }
 
   // Restore the given version of the project. This will call restore on the sources store
@@ -255,6 +256,10 @@ export default class ProjectManager {
     );
   }
 
+  getProjectType() {
+    return this.lastChannel?.projectType;
+  }
+
   redirectToRemix() {
     this.throwErrorIfDestroyed('redirectToRemix');
     if (!this.lastChannel || !this.lastChannel.projectType) {
@@ -311,6 +316,10 @@ export default class ProjectManager {
     return this.forceReloading;
   }
 
+  setLastSource(lastSource: ProjectSources) {
+    this.lastSource = JSON.stringify(lastSource);
+  }
+
   /**
    * Helper function to save a project, called either after a timeout or directly by save().
    * On a save, we check if there are unsaved changes to the source or channel.
@@ -360,7 +369,13 @@ export default class ProjectManager {
           forceNewVersion
         );
       } catch (error) {
-        this.onSaveFail('Error saving sources', error as Error);
+        let errorToReport: Error;
+        if (error instanceof Error) {
+          errorToReport = error as Error;
+        } else {
+          errorToReport = new Error('Unknown error occurred');
+        }
+        this.onSaveFail('Error saving sources', errorToReport);
         return;
       }
       this.lastSource = JSON.stringify(this.sourcesToSave);
@@ -420,9 +435,15 @@ export default class ProjectManager {
       this.forceReloading = true;
       this.metricsReporter.logWarning(`${error.message}. Reloading page.`);
       reload();
+    } else if (error.message.includes('413')) {
+      // Log 413s as warnings. The save fail listener should handle these errors and labs should
+      // show a reasonable error message to the user.
+      this.metricsReporter.logWarning('Project too large to save');
     } else {
-      // Otherwise, we log the error.
-      this.metricsReporter.logError(errorMessage, error);
+      // Otherwise, we log the error, including the message as details.
+      this.metricsReporter.logError(errorMessage, error, {
+        message: error.message,
+      });
     }
   }
 

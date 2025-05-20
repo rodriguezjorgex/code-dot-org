@@ -10,13 +10,14 @@ import {
   restoreRedux,
 } from '@cdo/apps/redux';
 import RubricContent from '@cdo/apps/templates/rubrics/RubricContent';
+import teacherRubric from '@cdo/apps/templates/rubrics/teacherRubricRedux';
 import teacherSections from '@cdo/apps/templates/teacherDashboard/teacherSectionsRedux';
 
 describe('RubricContent', () => {
   let store;
   beforeEach(() => {
     stubRedux();
-    registerReducers({teacherSections, teacherPanel});
+    registerReducers({teacherRubric, teacherSections, teacherPanel});
     store = getStore();
   });
 
@@ -45,6 +46,7 @@ describe('RubricContent', () => {
     lesson: {
       position: 3,
       name: 'Data Structures',
+      title: 'Data Structures',
     },
     level: {
       name: 'test_level',
@@ -137,7 +139,7 @@ describe('RubricContent', () => {
   it('shows level title when teacher is viewing student work', () => {
     const wrapper = shallow(<RubricContent {...defaultProps} />);
     expect(wrapper.find('Heading3').at(0).props().children).toBe(
-      'Lesson 3: Data Structures'
+      'Data Structures'
     );
   });
 
@@ -146,7 +148,7 @@ describe('RubricContent', () => {
       <RubricContent {...defaultProps} studentLevelInfo={null} />
     );
     expect(wrapper.find('Heading3').at(0).props().children).toBe(
-      'Lesson 3: Data Structures'
+      'Data Structures'
     );
   });
 

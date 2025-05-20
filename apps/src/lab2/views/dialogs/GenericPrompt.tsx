@@ -1,8 +1,7 @@
+import TextField from '@code-dot-org/component-library/textField';
+import {BodyTwoText} from '@code-dot-org/component-library/typography';
 import debounce from 'lodash/debounce';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-
-import TextField from '@cdo/apps/componentLibrary/textField';
-import {BodyTwoText} from '@cdo/apps/componentLibrary/typography';
 
 import {useDialogControl} from './DialogControlContext';
 import GenericDialog, {
@@ -53,6 +52,7 @@ const GenericPromptBody: React.FunctionComponent<GenericPromptBodyProps> = ({
         value={prompt}
         onChange={e => handleInputChange(e.target.value)}
         errorMessage={errorMessage}
+        id="uitest-prompt-field"
       />
     </>
   );

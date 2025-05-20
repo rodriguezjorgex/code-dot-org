@@ -1,7 +1,9 @@
 import {GenericAlertDialogProps} from './GenericAlertDialog';
 import {GenericConfirmationDialogProps} from './GenericConfirmationDialog';
 import {GenericDialogProps} from './GenericDialog';
+import {GenericDropdownProps} from './GenericDropdown';
 import {GenericPromptProps} from './GenericPrompt';
+import {PendingDialogProps} from './PendingDialog';
 import {SkipDialogProps} from './SkipDialog';
 import {StartOverDialogProps} from './StartOverDialog';
 
@@ -9,9 +11,11 @@ export enum DialogType {
   GenericAlert = 'GenericAlert',
   GenericConfirmation = 'GenericConfirmation',
   GenericPrompt = 'GenericPrompt',
+  GenericDropdown = 'GenericDropdown',
   GenericDialog = 'GenericDialog',
   Skip = 'Skip',
   StartOver = 'StartOver',
+  PendingDialog = 'PendingDialog',
 }
 
 export type DialogCloseActionType = 'cancel' | 'neutral' | 'confirm';
@@ -32,6 +36,9 @@ export type SpecificTypedDialogProps =
   | (GenericConfirmationDialogProps & {
       type: DialogType.GenericConfirmation;
     })
+  | (GenericDropdownProps & {
+      type: DialogType.GenericDropdown;
+    })
   | (GenericPromptProps & {
       type: DialogType.GenericPrompt;
     })
@@ -39,7 +46,10 @@ export type SpecificTypedDialogProps =
       type: DialogType.GenericDialog;
     })
   | (SkipDialogProps & {type: DialogType.Skip})
-  | (StartOverDialogProps & {type: DialogType.StartOver});
+  | (StartOverDialogProps & {type: DialogType.StartOver})
+  | (PendingDialogProps & {
+      type: DialogType.PendingDialog;
+    });
 
 export type TypedDialogProps = SpecificTypedDialogProps & {
   throwOnCancel?: boolean;
@@ -49,6 +59,8 @@ export type AnyDialogType =
   | GenericAlertDialogProps
   | GenericConfirmationDialogProps
   | GenericDialogProps
+  | GenericDropdownProps
   | GenericPromptProps
   | SkipDialogProps
-  | StartOverDialogProps;
+  | StartOverDialogProps
+  | PendingDialogProps;

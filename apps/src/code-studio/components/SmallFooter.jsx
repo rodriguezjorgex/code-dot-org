@@ -5,13 +5,12 @@ https://github.com/code-dot-org/code-dot-org/blob/b2efc7ca8331f8261ebd55a326e23f
 */
 
 /* eslint-disable react/jsx-no-target-blank */
-/* eslint-disable react/no-danger */
+import {Button} from '@code-dot-org/component-library/button';
 import _ from 'lodash';
 import debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {Button} from '@cdo/apps/componentLibrary/button';
 import {userAlreadyReportedAbuse} from '@cdo/apps/reportAbuse';
 import CopyrightDialog from '@cdo/apps/sharedComponents/footer/CopyrightDialog/index';
 import I18nDropdown from '@cdo/apps/sharedComponents/footer/I18nDropdown/index';
@@ -30,6 +29,7 @@ export default class SmallFooter extends React.Component {
     // encode string of html
     i18nDropdownInBase: PropTypes.bool.isRequired,
     localeUrl: PropTypes.string,
+    currentLocale: PropTypes.string,
     localeOptions: PropTypes.arrayOf(
       PropTypes.shape({
         value: PropTypes.string,
@@ -179,7 +179,8 @@ export default class SmallFooter extends React.Component {
           {this.props.i18nDropdownInBase && (
             <I18nDropdown
               localeUrl={this.props.localeUrl}
-              optionsForLocaleSelect={this.props.localeOptions}
+              selected={this.props.currentLocale}
+              options={this.props.localeOptions}
             />
           )}
           {this.props.copyrightInBase && this.renderCopyright()}

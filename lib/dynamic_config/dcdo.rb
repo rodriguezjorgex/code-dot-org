@@ -33,7 +33,6 @@ class DCDOBase < DynamicConfigBase
       'pl-launch-hero-banner': DCDO.get('pl-launch-hero-banner', false),
       'curriculum-launch-2024': DCDO.get('curriculum-launch-2024', false),
       'csta-form-extension': DCDO.get('csta-form-extension', false),
-      cpa_experience: DCDO.get('cpa_experience', false),
       gender: DCDO.get('gender', false),
       'amplitude-event-sample-rates': DCDO.get('amplitude-event-sample-rates', {}),
       # Whether to allow the user to toggle between the v1 and v2 progress tables.
@@ -51,12 +50,20 @@ class DCDOBase < DynamicConfigBase
       'music-lab-samples-report': DCDO.get('music-lab-samples-report', true),
       'disable-try-new-progress-view-modal': DCDO.get('disable-try-new-progress-view-modal', false),
       'music-lab-existing-projects-default-sounds': DCDO.get('music-lab-existing-projects-default-sounds', true),
-      'show-age-gated-students-banner': DCDO.get('show-age-gated-students-banner', true),
       'cfu-pin-hide-enabled': DCDO.get('cfu-pin-hide-enabled', false),
       'teacher-local-nav-v2': DCDO.get('teacher-local-nav-v2', false),
+      'teacher-homepage-v2': DCDO.get('teacher-homepage-v2', false),
+      'teacher-homepage-v2-announcement': DCDO.get('teacher-homepage-v2-announcement', false),
       'best-of-stem-2024': DCDO.get('best-of-stem-2024', false),
-      lti_account_unlinking: DCDO.get('lti_account_unlinking', false),
-      'hoc-2024-sweepstakes': DCDO.get('hoc-2024-sweepstakes', false),
+      # Enabled locales for browser text to speech. Set to an empty array to disable all languages, or true to enable all.
+      'browser-tts-button-enabled-locales': DCDO.get('browser-tts-button-enabled-locales', ['en-US']),
+      'lab2-submit-project-enabled': DCDO.get('lab2-submit-project-enabled', true),
+      'cdo-blockly-usage': DCDO.get('cdo-blockly-usage', false),
+      # TODO ACQ-3074 - Remove this after the Exploring Gen AI launch
+      'exploring-gen-ai-launch': DCDO.get('exploring-gen-ai-launch', false),
+      'ai-tutor-teacher-nav-v2': DCDO.get('ai-tutor-teacher-nav-v2', true),
+      'music-lab-banner': DCDO.get('music-lab-banner', false),
+      'show-download-progress-csv': DCDO.get('show-download-progress-csv', false),
     }
   end
 end

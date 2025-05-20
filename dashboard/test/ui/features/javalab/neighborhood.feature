@@ -1,7 +1,7 @@
 @eyes
 Feature: NeighborhoodPainting
 
-@no_circle
+@no_ci
   Scenario: Paint Glomming Shapes
     When I open my eyes to test "Javalab Neighborhood Paint Glomming"
     Given I create a levelbuilder named "Simone"
@@ -12,8 +12,7 @@ Feature: NeighborhoodPainting
     Then I set slider speed to fast
     And I see no difference for "initial page load" using stitch mode "none"
     Then I press "runButton"
-    And I wait until element ".javalab-console" contains text "[JAVALAB] Starting painter."
-    And I wait for 7 seconds
+    And I wait until element ".javalab-console" contains text "Done painting"
     And I see no difference for "paint glomming" using stitch mode "none"
     Then I close my eyes
 

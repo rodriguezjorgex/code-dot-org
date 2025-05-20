@@ -1,16 +1,17 @@
+import Button from '@code-dot-org/component-library/button';
+import SimpleDropdown from '@code-dot-org/component-library/dropdown/simpleDropdown';
+import Slider, {SliderProps} from '@code-dot-org/component-library/slider';
 import classNames from 'classnames';
 import React, {useState, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 
 import {AichatLevelProperties, ModelDescription} from '@cdo/apps/aichat/types';
-import Button from '@cdo/apps/componentLibrary/button/Button';
-import SimpleDropdown from '@cdo/apps/componentLibrary/dropdown/simpleDropdown/SimpleDropdown';
-import Slider, {SliderProps} from '@cdo/apps/componentLibrary/slider/Slider';
 import {isReadOnlyWorkspace} from '@cdo/apps/lab2/lab2Redux';
 import {useAppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
 
 import {modelDescriptions} from '../../constants';
-import {setAiCustomizationProperty} from '../../redux/aichatRedux';
+import aichatI18n from '../../locale';
+import {setAiCustomizationProperty} from '../../redux';
 
 import CompareModelsDialog from './CompareModelsDialog';
 import {
@@ -71,22 +72,22 @@ const SetupCustomization: React.FunctionComponent = () => {
 
   const readOnlyWorkspace: boolean = useSelector(isReadOnlyWorkspace);
 
-  const allFieldsDisabled =
-    (isDisabled(temperature) &&
-      isDisabled(systemPrompt) &&
-      isDisabled(selectedModelId)) ||
-    readOnlyWorkspace;
+  const anyFieldEditable =
+    (isEditable(temperature) ||
+      isEditable(systemPrompt) ||
+      isEditable(selectedModelId)) &&
+    !readOnlyWorkspace;
 
   const renderChooseAndCompareModels = () => {
     return (
       <div>
         <FieldLabel
           id="selected-model"
-          label="Selected model"
-          tooltipText="This is the underlying language model being used by the chatbot. Use the dropdown to select from additional fine-tuned models."
+          label={aichatI18n.modelCustomization_comparisonHeader()}
+          tooltipText={aichatI18n.modelCustomization_comparisonTooltipText()}
         />
         <SimpleDropdown
-          labelText="Selected model"
+          labelText={aichatI18n.modelCustomization_comparisonHeader()}
           isLabelVisible={false}
           onChange={event =>
             dispatch(
@@ -107,14 +108,11 @@ const SetupCustomization: React.FunctionComponent = () => {
         />
         {isEditable(selectedModelId) && (
           <Button
-            text="Compare Models"
+            text={aichatI18n.modelCustomization_compareButtonText()}
             onClick={() => setIsShowingModelDialog(true)}
             type="secondary"
             color="gray"
-            className={classNames(
-              styles.updateButton,
-              styles.compareModelsButton
-            )}
+            className={classNames(styles.compareModelsButton)}
             disabled={readOnlyWorkspace}
           />
         )}
@@ -128,12 +126,16 @@ const SetupCustomization: React.FunctionComponent = () => {
     );
   };
 
+  // The reason we're multiplying by 10 and dividing by 10 is because the slider
+  // component adds and subtracts by the step value, and with float math, those values
+  // can end up being slightly off after multiple increments/decrements by 0.1.
+  // This way, we can avoid any issues from funky float math.
   const sliderProps: SliderProps = {
     name: 'temperature-slider',
-    value: aiCustomizations.temperature * 10,
-    minValue: MIN_TEMPERATURE,
-    maxValue: MAX_TEMPERATURE,
-    step: SET_TEMPERATURE_STEP,
+    value: Math.round(aiCustomizations.temperature * 10),
+    minValue: Math.round(MIN_TEMPERATURE * 10),
+    maxValue: Math.round(MAX_TEMPERATURE * 10),
+    step: Math.round(SET_TEMPERATURE_STEP * 10),
     hideValue: true,
     disabled: isDisabled(temperature) || readOnlyWorkspace,
     onChange: event => {
@@ -147,12 +149,18 @@ const SetupCustomization: React.FunctionComponent = () => {
     },
     className: styles.temperatureSlider,
     leftButtonProps: {
-      icon: {iconName: 'minus', title: 'Decrease'},
-      ['aria-label']: 'Decrease',
+      icon: {
+        iconName: 'minus',
+        title: aichatI18n.modelCustomization_sliderDecrease(),
+      },
+      ['aria-label']: aichatI18n.modelCustomization_sliderDecrease(),
     },
     rightButtonProps: {
-      icon: {iconName: 'plus', title: 'Increase'},
-      ['aria-label']: 'Increase',
+      icon: {
+        iconName: 'plus',
+        title: aichatI18n.modelCustomization_sliderIncrease(),
+      },
+      ['aria-label']: aichatI18n.modelCustomization_sliderIncrease(),
     },
   };
 
@@ -162,11 +170,16 @@ const SetupCustomization: React.FunctionComponent = () => {
         {isVisible(selectedModelId) && renderChooseAndCompareModels()}
         {isVisible(temperature) && (
           <>
-            <div className={styles.horizontalFlexContainer}>
+            <div
+              className={classNames(
+                styles.horizontalFlexContainer,
+                'uitest-temperature-container'
+              )}
+            >
               <FieldLabel
                 id="temperature"
-                label="Temperature"
-                tooltipText="Temperature affects which words are generated as a response. Use the slider to change the temperature."
+                label={aichatI18n.technicalInfoHeader_temperature()}
+                tooltipText={aichatI18n.modelCustomization_temperatureTooltipText()}
               />
               {aiCustomizations.temperature}
             </div>
@@ -177,8 +190,8 @@ const SetupCustomization: React.FunctionComponent = () => {
           <>
             <FieldLabel
               id="system-prompt"
-              label="System Prompt"
-              tooltipText="The system prompt controls how the chatbot behaves. Type your instructions into the text box."
+              label={aichatI18n.technicalInfoHeader_systemPrompt()}
+              tooltipText={aichatI18n.modelCustomization_systemPromptTooltipText()}
             />
             <textarea
               className={styles.systemPromptInput}
@@ -198,9 +211,9 @@ const SetupCustomization: React.FunctionComponent = () => {
         )}
       </div>
       <div className={styles.footerButtonContainer}>
-        <UpdateButton isDisabledDefault={allFieldsDisabled} />
+        <UpdateButton isDisabledDefault={!anyFieldEditable} />
       </div>
-      <SaveChangesAlerts isReadOnly={allFieldsDisabled} />
+      <SaveChangesAlerts isReadOnly={!anyFieldEditable} />
     </div>
   );
 };
