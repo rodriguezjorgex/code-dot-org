@@ -190,9 +190,16 @@ class ScriptLevelsController < ApplicationController
       end
     end
 
-    # The lesson might contain a background that should be applied to all levels.
-    lesson_background = @script_level.lesson.properties['background'] if @script_level.level.uses_lab2? && @script_level.lesson
-    @body_classes = lesson_background ? "background-#{lesson_background}" : @level.properties['background']
+    # We have a few different paths for getting the background color for the level.
+    # 1. If this is a lab2 level and part of a lesson, we get the background color from the lesson (see lesson.rb for details).
+    # 3. Otherwise, we use the level's background color, if it exists.
+    @body_classes = @level.properties['background']
+    if @script_level.level.uses_lab2? && @script_level.lesson
+      background = @script_level.lesson.get_background(current_user)
+      if background
+        @body_classes = "background-#{background}"
+      end
+    end
 
     @rubric = @script_level.lesson.rubric
     ai_rubrics_enabled_for_user = @view_as_user&.verified_teacher? || @view_as_user&.teachers&.any?(&:verified_teacher?)
