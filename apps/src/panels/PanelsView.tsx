@@ -1,5 +1,4 @@
 import {Button} from '@code-dot-org/component-library/button';
-import {useTheme} from '@code-dot-org/component-library/common/contexts';
 import classNames from 'classnames';
 import markdownToTxt from 'markdown-to-txt';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
@@ -71,8 +70,6 @@ const PanelsView: React.FunctionComponent<PanelsProps> = ({
   >(undefined);
   const [typingDone, setTypingDone] = useState(false);
   const {cancel} = useBrowserTextToSpeech();
-  const {theme} = useTheme();
-  console.log({theme});
 
   const lastPanelStartTime = useRef<number>(Date.now());
 
@@ -165,8 +162,6 @@ const PanelsView: React.FunctionComponent<PanelsProps> = ({
   if (!panel) {
     return null;
   }
-
-  const backgroundSuffix = theme;
 
   const previousPanel =
     panel.fadeInOverPrevious &&
@@ -289,8 +284,8 @@ const PanelsView: React.FunctionComponent<PanelsProps> = ({
                     'icon',
                     styles.bubble,
                     index === currentPanelIndex
-                      ? styles[`bubbleCurrent${backgroundSuffix}`]
-                      : styles[`bubbleNotCurrent${backgroundSuffix}`]
+                      ? styles.bubbleCurrent
+                      : styles.bubbleNotCurrent
                   )}
                   title={undefined}
                   icon="circle"
