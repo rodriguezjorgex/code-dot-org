@@ -80,6 +80,14 @@ Given(/^I get the workshop id from the current url$/) do
   track_record_for_deletion('Pd::Workshop', @workshop_id)
 end
 
+Given(/^I create a workshop under the regional partner named "([^"]+)"$/) do |partner_name|
+  require_rails_env
+
+  regional_partner = RegionalPartner.find_by(name: partner_name, is_active: true)
+  workshop = FactoryBot.create :summer_workshop
+  workshop.update!(regional_partner_id: regional_partner.id)
+end
+
 Given(/^I delete the workshop$/) do
   browser_request(
     url: '/api/test/delete_workshop',
