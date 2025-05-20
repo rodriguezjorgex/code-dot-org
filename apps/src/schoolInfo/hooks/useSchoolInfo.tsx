@@ -81,6 +81,7 @@ export function useSchoolInfo(initialState: SchoolInfoInitialState) {
     schoolZip: detectedZip,
     schoolName: detectedSchoolName,
   });
+  const [schoolsLoading, setSchoolsLoading] = useState(false);
   const [schoolsList, setSchoolsList] = useState<SchoolDropdownOption[]>([]);
 
   // State hooks
@@ -161,9 +162,7 @@ export function useSchoolInfo(initialState: SchoolInfoInitialState) {
     (
       zip: string,
       callback: (data: {nces_id: number; name: string}[]) => void
-    ) => {
-      fetchSchoolsAPI(zip, callback);
-    },
+    ) => fetchSchoolsAPI(zip, callback),
     []
   );
 
@@ -189,6 +188,7 @@ export function useSchoolInfo(initialState: SchoolInfoInitialState) {
     }
 
     handleSessionStorage(SCHOOL_ZIP_SESSION_KEY, schoolZip);
+    setSchoolsLoading(true);
 
     fetchSchools(schoolZip, data => {
       if (!mounted.current) return;
@@ -197,7 +197,11 @@ export function useSchoolInfo(initialState: SchoolInfoInitialState) {
         .map(constructSchoolOption)
         .sort((a, b) => a.text.localeCompare(b.text));
 
+      setSchoolsLoading(false);
       setSchoolsList(schools);
+    }).catch(error => {
+      setSchoolsLoading(false);
+      console.error(error);
     });
   }, [schoolZip, fetchSchools]);
 
@@ -225,6 +229,7 @@ export function useSchoolInfo(initialState: SchoolInfoInitialState) {
     schoolName,
     schoolZip,
     schoolsList,
+    schoolsLoading,
     usIp: initialState.usIp,
     setSchoolId,
     setCountry,
