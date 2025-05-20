@@ -130,14 +130,14 @@ FactoryBot.define do
       # Our most common workshop type as of August 2019.
       trait :intro do
         subject {Pd::Workshop::SUBJECT_CSF_101}
-        location_name {'Walkerville Elementary School'}
+        session_location_name {'Walkerville Elementary School'}
       end
       factory(:csf_intro_workshop, aliases: [:csf_101_workshop]) {intro}
 
       # CSF Deep Dive, also known as CSF 201
       trait :deep_dive do
         subject {Pd::Workshop::SUBJECT_CSF_201}
-        location_name {'Third Street Elementary School'}
+        session_location_name {'Third Street Elementary School'}
       end
       factory(:csf_deep_dive_workshop, aliases: [:csf_201_workshop]) {deep_dive}
     end
@@ -173,7 +173,7 @@ FactoryBot.define do
       # CSP Academic Year Workshops
       trait :csp do
         course {Pd::Workshop::COURSE_CSP}
-        location_name {'Bayside High School'}
+        session_location_name {'Bayside High School'}
 
         # Possible subjects:
         # Pd::Workshop::SUBJECT_CSP_WORKSHOP_1
@@ -189,7 +189,7 @@ FactoryBot.define do
       # CSD Academic Year Workshops
       trait :csd do
         course {Pd::Workshop::COURSE_CSD}
-        location_name {'Sunrise Middle School'}
+        session_location_name {'Sunrise Middle School'}
 
         # Possible subjects:
         # Pd::Workshop::SUBJECT_CSD_WORKSHOP_1
@@ -205,7 +205,7 @@ FactoryBot.define do
       # CSA Academic Year Workshops
       trait :csa do
         course {Pd::Workshop::COURSE_CSA}
-        location_name {'Greendale Community College'}
+        session_location_name {'Greendale Community College'}
 
         # Possible subjects:
         # Pd::Workshop::SUBJECT_CSA_WORKSHOP_1
@@ -224,7 +224,7 @@ FactoryBot.define do
       # CSP local summer workshop by default
       csp
 
-      location_name {'Greendale Community College'}
+      session_location_name {'Greendale Community College'}
       on_map {false}         # Never on the map
       funded {false}         # Less than half are funded
       num_facilitators {2}   # Most have 2 facilitators
