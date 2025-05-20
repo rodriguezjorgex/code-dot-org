@@ -399,7 +399,7 @@ function initializeBlocklyWrapper(blocklyInstance: GoogleBlocklyInstance) {
         // as opposed to the student's "primary" workspace.
         Blockly.common.getMainWorkspace()
       );
-      if (Blockly.isSelectable(focusedNode)) {
+      if (focusedNode && Blockly.isSelectable(focusedNode)) {
         return focusedNode;
       }
       // If the focused node is not selectable, fall back to the
