@@ -292,12 +292,12 @@ function handleExecutionError(err, lineNumber, outputString, libraryName) {
     levelId: analyticsData.levelId,
     scriptId: analyticsData.scriptId,
     interaction: UserLevelInteractions.code_execution_error,
-    metadata: {
+    metadata: JSON.stringify({
       error: err,
       lineNumber: lineNumber,
       outputString: outputString,
       libraryName: libraryName,
-    },
+    }),
   });
   // prevent further execution
   Applab.clearEventHandlersKillTickLoop();
