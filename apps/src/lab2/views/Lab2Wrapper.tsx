@@ -6,6 +6,7 @@
 // boundary; a fade-in between levels; a loading spinner when a level takes a
 // while to load; and a sad bee when things go wrong.
 
+import {useTheme} from '@code-dot-org/component-library/common/contexts';
 import classNames from 'classnames';
 import React, {useEffect} from 'react';
 import {useSelector} from 'react-redux';
@@ -60,6 +61,19 @@ const Lab2Wrapper: React.FunctionComponent<Lab2WrapperProps> = ({children}) => {
 
   // Store some server-provided data in redux.
   const currentLevelId = useAppSelector(state => state.progress.currentLevelId);
+  const {setTheme} = useTheme();
+
+  useEffect(() => {
+    // Initialize the theme based on the body class, which is set on the server.
+    // This allows us to take advantage of the server-side logic to show the correct theme
+    // based on the lesson and user preference.
+    const bodyClassList = document.body.classList;
+    if (bodyClassList.contains('background-light')) {
+      setTheme('Light');
+    } else {
+      setTheme('Dark');
+    }
+  }, [setTheme]);
 
   // Store the level ID provided by App Options in redux if necessary.
   // This is needed on pages without a header, such as the share view.
