@@ -67,6 +67,7 @@ const Lab2Wrapper: React.FunctionComponent<Lab2WrapperProps> = ({children}) => {
     // Initialize the theme based on the body class, which is set on the server.
     // This allows us to take advantage of the server-side logic to show the correct theme
     // based on the lesson and user preference.
+    // We default to dark theme if the body class is not set.
     const bodyClassList = document.body.classList;
     if (bodyClassList.contains('background-light')) {
       setTheme('Light');

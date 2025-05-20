@@ -44,13 +44,12 @@ const LabViewsRenderer: React.FunctionComponent = () => {
   const lesson = useAppSelector(state => getCurrentLesson(state));
   const {signInState} = useAppSelector(state => state.currentUser);
 
-  const capitalizedLessonBackground = useMemo(() => {
-    if (lesson?.background) {
-      return capitalizeFirstLetter(lesson.background) as Theme;
-    } else {
-      return undefined;
-    }
-  }, [lesson]);
+  const capitalizedLessonBackground = useAppSelector(
+    state =>
+      capitalizeFirstLetter(
+        getCurrentLesson(state)?.background || 'dark'
+      ) as Theme
+  );
 
   // We only use the global user preference for theme if the current lesson has
   // at least one python lab level.
