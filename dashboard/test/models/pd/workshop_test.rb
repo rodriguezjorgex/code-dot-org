@@ -1475,7 +1475,7 @@ class Pd::WorkshopTest < ActiveSupport::TestCase
   end
 
   test 'registration_link does not default to anything if applications are not required' do
-    workshop = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, subject: nil, course_offerings: [] << (create :course_offering)
+    workshop = create :byo_workshop
 
     assert_nil workshop.registration_link
   end

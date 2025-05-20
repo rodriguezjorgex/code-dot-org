@@ -32,7 +32,8 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
 
   test 'Admin workshops do not show up as pending exit surveys' do
     # Fake Admin workshop, which should produce an exit survey
-    admin_workshop = create :admin_workshop, :ended
+    admin_workshop = build :admin_workshop, :ended
+    admin_workshop.save(validate: false)
 
     # Given a teacher that attended the workshop
     teacher = create :teacher
