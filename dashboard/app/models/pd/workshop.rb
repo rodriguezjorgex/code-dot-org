@@ -97,6 +97,7 @@ class Pd::Workshop < ApplicationRecord
   validate :valid_registration_link_format, if: :registration_link
 
   validate :config_validation, unless: :legacyForm2025?
+  validate :valid_grades
 
   validates :funding_type,
     inclusion: {in: FUNDING_TYPES, if: :funded_csf?},
@@ -132,7 +133,7 @@ class Pd::Workshop < ApplicationRecord
   end
 
   def config_validation
-    config = Pd::SharedWorkshopConstants::WORKSHOP_COURSE_CONFIGS.find do |c|
+    config = WORKSHOP_COURSE_CONFIGS.find do |c|
       c[:label] == course
     end
 
@@ -164,6 +165,14 @@ class Pd::Workshop < ApplicationRecord
     end
   end
 
+  def valid_grades
+    return if grades.blank?
+    invalid_grades = Array(grades) - WORKSHOP_GRADE_LEVELS
+    if invalid_grades.any?
+      errors.add(:base, "Grade levels contains invalid grades: #{invalid_grades.join(', ')}")
+    end
+  end
+
   def valid_registration_link_format
     unless self.class.valid_url?(registration_link, true)
       errors.add(:registration_link, "is not a valid URL")
@@ -177,9 +186,9 @@ class Pd::Workshop < ApplicationRecord
   def format
     has_in_person_session = sessions.any? {|session| session.session_format == "in_person"}
     if virtual?
-      has_in_person_session ? Pd::SharedWorkshopConstants::WORKSHOP_FORMATS[:hybrid] : Pd::SharedWorkshopConstants::WORKSHOP_FORMATS[:virtual]
+      has_in_person_session ? WORKSHOP_FORMATS[:hybrid] : WORKSHOP_FORMATS[:virtual]
     else
-      Pd::SharedWorkshopConstants::WORKSHOP_FORMATS[:in_person]
+      WORKSHOP_FORMATS[:in_person]
     end
   end
 
