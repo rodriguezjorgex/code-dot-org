@@ -17,7 +17,11 @@ import {SchoolDropdownOption, SchoolInfoInitialState} from '../types';
 import {constructSchoolOption} from '../utils/constructSchoolOption';
 import {fetchSchools as fetchSchoolsAPI} from '../utils/fetchSchools';
 
-export function useSchoolInfo(initialState: SchoolInfoInitialState) {
+export function useSchoolInfo(
+  initialState: SchoolInfoInitialState,
+  // TODO: ACQ-3300 remove when school info has been updated for affected users
+  affectedByMissingSchoolData?: boolean
+) {
   const mounted = useRef(false);
 
   // Memoized initial values
@@ -30,6 +34,9 @@ export function useSchoolInfo(initialState: SchoolInfoInitialState) {
   );
 
   const detectedSchoolId = useMemo(() => {
+    if (affectedByMissingSchoolData) {
+      return NonSchoolOptions.SELECT_A_SCHOOL;
+    }
     if (initialState.schoolType === NonSchoolOptions.NO_SCHOOL_SETTING) {
       return NonSchoolOptions.NO_SCHOOL_SETTING;
     }
@@ -50,6 +57,7 @@ export function useSchoolInfo(initialState: SchoolInfoInitialState) {
     initialState.schoolType,
     initialState.schoolName,
     initialState.schoolZip,
+    affectedByMissingSchoolData,
   ]);
 
   const detectedZip = useMemo(
@@ -62,12 +70,16 @@ export function useSchoolInfo(initialState: SchoolInfoInitialState) {
 
   const detectedSchoolName = useMemo(
     () =>
-      initialState.schoolId
+      initialState.schoolId || affectedByMissingSchoolData
         ? ''
         : initialState.schoolName ||
           sessionStorage.getItem(SCHOOL_NAME_SESSION_KEY) ||
           '',
-    [initialState.schoolName, initialState.schoolId]
+    [
+      initialState.schoolName,
+      initialState.schoolId,
+      affectedByMissingSchoolData,
+    ]
   );
 
   const [state, setState] = useState<{
