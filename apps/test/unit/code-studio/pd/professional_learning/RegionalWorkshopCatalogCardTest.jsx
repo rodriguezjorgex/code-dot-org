@@ -134,7 +134,7 @@ describe('RegionalWorkshopCatalog', () => {
     fireEvent.click(screen.getByRole('button', {name: 'learnMore'}));
 
     await waitFor(() => {
-      screen.getByText('No description available');
+      screen.getByText('No description available.');
       screen.getByRole('button', {name: 'closeLearnMoreDialog'});
     });
   });
