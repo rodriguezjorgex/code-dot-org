@@ -134,6 +134,11 @@
         }
       }
 
+      div:first-of-type,
+      div:last-of-type {
+        margin: 0;
+      }
+
       div:nth-of-type(2) {
         top: 100%;
         padding: 0;
