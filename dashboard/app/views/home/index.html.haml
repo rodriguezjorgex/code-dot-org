@@ -23,7 +23,7 @@
   = render partial: 'layouts/school_info_confirmation_dialog'
 - elsif SchoolInfoInterstitialHelper.show?(current_user) || @force_school_info_interstitial
   - SchoolInfoInterstitialHelper.update_last_seen_timestamp(current_user)
-  = render partial: 'layouts/school_info_interstitial'
+  = render partial: 'layouts/school_info_interstitial', locals: {affected_by_missing_school_data: false}
 
 - if current_user
   = render partial: 'home/homepage'
