@@ -3695,12 +3695,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@blockly/keyboard-experiment@npm:~0.0.7":
-  version: 0.0.7
-  resolution: "@blockly/keyboard-experiment@npm:0.0.7"
+"@blockly/keyboard-experiment@npm:~0.0.8":
+  version: 0.0.8
+  resolution: "@blockly/keyboard-experiment@npm:0.0.8"
   peerDependencies:
-    blockly: ^12.0.0-beta.4
-  checksum: 10/f0e1e3459928278116af1461f72b238d2a1174ee9597eb7f766136ec9d9cc901fd4e9fbb69cc006fc38a79b6376979d148366fc1d4c8b89fa2e3ea274b1315b0
+    blockly: ^12.0.0
+  checksum: 10/c0a5f47b9538115143e003512458099fda1618a2fc10e69e281f3bffccbb6e3a03d13bc9cb870f501bf05999a7ff201ef53ba7801f09af38d310fe15294668fc
   languageName: node
   linkType: hard
 
@@ -10289,7 +10289,7 @@ __metadata:
     "@blockly/field-bitmap": "npm:^6.0.0"
     "@blockly/field-colour": "npm:^6.0.0"
     "@blockly/field-grid-dropdown": "npm:^6.0.0"
-    "@blockly/keyboard-experiment": "npm:~0.0.7"
+    "@blockly/keyboard-experiment": "npm:~0.0.8"
     "@blockly/plugin-cross-tab-copy-paste": "npm:^7.0.0"
     "@blockly/plugin-scroll-options": "npm:^7.0.0"
     "@blockly/theme-dark": "npm:^8.0.0"
