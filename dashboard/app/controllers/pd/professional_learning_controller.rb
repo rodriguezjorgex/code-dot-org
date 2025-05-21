@@ -147,6 +147,7 @@ class Pd::ProfessionalLearningController < ApplicationController
   # Returns the regional partner of the provided zip and workshops (sorted by start date) that meet
   # the following criteria:
   # - Not started yet
+  # - Not in the past
   # - Not hidden
   # - Considered to be in the regional partner's region (i.e. satisfies one of the following):
   #    - Has "National" participant group type
@@ -163,6 +164,7 @@ class Pd::ProfessionalLearningController < ApplicationController
 
     available_workshops = workshops.select do |ws|
       ws.state == Pd::Workshop::STATE_NOT_STARTED &&
+        ws.sessions.first.try(:start_time) > DateTime.now.in_time_zone(ws.time_zone || 'UTC') &&
         !ws.hidden &&
         in_region?(ws, partner) &&
         has_allowed_course_for_regional_ws_page?(ws)
