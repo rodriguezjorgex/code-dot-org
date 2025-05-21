@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 
 import {EVENTS, PLATFORMS} from '@cdo/apps/metrics/AnalyticsConstants';
 import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
@@ -15,7 +15,7 @@ import {NonSchoolOptions} from '@cdo/generated-scripts/sharedConstants';
 
 import {SchoolDropdownOption, SchoolInfoInitialState} from '../types';
 import {constructSchoolOption} from '../utils/constructSchoolOption';
-import {fetchSchools as fetchSchoolsAPI} from '../utils/fetchSchools';
+import {fetchSchools} from '../utils/fetchSchools';
 
 export function useSchoolInfo(
   initialState: SchoolInfoInitialState,
@@ -169,15 +169,6 @@ export function useSchoolInfo(
     });
   };
 
-  // Memoized fetchSchools function using useCallback
-  const fetchSchools = useCallback(
-    (
-      zip: string,
-      callback: (data: {nces_id: number; name: string}[]) => void
-    ) => fetchSchoolsAPI(zip, callback),
-    []
-  );
-
   const handleSessionStorage = (key: string, value: string) => {
     if (sessionStorage.getItem(key) !== value) {
       sessionStorage.setItem(key, value);
@@ -202,20 +193,24 @@ export function useSchoolInfo(
     handleSessionStorage(SCHOOL_ZIP_SESSION_KEY, schoolZip);
     setSchoolsLoading(true);
 
-    fetchSchools(schoolZip, data => {
-      if (!mounted.current) return;
+    fetchSchools(schoolZip)
+      .then(data => {
+        if (!mounted.current) return;
 
-      const schools = data
-        .map(constructSchoolOption)
-        .sort((a, b) => a.text.localeCompare(b.text));
+        const schools = data
+          .map(constructSchoolOption)
+          .sort((a: SchoolDropdownOption, b: SchoolDropdownOption) =>
+            a.text.localeCompare(b.text)
+          );
 
-      setSchoolsLoading(false);
-      setSchoolsList(schools);
-    }).catch(error => {
-      setSchoolsLoading(false);
-      console.error(error);
-    });
-  }, [schoolZip, fetchSchools]);
+        setSchoolsLoading(false);
+        setSchoolsList(schools);
+      })
+      .catch(error => {
+        setSchoolsLoading(false);
+        console.error(error);
+      });
+  }, [schoolZip]);
 
   // Handle schoolId changes
   useEffect(() => {
