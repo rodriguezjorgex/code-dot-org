@@ -1,0 +1,42 @@
+@import '@code-dot-org/component-library-styles/colors';
+@import '@code-dot-org/component-library-styles/primitiveColors';
+@import '@code-dot-org/component-library-styles/variables.scss';
+@import 'breakpoints';
+
+.selfPacedPLCatalog {
+  background-color: var(--background-neutral-secondary);
+
+  h1, h2, p {
+    margin: 0;
+  }
+
+  section {
+    padding-block: 4rem;
+  }
+
+  .headerContainer {
+    max-width: 60em;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+  }
+
+  .bodyContainer {
+    .catalogFiltersContainer {
+
+    }
+
+    .catalogContentNoResults {
+
+    }
+
+    .catalogContentCards {
+      .cardContainer {
+
+      }
+    }
+  }
+}
