@@ -20,7 +20,7 @@ Feature: Regional Workshop Catalog page
     Given I have a regional partner named "Reggie Partner" in the zip code "12345"
     And I create a workshop under the regional partner named "Reggie Partner"
 
-    Given I create a teacher named "New Teacher"
+    And I create a teacher named "New Teacher"
     And I sign in as "New Teacher" and go home
     Then I am on "http://studio.code.org/professional-learning/workshops"
 
@@ -67,9 +67,9 @@ Feature: Regional Workshop Catalog page
 
   Scenario: If sent to this page with a zip code url param the page obtains the regional partner and relevant workshops
     Given I have a regional partner named "Reggie Partner" in the zip code "12345"
-    Given I create a workshop under the regional partner named "Reggie Partner"
+    And I create a workshop under the regional partner named "Reggie Partner"
 
-    Given I create a teacher named "New Teacher"
+    And I create a teacher named "New Teacher"
     And I sign in as "New Teacher" and go home
     Then I am on "http://studio.code.org/professional-learning/workshops?zip=12345"
 
