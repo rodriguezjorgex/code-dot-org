@@ -18,7 +18,7 @@ Feature: Regional Workshop Catalog page
 
   Scenario: Entering a zip with a regional partner match allows user to see more info about and contact them
     Given I have a regional partner named "Reggie Partner" in the zip code "12345"
-    Given I create a workshop under the regional partner named "Reggie Partner"
+    And I create a workshop under the regional partner named "Reggie Partner"
 
     Given I create a teacher named "New Teacher"
     And I sign in as "New Teacher" and go home
@@ -45,9 +45,9 @@ Feature: Regional Workshop Catalog page
 
   Scenario: Entering a zip with a regional partner match allows user to see their workshops and enroll in them
     Given I have a regional partner named "Reggie Partner" in the zip code "12345"
-    Given I create a workshop under the regional partner named "Reggie Partner"
+    And I create a workshop under the regional partner named "Reggie Partner"
 
-    Given I create a teacher named "New Teacher"
+    And I create a teacher named "New Teacher"
     And I sign in as "New Teacher" and go home
     Then I am on "http://studio.code.org/professional-learning/workshops"
 
