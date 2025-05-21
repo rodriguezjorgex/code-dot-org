@@ -25,7 +25,6 @@ const Loading: React.FunctionComponent<LoadingProps> = ({
     ? moduleStyles.fadeLoading
     : moduleStyles.fadeLoaded;
 
-  const {theme} = useTheme();
   const isShare = useAppSelector(state => state.lab.isShareView);
 
   return (
@@ -33,7 +32,6 @@ const Loading: React.FunctionComponent<LoadingProps> = ({
       id="fade-overlay"
       className={classNames(
         moduleStyles.solidBlock,
-        theme && moduleStyles[`solidBlock${theme}`],
         overlayStyle,
         isShare && moduleStyles.shareViewOverlay
       )}

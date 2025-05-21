@@ -52,15 +52,7 @@
   pointer-events: none;
   opacity: 0;
   z-index: 70;
-  background-color: inherit;
-
-  &Dark {
-    background-color: $dark_black;
-  }
-
-  &Light {
-    background-color: $neutral_light;
-  }
+  background-color: var(--background-neutral-primary);
 
   &.noFadeLoading {
     opacity: 0;
