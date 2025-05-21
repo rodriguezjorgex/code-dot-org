@@ -50,14 +50,14 @@ const LabViewsRenderer: React.FunctionComponent = () => {
     [lesson]
   );
 
-  // Ensure the current theme is supported by the current lab.
+  // Set the theme for the current app.
   const {setTheme} = useTheme();
   useEffect(() => {
     if (currentAppName) {
       const supportedThemes = lab2EntryPoints[currentAppName]?.themes;
 
       const setThemeHelper = () => {
-        // If the body has a class, use that to set the theme if its supported by the lab.
+        // If the body has a class use that to set the theme, if its supported by the lab.
         // Otherwise, use the first supported theme.
         // We will only run this if we are not using the user preference, so it's safe to pull
         // from the body class, as the user cannot dynamically change the theme.

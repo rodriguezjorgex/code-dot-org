@@ -151,8 +151,10 @@ const SettingsDropdown: React.FunctionComponent<SettingsDropdownProps> = ({
   }, [appName]);
 
   const themeDropdownOptions = availableThemes.map(theme => ({
-    // TODO: translate
-    text: theme,
+    text:
+      theme === 'Dark'
+        ? codebridgeI18n.darkTheme()
+        : codebridgeI18n.lightTheme(),
     value: theme,
   }));
   const dropdownColor = theme === 'Dark' ? 'white' : 'black';
@@ -224,11 +226,14 @@ const SettingsDropdown: React.FunctionComponent<SettingsDropdownProps> = ({
           </div>
         )}
         <div className={moduleStyles.dropdownRow}>
-          <label htmlFor={'Theme'} className={moduleStyles.dropdownLabel}>
+          <label
+            htmlFor={codebridgeI18n.theme()}
+            className={moduleStyles.dropdownLabel}
+          >
             Theme
           </label>
           <SimpleDropdown
-            labelText={'Theme'}
+            labelText={codebridgeI18n.theme()}
             isLabelVisible={false}
             onChange={event => handleThemeChange(event.target.value as Theme)}
             items={themeDropdownOptions}

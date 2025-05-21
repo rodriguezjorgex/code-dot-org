@@ -190,9 +190,9 @@ class ScriptLevelsController < ApplicationController
       end
     end
 
-    # We have a few different paths for getting the background color for the level.
+    # We decide the background color based on the following rules:
     # 1. If this is a lab2 level and part of a lesson, we get the background color from the lesson (see lesson.rb for details).
-    # 3. Otherwise, we use the level's background color, if it exists.
+    # 2. Otherwise, we use the level's background color, if it exists.
     @body_classes = @level.properties['background']
     if @script_level.level.uses_lab2? && @script_level.lesson
       background = @script_level.lesson.get_background_for_user(current_user)
