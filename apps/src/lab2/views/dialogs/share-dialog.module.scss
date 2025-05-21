@@ -55,9 +55,14 @@
 
       &Afe {
         background-color: #2E4486;
+        color: var(--text-neutral-white-fixed);
 
         img {
           border-radius: 4px;
+        }
+
+        .heading {
+          color: var(--text-neutral-white-fixed);
         }
       }
     }
