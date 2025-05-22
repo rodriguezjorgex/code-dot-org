@@ -164,7 +164,7 @@ class Pd::ProfessionalLearningController < ApplicationController
     rp_workshops = partner&.pd_workshops || []
     available_regional_workshops = rp_workshops.select do |ws|
       ws.state == Pd::Workshop::STATE_NOT_STARTED &&
-        ws.sessions.first.try(:start).to_date > Time.zone.today &&
+        ws.sessions.first.try(:start).in_time_zone(ws.time_zone || 'America/Chicago').to_date > Time.now.in_time_zone(ws.time_zone || 'America/Chicago').to_date &&
         !ws.hidden &&
         in_region?(ws, partner) &&
         has_allowed_course_for_regional_ws_page?(ws)
