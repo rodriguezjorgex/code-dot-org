@@ -177,6 +177,10 @@ const ShareDialog: React.FunctionComponent<{
       ? TEACHER_FEEDBACK_LINK
       : STUDENT_FEEDBACK_LINK;
   });
+
+  // We pull the theme from header redux because the ShareDialog is not wrapped by the lab's
+  // ThemeProvider (the header is in its own tree). We copy the lab theme to the header redux
+  // in ProjectContainer (where we do our other header management).
   const theme = useAppSelector(state => state.header.theme);
 
   return (

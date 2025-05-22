@@ -64,10 +64,9 @@ const ProjectContainer: React.FunctionComponent<ProjectContainerProps> = ({
     dispatch(resetProjectMetadata())
   );
 
-  // We duplicate the theme to the header, because the header does not exist in the context
-  // of the app, and it needs to know the theme in order to show modals in the correct theme.
+  // We duplicate the theme to the header, because the header does not exist inside
+  // ThemeContext, and it needs to know the theme in order to show modals in the correct theme.
   useEffect(() => {
-    console.log('Setting header theme to', theme);
     header.setTheme(theme);
   }, [theme]);
 
