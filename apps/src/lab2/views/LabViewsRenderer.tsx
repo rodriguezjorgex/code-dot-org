@@ -46,8 +46,10 @@ const LabViewsRenderer: React.FunctionComponent = () => {
   // We only use the global user preference for theme if the current lesson has
   // at least one python lab level.
   const useThemeUserPreference = useMemo(
-    () => lesson?.levels.some((level: Level) => level.app === 'pythonlab'),
-    [lesson]
+    () =>
+      levelProperties?.appName === 'pythonlab' ||
+      lesson?.levels.some((level: Level) => level.app === 'pythonlab'),
+    [lesson?.levels, levelProperties?.appName]
   );
 
   // Set the theme for the current app.
