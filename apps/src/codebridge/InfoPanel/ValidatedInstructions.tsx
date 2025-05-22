@@ -301,7 +301,7 @@ const ValidatedInstructions: React.FunctionComponent<InstructionsProps> = ({
           moduleStyles.buttonInstruction,
           moduleStyles.validationButton
         )}
-        color={'white'}
+        color={'black'}
         size={'s'}
         id={'uitest-validate-button'}
       />
