@@ -9,6 +9,7 @@ class Queries::UserSchoolInfo
 
   # TODO: ACQ-3300 remove when school info has been updated for affected users
   def self.affected_by_missing_nces_schools?(user)
+    return false unless user&.teacher?
     user_school_info = last_complete(user)
     school_info = user_school_info&.school_info
     return false unless school_info
