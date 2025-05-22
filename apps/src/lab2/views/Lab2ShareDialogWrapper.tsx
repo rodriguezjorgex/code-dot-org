@@ -1,3 +1,4 @@
+import {Theme} from '@code-dot-org/component-library/common/contexts';
 import React, {useCallback, useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 
@@ -27,7 +28,7 @@ import ShareDialog from './dialogs/ShareDialog';
  */
 const Lab2ShareDialogWrapper: React.FunctionComponent<
   Lab2ShareDialogWrapperProps
-> = ({shareDialogId, shareUrl, finishUrl}) => {
+> = ({shareDialogId, shareUrl, finishUrl, theme}) => {
   const isProjectLevel =
     useSelector(
       (state: {lab: LabState}) => state.lab.levelProperties?.isProjectLevel
@@ -133,6 +134,7 @@ const Lab2ShareDialogWrapper: React.FunctionComponent<
         onSubmitClick={onSubmitClick}
         submissionStatus={submissionStatus}
         channelId={channelId}
+        theme={theme}
       />
     ) : (
       <SubmitProjectDialog
@@ -168,6 +170,7 @@ interface Lab2ShareDialogWrapperProps {
   shareDialogId?: string;
   shareUrl: string;
   finishUrl?: string;
+  theme?: Theme;
 }
 
 export default Lab2ShareDialogWrapper;

@@ -4,6 +4,7 @@
  * or channel, and will clean up the project manager on level change or unmount.
  */
 
+import {useTheme} from '@code-dot-org/component-library/common/contexts';
 import React, {useEffect} from 'react';
 import {useSelector} from 'react-redux';
 
@@ -56,11 +57,19 @@ const ProjectContainer: React.FunctionComponent<ProjectContainerProps> = ({
 
   const dispatch = useAppDispatch();
   const isReadOnly = useAppSelector(isReadOnlyWorkspace);
+  const {theme} = useTheme();
 
   // When the level changes, reset metadata relating to the project in redux.
   useLifecycleNotifier(LifecycleEvent.LevelLoadStarted, () =>
     dispatch(resetProjectMetadata())
   );
+
+  // We duplicate the theme to the header, because the header does not exist in the context
+  // of the app, and it needs to know the theme in order to show modals in the correct theme.
+  useEffect(() => {
+    console.log('Setting header theme to', theme);
+    header.setTheme(theme);
+  }, [theme]);
 
   useEffect(() => {
     // The redux types are very complicated, so in order to re-use this variable

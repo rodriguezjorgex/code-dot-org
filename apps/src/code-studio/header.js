@@ -21,6 +21,7 @@ import {
   showMinimalProjectHeader,
   showProjectBackedHeader,
   showLevelBuilderSaveButton,
+  setTheme,
 } from './headerRedux';
 import progress from './progress';
 import {setCurrentLevelId} from './progressRedux';
@@ -305,6 +306,10 @@ header.showTryAgainDialog = () => {
 
 header.hideTryAgainDialog = () => {
   getStore().dispatch(setShowTryAgainDialog(false));
+};
+
+header.setTheme = theme => {
+  getStore().dispatch(setTheme(theme));
 };
 
 export default header;

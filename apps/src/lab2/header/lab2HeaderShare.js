@@ -16,7 +16,7 @@ const PROJECT_SHARE_DIALOG_ID = 'project-share-dialog';
 /**
  * Save, then show the share dialog for a Lab2 project.
  */
-export function shareLab2Project(dialogId, finishUrl) {
+export function shareLab2Project(dialogId, finishUrl, theme) {
   const projectManager = Lab2Registry.getInstance().getProjectManager();
   if (!projectManager) {
     return null;
@@ -37,6 +37,7 @@ export function shareLab2Project(dialogId, finishUrl) {
           shareDialogId={dialogId}
           shareUrl={shareUrl}
           finishUrl={finishUrl}
+          theme={theme}
         />
       </Provider>,
       dialogDom

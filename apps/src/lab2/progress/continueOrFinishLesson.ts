@@ -56,7 +56,8 @@ function handleNavigation(
   // If we have a finish URL, show the finish dialog if present, or redirect to the finish URL.
   if (finishUrl) {
     if (finishDialog) {
-      shareLab2Project(finishDialog, finishUrl);
+      const labTheme = getState().header.theme;
+      shareLab2Project(finishDialog, finishUrl, labTheme);
     } else {
       window.location.href = finishUrl;
     }
