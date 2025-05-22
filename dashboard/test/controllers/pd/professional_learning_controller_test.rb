@@ -510,13 +510,13 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     assert_response :success
     response_data = JSON.parse(reg_ws_data_response.body)['regional_workshop_data']
     response_rp = response_data['regional_partner']
-    response_workshops = response_data['available_workshops']
+    response_workshops = response_data['available_regional_workshops']
 
     assert_nil response_rp['name']
     assert_equal [], response_workshops
   end
 
-  test 'regional_workshop_data only returns regional workshops under their regional partner and national workshops' do
+  test 'regional_workshop_data only returns regional workshops under their regional partner' do
     nearby_rp = create :regional_partner, name: "RP_in_users_region"
     nearby_rp.mappings.find_or_create_by!(zip_code: "11111")
     distant_rp = create :regional_partner, name: "RP_outside_of_users_region"
@@ -528,18 +528,17 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     test_course_offerings = [] << (create :course_offering)
     nearby_regional_ws_1 = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, sessions: [session_on_day(1)], course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: nearby_rp_pm_1
     nearby_regional_ws_2 = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, sessions: [session_on_day(1)], course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: nearby_rp_pm_2
-    nearby_national_ws = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, sessions: [session_on_day(1)], course_offerings: test_course_offerings, participant_group_type: 'National', organizer: nearby_rp_pm_2
+    create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, sessions: [session_on_day(1)], course_offerings: test_course_offerings, participant_group_type: 'National', organizer: nearby_rp_pm_2
     create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, sessions: [session_on_day(1)], course_offerings: test_course_offerings, participant_group_type: 'Regional', organizer: distant_rp_pm
-    distant_national_ws = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, sessions: [session_on_day(1)], course_offerings: test_course_offerings, participant_group_type: 'National', organizer: distant_rp_pm
 
     reg_ws_data_response = get :regional_workshop_data, params: {zip_code: "11111"}
     assert_response :success
     response_data = JSON.parse(reg_ws_data_response.body)['regional_workshop_data']
     response_rp = response_data['regional_partner']
-    response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
+    response_workshop_ids = response_data['available_regional_workshops'].map {|ws| ws['id']}
 
     assert_equal nearby_rp.name, response_rp['name']
-    assert_equal [nearby_regional_ws_1.id, nearby_regional_ws_2.id, nearby_national_ws.id, distant_national_ws.id], response_workshop_ids
+    assert_equal [nearby_regional_ws_1.id, nearby_regional_ws_2.id], response_workshop_ids
   end
 
   test 'regional_workshop_data only returns workshops that have not been started' do
@@ -555,7 +554,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     assert_response :success
     response_data = JSON.parse(reg_ws_data_response.body)['regional_workshop_data']
     response_rp = response_data['regional_partner']
-    response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
+    response_workshop_ids = response_data['available_regional_workshops'].map {|ws| ws['id']}
 
     assert_equal rp.name, response_rp['name']
     assert_equal [not_started_ws.id], response_workshop_ids
@@ -573,7 +572,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     assert_response :success
     response_data = JSON.parse(reg_ws_data_response.body)['regional_workshop_data']
     response_rp = response_data['regional_partner']
-    response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
+    response_workshop_ids = response_data['available_regional_workshops'].map {|ws| ws['id']}
 
     assert_equal rp.name, response_rp['name']
     assert_equal [future_workshop.id], response_workshop_ids
@@ -592,7 +591,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     assert_response :success
     response_data = JSON.parse(reg_ws_data_response.body)['regional_workshop_data']
     response_rp = response_data['regional_partner']
-    response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
+    response_workshop_ids = response_data['available_regional_workshops'].map {|ws| ws['id']}
 
     assert_equal rp.name, response_rp['name']
     assert_equal [hidden_nil_ws.id, hidden_false_ws.id], response_workshop_ids
@@ -608,7 +607,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     assert_response :success
     response_data = JSON.parse(reg_ws_data_response.body)['regional_workshop_data']
     response_rp = response_data['regional_partner']
-    response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
+    response_workshop_ids = response_data['available_regional_workshops'].map {|ws| ws['id']}
 
     assert_equal rp.name, response_rp['name']
     assert_equal [csf_workshop.id], response_workshop_ids
@@ -630,7 +629,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     assert_response :success
     response_data = JSON.parse(reg_ws_data_response.body)['regional_workshop_data']
     response_rp = response_data['regional_partner']
-    response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
+    response_workshop_ids = response_data['available_regional_workshops'].map {|ws| ws['id']}
 
     assert_equal rp.name, response_rp['name']
     assert_equal [byow.id], response_workshop_ids
@@ -671,7 +670,7 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     assert_response :success
     response_data = JSON.parse(reg_ws_data_response.body)['regional_workshop_data']
     response_rp = response_data['regional_partner']
-    response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
+    response_workshop_ids = response_data['available_regional_workshops'].map {|ws| ws['id']}
 
     assert_equal rp.name, response_rp['name']
     assert_equal [summer_csd.id, summer_csp.id, summer_csa.id, byow.id], response_workshop_ids
@@ -691,10 +690,43 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     assert_response :success
     response_data = JSON.parse(reg_ws_data_response.body)['regional_workshop_data']
     response_rp = response_data['regional_partner']
-    response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
+    response_workshop_ids = response_data['available_regional_workshops'].map {|ws| ws['id']}
 
     assert_equal rp.name, response_rp['name']
     assert_equal [first_ws.id, second_ws.id, third_ws.id], response_workshop_ids
+  end
+
+  test 'national_workshop_data returns empty array if no results' do
+    assert_equal [], Pd::ProfessionalLearningController.national_workshop_data
+  end
+
+  test 'national_workshop_data only returns national Build Your Own workshops' do
+    test_course_offerings = [] << (create :course_offering)
+    national_byo_workshop = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, sessions: [session_on_day(1)], course_offerings: test_course_offerings, participant_group_type: 'National'
+    create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, sessions: [session_on_day(1)], course_offerings: test_course_offerings, participant_group_type: 'Regional'
+    create :workshop, course: Pd::Workshop::COURSE_CSD, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, sessions: [session_on_day(1)]
+    create :workshop, course: Pd::Workshop::COURSE_CSP, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, sessions: [session_on_day(1)]
+    create :workshop, course: Pd::Workshop::COURSE_CSA, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, sessions: [session_on_day(1)]
+
+    assert_equal [national_byo_workshop.id], Pd::ProfessionalLearningController.national_workshop_data.pluck(:id)
+  end
+
+  test 'national_workshop_data only returns workshops that are not started and start in the future' do
+    test_course_offerings = [] << (create :course_offering)
+    starts_in_future = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, sessions: [session_on_day(1)], course_offerings: test_course_offerings, participant_group_type: 'National'
+    create :workshop, :in_progress, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, sessions: [session_on_day(1)], course_offerings: test_course_offerings, participant_group_type: 'National'
+    create :workshop, :ended, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, sessions: [session_on_day(1)], course_offerings: test_course_offerings, participant_group_type: 'National'
+    create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, sessions: [(create :pd_session, start: Time.zone.today - 5.days + 9.hours, end: Time.zone.today - 5.days + 17.hours)], course_offerings: test_course_offerings, participant_group_type: 'National'
+
+    assert_equal [starts_in_future.id], Pd::ProfessionalLearningController.national_workshop_data.pluck(:id)
+  end
+
+  test 'national_workshop_data does not return hidden workshops' do
+    test_course_offerings = [] << (create :course_offering)
+    non_hidden_workshop = create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, sessions: [session_on_day(1)], course_offerings: test_course_offerings, participant_group_type: 'National'
+    create :workshop, course: Pd::Workshop::COURSE_BUILD_YOUR_OWN, sessions: [session_on_day(1)], course_offerings: test_course_offerings, participant_group_type: 'National', hidden: true
+
+    assert_equal [non_hidden_workshop.id], Pd::ProfessionalLearningController.national_workshop_data.pluck(:id)
   end
 
   private def go_to_workshop(workshop, teacher)
