@@ -256,21 +256,11 @@ class FilesApi < Sinatra::Base
     # will not render potential HTML content inline. User-generated content can
     # contain script that we don't want to host as authentic web content from
     # our domain.
+    #
+    # We use Sinatra's built-in attachment helper which properly handles Content-Disposition
+    # headers according to RFC 6266/5987, safely escaping filenames to prevent header injection.
     unless code_projects_domain_root_route || safely_viewable_file_type?(type)
-      # Properly escape filename for Content-Disposition header to prevent header injection
-      # - Remove control chars, CR, LF that could cause header injection
-      # - Follow RFC 6266/5987 for Content-Disposition headers
-      
-      # Safe ASCII version (fallback for older browsers)
-      ascii_filename = filename.gsub(/[\r\n\t"]/, '') # Remove CR, LF, tabs, quotes
-      ascii_filename = ascii_filename.gsub(/[^[:print:]]/, '_') # Replace non-printable chars
-      
-      # UTF-8 encoded version with proper escaping (modern browsers)
-      # Use percent encoding for non-ASCII chars, RFC 5987 compliance
-      utf8_filename = filename.gsub(/[\r\n]/, '') # Remove CR, LF
-      utf8_filename = URI.encode_www_form_component(utf8_filename) # Safe URL encoding
-      
-      response.headers['Content-Disposition'] = "attachment; filename=\"#{ascii_filename}\"; filename*=UTF-8''#{utf8_filename}"
+      attachment(filename)
     end
 
     result = buckets.get(encrypted_channel_id, filename, env['HTTP_IF_MODIFIED_SINCE'], request.GET['version'])
