@@ -563,8 +563,8 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     rp = create :regional_partner
     rp.mappings.find_or_create_by!(zip_code: "11111")
     pm = create :program_manager, regional_partner: rp
-    future_workshop = create :byo_workshop, participant_group_type: 'Regional', organizer: pm, sessions: [create(:pd_session, start: DateTime.now + 1.month, end: DateTime.now + 1.month + 1.hour)]
-    create :byo_workshop, participant_group_type: 'Regional', organizer: pm, sessions: [create(:pd_session, start: DateTime.now - 1.month, end: DateTime.now - 1.month + 1.hour)]
+    future_workshop = create :byo_workshop, participant_group_type: 'Regional', organizer: pm, sessions: [create(:pd_session, start: DateTime.now.beginning_of_day + 1.month, end: DateTime.now.beginning_of_day + 1.month + 1.hour)]
+    create :byo_workshop, participant_group_type: 'Regional', organizer: pm, sessions: [create(:pd_session, start: DateTime.now.beginning_of_day - 1.month, end: DateTime.now.beginning_of_day - 1.month + 1.hour)]
 
     reg_ws_data_response = get :regional_workshop_data, params: {zip_code: "11111"}
     assert_response :success
