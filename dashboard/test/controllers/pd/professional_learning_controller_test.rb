@@ -598,6 +598,22 @@ class Pd::ProfessionalLearningControllerTest < ActionController::TestCase
     assert_equal [hidden_nil_ws.id, hidden_false_ws.id], response_workshop_ids
   end
 
+  test 'regional_workshop_data returns CSF workshops' do
+    rp = create :regional_partner
+    rp.mappings.find_or_create_by!(zip_code: "11111")
+    pm = create :program_manager, regional_partner: rp
+    csf_workshop = create :workshop, course: Pd::Workshop::COURSE_CSF, subject: Pd::Workshop::SUBJECT_CSF_101, sessions: [session_on_day(1)], organizer: pm
+
+    reg_ws_data_response = get :regional_workshop_data, params: {zip_code: "11111"}
+    assert_response :success
+    response_data = JSON.parse(reg_ws_data_response.body)['regional_workshop_data']
+    response_rp = response_data['regional_partner']
+    response_workshop_ids = response_data['available_workshops'].map {|ws| ws['id']}
+
+    assert_equal rp.name, response_rp['name']
+    assert_equal [csf_workshop.id], response_workshop_ids
+  end
+
   test 'regional_workshop_data does not return CSD, CSP, or CSA workshops when applications are closed' do
     rp = create :regional_partner
     rp.mappings.find_or_create_by!(zip_code: "11111")

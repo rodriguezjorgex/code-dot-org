@@ -153,6 +153,7 @@ class Pd::ProfessionalLearningController < ApplicationController
   #    - Has "National" participant group type
   #    - Has "Regional" participant group type and is associated with the given regional partner
   #    - Is a CSD, CSP, or CSA workshop and is associated with the given regional partner
+  #    - Is CSF
   # - If applications are open, then allow CSD, CSP, and CSA traditional 5-day summer workshops
   def regional_workshop_data
     zip_code = params[:zip_code]
@@ -164,7 +165,7 @@ class Pd::ProfessionalLearningController < ApplicationController
 
     available_workshops = workshops.select do |ws|
       ws.state == Pd::Workshop::STATE_NOT_STARTED &&
-        ws.sessions.first.try(:start_time) > DateTime.now.in_time_zone(ws.time_zone || 'UTC') &&
+        ws.sessions.first.try(:start).to_date > Time.zone.today &&
         !ws.hidden &&
         in_region?(ws, partner) &&
         has_allowed_course_for_regional_ws_page?(ws)
@@ -189,7 +190,7 @@ class Pd::ProfessionalLearningController < ApplicationController
     return true if workshop.participant_group_type == 'National'
     workshop.regional_partner_id == regional_partner.id &&
       (workshop.participant_group_type == 'Regional' ||
-      [Pd::Workshop::COURSE_CSD, Pd::Workshop::COURSE_CSP, Pd::Workshop::COURSE_CSA].include?(workshop.course))
+      [Pd::Workshop::COURSE_CSD, Pd::Workshop::COURSE_CSP, Pd::Workshop::COURSE_CSA, Pd::Workshop::COURSE_CSF].include?(workshop.course))
   end
 
   # Returns if the given workshop is on a course that we want to show on the Regional
@@ -198,6 +199,7 @@ class Pd::ProfessionalLearningController < ApplicationController
   # - Only show CSD, CSP, and CSA workshops if they're traditional 5-day summer workshops
   #   and applications are open
   private def has_allowed_course_for_regional_ws_page?(workshop)
+    return true if workshop.course == Pd::Workshop::COURSE_CSF
     return true unless [Pd::Workshop::COURSE_CSD, Pd::Workshop::COURSE_CSP, Pd::Workshop::COURSE_CSA].include?(workshop.course)
     workshop.subject == Pd::Workshop::SUBJECT_SUMMER_WORKSHOP && !DCDO.get('pl-teacher-application-off-season', false)
   end

@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import React, {useEffect, useCallback, useState} from 'react';
 
 import {queryParams, updateQueryParam} from '@cdo/apps/code-studio/utils';
+import {ZIP_REGEX} from '@cdo/apps/signUpFlow/signUpFlowConstants';
 import CalendarEmptyStateIllustration from '@cdo/apps/templates/teacherNavigation/images/CalendarEmptyStateIllustration.svg';
 import CalendarNotAvailable from '@cdo/apps/templates/teacherNavigation/images/CalendarNotAvailable.svg';
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
@@ -42,7 +43,7 @@ export default function RegionalWorkshopCatalog({zipFromSchoolInfo}) {
 
   const handleSubmitZip = useCallback(
     async submittedZip => {
-      if (isSubmitting || submittedZip === '') {
+      if (isSubmitting || !ZIP_REGEX.test(submittedZip)) {
         return;
       }
 
