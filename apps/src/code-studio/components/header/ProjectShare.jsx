@@ -9,8 +9,8 @@ import {shareProject} from '../../headerShare';
 
 import styles from './project-header.module.scss';
 
-const ProjectShare = () => {
-  const onProjectShare = () => {
+export default class ProjectShare extends React.Component {
+  shareProject = () => {
     if (Lab2Registry.hasEnabledProjects()) {
       // If we are using Lab2, share using the project manager and
       // shareLab2Project.
@@ -22,21 +22,21 @@ const ProjectShare = () => {
     }
   };
 
-  return (
-    <button
-      type="button"
-      className={classNames(
-        styles.buttonSpacing,
-        'project_share',
-        'header_button',
-        'header_button_light',
-        'no-mc'
-      )}
-      onClick={onProjectShare}
-    >
-      {i18n.share()}
-    </button>
-  );
-};
-
-export default ProjectShare;
+  render() {
+    return (
+      <button
+        type="button"
+        className={classNames(
+          styles.buttonSpacing,
+          'project_share',
+          'header_button',
+          'header_button_light',
+          'no-mc'
+        )}
+        onClick={this.shareProject}
+      >
+        {i18n.share()}
+      </button>
+    );
+  }
+}
