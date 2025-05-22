@@ -134,7 +134,6 @@ const Lab2ShareDialogWrapper: React.FunctionComponent<
         onSubmitClick={onSubmitClick}
         submissionStatus={submissionStatus}
         channelId={channelId}
-        theme={theme}
       />
     ) : (
       <SubmitProjectDialog

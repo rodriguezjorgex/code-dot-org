@@ -3,7 +3,6 @@ import React from 'react';
 
 import {shareLab2Project} from '@cdo/apps/lab2/header/lab2HeaderShare';
 import Lab2Registry from '@cdo/apps/lab2/Lab2Registry';
-import {useAppSelector} from '@cdo/apps/util/reduxHooks';
 import i18n from '@cdo/locale';
 
 import {shareProject} from '../../headerShare';
@@ -11,12 +10,11 @@ import {shareProject} from '../../headerShare';
 import styles from './project-header.module.scss';
 
 const ProjectShare = () => {
-  const theme = useAppSelector(state => state.header.theme);
   const onProjectShare = () => {
     if (Lab2Registry.hasEnabledProjects()) {
       // If we are using Lab2, share using the project manager and
       // shareLab2Project.
-      shareLab2Project(undefined, undefined, theme);
+      shareLab2Project();
     } else {
       // Otherwise, we are using the legacy labs system, get the share url from that system
       // and share using shareProject.

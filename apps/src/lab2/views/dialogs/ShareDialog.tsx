@@ -1,6 +1,5 @@
 import Alert from '@code-dot-org/component-library/alert';
 import {Button, LinkButton} from '@code-dot-org/component-library/button';
-import {Theme} from '@code-dot-org/component-library/common/contexts';
 import FontAwesomeV6Icon from '@code-dot-org/component-library/fontAwesomeV6Icon';
 import Typography from '@code-dot-org/component-library/typography';
 import classNames from 'classnames';
@@ -148,7 +147,6 @@ const ShareDialog: React.FunctionComponent<{
   onSubmitClick: () => void;
   submissionStatus: SubmissionStatusType | undefined;
   channelId: string;
-  theme?: Theme;
 }> = ({
   dialogId,
   shareUrl,
@@ -157,7 +155,6 @@ const ShareDialog: React.FunctionComponent<{
   onSubmitClick,
   submissionStatus,
   channelId,
-  theme = 'Dark',
 }) => {
   const dispatch = useAppDispatch();
 
@@ -180,6 +177,7 @@ const ShareDialog: React.FunctionComponent<{
       ? TEACHER_FEEDBACK_LINK
       : STUDENT_FEEDBACK_LINK;
   });
+  const theme = useAppSelector(state => state.header.theme);
 
   return (
     <FocusLock>
