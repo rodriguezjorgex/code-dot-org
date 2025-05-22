@@ -57,7 +57,7 @@ const ProjectTypePicker: React.FunctionComponent<ProjectTypePickerProps> = ({
               image={{src: consoleImage}}
               primaryButton={{
                 text: pythonlabI18n.consoleOnly(),
-                color: 'black',
+                color: 'purple',
                 useAsLink: false,
                 onClick: () => setProjectCallback('console'),
                 iconRight: isConsole
@@ -71,7 +71,7 @@ const ProjectTypePicker: React.FunctionComponent<ProjectTypePickerProps> = ({
               image={{src: neighborhoodImage}}
               primaryButton={{
                 text: pythonlabI18n.neighborhood(),
-                color: 'black',
+                color: 'purple',
                 useAsLink: false,
                 onClick: () => setProjectCallback('neighborhood'),
                 iconRight: isNeighborhood
