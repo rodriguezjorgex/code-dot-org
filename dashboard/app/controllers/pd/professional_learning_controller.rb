@@ -165,7 +165,7 @@ class Pd::ProfessionalLearningController < ApplicationController
 
     available_workshops = workshops.select do |ws|
       ws.state == Pd::Workshop::STATE_NOT_STARTED &&
-        ws.sessions.first.try(:start).in_time_zone(ws.time_zone || 'America/Chicago').to_date > Time.now.in_time_zone(ws.time_zone || 'America/Chicago').to_date &&
+        get_workshop_start_date(ws) > Time.now.in_time_zone(ws.time_zone || 'America/Chicago').to_date &&
         !ws.hidden &&
         in_region?(ws, partner) &&
         has_allowed_course_for_regional_ws_page?(ws)
@@ -182,6 +182,11 @@ class Pd::ProfessionalLearningController < ApplicationController
   # Returns if the current_user can view the facilitator landing page of the given course.
   private def can_view_facilitator_page(course)
     current_user&.can_view_all_facilitator_landing_pages? || current_user&.courses_as_facilitator&.exists?(course: course)
+  end
+
+  private def get_workshop_start_date(workshop)
+    start_of_ws = workshop.sessions.first.try(:start)
+    ws.time_zone ? start_of_ws.in_time_zone(ws.time_zone).to_date : start_of_ws.to_date
   end
 
   # Returns if the given workshop is within the provided regional partner's area (including
