@@ -17,10 +17,7 @@ Feature: Regional Workshop Catalog page
     And I wait until element "h2:contains(No workshops found)" is visible
 
   Scenario: Entering a zip with a regional partner match allows user to see more info about and contact them
-    Given I have a regional partner named "Reggie Partner" in the zip code "12345"
-    And I create a workshop under the regional partner named "Reggie Partner"
-
-    And I create a teacher named "New Teacher"
+    Given I create a workshop under the regional partner named "Reggie Partner" in the zip "12345" with a teacher named "New Teacher"
     And I sign in as "New Teacher" and go home
     Then I am on "http://studio.code.org/professional-learning/workshops"
 
@@ -44,10 +41,7 @@ Feature: Regional Workshop Catalog page
     And the href of selector "a:contains(Contact)" contains "/professional-learning/contact-regional-partner?zip=12345"
 
   Scenario: Entering a zip with a regional partner match allows user to see their workshops and enroll in them
-    Given I have a regional partner named "Reggie Partner" in the zip code "12345"
-    And I create a workshop under the regional partner named "Reggie Partner"
-
-    And I create a teacher named "New Teacher"
+    Given I create a workshop under the regional partner named "Reggie Partner" in the zip "12345" with a teacher named "New Teacher"
     And I sign in as "New Teacher" and go home
     Then I am on "http://studio.code.org/professional-learning/workshops"
 
@@ -66,10 +60,7 @@ Feature: Regional Workshop Catalog page
     And the href of selector "a:contains(Enroll now)" contains "/pd/application/teacher"
 
   Scenario: If sent to this page with a zip code url param the page obtains the regional partner and relevant workshops
-    Given I have a regional partner named "Reggie Partner" in the zip code "12345"
-    And I create a workshop under the regional partner named "Reggie Partner"
-
-    And I create a teacher named "New Teacher"
+    Given I create a workshop under the regional partner named "Reggie Partner" in the zip "12345" with a teacher named "New Teacher"
     And I sign in as "New Teacher" and go home
     Then I am on "http://studio.code.org/professional-learning/workshops?zip=12345"
 
