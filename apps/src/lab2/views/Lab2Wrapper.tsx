@@ -63,7 +63,7 @@ const Lab2Wrapper: React.FunctionComponent<Lab2WrapperProps> = ({children}) => {
   const currentLevelId = useAppSelector(state => state.progress.currentLevelId);
   const {theme} = useTheme();
 
-  // We duplicate the theme to Lab2Registry, because some modals in the header (such as the share modal)
+  // We duplicate the theme to Lab2Registry, because modals opened via the header (such as the share modal)
   // do not have access to the theme context.
   useEffect(() => {
     Lab2Registry.getInstance().setTheme(theme);
