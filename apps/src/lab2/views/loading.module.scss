@@ -52,7 +52,7 @@
   pointer-events: none;
   opacity: 0;
   z-index: 70;
-  background-color: var(--background-neutral-primary);
+  background-color: var(--background-neutral-lab);
 
   &.noFadeLoading {
     opacity: 0;
