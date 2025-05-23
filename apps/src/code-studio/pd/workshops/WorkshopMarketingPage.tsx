@@ -221,7 +221,7 @@ const WorkshopMarketingPage: React.FunctionComponent<{
                 </BodyThreeText>
                 <BodyThreeText>
                   <FontAwesomeV6Icon iconName="at" />
-                  <StrongText>Organizer Email: </StrongText>
+                  <StrongText>Email: </StrongText>
                   {organizer.email}
                 </BodyThreeText>
                 <BodyThreeText>
