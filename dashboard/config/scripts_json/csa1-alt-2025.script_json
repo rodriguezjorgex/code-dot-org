@@ -19,7 +19,7 @@
     },
     "new_name": null,
     "family_name": null,
-    "serialized_at": "2025-05-20 16:56:20 UTC",
+    "serialized_at": "2025-05-23 03:41:24 UTC",
     "hide_within_course": false,
     "published_state": null,
     "instruction_type": null,
@@ -335,9 +335,9 @@
       "has_lesson_plan": true,
       "relative_position": 14,
       "properties": {
-        "overview": "**How do I get input from the user?**\n\nStudents learn how to obtain user input using the `Scanner` class.",
+        "overview": "**How do I get input from the user?**\n\nIn this lesson, students learn how to collect input from users using the `Scanner` class. The lesson focuses on building programs that interact with users by asking for and processing input. Through guided notes, videos, and hands-on coding activities, students explore how to create and use `Scanner` objects and how to access documentation to learn more about available methods.",
         "preparation": "- (Optional) Print copies of the User Input Guided Notes (one for each student)\n- Preview the *Creating Scanner Objects* and *Scanner Class Methods* videos",
-        "student_overview": "**How do I get input from the user?**\n\nIn this lesson, you learn how to use the `Scanner`  class to obtain user input."
+        "student_overview": "**How do I get input from the user?**\n\nToday you learn how to make your programs interactive by asking the user for input. You use a tool in Java called the `Scanner` class to read information typed by the user. You practice writing code that takes this input and uses it in a program. You also learn how to look up more information about what the `Scanner` class can do and how to fix common mistakes in your code."
       },
       "seeding_key": {
         "lesson.key": "User Input",
@@ -436,12 +436,30 @@
       }
     },
     {
-      "key": "The Math Class",
-      "name": "Lesson 20: The Math Class",
+      "key": "Lesson 1: The Theater",
+      "name": "Lesson 20: The Theater",
       "absolute_position": 20,
       "lockable": false,
       "has_lesson_plan": true,
       "relative_position": 20,
+      "properties": {
+        "overview": "**What can I make with The Theater?**\n\nIn this unit, students explore data visualizations and consider how they can create their own visuals to tell a story about a dataset. Students start by exploring The Theater through an existing program and reading documentation to identify the available classes and methods they can use to create drawings, show images, and play sounds. They then practice using these methods to create simple drawings and visuals and consider how they can use The Theater to create animations and visualizations of the dataset they used for their Data for Social Good Project.",
+        "preparation": "* **(Optional)** Print copies of the The Theater Guided Notes (one for each student)\n* Preview the *Welcome to The Theater* video\n* Print copies of the Unit 4 Guide (one for each student)\n* Print copies of the Investigating The Theater handout (one for each pair of students)",
+        "student_overview": "**What can I make with The Theater?**\n\nIn this unit, you explore data visualizations and consider how you can create your own visuals to tell a story about a dataset. You start by exploring The Theater through an existing program and reading documentation to identify the available classes and methods you can use to create drawings, show images, and play sounds. You then practice using these methods to create simple drawings and visuals and consider how you can use The Theater to create animations and visualizations of the dataset you used for your Data for Social Good Project."
+      },
+      "seeding_key": {
+        "lesson.key": "Lesson 1: The Theater",
+        "lesson_group.key": "lessonGroup-18",
+        "script.name": "csa1-alt-2025"
+      }
+    },
+    {
+      "key": "The Math Class",
+      "name": "Lesson 21: The Math Class",
+      "absolute_position": 21,
+      "lockable": false,
+      "has_lesson_plan": true,
+      "relative_position": 21,
       "properties": {
         "overview": "**What can I do with the `Math` class?**\n\nStudents have used classes like `Scanner` and `Object` from the Java API as well as classes from The Neighborhood and The Theater. In this lesson, students learn about the `Math` class and how the `static` keyword can be used with the `final` keyword to create constants. They explore the documentation for the `Math` class to identify its methods and learn about their functionalities. Students then practice creating and using constants and calling methods in the `Math` class.",
         "preparation": "* **(Optional)** Print copies of the The Math Class Guided Notes (one for each student)\n* Preview the *Constants* video\n* Print copies of The Math Class handout (one for each student)\n* Print copies of the Math Class Graphic Organizer handout (one for each student)",
@@ -455,11 +473,11 @@
     },
     {
       "key": "Random",
-      "name": "Lesson 21: Random",
-      "absolute_position": 21,
+      "name": "Lesson 22: Random",
+      "absolute_position": 22,
       "lockable": false,
       "has_lesson_plan": true,
-      "relative_position": 21,
+      "relative_position": 22,
       "properties": {
         "overview": "**How can I generate and use random numbers?**\n\nStudents learned about the `Math` class in the previous lesson and explored using some of its methods to perform calculations. In this lesson, students learn about the functionality of `Math.random()` and discover its benefits and limitations. Students consider how they can use `Math.random()` with casting operators to generate random numbers within a specific range and consider how random is used in programs they use every day. They then practice generating and using random numbers within specified ranges and retrieving random elements from a 1D array.",
         "preparation": "* **(Optional)** Print copies of the Random Guided Notes (one for each student)\n* Preview the *Random Numbers* video\n* Gather the Dataset Summaries handouts collected in Lesson 4",
@@ -473,11 +491,11 @@
     },
     {
       "key": "Substrings",
-      "name": "Lesson 22: Substrings",
-      "absolute_position": 22,
+      "name": "Lesson 23: Substrings",
+      "absolute_position": 23,
       "lockable": false,
       "has_lesson_plan": true,
-      "relative_position": 22,
+      "relative_position": 23,
       "properties": {
         "overview": "**How can I analyze parts of a `String` object?**\n\nIn this lesson, students revisit the `String` class and learn how to use the `substring()` method. They discover that `String` objects are immutable and are not modified when calling methods in the `String` class. Students also explore how the `substring()` method can be combined with other methods in the `String` class to find the location of a specific character or substring within a `String` and compare substrings for equality. They then practice using the `substring()` method to retrieve a substring of a `String` object and to find and replace specific characters.",
         "preparation": "* **(Optional)** Print copies of the Substrings Guided Notes (one for each student)",
@@ -491,11 +509,11 @@
     },
     {
       "key": "Comparing Strings",
-      "name": "Lesson 23: Comparing Strings",
-      "absolute_position": 23,
+      "name": "Lesson 24: Comparing Strings",
+      "absolute_position": 24,
       "lockable": false,
       "has_lesson_plan": true,
-      "relative_position": 23,
+      "relative_position": 24,
       "properties": {
         "overview": "**How can I determine if a list of `String` objects are in alphabetical order?**\n\nStudents have previously learned how to use several of the methods in the String class. In this lesson, students explore the `compareTo()` method and discover how this method can be used to check if a list of `String` objects is in alphabetical order. They then practice using the `compareTo()` method to evaluate `String` objects and using the methods in the `String` class to implement algorithms.",
         "preparation": "* **(Optional)** Print copies of the Comparing Strings Guided Notes (one for each student)\n* Print copies of the CS Bingo Cards (one card for each student)\n* Print the CS Bingo Definitions resource and mix them up OR use [**this web-based version**](https://csabingo.up.railway.app/) to show the terms and definitions",
@@ -509,11 +527,11 @@
     },
     {
       "key": "Overloaded Methods",
-      "name": "Lesson 24: Overloaded Methods",
-      "absolute_position": 24,
+      "name": "Lesson 25: Overloaded Methods",
+      "absolute_position": 25,
       "lockable": false,
       "has_lesson_plan": true,
-      "relative_position": 24,
+      "relative_position": 25,
       "properties": {
         "overview": "**How can overloading a method be useful in my programs?**\n\nStudents previously learned about overloading when writing multiple constructors in a class. In this lesson, students revisit overloaded constructors and learn how overloading can be applied to methods. They explore how overloaded methods work and consider scenarios where overloaded methods would be useful. Students then practice writing and calling overloaded methods and revisit their Need to Knows to determine what they have learned that will be useful for their project and what they still need to learn.",
         "preparation": "* **(Optional)** Print copies of the Overloaded Methods Guided Notes (one for each student)",
@@ -528,10 +546,10 @@
     {
       "key": "Asphalt Art Project",
       "name": "Project 1a: Asphalt Art Project",
-      "absolute_position": 25,
+      "absolute_position": 26,
       "lockable": false,
       "has_lesson_plan": true,
-      "relative_position": 25,
+      "relative_position": 26,
       "properties": {
         "assessment": true,
         "overview": "​​**What do I want to represent using programming and art?**\n\nFor this project, students use the skills they have developed to create asphalt art in The Neighborhood. Students choose a theme or concept for their asphalt art that represents something they are interested in or meaningful to them. After brainstorming and planning, students develop their programs to create their designs.",
@@ -547,10 +565,10 @@
     {
       "key": "Asphalt Art Project [1-Day Version]",
       "name": "Project 1b: Asphalt Art Project [1-Day Version]",
-      "absolute_position": 26,
+      "absolute_position": 27,
       "lockable": false,
       "has_lesson_plan": true,
-      "relative_position": 26,
+      "relative_position": 27,
       "properties": {
         "assessment": true,
         "overview": "​​**What do I want to represent using programming and art?**\n\nFor this project, students use the skills they have developed to create asphalt art in The Neighborhood. Students choose a theme or concept for their asphalt art that represents something they are interested in or meaningful to them. After brainstorming and planning, students develop their programs to create their designs.",
@@ -565,10 +583,10 @@
     {
       "key": "SpiralPainter FRQ",
       "name": "FRQ 1: SpiralPainter FRQ",
-      "absolute_position": 27,
+      "absolute_position": 28,
       "lockable": false,
       "has_lesson_plan": true,
-      "relative_position": 27,
+      "relative_position": 28,
       "properties": {
         "overview": "**How will I use what I know about classes, objects, and methods to answer a Free Response Question?**\n\nStudents are introduced to AP CSA Free Response Questions (FRQs) and practice decomposition and problem-solving skills to develop solutions to a mock FRQ. Students use annotation strategies to identify the key components of the problem and validate their solutions using Scoring Guidelines.",
         "preparation": "* Print the SpiralPainter FRQ Stations resource\n* Cut out the manipulatives in the SpiralPainter FRQ Stations resource *or* have students make a copy of the SpiralPainter FRQ Digital Manipulatives\n* Create stations around the classroom as indicated on the SpiralPainter FRQ Stations resource\n* (Optional) Gather a blue, orange, and pink colored pencil or marker for each student",
@@ -583,10 +601,10 @@
     {
       "key": "End of Unit Survey",
       "name": "End of Unit Survey",
-      "absolute_position": 28,
+      "absolute_position": 29,
       "lockable": false,
       "has_lesson_plan": false,
-      "relative_position": 28,
+      "relative_position": 29,
       "properties": {
       },
       "seeding_key": {
@@ -598,10 +616,10 @@
     {
       "key": "Sandbox: The Neighborhood",
       "name": "Sandbox: The Neighborhood",
-      "absolute_position": 29,
+      "absolute_position": 30,
       "lockable": false,
       "has_lesson_plan": false,
-      "relative_position": 29,
+      "relative_position": 30,
       "properties": {
       },
       "seeding_key": {
@@ -613,10 +631,10 @@
     {
       "key": "Sandbox: Console",
       "name": "Sandbox: Console",
-      "absolute_position": 30,
+      "absolute_position": 31,
       "lockable": false,
       "has_lesson_plan": false,
-      "relative_position": 30,
+      "relative_position": 31,
       "properties": {
       },
       "seeding_key": {
@@ -628,10 +646,10 @@
     {
       "key": "Sandbox: The Theater",
       "name": "Sandbox: The Theater",
-      "absolute_position": 31,
+      "absolute_position": 32,
       "lockable": false,
       "has_lesson_plan": false,
-      "relative_position": 31,
+      "relative_position": 32,
       "properties": {
       },
       "seeding_key": {
@@ -1441,6 +1459,48 @@
       }
     },
     {
+      "key": "4e6feedf-8fda-4c01-9723-b32096008e7b",
+      "position": 1,
+      "properties": {
+        "duration": 5,
+        "name": "Warm Up"
+      },
+      "seeding_key": {
+        "lesson_activity.key": "4e6feedf-8fda-4c01-9723-b32096008e7b",
+        "lesson.key": "Lesson 1: The Theater",
+        "lesson_group.key": "lessonGroup-18",
+        "script.name": "csa1-alt-2025"
+      }
+    },
+    {
+      "key": "e139db1b-4cea-4320-8ec9-f8cf20f36526",
+      "position": 2,
+      "properties": {
+        "duration": 35,
+        "name": "Activity"
+      },
+      "seeding_key": {
+        "lesson_activity.key": "e139db1b-4cea-4320-8ec9-f8cf20f36526",
+        "lesson.key": "Lesson 1: The Theater",
+        "lesson_group.key": "lessonGroup-18",
+        "script.name": "csa1-alt-2025"
+      }
+    },
+    {
+      "key": "9fd6cd8c-818c-4f4d-80ca-0e2eb36cc1c0",
+      "position": 3,
+      "properties": {
+        "duration": 5,
+        "name": "Wrap Up"
+      },
+      "seeding_key": {
+        "lesson_activity.key": "9fd6cd8c-818c-4f4d-80ca-0e2eb36cc1c0",
+        "lesson.key": "Lesson 1: The Theater",
+        "lesson_group.key": "lessonGroup-18",
+        "script.name": "csa1-alt-2025"
+      }
+    },
+    {
       "key": "b0f02eeb-c787-4353-9a29-4d8dba8cdfe5",
       "position": 1,
       "properties": {
@@ -1742,6 +1802,19 @@
       },
       "seeding_key": {
         "lesson_activity.key": "59bace8a-792a-410b-b0ff-01bb3efa4c44",
+        "lesson.key": "Asphalt Art Project [1-Day Version]",
+        "lesson_group.key": "lessonGroup-2",
+        "script.name": "csa1-alt-2025"
+      }
+    },
+    {
+      "key": "699e35d6-1791-42a3-9087-c3af63a5e448",
+      "position": 4,
+      "properties": {
+        "name": "End of Unit Survey"
+      },
+      "seeding_key": {
+        "lesson_activity.key": "699e35d6-1791-42a3-9087-c3af63a5e448",
         "lesson.key": "Asphalt Art Project [1-Day Version]",
         "lesson_group.key": "lessonGroup-2",
         "script.name": "csa1-alt-2025"
@@ -2617,13 +2690,7 @@
       "key": "8f0b0136-c031-4e54-972b-50188ccbb13a",
       "position": 2,
       "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** Click through the animated slide to display the prompts.\n* *What did we learn today?*\n* *So what?*\n* *Now what?*\n\n**Discussion Goal:** Students highlight the concepts and vocabulary they learned in this lesson, such as syntax, class headers, and the `main` method. Students also identify the features in Java Lab that allow them to write, run, and test their programs. They should realize that the knowledge they gained in this lesson provides them a foundation to build on to develop more complex programs and make predictions about what they might learn next.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.",
-        "tips": [
-          {
-            "type": "teachingTip",
-            "markdown": "The guided notes includes the Question of the Day and an end-of-lesson reflection prompt for students to summarize what they have learned and reflect on their progress. Have students respond to these prompts after reviewing the concepts covered in this lesson to help them process and make meaningful connections with the new content."
-          }
-        ]
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** Click through the animated slide to display the prompts.\n* *What did we learn today?*\n* *So what?*\n* *Now what?*\n\n**Discussion Goal:** Students highlight the concepts and vocabulary they learned in this lesson, such as syntax, class headers, and the `main` method. Students also identify the features in Java Lab that allow them to write, run, and test their programs. They should realize that the knowledge they gained in this lesson provides them a foundation to build on to develop more complex programs and make predictions about what they might learn next.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
       },
       "seeding_key": {
         "activity_section.key": "8f0b0136-c031-4e54-972b-50188ccbb13a",
@@ -2631,29 +2698,8 @@
       }
     },
     {
-      "key": "eb545ec4-3aaa-4434-88e2-68507b02290a",
-      "position": 3,
-      "properties": {
-      },
-      "seeding_key": {
-        "activity_section.key": "eb545ec4-3aaa-4434-88e2-68507b02290a",
-        "lesson_activity.key": "abb05f49-6146-40b6-a18b-96d714157ff1"
-      }
-    },
-    {
-      "key": "204c0e28-a8b9-4733-b780-6ddeeff9e2ea",
-      "position": 4,
-      "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
-      },
-      "seeding_key": {
-        "activity_section.key": "204c0e28-a8b9-4733-b780-6ddeeff9e2ea",
-        "lesson_activity.key": "abb05f49-6146-40b6-a18b-96d714157ff1"
-      }
-    },
-    {
       "key": "23189db1-58cc-48af-bb13-8b9f6dd58e77",
-      "position": 5,
+      "position": 3,
       "properties": {
         "description": "---"
       },
@@ -2664,7 +2710,7 @@
     },
     {
       "key": "fa72bade-11fe-4f4f-bf9e-2a47647b712c",
-      "position": 6,
+      "position": 4,
       "properties": {
         "description": "*Check For Understanding Question(s) and solutions can be found in each lesson on Code Studio. These questions can be used for an exit ticket.*",
         "name": "Assessment: Check for Understanding",
@@ -2978,13 +3024,7 @@
       "key": "f6fb0f22-b36b-4008-aaca-bb7d58dc7c8a",
       "position": 2,
       "properties": {
-        "description": "<i class=\"fa fa-comments\" aria-hidden=\"true\"></i> **Discuss:** Click through the animated slide to display the prompts.\n- *What is something you understand well about classes, objects, attributes, or behaviors?*\n- *What is something you’re still unsure about or want more practice with?*\n- *What is a question you still have about how classes and objects work in Java?*\n\n<i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\"></i> **Discussion Goal:** Students reflect on their understanding of classes and objects by identifying concepts they feel confident about and areas where they need more practice. Students also surface lingering questions or misconceptions, supporting peer-to-peer clarification and reinforcing foundational object-oriented programming concepts.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.",
-        "tips": [
-          {
-            "type": "teachingTip",
-            "markdown": "The guided notes includes the Question of the Day and an end-of-lesson reflection prompt for students to summarize what they have learned and reflect on their progress. Have students respond to these prompts after reviewing the concepts covered in this lesson to help them process and make meaningful connections with the new content."
-          }
-        ]
+        "description": "<i class=\"fa fa-comments\" aria-hidden=\"true\"></i> **Discuss:** Click through the animated slide to display the prompts.\n- *What is something you understand well about classes, objects, attributes, or behaviors?*\n- *What is something you’re still unsure about or want more practice with?*\n- *What is a question you still have about how classes and objects work in Java?*\n\n<i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\"></i> **Discussion Goal:** Students reflect on their understanding of classes and objects by identifying concepts they feel confident about and areas where they need more practice. Students also surface lingering questions or misconceptions, supporting peer-to-peer clarification and reinforcing foundational object-oriented programming concepts.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
       },
       "seeding_key": {
         "activity_section.key": "f6fb0f22-b36b-4008-aaca-bb7d58dc7c8a",
@@ -2992,29 +3032,8 @@
       }
     },
     {
-      "key": "0efa0643-b2d5-43ea-a729-812262e6c1c3",
-      "position": 3,
-      "properties": {
-      },
-      "seeding_key": {
-        "activity_section.key": "0efa0643-b2d5-43ea-a729-812262e6c1c3",
-        "lesson_activity.key": "288b666d-cc18-4097-9145-73d3a49c3493"
-      }
-    },
-    {
-      "key": "ec169c99-047c-4924-a3a1-e1f58eb883eb",
-      "position": 4,
-      "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
-      },
-      "seeding_key": {
-        "activity_section.key": "ec169c99-047c-4924-a3a1-e1f58eb883eb",
-        "lesson_activity.key": "288b666d-cc18-4097-9145-73d3a49c3493"
-      }
-    },
-    {
       "key": "a8149e71-a0fc-4154-bace-5a697ec02f78",
-      "position": 5,
+      "position": 3,
       "properties": {
         "description": "---"
       },
@@ -3025,7 +3044,7 @@
     },
     {
       "key": "89d1521b-68dd-4007-8caa-3c410c08bfa0",
-      "position": 6,
+      "position": 4,
       "properties": {
         "description": "*Check For Understanding Question(s) and solutions can be found in each lesson on Code Studio. These questions can be used for an exit ticket.*",
         "name": "Assessment: Check for Understanding",
@@ -3265,13 +3284,7 @@
       "key": "f1a0dd67-7876-4124-8cd4-423451542e72",
       "position": 4,
       "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.",
-        "tips": [
-          {
-            "type": "teachingTip",
-            "markdown": "The guided notes includes the Question of the Day and an end-of-lesson reflection prompt for students to summarize what they have learned and reflect on their progress. Have students respond to these prompts after reviewing the concepts covered in this lesson to help them process and make meaningful connections with the new content."
-          }
-        ]
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
       },
       "seeding_key": {
         "activity_section.key": "f1a0dd67-7876-4124-8cd4-423451542e72",
@@ -3279,29 +3292,8 @@
       }
     },
     {
-      "key": "a27e0bd1-6714-452d-8d22-1dc2a65ad381",
-      "position": 5,
-      "properties": {
-      },
-      "seeding_key": {
-        "activity_section.key": "a27e0bd1-6714-452d-8d22-1dc2a65ad381",
-        "lesson_activity.key": "c8979ad0-c4b5-4a99-8211-72dfd59342f5"
-      }
-    },
-    {
-      "key": "e15958b1-5832-4a0b-bdb6-45b94eff10f7",
-      "position": 6,
-      "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
-      },
-      "seeding_key": {
-        "activity_section.key": "e15958b1-5832-4a0b-bdb6-45b94eff10f7",
-        "lesson_activity.key": "c8979ad0-c4b5-4a99-8211-72dfd59342f5"
-      }
-    },
-    {
       "key": "4f1bb2bc-1438-4379-b33d-616d7ab22afc",
-      "position": 7,
+      "position": 5,
       "properties": {
         "description": "---"
       },
@@ -3312,7 +3304,7 @@
     },
     {
       "key": "b9423bed-b708-4143-8e38-960b379a1aa4",
-      "position": 8,
+      "position": 6,
       "properties": {
         "description": "*Check For Understanding Question(s) and solutions can be found in each lesson on Code Studio. These questions can be used for an exit ticket.*",
         "name": "Assessment: Check for Understanding",
@@ -3537,14 +3529,8 @@
       "key": "810d0670-d7a1-4a00-a342-defabbef09de",
       "position": 1,
       "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Have students answer the self-check question by identifying the missing method call.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.",
-        "name": "Fix the Code",
-        "tips": [
-          {
-            "type": "teachingTip",
-            "markdown": "The guided notes includes the Question of the Day and an end-of-lesson reflection prompt for students to summarize what they have learned and reflect on their progress. Have students respond to these prompts after reviewing the concepts covered in this lesson to help them process and make meaningful connections with the new content."
-          }
-        ]
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Have students answer the self-check question by identifying the missing method call.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary",
+        "name": "Fix the Code"
       },
       "seeding_key": {
         "activity_section.key": "810d0670-d7a1-4a00-a342-defabbef09de",
@@ -3552,29 +3538,8 @@
       }
     },
     {
-      "key": "0578fb55-b8bf-4c03-9680-5f395b7fd17a",
-      "position": 2,
-      "properties": {
-      },
-      "seeding_key": {
-        "activity_section.key": "0578fb55-b8bf-4c03-9680-5f395b7fd17a",
-        "lesson_activity.key": "17a763a7-2288-4c1c-9bb1-c81efabf408a"
-      }
-    },
-    {
-      "key": "ba0c6504-6279-4028-a80f-02e797972358",
-      "position": 3,
-      "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
-      },
-      "seeding_key": {
-        "activity_section.key": "ba0c6504-6279-4028-a80f-02e797972358",
-        "lesson_activity.key": "17a763a7-2288-4c1c-9bb1-c81efabf408a"
-      }
-    },
-    {
       "key": "c22aafcc-4502-4495-aae2-02356d2e8f04",
-      "position": 4,
+      "position": 2,
       "properties": {
         "description": "---"
       },
@@ -3585,7 +3550,7 @@
     },
     {
       "key": "40636a18-5b40-4da6-a1d0-128c2665ce64",
-      "position": 5,
+      "position": 3,
       "properties": {
         "description": "*Check For Understanding Question(s) and solutions can be found in each lesson on Code Studio. These questions can be used for an exit ticket.*",
         "name": "Assessment: Check for Understanding",
@@ -3793,13 +3758,7 @@
       "key": "d1f6ab5a-835b-4627-b326-ac2d0218b29a",
       "position": 4,
       "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.",
-        "tips": [
-          {
-            "type": "teachingTip",
-            "markdown": "The guided notes includes the Question of the Day and an end-of-lesson reflection prompt for students to summarize what they have learned and reflect on their progress. Have students respond to these prompts after reviewing the concepts covered in this lesson to help them process and make meaningful connections with the new content."
-          }
-        ]
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
       },
       "seeding_key": {
         "activity_section.key": "d1f6ab5a-835b-4627-b326-ac2d0218b29a",
@@ -3807,29 +3766,8 @@
       }
     },
     {
-      "key": "b2873fd7-f11f-42c5-8192-3ef41d1c3644",
-      "position": 5,
-      "properties": {
-      },
-      "seeding_key": {
-        "activity_section.key": "b2873fd7-f11f-42c5-8192-3ef41d1c3644",
-        "lesson_activity.key": "a5321c4a-da6c-4bc6-a89d-85787bad4753"
-      }
-    },
-    {
-      "key": "79378089-a391-4967-a9db-d0ef753b82c6",
-      "position": 6,
-      "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
-      },
-      "seeding_key": {
-        "activity_section.key": "79378089-a391-4967-a9db-d0ef753b82c6",
-        "lesson_activity.key": "a5321c4a-da6c-4bc6-a89d-85787bad4753"
-      }
-    },
-    {
       "key": "e321e5b5-7173-432a-ba3c-0d51a3181fad",
-      "position": 7,
+      "position": 5,
       "properties": {
         "description": "---"
       },
@@ -3840,7 +3778,7 @@
     },
     {
       "key": "310aa469-7634-46b3-8d61-cf7ed821c3bf",
-      "position": 8,
+      "position": 6,
       "properties": {
         "description": "*Check For Understanding Question(s) and solutions can be found in each lesson on Code Studio. These questions can be used for an exit ticket.*",
         "name": "Assessment: Check for Understanding",
@@ -4109,13 +4047,7 @@
       "key": "c4e1be98-f934-4cc4-bebd-fa9ebb2646c3",
       "position": 2,
       "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** *What are some things you want a `PainterPlus` object to do that a `Painter` object can't do?*\n\n**Discussion Goal:** Students share ideas of methods they could add to the `PainterPlus` class, such as a method to turn right, navigate faster, or take all of the paint from a paint bucket.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.",
-        "tips": [
-          {
-            "type": "teachingTip",
-            "markdown": "The guided notes includes the Question of the Day and an end-of-lesson reflection prompt for students to summarize what they have learned and reflect on their progress. Have students respond to these prompts after reviewing the concepts covered in this lesson to help them process and make meaningful connections with the new content."
-          }
-        ]
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** *What are some things you want a `PainterPlus` object to do that a `Painter` object can't do?*\n\n**Discussion Goal:** Students share ideas of methods they could add to the `PainterPlus` class, such as a method to turn right, navigate faster, or take all of the paint from a paint bucket.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
       },
       "seeding_key": {
         "activity_section.key": "c4e1be98-f934-4cc4-bebd-fa9ebb2646c3",
@@ -4123,29 +4055,8 @@
       }
     },
     {
-      "key": "7385ff1d-ff77-42bc-9e2d-db4376b2b627",
-      "position": 3,
-      "properties": {
-      },
-      "seeding_key": {
-        "activity_section.key": "7385ff1d-ff77-42bc-9e2d-db4376b2b627",
-        "lesson_activity.key": "d2074b31-5313-4c20-b463-8b636b5fd038"
-      }
-    },
-    {
-      "key": "50aa4521-4443-42ef-92bb-26c03efc71ad",
-      "position": 4,
-      "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
-      },
-      "seeding_key": {
-        "activity_section.key": "50aa4521-4443-42ef-92bb-26c03efc71ad",
-        "lesson_activity.key": "d2074b31-5313-4c20-b463-8b636b5fd038"
-      }
-    },
-    {
       "key": "f3089929-8e6e-46a0-950f-d8cc38657b34",
-      "position": 5,
+      "position": 3,
       "properties": {
         "description": "---"
       },
@@ -4156,7 +4067,7 @@
     },
     {
       "key": "dba9b058-d8e3-472b-a31c-93f3b99a1c9f",
-      "position": 6,
+      "position": 4,
       "properties": {
         "description": "*Check For Understanding Question(s) and solutions can be found in each lesson on Code Studio. These questions can be used for an exit ticket.*",
         "name": "Assessment: Check for Understanding",
@@ -4412,13 +4323,7 @@
       "key": "639af56c-d0f9-41e9-93fd-4f80c10cac94",
       "position": 3,
       "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.",
-        "tips": [
-          {
-            "type": "teachingTip",
-            "markdown": "The Unit 1 Guide includes an end-of-lesson reflection prompt for students to reflect on the lesson and the progress they made in developing their software engineering skills and characteristics. Have students respond to the reflection prompt after reviewing the concepts covered in this lesson to help them process and reflect on their personal growth."
-          }
-        ]
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
       },
       "seeding_key": {
         "activity_section.key": "639af56c-d0f9-41e9-93fd-4f80c10cac94",
@@ -4426,19 +4331,8 @@
       }
     },
     {
-      "key": "7d17d2cb-3378-4bc0-a16b-ba43c7dd54ba",
-      "position": 4,
-      "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
-      },
-      "seeding_key": {
-        "activity_section.key": "7d17d2cb-3378-4bc0-a16b-ba43c7dd54ba",
-        "lesson_activity.key": "36c39ba3-d200-43d8-9b40-e1000cb5787b"
-      }
-    },
-    {
       "key": "fb743da8-a572-4a48-85b5-a1488d9d61cf",
-      "position": 5,
+      "position": 4,
       "properties": {
         "description": "---"
       },
@@ -4449,7 +4343,7 @@
     },
     {
       "key": "119138be-d945-4a22-9e45-184dc7af61a1",
-      "position": 6,
+      "position": 5,
       "properties": {
         "description": "*Check For Understanding Question(s) and solutions can be found in each lesson on Code Studio. These questions can be used for an exit ticket.*",
         "name": "Assessment: Check for Understanding",
@@ -4818,13 +4712,7 @@
       "key": "890385c2-8b65-40be-a246-d03f0ddd0d59",
       "position": 2,
       "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** *What surprises you about this visual? What do you want to know more about?*\n\n**Discussion Goal:** Students share aspects of the visual that surprise them, such as the amount of time spent on fixing errors. They might ask questions about why so much time is spent on finding and fixing errors.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** *Approximately $85 billion is lost from developer time spent on bad code each year. How can software engineers minimize this time?*\n\n**Discussion Goal:** Students consider the broader role of a software engineer and the various tasks they complete as part of their work. Students identify strategies to minimize time spent on bad code, such as using good programming style and planning and reviewing code.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson. \n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.",
-        "tips": [
-          {
-            "type": "teachingTip",
-            "markdown": "The Unit 1 Guide includes the Question of the Day and an end-of-lesson reflection prompt for students to summarize what they have learned and reflect on their progress. Have students respond to these prompts after reviewing the concepts covered in this lesson to help them process and make meaningful connections with the new content."
-          }
-        ]
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** *What surprises you about this visual? What do you want to know more about?*\n\n**Discussion Goal:** Students share aspects of the visual that surprise them, such as the amount of time spent on fixing errors. They might ask questions about why so much time is spent on finding and fixing errors.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** *Approximately $85 billion is lost from developer time spent on bad code each year. How can software engineers minimize this time?*\n\n**Discussion Goal:** Students consider the broader role of a software engineer and the various tasks they complete as part of their work. Students identify strategies to minimize time spent on bad code, such as using good programming style and planning and reviewing code.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson. \n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
       },
       "seeding_key": {
         "activity_section.key": "890385c2-8b65-40be-a246-d03f0ddd0d59",
@@ -4832,29 +4720,8 @@
       }
     },
     {
-      "key": "8f2ff83f-dde9-437a-bbe8-9c6544211903",
-      "position": 3,
-      "properties": {
-      },
-      "seeding_key": {
-        "activity_section.key": "8f2ff83f-dde9-437a-bbe8-9c6544211903",
-        "lesson_activity.key": "d746fc25-410e-44a9-bfba-463a2291bb38"
-      }
-    },
-    {
-      "key": "603e44e4-f9fb-4af3-91b6-bc4455fb9831",
-      "position": 4,
-      "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
-      },
-      "seeding_key": {
-        "activity_section.key": "603e44e4-f9fb-4af3-91b6-bc4455fb9831",
-        "lesson_activity.key": "d746fc25-410e-44a9-bfba-463a2291bb38"
-      }
-    },
-    {
       "key": "444142df-ce4c-48ac-a4ab-39a437b0c3b9",
-      "position": 5,
+      "position": 3,
       "properties": {
         "description": "---"
       },
@@ -4865,7 +4732,7 @@
     },
     {
       "key": "f83c79b7-4513-4909-b219-176e8358fb10",
-      "position": 6,
+      "position": 4,
       "properties": {
         "description": "*Check For Understanding Question(s) and solutions can be found in each lesson on Code Studio. These questions can be used for an exit ticket.*",
         "name": "Assessment: Check for Understanding",
@@ -5107,13 +4974,7 @@
       "key": "38a6b60c-67fd-4a98-af53-2a69af4e1f33",
       "position": 2,
       "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** Click through the animated slide to display the prompts.\n* *What is the difference between methods that return a value and `void` methods?*\n* *What parts of this lesson were similar to strategies you have used to solve other problems?*\n* *What were you confident about? What would you like to practice?*\n\n**Discussion Goal:** Students explain the difference between methods that return a value and `void` methods and make connections to the methods in the `Painter` class. Students suggest examples of strategies they have used to solve other problems, such as going through a solution one step at a time or tracing the values of variables in previous computer science classes or math classes. Students share concepts from the lesson that they are confident about and concepts they might be confused about.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.",
-        "tips": [
-          {
-            "type": "teachingTip",
-            "markdown": "The Unit 1 Guide includes the Question of the Day and an end-of-lesson reflection prompt for students to summarize what they have learned and reflect on their progress. Have students respond to these prompts after reviewing the concepts covered in this lesson to help them process and make meaningful connections with the new content."
-          }
-        ]
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** Click through the animated slide to display the prompts.\n* *What is the difference between methods that return a value and `void` methods?*\n* *What parts of this lesson were similar to strategies you have used to solve other problems?*\n* *What were you confident about? What would you like to practice?*\n\n**Discussion Goal:** Students explain the difference between methods that return a value and `void` methods and make connections to the methods in the `Painter` class. Students suggest examples of strategies they have used to solve other problems, such as going through a solution one step at a time or tracing the values of variables in previous computer science classes or math classes. Students share concepts from the lesson that they are confident about and concepts they might be confused about.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
       },
       "seeding_key": {
         "activity_section.key": "38a6b60c-67fd-4a98-af53-2a69af4e1f33",
@@ -5121,19 +4982,8 @@
       }
     },
     {
-      "key": "88ae007d-7d4c-4425-928e-2dc0a8069101",
-      "position": 3,
-      "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
-      },
-      "seeding_key": {
-        "activity_section.key": "88ae007d-7d4c-4425-928e-2dc0a8069101",
-        "lesson_activity.key": "e5107e96-2eee-422a-8b19-952c010da1f6"
-      }
-    },
-    {
       "key": "8798e3e1-ca49-457d-b072-eba46734e85a",
-      "position": 4,
+      "position": 3,
       "properties": {
         "description": "---"
       },
@@ -5144,7 +4994,7 @@
     },
     {
       "key": "ff214bc6-48a3-42e9-b064-05d423a84840",
-      "position": 5,
+      "position": 4,
       "properties": {
         "description": "*Check For Understanding Question(s) and solutions can be found in each lesson on Code Studio. These questions can be used for an exit ticket.*",
         "name": "Assessment: Check for Understanding",
@@ -5157,7 +5007,7 @@
     },
     {
       "key": "2a93e09b-cea6-4c02-9be7-7e82f3c11aa2",
-      "position": 6,
+      "position": 5,
       "properties": {
         "description": "To assign questions from the AP Classroom Question Bank that align with this lesson, create a custom quiz in AP Classroom by searching the Question Bank for the Essential Knowledge statements listed at the top of this lesson plan. You can find instructions and video demonstrations to do this on [**AP Central**](https://apcentral.collegeboard.org/instructional-resources/ap-classroom).\n\nThe following Topic Questions in AP Classroom can be assigned as a formative assessment for this lesson:\n\n* Topic Questions 1.1\n\n**Note:** *Some Learning Objectives and Essential Knowledge statements in the suggested Topic Questions are covered in later units.*",
         "name": "AP Classroom Topic Questions"
@@ -5433,13 +5283,7 @@
       "key": "49607b4a-a530-46a0-9900-c635d00e466a",
       "position": 2,
       "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Distribute:** Give each student an index card or piece of scrap paper.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Direct students to write a question on their index card using one of the question stems. Have students turn to a neighbor and take turns asking and answering their questions.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.",
-        "tips": [
-          {
-            "type": "teachingTip",
-            "markdown": "The Unit 2 Guide includes the Question of the Day and an end-of-lesson reflection prompt for students to summarize what they have learned and reflect on their progress. Have students respond to these prompts after reviewing the concepts covered in this lesson to help them process and make meaningful connections with the new content."
-          }
-        ]
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Distribute:** Give each student an index card or piece of scrap paper.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Direct students to write a question on their index card using one of the question stems. Have students turn to a neighbor and take turns asking and answering their questions.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
       },
       "seeding_key": {
         "activity_section.key": "49607b4a-a530-46a0-9900-c635d00e466a",
@@ -5447,19 +5291,8 @@
       }
     },
     {
-      "key": "670d163a-96a7-4f8d-8d5e-37adad4be0d3",
-      "position": 3,
-      "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
-      },
-      "seeding_key": {
-        "activity_section.key": "670d163a-96a7-4f8d-8d5e-37adad4be0d3",
-        "lesson_activity.key": "e06a5d75-51f9-4311-9170-3ccef081ac8d"
-      }
-    },
-    {
       "key": "1fec6334-3880-4ad5-ade7-9e24a7823702",
-      "position": 4,
+      "position": 3,
       "properties": {
         "description": "---"
       },
@@ -5470,7 +5303,7 @@
     },
     {
       "key": "3090c847-51b6-4349-bc0e-3254a921beba",
-      "position": 5,
+      "position": 4,
       "properties": {
         "description": "*Check For Understanding Question(s) and solutions can be found in each lesson on Code Studio. These questions can be used for an exit ticket.*",
         "name": "Assessment: Check for Understanding",
@@ -5670,14 +5503,8 @@
       "key": "5cd5ba49-50ce-4b98-8701-6b4792719aa8",
       "position": 1,
       "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** Click through the animated slide to display the prompts.\n* *What did we learn today?*\n* *So what?*\n* *Now what?*\n\n**Discussion Goal:** Students highlight the concepts and vocabulary they learned in this lesson, such as parameterized constructor, formal parameter, and actual parameter. Students also recall that formal parameters are local variables and explain how the values of the actual parameters are copied to the formal parameters. They should realize that parameterized constructors can provide multiple options for instantiating objects based on the needs of the program.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.",
-        "name": "Three W's",
-        "tips": [
-          {
-            "type": "teachingTip",
-            "markdown": "The Unit 2 Guide includes the Question of the Day and an end-of-lesson reflection prompt for students to summarize what they have learned and reflect on their progress. Have students respond to these prompts after reviewing the concepts covered in this lesson to help them process and make meaningful connections with the new content."
-          }
-        ]
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** Click through the animated slide to display the prompts.\n* *What did we learn today?*\n* *So what?*\n* *Now what?*\n\n**Discussion Goal:** Students highlight the concepts and vocabulary they learned in this lesson, such as parameterized constructor, formal parameter, and actual parameter. Students also recall that formal parameters are local variables and explain how the values of the actual parameters are copied to the formal parameters. They should realize that parameterized constructors can provide multiple options for instantiating objects based on the needs of the program.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary",
+        "name": "Three W's"
       },
       "seeding_key": {
         "activity_section.key": "5cd5ba49-50ce-4b98-8701-6b4792719aa8",
@@ -5685,19 +5512,8 @@
       }
     },
     {
-      "key": "016ce25d-63f6-4ec7-8300-8e797800e18c",
-      "position": 2,
-      "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
-      },
-      "seeding_key": {
-        "activity_section.key": "016ce25d-63f6-4ec7-8300-8e797800e18c",
-        "lesson_activity.key": "231f209e-d73e-4370-975a-32f148713d4d"
-      }
-    },
-    {
       "key": "3dab096a-e6b6-4e7e-ba79-6f8f136d570c",
-      "position": 3,
+      "position": 2,
       "properties": {
         "description": "---"
       },
@@ -5708,7 +5524,7 @@
     },
     {
       "key": "e99766f1-85f6-4d0e-b07c-11a33185b37d",
-      "position": 4,
+      "position": 3,
       "properties": {
         "description": "*Check For Understanding Question(s) and solutions can be found in each lesson on Code Studio. These questions can be used for an exit ticket.*",
         "name": "Assessment: Check for Understanding",
@@ -6096,13 +5912,7 @@
       "position": 1,
       "properties": {
         "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> Do This: Designate four corners or areas in the classroom for each possible explanation of why we use `super()` in a subclass constructor. Have students go to the corner they believe is correct.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> Do This: Once in their corners, have students work together to justify their choice. Encourage them to prepare a short explanation of why their answer is correct — or why other options are incorrect — and share out with the class.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.",
-        "name": "Constructor Corners",
-        "tips": [
-          {
-            "type": "teachingTip",
-            "markdown": "The Unit 2 Guide includes the Question of the Day and an end-of-lesson reflection prompt for students to summarize what they have learned and reflect on their progress. Have students respond to these prompts after reviewing the concepts covered in this lesson to help them process and make meaningful connections with the new content."
-          }
-        ]
+        "name": "Constructor Corners"
       },
       "seeding_key": {
         "activity_section.key": "5a2e72b0-e965-42ff-878e-f4b2998d6f12",
@@ -6322,14 +6132,8 @@
       "key": "fc0d5ae8-27fb-42f9-a868-5bc95906e5ac",
       "position": 1,
       "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** *This code segment is supposed to swap the values in variables `firstNumber` and `secondNumber`, but it has an error. What do we need to add, remove, or change to correct this code segment?*\n\n**Discussion Goal:** Students suggest adding a temporary variable to perform the swap. The value stored in `firstNumber` should be copied to the temporary variable. The value stored in `secondNumber` can then be copied to the `firstNumber` variable, and then the value stored in the temporary variable can be copied to the `secondNumber` variable.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.",
-        "name": "Swapping Values",
-        "tips": [
-          {
-            "type": "teachingTip",
-            "markdown": "The Unit 2 Guide includes the Question of the Day and an end-of-lesson reflection prompt for students to summarize what they have learned and reflect on their progress. Have students respond to these prompts after reviewing the concepts covered in this lesson to help them process and make meaningful connections with the new content."
-          }
-        ]
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** *This code segment is supposed to swap the values in variables `firstNumber` and `secondNumber`, but it has an error. What do we need to add, remove, or change to correct this code segment?*\n\n**Discussion Goal:** Students suggest adding a temporary variable to perform the swap. The value stored in `firstNumber` should be copied to the temporary variable. The value stored in `secondNumber` can then be copied to the `firstNumber` variable, and then the value stored in the temporary variable can be copied to the `secondNumber` variable.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary",
+        "name": "Swapping Values"
       },
       "seeding_key": {
         "activity_section.key": "fc0d5ae8-27fb-42f9-a868-5bc95906e5ac",
@@ -6337,19 +6141,8 @@
       }
     },
     {
-      "key": "0dbfb81e-f5b0-4cb6-a08a-3a93cb1d7f66",
-      "position": 2,
-      "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
-      },
-      "seeding_key": {
-        "activity_section.key": "0dbfb81e-f5b0-4cb6-a08a-3a93cb1d7f66",
-        "lesson_activity.key": "e9ade4fc-4231-4633-ba84-c52932dde7a5"
-      }
-    },
-    {
       "key": "b994e224-03fd-48aa-b136-fc880f6d1896",
-      "position": 3,
+      "position": 2,
       "properties": {
         "description": "---"
       },
@@ -6360,7 +6153,7 @@
     },
     {
       "key": "962c9a48-28da-4776-8369-ca7b825a881d",
-      "position": 4,
+      "position": 3,
       "properties": {
         "description": "*Check For Understanding Question(s) and solutions can be found in each lesson on Code Studio. These questions can be used for an exit ticket.*",
         "name": "Assessment: Check for Understanding",
@@ -6616,13 +6409,7 @@
       "key": "0db84984-07a8-4ee3-a5f3-c15cf34089af",
       "position": 2,
       "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** Click through the animated slide to display the prompts.\n* *What did we learn today?*\n* *So what?*\n* *Now what?*\n\n**Discussion Goal:** Students highlight the concepts and vocabulary they learned in this lesson, such as the mod ( `%` ) operator and compound assignment operator. Students also recall the result of dividing two `int` values and the difference between dividing an `int` and a `double` value by `0`.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.",
-        "tips": [
-          {
-            "type": "teachingTip",
-            "markdown": "The Unit 2 Guide includes the Question of the Day and an end-of-lesson reflection prompt for students to summarize what they have learned and reflect on their progress. Have students respond to these prompts after reviewing the concepts covered in this lesson to help them process and make meaningful connections with the new content."
-          }
-        ]
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** Click through the animated slide to display the prompts.\n* *What did we learn today?*\n* *So what?*\n* *Now what?*\n\n**Discussion Goal:** Students highlight the concepts and vocabulary they learned in this lesson, such as the mod ( `%` ) operator and compound assignment operator. Students also recall the result of dividing two `int` values and the difference between dividing an `int` and a `double` value by `0`.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
       },
       "seeding_key": {
         "activity_section.key": "0db84984-07a8-4ee3-a5f3-c15cf34089af",
@@ -6630,19 +6417,8 @@
       }
     },
     {
-      "key": "73b6f9a4-6914-4819-9347-7dd85edd7794",
-      "position": 3,
-      "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
-      },
-      "seeding_key": {
-        "activity_section.key": "73b6f9a4-6914-4819-9347-7dd85edd7794",
-        "lesson_activity.key": "0647c907-ba0a-4b1f-93f7-a674fafc4057"
-      }
-    },
-    {
       "key": "259af7c0-2470-46c4-b85b-1343bb42d401",
-      "position": 4,
+      "position": 3,
       "properties": {
         "description": "---"
       },
@@ -6653,7 +6429,7 @@
     },
     {
       "key": "740fef10-bb64-4021-a280-2b52b2b14ef1",
-      "position": 5,
+      "position": 4,
       "properties": {
         "description": "*Check For Understanding Question(s) and solutions can be found in each lesson on Code Studio. These questions can be used for an exit ticket.*",
         "name": "Assessment: Check for Understanding",
@@ -7088,13 +6864,7 @@
       "position": 1,
       "properties": {
         "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.",
-        "name": "Show What You Know Week",
-        "tips": [
-          {
-            "type": "teachingTip",
-            "markdown": "The Unit 2 Guide includes the Question of the Day and an end-of-lesson reflection prompt for students to summarize what they have learned and reflect on their progress. Have students respond to these prompts after reviewing the concepts covered in this lesson to help them process and make meaningful connections with the new content."
-          }
-        ]
+        "name": "Show What You Know Week"
       },
       "seeding_key": {
         "activity_section.key": "90db396d-23cf-4712-b426-1867146d6291",
@@ -7146,6 +6916,290 @@
       "seeding_key": {
         "activity_section.key": "800694a6-78ea-4d57-8663-55126e13e0d6",
         "lesson_activity.key": "78b73655-b0e0-4b70-b8be-325122d4df16"
+      }
+    },
+    {
+      "key": "1c446195-8a5b-461f-a92d-b2b01e612a62",
+      "position": 1,
+      "properties": {
+        "description": "For the unit project, you will use The Theater to create visualizations of data. Data visualizations help us make sense of data and communicate its story. These visuals are a powerful way to discover and understand these stories and present them to others. Let's take a look at an example.",
+        "name": "Data Visualizations",
+        "remarks": true
+      },
+      "seeding_key": {
+        "activity_section.key": "1c446195-8a5b-461f-a92d-b2b01e612a62",
+        "lesson_activity.key": "4e6feedf-8fda-4c01-9723-b32096008e7b"
+      }
+    },
+    {
+      "key": "7ba2bc4e-9d9a-4612-92ed-976c8e38a0da",
+      "position": 2,
+      "properties": {
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** *What story do you think this data visualization is trying to tell? Why do you think the creator chose to visualize the data in this way?*\n\n**Discussion Goal:** Students share opinions and ideas about what they think the data visualization is trying to convey and why the creator chose this visual.",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "Ask students what other visuals the creator could have used to convey the same story. Have students consider how alternative visuals would have impacted the effectiveness of the message."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "7ba2bc4e-9d9a-4612-92ed-976c8e38a0da",
+        "lesson_activity.key": "4e6feedf-8fda-4c01-9723-b32096008e7b"
+      }
+    },
+    {
+      "key": "4a74afe5-7b59-432f-948f-c2767204902d",
+      "position": 1,
+      "properties": {
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Introduce the lesson objectives.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Introduce the Question of the Day.",
+        "duration": "5",
+        "name": "Introduction"
+      },
+      "seeding_key": {
+        "activity_section.key": "4a74afe5-7b59-432f-948f-c2767204902d",
+        "lesson_activity.key": "e139db1b-4cea-4320-8ec9-f8cf20f36526"
+      }
+    },
+    {
+      "key": "cad45564-e486-4e06-b705-57330db69b14",
+      "position": 2,
+      "properties": {
+        "description": "We have used packages like The Neighborhood and from the Java API to work with user input and files in our programs. In this unit, we will work with a package that contains classes that make up The Theater.",
+        "remarks": true
+      },
+      "seeding_key": {
+        "activity_section.key": "cad45564-e486-4e06-b705-57330db69b14",
+        "lesson_activity.key": "e139db1b-4cea-4320-8ec9-f8cf20f36526"
+      }
+    },
+    {
+      "key": "74f60e52-fafe-48af-9cff-9d06c8d9a7e5",
+      "position": 3,
+      "properties": {
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Direct students to Level 1 on Code Studio to predict the program's outcome, then run the program to compare their predictions to the actual outcome.",
+        "progression_name": "Predict and Run: The Theater"
+      },
+      "seeding_key": {
+        "activity_section.key": "74f60e52-fafe-48af-9cff-9d06c8d9a7e5",
+        "lesson_activity.key": "e139db1b-4cea-4320-8ec9-f8cf20f36526"
+      }
+    },
+    {
+      "key": "e1346f7f-35ec-4e70-8f73-b6759546e753",
+      "position": 4,
+      "properties": {
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** Click through the animated slide to display the prompts.\n* *What did you notice about the code in this program?*\n* *What do you wonder about the code in this program?*\n\n**Discussion Goal:** Students notice that the program creates a `Scene` object and calls methods to draw shapes and images and play sounds. Students may wonder if they can extend the `Scene` class like they extended the `Painter` class or what types of programs they could create using The Theater."
+      },
+      "seeding_key": {
+        "activity_section.key": "e1346f7f-35ec-4e70-8f73-b6759546e753",
+        "lesson_activity.key": "e139db1b-4cea-4320-8ec9-f8cf20f36526"
+      }
+    },
+    {
+      "key": "a9b295d0-a3e2-4b6a-98dd-11b7a7f665bb",
+      "position": 5,
+      "properties": {
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Show the video – Welcome to The Theater.",
+        "duration": "15",
+        "name": "Investigating The Theater",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "Videos are used throughout the curriculum to spark discussions, supplement key concepts with additional explanations and examples, and expose students to the various roles and backgrounds of individuals in computer science.\n\nWhile interacting with the video, turn on closed captioning so students can also read along as they watch.\n\nTo encourage active engagement and reflection, use one or more of the strategies discussed in the [**Guide to Curriculum Videos**](https://docs.google.com/document/d/1FqIUpJg6MrgdtbFGLobSojOz0u1m5Jge1nMAjUqI5ZM/edit?usp=sharing)."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "a9b295d0-a3e2-4b6a-98dd-11b7a7f665bb",
+        "lesson_activity.key": "e139db1b-4cea-4320-8ec9-f8cf20f36526"
+      }
+    },
+    {
+      "key": "2fca14c2-4566-45d6-ac64-1d698c97c5e2",
+      "position": 6,
+      "properties": {
+        "description": "Like The Neighborhood, The Theater consists of several classes that allow us to showcase our ideas and creativity. The main classes we'll be working with are the `Theater` and `Scene` classes.",
+        "remarks": true
+      },
+      "seeding_key": {
+        "activity_section.key": "2fca14c2-4566-45d6-ac64-1d698c97c5e2",
+        "lesson_activity.key": "e139db1b-4cea-4320-8ec9-f8cf20f36526"
+      }
+    },
+    {
+      "key": "5d58cb10-070d-4071-bde2-e5e87434f03b",
+      "position": 7,
+      "properties": {
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Click through the animated slide to introduce the Theater class.",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "You don't need to go into too much detail about the `final` or `static` keywords for now. These are covered in more detail in an upcoming lesson."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "5d58cb10-070d-4071-bde2-e5e87434f03b",
+        "lesson_activity.key": "e139db1b-4cea-4320-8ec9-f8cf20f36526"
+      }
+    },
+    {
+      "key": "00fbaa54-3ff6-464c-a55a-d72f8d439e32",
+      "position": 8,
+      "properties": {
+        "description": "**Do This:** Introduce the `Scene` class:\n* <i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> Default values for text, color, stroke, and instrument\n* <i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> Instance variables for the font and colors\n* <i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> Methods to get the width and height of The Theater, play sounds and notes, draw images and shapes, and change the font and colors\n\n**Group:** Place students in pairs.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Distribute:** Give each student a copy of the Investigating The Theater handout.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Direct students to Level 2 on Code Studio to access the documentation for The Theater and complete the Investigating The Theater handout.",
+        "progression_name": "Investigate and Modify: The Theater"
+      },
+      "seeding_key": {
+        "activity_section.key": "00fbaa54-3ff6-464c-a55a-d72f8d439e32",
+        "lesson_activity.key": "e139db1b-4cea-4320-8ec9-f8cf20f36526"
+      }
+    },
+    {
+      "key": "20fd1e9f-e338-4f1c-8b00-3b36883dd907",
+      "position": 9,
+      "properties": {
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Have students share what they discovered from the modifications they made to the code and their responses on the Investigating The Theater handout.",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "Ask students what they noticed about the classes in the program, and have them share how this is similar and different to how they worked with the `Painter` class in The Neighborhood. You might also have students brainstorm how they might create additional `Scene` objects in a program and how they could work with them in a 1D array of `Scene` objects. For example:\n* *What are some other types of `Scene` objects you might create for a program?*\n* *If you created a 1D array of `Scene` objects, what are some things that you would then be able to do?*"
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "20fd1e9f-e338-4f1c-8b00-3b36883dd907",
+        "lesson_activity.key": "e139db1b-4cea-4320-8ec9-f8cf20f36526"
+      }
+    },
+    {
+      "key": "2f04ceeb-181f-431e-a785-14e02aa3831c",
+      "position": 10,
+      "properties": {
+        "description": "**Do This:** Click through the animated slides to introduce the methods in The Theater:\n* <i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> The `drawImage()` method\n* <i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> The methods to draw shapes\n* <i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> The `playSound()` and `playNote()` methods\n* <i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> The `pause()` method\n* <i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> The `Theater.playScenes()` method"
+      },
+      "seeding_key": {
+        "activity_section.key": "2f04ceeb-181f-431e-a785-14e02aa3831c",
+        "lesson_activity.key": "e139db1b-4cea-4320-8ec9-f8cf20f36526"
+      }
+    },
+    {
+      "key": "4bcd3aee-ed44-4ae2-9b4f-200c5c41ab42",
+      "position": 11,
+      "properties": {
+        "description": "The Theater allows you to create many types of visuals and animations, as well as play and manipulate sounds. Let's see what we can make in The Theater!",
+        "duration": "15",
+        "name": "Creating Drawings and Animations",
+        "remarks": true
+      },
+      "seeding_key": {
+        "activity_section.key": "4bcd3aee-ed44-4ae2-9b4f-200c5c41ab42",
+        "lesson_activity.key": "e139db1b-4cea-4320-8ec9-f8cf20f36526"
+      }
+    },
+    {
+      "key": "610ff789-c404-4266-a844-5d27b91aff36",
+      "position": 12,
+      "properties": {
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Direct students to Level 3 on Code Studio to complete Levels 3 through 6. Students complete a Check for Understanding on Level 3, then continue to complete choice levels to draw images, draw shapes, and play sounds.",
+        "progression_name": "Practice: Creating Drawings and Animations",
+        "tips": [
+          {
+            "type": "assessmentOpportunity",
+            "markdown": "The Check for Understanding is an AP-style multiple choice question that can be used as a formative assessment to gauge understanding of 1D array algorithms.\n\nThe practice levels can be used as a formative assessment to gauge understanding of using API documentation and calling methods from existing classes."
+          },
+          {
+            "type": "teachingTip",
+            "markdown": "Since these levels are focused on providing students opportunities for creative exploration with The Theater, they do not have validation."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "610ff789-c404-4266-a844-5d27b91aff36",
+        "lesson_activity.key": "e139db1b-4cea-4320-8ec9-f8cf20f36526"
+      }
+    },
+    {
+      "key": "34729337-ce96-4ae9-a80a-c650d383047a",
+      "position": 1,
+      "properties": {
+        "description": "There is a lot you can do with The Theater, and there are more capabilities that we have not yet explored. We'll start with the capabilities you explored today in this unit to create interesting visuals and animations.",
+        "name": "Using The Theater",
+        "remarks": true
+      },
+      "seeding_key": {
+        "activity_section.key": "34729337-ce96-4ae9-a80a-c650d383047a",
+        "lesson_activity.key": "9fd6cd8c-818c-4f4d-80ca-0e2eb36cc1c0"
+      }
+    },
+    {
+      "key": "c904b2b2-033f-4b2a-825f-e8e595db7b52",
+      "position": 2,
+      "properties": {
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** *What are things you could make using The Theater?*\n\n**Discussion Goal:** Students share ideas about visuals and animations they want to make using The Theater, such as creating a drawing of a favorite hobby or an animation to tell a personal story.",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "Use the Hold That Thought strategy to allow students to write down their thoughts on paper first. Emphasize that they do not need to write complete sentences – they can write a few words, bullet points, draw a quick sketch, or anything else that will help them gather and recall their thoughts when it is time to share with the class."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "c904b2b2-033f-4b2a-825f-e8e595db7b52",
+        "lesson_activity.key": "9fd6cd8c-818c-4f4d-80ca-0e2eb36cc1c0"
+      }
+    },
+    {
+      "key": "9888f522-899a-479a-a661-1c72040c5a04",
+      "position": 3,
+      "properties": {
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** *How could you use The Theater to create visuals of the data you worked with in the previous unit?*\n\n**Discussion Goal:** Students suggest ways to visualize the data they worked with in the previous unit, such as creating drawings and images or animating the data to demonstrate patterns and information.",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "Ask students where they have seen data visuals before, such as charts and graphs or infographics. Have students consider why someone would choose to convey information visually compared to the projects they created in the previous unit."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "9888f522-899a-479a-a661-1c72040c5a04",
+        "lesson_activity.key": "9fd6cd8c-818c-4f4d-80ca-0e2eb36cc1c0"
+      }
+    },
+    {
+      "key": "a3e1241a-2e5b-4315-bb8c-c462c66cba07",
+      "position": 4,
+      "properties": {
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day."
+      },
+      "seeding_key": {
+        "activity_section.key": "a3e1241a-2e5b-4315-bb8c-c462c66cba07",
+        "lesson_activity.key": "9fd6cd8c-818c-4f4d-80ca-0e2eb36cc1c0"
+      }
+    },
+    {
+      "key": "05eb904d-b3df-4f8d-b64d-77ec50ebba69",
+      "position": 5,
+      "properties": {
+        "description": "---"
+      },
+      "seeding_key": {
+        "activity_section.key": "05eb904d-b3df-4f8d-b64d-77ec50ebba69",
+        "lesson_activity.key": "9fd6cd8c-818c-4f4d-80ca-0e2eb36cc1c0"
+      }
+    },
+    {
+      "key": "95e46f34-20fc-4c72-8feb-87a9c01f63d8",
+      "position": 6,
+      "properties": {
+        "description": "*Check For Understanding Question(s) and solutions can be found in each lesson on Code Studio. These questions can be used for an exit ticket.*",
+        "name": "Assessment: Check for Understanding",
+        "progression_name": "Check for Understanding"
+      },
+      "seeding_key": {
+        "activity_section.key": "95e46f34-20fc-4c72-8feb-87a9c01f63d8",
+        "lesson_activity.key": "9fd6cd8c-818c-4f4d-80ca-0e2eb36cc1c0"
       }
     },
     {
@@ -7414,13 +7468,7 @@
       "key": "634a5b42-ef1d-4eb1-8522-3d254f5f1e60",
       "position": 2,
       "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.",
-        "tips": [
-          {
-            "type": "teachingTip",
-            "markdown": "The Unit 4 Guide includes the Question of the Day and an end-of-lesson reflection prompt for students to summarize what they have learned and reflect on their progress. Have students respond to these prompts after reviewing the concepts covered in this lesson to help them process and make meaningful connections with the new content."
-          }
-        ]
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
       },
       "seeding_key": {
         "activity_section.key": "634a5b42-ef1d-4eb1-8522-3d254f5f1e60",
@@ -7428,19 +7476,8 @@
       }
     },
     {
-      "key": "a0c3e55a-3ca3-4fcd-afce-9152423a214c",
-      "position": 3,
-      "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
-      },
-      "seeding_key": {
-        "activity_section.key": "a0c3e55a-3ca3-4fcd-afce-9152423a214c",
-        "lesson_activity.key": "34ef783a-58bd-402b-afa0-4e7cadae32a8"
-      }
-    },
-    {
       "key": "8dc66516-5ae0-4b95-b171-f6bf958a1327",
-      "position": 4,
+      "position": 3,
       "properties": {
         "description": "---"
       },
@@ -7451,7 +7488,7 @@
     },
     {
       "key": "c8995a9f-66a2-4d43-9321-617fb397b1d2",
-      "position": 5,
+      "position": 4,
       "properties": {
         "description": "*Check For Understanding Question(s) and solutions can be found in each lesson on Code Studio. These questions can be used for an exit ticket.*",
         "name": "Assessment: Check for Understanding",
@@ -7733,13 +7770,7 @@
       "key": "0b8c2b40-897f-4ca6-aa7b-81213fb1d47f",
       "position": 4,
       "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.",
-        "tips": [
-          {
-            "type": "teachingTip",
-            "markdown": "The Unit 4 Guide includes the Question of the Day and an end-of-lesson reflection prompt for students to summarize what they have learned and reflect on their progress. Have students respond to these prompts after reviewing the concepts covered in this lesson to help them process and make meaningful connections with the new content."
-          }
-        ]
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day."
       },
       "seeding_key": {
         "activity_section.key": "0b8c2b40-897f-4ca6-aa7b-81213fb1d47f",
@@ -8121,14 +8152,8 @@
       "key": "9a66e22a-72bb-4e6e-aa6e-3da5dada7014",
       "position": 1,
       "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** Click through the animated slide to display the prompts.\n* *What did we learn today?*\n* *So what?*\n* *Now what?*\n\n**Discussion Goal:** Students share the concepts they learned from the lesson, including how to use the `compareTo()` method to compare two `String` objects. Students suggest problems where they might use methods in the `String` class in their Natural Language Processing projects and make predictions about upcoming lessons or problems.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.",
-        "name": "Three W's",
-        "tips": [
-          {
-            "type": "teachingTip",
-            "markdown": "The Unit 6 Guide includes the Question of the Day and an end-of-lesson reflection prompt for students to summarize what they have learned and reflect on their progress. Have students respond to these prompts after reviewing the concepts covered in this lesson to help them process and make meaningful connections with the new content."
-          }
-        ]
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Discuss:** Click through the animated slide to display the prompts.\n* *What did we learn today?*\n* *So what?*\n* *Now what?*\n\n**Discussion Goal:** Students share the concepts they learned from the lesson, including how to use the `compareTo()` method to compare two `String` objects. Students suggest problems where they might use methods in the `String` class in their Natural Language Processing projects and make predictions about upcoming lessons or problems.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary",
+        "name": "Three W's"
       },
       "seeding_key": {
         "activity_section.key": "9a66e22a-72bb-4e6e-aa6e-3da5dada7014",
@@ -8136,19 +8161,8 @@
       }
     },
     {
-      "key": "81c5d058-da37-42d5-8723-3b5613ce6f80",
-      "position": 2,
-      "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display:** Key Vocabulary"
-      },
-      "seeding_key": {
-        "activity_section.key": "81c5d058-da37-42d5-8723-3b5613ce6f80",
-        "lesson_activity.key": "26d46e4f-c229-4b3b-976d-d30dc0375328"
-      }
-    },
-    {
       "key": "eb16f239-96ea-479f-8b55-178ddb6409e6",
-      "position": 3,
+      "position": 2,
       "properties": {
         "description": "---"
       },
@@ -8159,9 +8173,9 @@
     },
     {
       "key": "574caad3-a609-47c8-8ad8-eae990b689fb",
-      "position": 4,
+      "position": 3,
       "properties": {
-        "description": "*Check For Understanding Question(s) and solutions can be found in each lesson on Code Studio. These questions can be used for an exit ticket.",
+        "description": "*Check For Understanding Question(s) and solutions can be found in each lesson on Code Studio. These questions can be used for an exit ticket.*",
         "name": "Assessment: Check for Understanding",
         "progression_name": "Check for Understanding"
       },
@@ -8338,13 +8352,7 @@
       "key": "2daca09a-a491-4818-a3bb-8314711dcb66",
       "position": 3,
       "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day.",
-        "tips": [
-          {
-            "type": "teachingTip",
-            "markdown": "The Unit 7 Guide includes the Question of the Day and an end-of-lesson reflection prompt for students to summarize what they have learned and reflect on their progress. Have students respond to these prompts after reviewing the concepts covered in this lesson to help them process and make meaningful connections with the new content."
-          }
-        ]
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the concepts covered in this lesson.\n\n<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Review the Question of the Day."
       },
       "seeding_key": {
         "activity_section.key": "2daca09a-a491-4818-a3bb-8314711dcb66",
@@ -9044,6 +9052,24 @@
       "seeding_key": {
         "activity_section.key": "dfaa5a2a-c4a7-4932-a408-62101d7f0fac",
         "lesson_activity.key": "59bace8a-792a-410b-b0ff-01bb3efa4c44"
+      }
+    },
+    {
+      "key": "10be35eb-3c4e-465e-983f-843186cc5609",
+      "position": 1,
+      "properties": {
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Do This:** Have students complete a short end-of-unit survey. Although their answers are anonymous, the aggregated data will be available to you once at least five students have completed the survey.",
+        "progression_name": "End of Unit Survey",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "We also have a teacher end-of-unit survey to learn more about how the unit went for you and your students. While students take their survey, please complete [**this end of unit survey for teachers**](https://studio.code.org/form/teacher_end_of_unit_survey?survey_data%5Bunit_number%5D=1) as well. Your feedback is valued and appreciated!"
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "10be35eb-3c4e-465e-983f-843186cc5609",
+        "lesson_activity.key": "699e35d6-1791-42a3-9087-c3af63a5e448"
       }
     },
     {
@@ -11701,6 +11727,181 @@
       "assessment": false,
       "properties": {
         "level_keys": [
+          "CSA U4L1-L1_pilot_oo2025_-csa-alt_2025"
+        ],
+        "progression": "Predict and Run: The Theater"
+      },
+      "bonus": false,
+      "seeding_key": {
+        "script_level.level_keys": [
+          "CSA U4L1-L1_pilot_oo2025_-csa-alt_2025"
+        ],
+        "lesson.key": "Lesson 1: The Theater",
+        "lesson_group.key": "lessonGroup-18",
+        "script.name": "csa1-alt-2025",
+        "activity_section.key": "74f60e52-fafe-48af-9cff-9d06c8d9a7e5"
+      },
+      "level_keys": [
+        "CSA U4L1-L1_pilot_oo2025_-csa-alt_2025"
+      ]
+    },
+    {
+      "chapter": 100,
+      "position": 2,
+      "activity_section_position": 1,
+      "assessment": false,
+      "properties": {
+        "level_keys": [
+          "CSA U4L1-L2_pilot_oo2025_-csa-alt_2025"
+        ],
+        "progression": "Investigate and Modify: The Theater"
+      },
+      "bonus": false,
+      "seeding_key": {
+        "script_level.level_keys": [
+          "CSA U4L1-L2_pilot_oo2025_-csa-alt_2025"
+        ],
+        "lesson.key": "Lesson 1: The Theater",
+        "lesson_group.key": "lessonGroup-18",
+        "script.name": "csa1-alt-2025",
+        "activity_section.key": "00fbaa54-3ff6-464c-a55a-d72f8d439e32"
+      },
+      "level_keys": [
+        "CSA U4L1-L2_pilot_oo2025_-csa-alt_2025"
+      ]
+    },
+    {
+      "chapter": 101,
+      "position": 3,
+      "activity_section_position": 1,
+      "assessment": true,
+      "properties": {
+        "level_keys": [
+          "CSA U4L1-L3_pilot_oo2025_-csa-alt_2025"
+        ],
+        "progression": "Practice: Creating Drawings and Animations"
+      },
+      "bonus": false,
+      "seeding_key": {
+        "script_level.level_keys": [
+          "CSA U4L1-L3_pilot_oo2025_-csa-alt_2025"
+        ],
+        "lesson.key": "Lesson 1: The Theater",
+        "lesson_group.key": "lessonGroup-18",
+        "script.name": "csa1-alt-2025",
+        "activity_section.key": "610ff789-c404-4266-a844-5d27b91aff36"
+      },
+      "level_keys": [
+        "CSA U4L1-L3_pilot_oo2025_-csa-alt_2025"
+      ]
+    },
+    {
+      "chapter": 102,
+      "position": 4,
+      "activity_section_position": 2,
+      "assessment": false,
+      "properties": {
+        "level_keys": [
+          "CSA U4L1-L4_pilot_oo2025_-csa-alt_2025"
+        ],
+        "progression": "Practice: Creating Drawings and Animations"
+      },
+      "bonus": false,
+      "seeding_key": {
+        "script_level.level_keys": [
+          "CSA U4L1-L4_pilot_oo2025_-csa-alt_2025"
+        ],
+        "lesson.key": "Lesson 1: The Theater",
+        "lesson_group.key": "lessonGroup-18",
+        "script.name": "csa1-alt-2025",
+        "activity_section.key": "610ff789-c404-4266-a844-5d27b91aff36"
+      },
+      "level_keys": [
+        "CSA U4L1-L4_pilot_oo2025_-csa-alt_2025"
+      ]
+    },
+    {
+      "chapter": 103,
+      "position": 5,
+      "activity_section_position": 3,
+      "assessment": false,
+      "properties": {
+        "level_keys": [
+          "CSA U4L1-L5_pilot_oo2025_-csa-alt_2025"
+        ],
+        "progression": "Practice: Creating Drawings and Animations"
+      },
+      "bonus": false,
+      "seeding_key": {
+        "script_level.level_keys": [
+          "CSA U4L1-L5_pilot_oo2025_-csa-alt_2025"
+        ],
+        "lesson.key": "Lesson 1: The Theater",
+        "lesson_group.key": "lessonGroup-18",
+        "script.name": "csa1-alt-2025",
+        "activity_section.key": "610ff789-c404-4266-a844-5d27b91aff36"
+      },
+      "level_keys": [
+        "CSA U4L1-L5_pilot_oo2025_-csa-alt_2025"
+      ]
+    },
+    {
+      "chapter": 104,
+      "position": 6,
+      "activity_section_position": 4,
+      "assessment": false,
+      "properties": {
+        "level_keys": [
+          "CSA U4L1-L6_pilot_oo2025_-csa-alt_2025"
+        ],
+        "progression": "Practice: Creating Drawings and Animations"
+      },
+      "bonus": false,
+      "seeding_key": {
+        "script_level.level_keys": [
+          "CSA U4L1-L6_pilot_oo2025_-csa-alt_2025"
+        ],
+        "lesson.key": "Lesson 1: The Theater",
+        "lesson_group.key": "lessonGroup-18",
+        "script.name": "csa1-alt-2025",
+        "activity_section.key": "610ff789-c404-4266-a844-5d27b91aff36"
+      },
+      "level_keys": [
+        "CSA U4L1-L6_pilot_oo2025_-csa-alt_2025"
+      ]
+    },
+    {
+      "chapter": 105,
+      "position": 7,
+      "activity_section_position": 1,
+      "assessment": true,
+      "properties": {
+        "level_keys": [
+          "CSA U4L1-L7_pilot_oo2025_-csa-alt_2025"
+        ],
+        "progression": "Check for Understanding"
+      },
+      "bonus": false,
+      "seeding_key": {
+        "script_level.level_keys": [
+          "CSA U4L1-L7_pilot_oo2025_-csa-alt_2025"
+        ],
+        "lesson.key": "Lesson 1: The Theater",
+        "lesson_group.key": "lessonGroup-18",
+        "script.name": "csa1-alt-2025",
+        "activity_section.key": "95e46f34-20fc-4c72-8feb-87a9c01f63d8"
+      },
+      "level_keys": [
+        "CSA U4L1-L7_pilot_oo2025_-csa-alt_2025"
+      ]
+    },
+    {
+      "chapter": 106,
+      "position": 1,
+      "activity_section_position": 1,
+      "assessment": false,
+      "properties": {
+        "level_keys": [
           "CSA U4L3-L1_alt-2025"
         ],
         "progression": "Predict and Run: The Math Class"
@@ -11720,7 +11921,7 @@
       ]
     },
     {
-      "chapter": 100,
+      "chapter": 107,
       "position": 2,
       "activity_section_position": 1,
       "assessment": false,
@@ -11745,7 +11946,7 @@
       ]
     },
     {
-      "chapter": 101,
+      "chapter": 108,
       "position": 3,
       "activity_section_position": 1,
       "assessment": true,
@@ -11770,7 +11971,7 @@
       ]
     },
     {
-      "chapter": 102,
+      "chapter": 109,
       "position": 4,
       "activity_section_position": 2,
       "assessment": false,
@@ -11795,7 +11996,7 @@
       ]
     },
     {
-      "chapter": 103,
+      "chapter": 110,
       "position": 5,
       "activity_section_position": 3,
       "assessment": false,
@@ -11820,7 +12021,7 @@
       ]
     },
     {
-      "chapter": 104,
+      "chapter": 111,
       "position": 6,
       "activity_section_position": 4,
       "assessment": false,
@@ -11845,7 +12046,7 @@
       ]
     },
     {
-      "chapter": 105,
+      "chapter": 112,
       "position": 7,
       "activity_section_position": 5,
       "assessment": false,
@@ -11870,7 +12071,7 @@
       ]
     },
     {
-      "chapter": 106,
+      "chapter": 113,
       "position": 8,
       "activity_section_position": 1,
       "assessment": true,
@@ -11895,7 +12096,7 @@
       ]
     },
     {
-      "chapter": 107,
+      "chapter": 114,
       "position": 1,
       "activity_section_position": 1,
       "assessment": false,
@@ -11920,7 +12121,7 @@
       ]
     },
     {
-      "chapter": 108,
+      "chapter": 115,
       "position": 2,
       "activity_section_position": 1,
       "assessment": false,
@@ -11945,7 +12146,7 @@
       ]
     },
     {
-      "chapter": 109,
+      "chapter": 116,
       "position": 3,
       "activity_section_position": 2,
       "assessment": false,
@@ -11970,7 +12171,7 @@
       ]
     },
     {
-      "chapter": 110,
+      "chapter": 117,
       "position": 4,
       "activity_section_position": 1,
       "assessment": true,
@@ -11995,7 +12196,7 @@
       ]
     },
     {
-      "chapter": 111,
+      "chapter": 118,
       "position": 5,
       "activity_section_position": 2,
       "assessment": false,
@@ -12020,7 +12221,7 @@
       ]
     },
     {
-      "chapter": 112,
+      "chapter": 119,
       "position": 6,
       "activity_section_position": 3,
       "assessment": false,
@@ -12045,7 +12246,7 @@
       ]
     },
     {
-      "chapter": 113,
+      "chapter": 120,
       "position": 7,
       "activity_section_position": 1,
       "assessment": true,
@@ -12070,7 +12271,7 @@
       ]
     },
     {
-      "chapter": 114,
+      "chapter": 121,
       "position": 1,
       "activity_section_position": 1,
       "assessment": false,
@@ -12095,7 +12296,7 @@
       ]
     },
     {
-      "chapter": 115,
+      "chapter": 122,
       "position": 2,
       "activity_section_position": 1,
       "assessment": false,
@@ -12120,7 +12321,7 @@
       ]
     },
     {
-      "chapter": 116,
+      "chapter": 123,
       "position": 3,
       "activity_section_position": 2,
       "assessment": false,
@@ -12145,7 +12346,7 @@
       ]
     },
     {
-      "chapter": 117,
+      "chapter": 124,
       "position": 4,
       "activity_section_position": 3,
       "assessment": false,
@@ -12170,7 +12371,7 @@
       ]
     },
     {
-      "chapter": 118,
+      "chapter": 125,
       "position": 5,
       "activity_section_position": 1,
       "assessment": true,
@@ -12195,7 +12396,7 @@
       ]
     },
     {
-      "chapter": 119,
+      "chapter": 126,
       "position": 6,
       "activity_section_position": 2,
       "assessment": false,
@@ -12220,7 +12421,7 @@
       ]
     },
     {
-      "chapter": 120,
+      "chapter": 127,
       "position": 7,
       "activity_section_position": 3,
       "assessment": false,
@@ -12245,7 +12446,7 @@
       ]
     },
     {
-      "chapter": 121,
+      "chapter": 128,
       "position": 8,
       "activity_section_position": 4,
       "assessment": false,
@@ -12270,7 +12471,7 @@
       ]
     },
     {
-      "chapter": 122,
+      "chapter": 129,
       "position": 9,
       "activity_section_position": 1,
       "assessment": true,
@@ -12295,7 +12496,7 @@
       ]
     },
     {
-      "chapter": 123,
+      "chapter": 130,
       "position": 1,
       "activity_section_position": 1,
       "assessment": false,
@@ -12320,7 +12521,7 @@
       ]
     },
     {
-      "chapter": 124,
+      "chapter": 131,
       "position": 2,
       "activity_section_position": 1,
       "assessment": false,
@@ -12345,7 +12546,7 @@
       ]
     },
     {
-      "chapter": 125,
+      "chapter": 132,
       "position": 3,
       "activity_section_position": 2,
       "assessment": false,
@@ -12370,7 +12571,7 @@
       ]
     },
     {
-      "chapter": 126,
+      "chapter": 133,
       "position": 4,
       "activity_section_position": 3,
       "assessment": false,
@@ -12395,7 +12596,7 @@
       ]
     },
     {
-      "chapter": 127,
+      "chapter": 134,
       "position": 5,
       "activity_section_position": 1,
       "assessment": true,
@@ -12420,7 +12621,7 @@
       ]
     },
     {
-      "chapter": 128,
+      "chapter": 135,
       "position": 6,
       "activity_section_position": 2,
       "assessment": false,
@@ -12445,7 +12646,7 @@
       ]
     },
     {
-      "chapter": 129,
+      "chapter": 136,
       "position": 7,
       "activity_section_position": 3,
       "assessment": false,
@@ -12470,7 +12671,7 @@
       ]
     },
     {
-      "chapter": 130,
+      "chapter": 137,
       "position": 8,
       "activity_section_position": 1,
       "assessment": true,
@@ -12495,7 +12696,7 @@
       ]
     },
     {
-      "chapter": 131,
+      "chapter": 138,
       "position": 1,
       "activity_section_position": 1,
       "assessment": true,
@@ -12520,7 +12721,7 @@
       ]
     },
     {
-      "chapter": 132,
+      "chapter": 139,
       "position": 2,
       "activity_section_position": 1,
       "assessment": false,
@@ -12545,7 +12746,7 @@
       ]
     },
     {
-      "chapter": 133,
+      "chapter": 140,
       "position": 3,
       "activity_section_position": 2,
       "assessment": false,
@@ -12570,7 +12771,7 @@
       ]
     },
     {
-      "chapter": 134,
+      "chapter": 141,
       "position": 4,
       "activity_section_position": 3,
       "assessment": false,
@@ -12595,7 +12796,7 @@
       ]
     },
     {
-      "chapter": 135,
+      "chapter": 142,
       "position": 5,
       "activity_section_position": 1,
       "assessment": true,
@@ -12620,7 +12821,7 @@
       ]
     },
     {
-      "chapter": 136,
+      "chapter": 143,
       "position": 6,
       "activity_section_position": 2,
       "assessment": false,
@@ -12645,7 +12846,7 @@
       ]
     },
     {
-      "chapter": 137,
+      "chapter": 144,
       "position": 7,
       "activity_section_position": 3,
       "assessment": false,
@@ -12670,7 +12871,7 @@
       ]
     },
     {
-      "chapter": 138,
+      "chapter": 145,
       "position": 8,
       "activity_section_position": 1,
       "assessment": true,
@@ -12695,7 +12896,7 @@
       ]
     },
     {
-      "chapter": 139,
+      "chapter": 146,
       "position": 1,
       "activity_section_position": 1,
       "assessment": true,
@@ -12720,10 +12921,10 @@
       ]
     },
     {
-      "chapter": 140,
+      "chapter": 147,
       "position": 2,
       "activity_section_position": 1,
-      "assessment": true,
+      "assessment": false,
       "properties": {
         "level_keys": [
           "student-eou-survey_linked_page_csa1-project2-2025"
@@ -12745,7 +12946,7 @@
       ]
     },
     {
-      "chapter": 141,
+      "chapter": 148,
       "position": 1,
       "activity_section_position": 1,
       "assessment": true,
@@ -12770,7 +12971,29 @@
       ]
     },
     {
-      "chapter": 142,
+      "chapter": 149,
+      "position": 2,
+      "activity_section_position": 1,
+      "assessment": false,
+      "properties": {
+        "progression": "End of Unit Survey"
+      },
+      "bonus": false,
+      "seeding_key": {
+        "script_level.level_keys": [
+          "student-eou-survey_linked_page_csa1-project1b-2025"
+        ],
+        "lesson.key": "Asphalt Art Project [1-Day Version]",
+        "lesson_group.key": "lessonGroup-2",
+        "script.name": "csa1-alt-2025",
+        "activity_section.key": "10be35eb-3c4e-465e-983f-843186cc5609"
+      },
+      "level_keys": [
+        "student-eou-survey_linked_page_csa1-project1b-2025"
+      ]
+    },
+    {
+      "chapter": 150,
       "position": 1,
       "activity_section_position": 1,
       "assessment": true,
@@ -12795,7 +13018,7 @@
       ]
     },
     {
-      "chapter": 143,
+      "chapter": 151,
       "position": 1,
       "activity_section_position": 1,
       "assessment": false,
@@ -12820,7 +13043,7 @@
       ]
     },
     {
-      "chapter": 144,
+      "chapter": 152,
       "position": 2,
       "activity_section_position": 1,
       "assessment": false,
@@ -12845,7 +13068,7 @@
       ]
     },
     {
-      "chapter": 145,
+      "chapter": 153,
       "position": 1,
       "activity_section_position": 1,
       "assessment": false,
@@ -12869,7 +13092,7 @@
       ]
     },
     {
-      "chapter": 146,
+      "chapter": 154,
       "position": 1,
       "activity_section_position": 1,
       "assessment": false,
@@ -14072,6 +14295,90 @@
     },
     {
       "seeding_key": {
+        "level.key": "CSA U4L1-L1_pilot_oo2025_-csa-alt_2025",
+        "script_level.level_keys": [
+          "CSA U4L1-L1_pilot_oo2025_-csa-alt_2025"
+        ],
+        "lesson.key": "Lesson 1: The Theater",
+        "lesson_group.key": "lessonGroup-18",
+        "script.name": "csa1-alt-2025",
+        "activity_section.key": "74f60e52-fafe-48af-9cff-9d06c8d9a7e5"
+      }
+    },
+    {
+      "seeding_key": {
+        "level.key": "CSA U4L1-L2_pilot_oo2025_-csa-alt_2025",
+        "script_level.level_keys": [
+          "CSA U4L1-L2_pilot_oo2025_-csa-alt_2025"
+        ],
+        "lesson.key": "Lesson 1: The Theater",
+        "lesson_group.key": "lessonGroup-18",
+        "script.name": "csa1-alt-2025",
+        "activity_section.key": "00fbaa54-3ff6-464c-a55a-d72f8d439e32"
+      }
+    },
+    {
+      "seeding_key": {
+        "level.key": "CSA U4L1-L3_pilot_oo2025_-csa-alt_2025",
+        "script_level.level_keys": [
+          "CSA U4L1-L3_pilot_oo2025_-csa-alt_2025"
+        ],
+        "lesson.key": "Lesson 1: The Theater",
+        "lesson_group.key": "lessonGroup-18",
+        "script.name": "csa1-alt-2025",
+        "activity_section.key": "610ff789-c404-4266-a844-5d27b91aff36"
+      }
+    },
+    {
+      "seeding_key": {
+        "level.key": "CSA U4L1-L4_pilot_oo2025_-csa-alt_2025",
+        "script_level.level_keys": [
+          "CSA U4L1-L4_pilot_oo2025_-csa-alt_2025"
+        ],
+        "lesson.key": "Lesson 1: The Theater",
+        "lesson_group.key": "lessonGroup-18",
+        "script.name": "csa1-alt-2025",
+        "activity_section.key": "610ff789-c404-4266-a844-5d27b91aff36"
+      }
+    },
+    {
+      "seeding_key": {
+        "level.key": "CSA U4L1-L5_pilot_oo2025_-csa-alt_2025",
+        "script_level.level_keys": [
+          "CSA U4L1-L5_pilot_oo2025_-csa-alt_2025"
+        ],
+        "lesson.key": "Lesson 1: The Theater",
+        "lesson_group.key": "lessonGroup-18",
+        "script.name": "csa1-alt-2025",
+        "activity_section.key": "610ff789-c404-4266-a844-5d27b91aff36"
+      }
+    },
+    {
+      "seeding_key": {
+        "level.key": "CSA U4L1-L6_pilot_oo2025_-csa-alt_2025",
+        "script_level.level_keys": [
+          "CSA U4L1-L6_pilot_oo2025_-csa-alt_2025"
+        ],
+        "lesson.key": "Lesson 1: The Theater",
+        "lesson_group.key": "lessonGroup-18",
+        "script.name": "csa1-alt-2025",
+        "activity_section.key": "610ff789-c404-4266-a844-5d27b91aff36"
+      }
+    },
+    {
+      "seeding_key": {
+        "level.key": "CSA U4L1-L7_pilot_oo2025_-csa-alt_2025",
+        "script_level.level_keys": [
+          "CSA U4L1-L7_pilot_oo2025_-csa-alt_2025"
+        ],
+        "lesson.key": "Lesson 1: The Theater",
+        "lesson_group.key": "lessonGroup-18",
+        "script.name": "csa1-alt-2025",
+        "activity_section.key": "95e46f34-20fc-4c72-8feb-87a9c01f63d8"
+      }
+    },
+    {
+      "seeding_key": {
         "level.key": "CSA U4L3-L1_alt-2025",
         "script_level.level_keys": [
           "CSA U4L3-L1_alt-2025"
@@ -14588,6 +14895,18 @@
     },
     {
       "seeding_key": {
+        "level.key": "student-eou-survey_linked_page_csa1-project1b-2025",
+        "script_level.level_keys": [
+          "student-eou-survey_linked_page_csa1-project1b-2025"
+        ],
+        "lesson.key": "Asphalt Art Project [1-Day Version]",
+        "lesson_group.key": "lessonGroup-2",
+        "script.name": "csa1-alt-2025",
+        "activity_section.key": "10be35eb-3c4e-465e-983f-843186cc5609"
+      }
+    },
+    {
+      "seeding_key": {
         "level.key": "student-eou-survey_csa1-alt-survey-2025",
         "script_level.level_keys": [
           "student-eou-survey_csa1-alt-survey-2025"
@@ -14706,6 +15025,18 @@
       },
       "seeding_key": {
         "resource.key": "_exemplar_parameterized_constructors_guided_notes"
+      }
+    },
+    {
+      "name": "[EXEMPLAR] The Theater Guided Notes",
+      "url": "https://docs.google.com/document/d/18_omWkP2ok-RPUH-McRA3sUrZRNNjQ9fR_GI3LpUUME/edit?usp=drive_link",
+      "key": "_exemplar_the_theater_guided_notes",
+      "properties": {
+        "audience": "Verified Teacher",
+        "type": "Exemplar"
+      },
+      "seeding_key": {
+        "resource.key": "_exemplar_the_theater_guided_notes"
       }
     },
     {
@@ -14973,6 +15304,18 @@
       }
     },
     {
+      "name": "[KEY] Investigating The Theater",
+      "url": "https://docs.google.com/document/d/1J6Lc-kDFgmXJltY8Z0QBwqj9iPrW2nVnEB9QppbbcUY/edit?usp=drive_link",
+      "key": "_key_investigating_the_theater",
+      "properties": {
+        "audience": "Verified Teacher",
+        "type": "Answer Key"
+      },
+      "seeding_key": {
+        "resource.key": "_key_investigating_the_theater"
+      }
+    },
+    {
       "name": "[KEY] Math Class Graphic Organizer",
       "url": "https://docs.google.com/document/d/1mXdCd-3L--X0aQRPH6qPNAhdZhRdJBIH39yjslqBu7g/edit?usp=sharing",
       "key": "_key_math_class_graphic_organizer",
@@ -15042,6 +15385,18 @@
       },
       "seeding_key": {
         "resource.key": "_key_the_painter"
+      }
+    },
+    {
+      "name": "[KEY] The Theater Extra Practice",
+      "url": "https://docs.google.com/document/d/1bQL3D0cn9LwmGD80MkktarvCnnGfwN_pfC8V26HiKrY/edit?usp=drive_link",
+      "key": "_key_the_theater_extra_practice",
+      "properties": {
+        "audience": "Verified Teacher",
+        "type": "Answer Key"
+      },
+      "seeding_key": {
+        "resource.key": "_key_the_theater_extra_practice"
       }
     },
     {
@@ -15682,6 +16037,19 @@
       }
     },
     {
+      "name": "Investigating The Theater",
+      "url": "https://docs.google.com/document/d/1v2A2eE1riFHsSahKNLt4b0Nw_HMHXImf-C8mxjg_HfU/edit?usp=drive_link",
+      "key": "investigating_the_theater",
+      "properties": {
+        "audience": "Student",
+        "include_in_pdf": true,
+        "type": "Handout"
+      },
+      "seeding_key": {
+        "resource.key": "investigating_the_theater"
+      }
+    },
+    {
       "name": "Java Lab",
       "url": "https://docs.google.com/presentation/d/1rqVi409wXMduDaoArrG5wd1-bnWNr88kqs3uiUGpwsk/edit?usp=drive_link",
       "key": "java_lab",
@@ -16074,6 +16442,44 @@
       },
       "seeding_key": {
         "resource.key": "the_painter"
+      }
+    },
+    {
+      "name": "The Theater",
+      "url": "https://docs.google.com/presentation/d/1olg9F4LUwL3inoOS7zdjZdSqIAtqRGrbtu2laQ-0p98/edit?usp=drive_link",
+      "key": "the_theater",
+      "properties": {
+        "audience": "Verified Teacher",
+        "type": "Slides"
+      },
+      "seeding_key": {
+        "resource.key": "the_theater"
+      }
+    },
+    {
+      "name": "The Theater Extra Practice",
+      "url": "https://docs.google.com/document/d/1Bv27RKZpxeSgFFMFs-GhuhNh4kz1CFCe0cgq9T6QW-c/edit?usp=drive_link",
+      "key": "the_theater_extra_practice",
+      "properties": {
+        "audience": "Student",
+        "include_in_pdf": true,
+        "type": "Handout"
+      },
+      "seeding_key": {
+        "resource.key": "the_theater_extra_practice"
+      }
+    },
+    {
+      "name": "The Theater Guided Notes",
+      "url": "https://docs.google.com/document/d/1APVuz8af_mEyvZzswYHEiHkzR1nsRa51df5vRTH5Y4Y/edit?usp=drive_link",
+      "key": "the_theater_guided_notes",
+      "properties": {
+        "audience": "Student",
+        "include_in_pdf": true,
+        "type": "Handout"
+      },
+      "seeding_key": {
+        "resource.key": "the_theater_guided_notes"
       }
     },
     {
@@ -16605,6 +17011,18 @@
       }
     },
     {
+      "name": "Welcome to The Theater",
+      "url": "https://youtu.be/Qa5NtHzPmos",
+      "key": "welcome_to_the_theater",
+      "properties": {
+        "audience": "Student",
+        "type": "Video"
+      },
+      "seeding_key": {
+        "resource.key": "welcome_to_the_theater"
+      }
+    },
+    {
       "name": "Writing a Method",
       "url": "https://youtu.be/pdNf1O9BTYM",
       "key": "writing_a_method",
@@ -17000,6 +17418,60 @@
       "seeding_key": {
         "lesson.key": "Java Lab",
         "resource.key": "u1l2_guided_notes"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "Lesson 1: The Theater",
+        "resource.key": "_exemplar_the_theater_guided_notes"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "Lesson 1: The Theater",
+        "resource.key": "_key_investigating_the_theater"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "Lesson 1: The Theater",
+        "resource.key": "_key_the_theater_extra_practice"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "Lesson 1: The Theater",
+        "resource.key": "guide_to_programming_levels_in_csa"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "Lesson 1: The Theater",
+        "resource.key": "investigating_the_theater"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "Lesson 1: The Theater",
+        "resource.key": "the_theater"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "Lesson 1: The Theater",
+        "resource.key": "the_theater_extra_practice"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "Lesson 1: The Theater",
+        "resource.key": "the_theater_guided_notes"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "Lesson 1: The Theater",
+        "resource.key": "welcome_to_the_theater"
       }
     },
     {
@@ -19143,6 +19615,16 @@
       }
     },
     {
+      "key": "9565af20-189a-40f5-9f40-ba85f3a4cd4a",
+      "properties": {
+        "description": "Call methods from existing classes"
+      },
+      "seeding_key": {
+        "lesson.key": "Lesson 1: The Theater",
+        "objective.key": "9565af20-189a-40f5-9f40-ba85f3a4cd4a"
+      }
+    },
+    {
       "key": "9939f2b3-573e-4a82-acd8-2bd9a77068ea",
       "properties": {
         "description": "Conduct a code review to give and receive feedback."
@@ -19160,6 +19642,16 @@
       "seeding_key": {
         "lesson.key": "Substrings",
         "objective.key": "99c0d959-710a-4909-a638-414e93b683ca"
+      }
+    },
+    {
+      "key": "9e815a16-cfcf-4965-9516-0c130ef70546",
+      "properties": {
+        "description": "Read API documentation to identify available classes and methods and their functionalities"
+      },
+      "seeding_key": {
+        "lesson.key": "Lesson 1: The Theater",
+        "objective.key": "9e815a16-cfcf-4965-9516-0c130ef70546"
       }
     },
     {
@@ -19669,6 +20161,20 @@
     {
       "seeding_key": {
         "lesson.key": "Java Lab",
+        "framework.shortcode": "csta",
+        "standard.shortcode": "3B-AP-22"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "Lesson 1: The Theater",
+        "framework.shortcode": "csta",
+        "standard.shortcode": "3B-AP-16"
+      }
+    },
+    {
+      "seeding_key": {
+        "lesson.key": "Lesson 1: The Theater",
         "framework.shortcode": "csta",
         "standard.shortcode": "3B-AP-22"
       }
