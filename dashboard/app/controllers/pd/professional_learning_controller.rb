@@ -186,7 +186,7 @@ class Pd::ProfessionalLearningController < ApplicationController
 
   private def get_workshop_start_date(workshop)
     start_of_ws = workshop.sessions.first.try(:start)
-    ws.time_zone ? start_of_ws.in_time_zone(ws.time_zone).to_date : start_of_ws.to_date
+    workshop.time_zone ? start_of_ws.in_time_zone(workshop.time_zone).to_date : start_of_ws.to_date
   end
 
   # Returns if the given workshop is within the provided regional partner's area (including
