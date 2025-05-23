@@ -186,7 +186,9 @@ class Pd::ProfessionalLearningController < ApplicationController
       and(Pd::Workshop.where(hidden: false).or(Pd::Workshop.where(hidden: nil))) || []
 
     national_workshops_in_future = national_workshops.select do |ws|
-      get_workshop_start_date(ws) > Time.now.in_time_zone(ws.time_zone || 'America/Chicago').to_date
+      start_of_ws = ws.sessions.first.try(:start)
+      start_date = ws.time_zone ? start_of_ws.in_time_zone(ws.time_zone).to_date : start_of_ws.to_date
+      start_date > Time.now.in_time_zone(ws.time_zone || 'America/Chicago').to_date
     end
 
     national_workshops_in_future.sort_by {|ws| ws.sessions&.first&.start}&.map(&:summarize_for_regional_workshop_page)
