@@ -260,7 +260,9 @@ class FilesApi < Sinatra::Base
     # We use Sinatra's built-in attachment helper which properly handles Content-Disposition
     # headers according to RFC 6266/5987, safely escaping filenames to prevent header injection.
     unless code_projects_domain_root_route || safely_viewable_file_type?(type)
-      attachment(filename)
+      # Sanitize filename for header: strip CR and LF
+      safe_filename = original_filename.gsub(/[\r\n]/, '')
+      attachment(safe_filename)
     end
 
     result = buckets.get(encrypted_channel_id, filename, env['HTTP_IF_MODIFIED_SINCE'], request.GET['version'])
