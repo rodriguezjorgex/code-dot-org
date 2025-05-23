@@ -6,6 +6,7 @@ import RegionalWorkshopCatalog from '@cdo/apps/code-studio/pd/professional_learn
 import {
   setWindowLocation,
   resetWindowLocation,
+  updateQueryParam,
 } from '@cdo/apps/code-studio/utils';
 
 jest.mock('@cdo/apps/util/AuthenticityTokenStore', () => ({
@@ -55,6 +56,10 @@ const TEST_WORKSHOPS = [
 ];
 
 describe('RegionalWorkshopCatalog', () => {
+  afterEach(() => {
+    updateQueryParam('zip', null, true);
+  });
+
   it('page defaults to telling the user they need to enter a zip code', () => {
     render(<RegionalWorkshopCatalog zipFromSchoolInfo="" />);
     screen.getByText('Enter zip code to see workshops');
