@@ -20,6 +20,8 @@ import trackEvent from '@cdo/apps/util/trackEvent';
 import {ProjectSubmissionStatus} from '@cdo/generated-scripts/sharedConstants';
 import i18n from '@cdo/locale';
 
+import Lab2Registry from '../../Lab2Registry';
+
 import moduleStyles from './share-dialog.module.scss';
 
 const TEACHER_FEEDBACK_LINK =
@@ -178,10 +180,10 @@ const ShareDialog: React.FunctionComponent<{
       : STUDENT_FEEDBACK_LINK;
   });
 
-  // We pull the theme from header redux because the ShareDialog is not wrapped by the lab's
-  // ThemeProvider (the header is in its own tree). We copy the lab theme to the header redux
-  // in ProjectContainer (where we do our other header management).
-  const theme = useAppSelector(state => state.header.theme);
+  // We pull the theme from Lab2Registry because the ShareDialog is not wrapped by the lab's
+  // ThemeProvider (the header is in its own tree). We copy the lab theme to the registry
+  // in Lab2Wrapper.
+  const theme = Lab2Registry.getInstance().getTheme();
 
   return (
     <FocusLock>

@@ -1,4 +1,3 @@
-import {Theme} from '@code-dot-org/component-library/common/contexts';
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 
 export const possibleHeaders = {
@@ -19,7 +18,6 @@ export interface HeaderReduxState {
   getLevelBuilderChanges: (() => object) | undefined;
   overrideHeaderText: string | undefined;
   overrideOnSaveUrl: string | undefined;
-  theme: Theme | undefined;
 }
 
 const initialState: HeaderReduxState = {
@@ -27,7 +25,6 @@ const initialState: HeaderReduxState = {
   getLevelBuilderChanges: undefined,
   overrideHeaderText: undefined,
   overrideOnSaveUrl: undefined,
-  theme: undefined,
 };
 
 const headerSlice = createSlice({
@@ -68,9 +65,6 @@ const headerSlice = createSlice({
     clearHeader(state) {
       state.currentHeader = undefined;
     },
-    setTheme(state, action: PayloadAction<Theme | undefined>) {
-      state.theme = action.payload;
-    },
   },
 });
 
@@ -80,7 +74,6 @@ export const {
   showProjectBackedHeader,
   showLevelBuilderSaveButton,
   clearHeader,
-  setTheme,
 } = headerSlice.actions;
 
 export default headerSlice.reducer;
