@@ -1,4 +1,4 @@
-@import '@code-dot-org/component-library-styles/colors';
+@use '@code-dot-org/component-library-styles/colors';
 
 @mixin inline-detail-p {
   display: inline-flex;
@@ -74,22 +74,6 @@ $mobile-padding: 4rem;
 
           &:first-child {
             gap: 1.12rem;
-          }
-
-          .workshopFacilitatorsList {
-            width: 100%;
-
-            .workshopFacilitatorItem {
-              display: flex;
-              padding: 1rem;
-              flex-direction: column;
-              align-items: flex-start;
-              gap: 0.75rem;
-              align-self: stretch;
-              border-radius: 0.25rem;
-              border: 1px solid var(--borders-neutral-primary);
-              background: var(--background-neutral-secondary);
-            }
           }
         }
       }

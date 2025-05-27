@@ -9,8 +9,10 @@ import {
 } from '@code-dot-org/component-library/typography';
 import React from 'react';
 
-import {DATA_SHARING_NOTICE} from './../../constants';
-import {GetWorkshopInfoScriptDataResponse} from './../types';
+import {DATA_SHARING_NOTICE} from '@cdo/apps/code-studio/pd/constants';
+import {GetWorkshopInfoScriptDataResponse} from '@cdo/apps/code-studio/pd/workshops/types';
+
+import WorkshopFacilitatorsList from './WorkshopFacilitatorsList';
 import WorkshopSessionsList from './WorkshsopSessionsList';
 
 import moduleStyles from './../workshopMarketingPage.module.scss';
@@ -96,18 +98,7 @@ const WorkshopDetails: React.FC<WorkshopDetailsProps> = ({
 
       <section className={moduleStyles.workshopDetailsItem}>
         <Heading3 visualAppearance="heading-xs">Workshop Facilitators</Heading3>
-        <div className={moduleStyles.workshopFacilitatorsList}>
-          {facilitators?.map(facilitator => (
-            <div
-              key={facilitator.email}
-              className={moduleStyles.workshopFacilitatorItem}
-            >
-              <strong>{facilitator.name}</strong>
-              <BodyTwoText>{facilitator.email}</BodyTwoText>
-              {facilitator.bio && <BodyTwoText>{facilitator.bio}</BodyTwoText>}
-            </div>
-          ))}
-        </div>
+        <WorkshopFacilitatorsList facilitators={facilitators} />
       </section>
 
       <section className={moduleStyles.workshopDetailsItem}>
