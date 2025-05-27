@@ -61,7 +61,7 @@ const Lab2Wrapper: React.FunctionComponent<Lab2WrapperProps> = ({children}) => {
 
   // Store some server-provided data in redux.
   const currentLevelId = useAppSelector(state => state.progress.currentLevelId);
-  const {setTheme} = useTheme();
+  const {theme, setTheme} = useTheme();
 
   useEffect(() => {
     // Initialize the theme based on the body class, which is set on the server.
@@ -75,6 +75,12 @@ const Lab2Wrapper: React.FunctionComponent<Lab2WrapperProps> = ({children}) => {
       setTheme('Dark');
     }
   }, [setTheme]);
+
+  // We duplicate the theme to Lab2Registry, because modals opened via the header (such as the share modal)
+  // do not have access to the theme context.
+  useEffect(() => {
+    Lab2Registry.getInstance().setTheme(theme);
+  }, [theme]);
 
   // Store the level ID provided by App Options in redux if necessary.
   // This is needed on pages without a header, such as the share view.
