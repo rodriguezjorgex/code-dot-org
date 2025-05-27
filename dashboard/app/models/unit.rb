@@ -1562,7 +1562,7 @@ class Unit < ApplicationRecord
       summary = {
         id: id,
         name: name,
-        title: title_for_display,
+        title: title_for_display(unit_group_unit: unit_group_unit),
         description: Services::MarkdownPreprocessor.process(localized_description),
         studentDescription: Services::MarkdownPreprocessor.process(localized_student_description),
         course_id: unit_group_unit&.cached_unit_group&.id,
@@ -1652,10 +1652,10 @@ class Unit < ApplicationRecord
     end
     summary = {
       unitId: id,
-      title: title_for_display,
+      title: title_for_display(unit_group_unit: unit_group_unit),
       name: name,
       unitNumber: unit_position,
-      unitName: title_for_display,
+      unitName: title_for_display(unit_group_unit: unit_group_unit),
       scriptOverviewPdfUrl: get_unit_overview_pdf_url,
       scriptResourcesPdfUrl: get_unit_resources_pdf_url,
       teacher_resources: resources.sort_by(&:name).map(&:summarize_for_resources_dropdown),
@@ -1676,7 +1676,7 @@ class Unit < ApplicationRecord
       link_path = course_unit_path(unit_group_unit.unit_group, unit_group_unit.position)
     end
     summary = {
-      title: title_for_display,
+      title: title_for_display(unit_group_unit: unit_group_unit),
       name: name,
       link: link_path
     }
@@ -1733,7 +1733,7 @@ class Unit < ApplicationRecord
   def summarize_header(unit_group_unit: nil)
     {
       name: name,
-      displayName: title_for_display,
+      displayName: title_for_display(unit_group_unit: unit_group_unit),
       disablePostMilestone: disable_post_milestone?,
       student_detail_progress_view: student_detail_progress_view?,
       age_13_required: logged_out_age_13_required?,
@@ -1746,7 +1746,7 @@ class Unit < ApplicationRecord
 
   def summarize_for_lesson_show(is_student = false, unit_group_unit: nil)
     {
-      displayName: title_for_display,
+      displayName: title_for_display(unit_group_unit: unit_group_unit),
       link: link(unit_group_unit: unit_group_unit),
       lessonGroups: lesson_groups.select {|lg| lg.lessons.any?(&:has_lesson_plan)}.map {|lg| lg.summarize_for_lesson_dropdown(is_student, unit_group_unit: unit_group_unit)},
       publishedState: get_published_state,
