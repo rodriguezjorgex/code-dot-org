@@ -14,8 +14,9 @@ inputs:
   APPLITOOLS_API_KEY:
     description: "Applitools API Key"
     required: true
-  MARKETING_BASE_URL:
-    description: "The base URL for the marketing application. Defaults to http://localhost:3001"
+  APPLICATION_BASE_ADDRESS:
+    description: "The base URL for the application. Defaults to http://localhost:3001"
+    default: "localhost:3001"
   STAGE:
     description: "local, pr, test, or production"
     required: true
@@ -51,3 +52,12 @@ runs:
         path: frontend/apps/marketing/playwright-report
         name: playwright-report
 
+    - name: Run Google Lighthouse Audits
+      uses: treosh/lighthouse-ci-action@2f8dda6cf4de7d73b29853c3f29e73a01e297bd8
+      env:
+        HTTP_PROTOCOL: ${{ inputs.APPLICATION_BASE_ADDRESS == 'localhost:3001' && 'http' || 'https' }}
+      with:
+        urls: ${{ env.HTTP_PROTOCOL }}://${{ inputs.APPLICATION_BASE_ADDRESS }}/en-US/engineering/all-the-things
+        uploadArtifacts: true
+        temporaryPublicStorage: true
+        configPath: './frontend/apps/marketing/.lighthouserc.js'
