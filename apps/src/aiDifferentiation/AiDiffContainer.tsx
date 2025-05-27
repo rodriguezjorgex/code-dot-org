@@ -134,24 +134,24 @@ const AiDiffContainer: React.FC<AiDiffContainerProps> = ({
         </div>
 
         <div className={style.fabBackground}>
-          {!hasCompletedAiDifferentiationWelcome && showWelcomeExperience ? (
-            <AiDiffWelcome
-              setShowWelcomeExperience={setShowWelcomeExperience}
-              context={context}
-              scriptName={scriptName}
-              unitDisplayName={unitDisplayName}
-              curriculumCourses={curriculumCourses}
-            />
-          ) : (
-            curriculumCourses && (
-              <AiDiffChat
-                context={context}
-                scriptName={scriptName}
-                unitDisplayName={unitDisplayName}
-                curriculumCourses={curriculumCourses}
-              />
-            )
-          )}
+          {!hasCompletedAiDifferentiationWelcome && showWelcomeExperience
+            ? curriculumCourses && (
+                <AiDiffWelcome
+                  setShowWelcomeExperience={setShowWelcomeExperience}
+                  context={context}
+                  scriptName={scriptName}
+                  unitDisplayName={unitDisplayName}
+                  curriculumCourses={curriculumCourses}
+                />
+              )
+            : curriculumCourses && (
+                <AiDiffChat
+                  context={context}
+                  scriptName={scriptName}
+                  unitDisplayName={unitDisplayName}
+                  curriculumCourses={curriculumCourses}
+                />
+              )}
         </div>
       </div>
     </Draggable>

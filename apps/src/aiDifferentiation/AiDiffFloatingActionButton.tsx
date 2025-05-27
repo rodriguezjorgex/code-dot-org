@@ -54,7 +54,7 @@ const AiDiffFloatingActionButton: React.FC<AiDiffFloatingActionButtonProps> = ({
       isFirstSession
   );
 
-  const [curriculumCourses, setCurriculumCourses] = useState();
+  const [curriculumCourses, setCurriculumCourses] = useState<string[]>();
 
   useEffect(() => {
     const body = JSON.stringify({
@@ -67,7 +67,10 @@ const AiDiffFloatingActionButton: React.FC<AiDiffFloatingActionButtonProps> = ({
       .then(json => {
         setCurriculumCourses(json.courses);
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        console.log(error);
+        setCurriculumCourses([]);
+      });
   }, [context]);
 
   const [isFabImageLoaded, setIsFabImageLoaded] = useState(false);
