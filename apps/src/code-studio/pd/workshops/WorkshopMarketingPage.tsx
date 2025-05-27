@@ -89,7 +89,7 @@ const WorkshopMarketingPage: React.FunctionComponent<{
 }) => {
   return (
     <div className={moduleStyles.workshopCatalog}>
-      <section className={moduleStyles.headerContainer}>
+      <section className={moduleStyles.header}>
         <Breadcrumbs
           name="workShopMarketingPage-HeaderBreadcrumbs"
           size="l"

@@ -12,7 +12,7 @@ $max-width: 60rem;
 .workshopCatalog {
   background-color: var(--background-neutral-secondary);
   
-  .headerContainer {
+  .header {
     max-width: $max-width;
     margin: 0 auto;
     padding-block: 4rem;
@@ -33,7 +33,7 @@ $max-width: 60rem;
       gap: 2.5rem;
       padding-block: 4rem;
 
-      h3, p {
+      h2, h3, p {
         margin: 0;
       }
 
@@ -43,10 +43,6 @@ $max-width: 60rem;
         flex-direction: column;
         align-items: flex-start;
         gap: 1.5rem;
-
-        h2 {
-          margin-bottom: 1.12rem;
-        }
 
         .workshopUnderHeadingDetails {
           display: flex;
@@ -73,6 +69,10 @@ $max-width: 60rem;
           align-items: flex-start;
           gap: 0.5rem;
           align-self: stretch;
+
+          &:first-child {
+            gap: 1.12rem;
+          }
 
           .workshopSessionsList {
             margin: 0;
