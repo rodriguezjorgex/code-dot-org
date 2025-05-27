@@ -20,6 +20,12 @@
       gap: 0.75rem;
       align-self: stretch;
 
+      div:first-child {
+        width: 2.625rem;
+        display: flex;
+        justify-content: center;
+      }
+
       .workshopFacilitatorContactInfo {
         flex: 1;
       }
@@ -29,12 +35,12 @@
       @include mixins.transition-all;
       margin-top: 0.75rem;
       margin-inline-start: 3.375rem;
-      max-height: 100%;
+      height: auto;
       opacity: 1;
 
       &.hidden {
         margin-top: 0;
-        max-height: 0;
+        height: 0;
         opacity: 0;
         overflow: hidden;
       }
