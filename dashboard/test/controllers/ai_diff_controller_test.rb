@@ -300,7 +300,9 @@ class AiDiffControllerTest < ActionController::TestCase
       sign_in @teacher
 
       post :curriculum_courses, params: {
-        context: "lesson",
+        context: {
+          type: "lesson"
+        },
       }
 
       assert_response :bad_request
@@ -310,7 +312,9 @@ class AiDiffControllerTest < ActionController::TestCase
       sign_in @teacher
 
       post :curriculum_courses, params: {
-        contextId: @lesson.id,
+        context: {
+          lessonId: @lesson.id
+        },
       }
 
       assert_response :bad_request
@@ -320,8 +324,10 @@ class AiDiffControllerTest < ActionController::TestCase
       sign_in @teacher_sans_experiment
 
       post :curriculum_courses, params: {
-        context: "lesson",
-        contextId: @lesson.id,
+        context: {
+          type: "lesson",
+          lessonId: @lesson.id
+        },
       }
 
       assert_response :forbidden
@@ -334,8 +340,10 @@ class AiDiffControllerTest < ActionController::TestCase
       sign_in student
 
       post :curriculum_courses, params: {
-        context: "lesson",
-        contextId: @lesson.id,
+        context: {
+          type: "lesson",
+          lessonId: @lesson.id
+        },
       }
 
       assert_response :forbidden
@@ -345,8 +353,10 @@ class AiDiffControllerTest < ActionController::TestCase
       sign_in @teacher
 
       post :curriculum_courses, params: {
-        context: "lesson",
-        contextId: @lesson.id,
+        context: {
+          type: "lesson",
+          lessonId: @lesson.id
+        },
       }
 
       json_response = JSON.parse(response.body)

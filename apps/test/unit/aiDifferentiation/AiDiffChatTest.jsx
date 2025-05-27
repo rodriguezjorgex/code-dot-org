@@ -226,8 +226,10 @@ describe('AiDiffChat', () => {
     fireEvent.click(prompt2);
 
     const responseEventData = {
-      chatContext: AiDiffContext.LESSON,
-      scriptId: 2,
+      chatContext: {
+        type: AiDiffContext.LESSON,
+        lessonId: 2,
+      },
       scriptName: 'test_lesson',
       unitName: 'test unit name',
       role: Role.USER,
@@ -237,8 +239,10 @@ describe('AiDiffChat', () => {
       url: window.location.href,
     };
     const responseEventData2 = {
-      chatContext: AiDiffContext.LESSON,
-      scriptId: 2,
+      chatContext: {
+        type: AiDiffContext.LESSON,
+        lessonId: 2,
+      },
       scriptName: 'test_lesson',
       unitName: 'test unit name',
       role: Role.ASSISTANT,
@@ -253,9 +257,11 @@ describe('AiDiffChat', () => {
       expect(fetchStub).toHaveBeenCalledWith(
         '/ai_diff/chat_completion',
         JSON.stringify({
-          context: AiDiffContext.LESSON,
+          context: {
+            type: AiDiffContext.LESSON,
+            lessonId: 2,
+          },
           inputText: responseEventData.text,
-          contextId: responseEventData.scriptId,
           lessonId: responseEventData.lessonId,
           unitDisplayName: responseEventData.unitName,
           sessionId: null,
