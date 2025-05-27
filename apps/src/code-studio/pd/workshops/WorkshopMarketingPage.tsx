@@ -101,7 +101,7 @@ const WorkshopMarketingPage: React.FunctionComponent<{
       <div className={moduleStyles.bodyWrapper}>
         <div className={moduleStyles.bodyContainer}>
           <section className={moduleStyles.workshopDetails}>
-            <div className={moduleStyles.workshopDetailsItem}>
+            <section className={moduleStyles.workshopDetailsItem}>
               <Heading2>{name}</Heading2>
               <div className={moduleStyles.workshopUnderHeadingDetails}>
                 <BodyTwoText className={moduleStyles.gradeLevels}>
@@ -116,12 +116,15 @@ const WorkshopMarketingPage: React.FunctionComponent<{
                 )}
                 <BodyTwoText className={moduleStyles.fee}>
                   <FontAwesomeV6Icon iconName="dollar-circle" />
-                  <StrongText>Cost:</StrongText> {fee ? `$${fee}` : 'Free'}
+                  <StrongText>Cost:</StrongText>{' '}
+                  {!fee || fee === '0' ? 'Free' : `$${fee}`}
                 </BodyTwoText>
               </div>
-            </div>
+            </section>
+
             <hr />
-            <div className={moduleStyles.workshopDetailsItem}>
+
+            <section className={moduleStyles.workshopDetailsItem}>
               <Heading3 visualAppearance={'heading-xs'}>
                 Sessions in This Workshop
               </Heading3>
@@ -135,21 +138,22 @@ const WorkshopMarketingPage: React.FunctionComponent<{
                   </li>
                 ))}
               </ul>
-            </div>
+            </section>
 
-            <div className={moduleStyles.workshopDetailsItem}>
+            <section className={moduleStyles.workshopDetailsItem}>
               <Heading3 visualAppearance={'heading-xs'}>Description:</Heading3>
               <BodyTwoText>{description}</BodyTwoText>
-            </div>
-            <div className={moduleStyles.workshopDetailsItem}>
+            </section>
+
+            <section className={moduleStyles.workshopDetailsItem}>
               <Heading3 visualAppearance={'heading-xs'}>
                 Attendee Notes:
               </Heading3>
               <BodyTwoText>{notes}</BodyTwoText>
-            </div>
+            </section>
 
             {course_offerings && course_offerings.length > 0 && (
-              <div className={moduleStyles.workshopDetailsItem}>
+              <section className={moduleStyles.workshopDetailsItem}>
                 <Heading3 visualAppearance="heading-xs">
                   PL Topics Covered:
                 </Heading3>
@@ -158,9 +162,10 @@ const WorkshopMarketingPage: React.FunctionComponent<{
                   className={moduleStyles.plTopicsTags}
                   tagsList={course_offerings.map(course => ({label: course}))}
                 />
-              </div>
+              </section>
             )}
-            <div className={moduleStyles.workshopDetailsItem}>
+
+            <section className={moduleStyles.workshopDetailsItem}>
               <Heading3 visualAppearance="heading-xs">
                 Workshop Facilitators
               </Heading3>
@@ -178,14 +183,16 @@ const WorkshopMarketingPage: React.FunctionComponent<{
                   </div>
                 ))}
               </div>
-            </div>
-            <div className={moduleStyles.workshopDetailsItem}>
+            </section>
+
+            <section className={moduleStyles.workshopDetailsItem}>
               <Heading3 visualAppearance="heading-xs">
                 Data Sharing Notice
               </Heading3>
               <BodyThreeText>{DATA_SHARING_NOTICE}</BodyThreeText>
-            </div>
+            </section>
           </section>
+
           <aside className={moduleStyles.sidebar}>
             <EnrollInWorkshop
               custom_registration_link={custom_registration_link}
