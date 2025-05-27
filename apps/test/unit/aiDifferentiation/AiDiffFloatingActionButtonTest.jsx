@@ -8,7 +8,6 @@ import currentUser, {
   setInitialData,
 } from '@cdo/apps/templates/currentUserRedux';
 import HttpClient from '@cdo/apps/util/HttpClient';
-import {AiDiffContext} from '@cdo/generated-scripts/sharedConstants';
 import i18n from '@cdo/locale';
 
 jest.mock('@react-pdf/renderer', () => {
@@ -21,8 +20,9 @@ jest.mock('@react-pdf/renderer', () => {
 });
 
 const DEFAULT_PROPS = {
-  context: AiDiffContext.LESSON,
-  scriptId: 1,
+  context: {
+    scriptId: 1,
+  },
   scriptName: 'test_lesson',
   unitDisplayName: 'test unit name',
 };

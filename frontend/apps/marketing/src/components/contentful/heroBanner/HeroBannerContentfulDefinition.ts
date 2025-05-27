@@ -40,7 +40,7 @@ export const HeroBannerContentfulComponentDefinition: ComponentDefinition = {
       },
     },
     removeBackground: {
-      displayName: 'Remove Background?',
+      displayName: 'Remove background',
       type: 'Boolean',
       defaultValue: false,
       group: 'style',
@@ -52,6 +52,13 @@ export const HeroBannerContentfulComponentDefinition: ComponentDefinition = {
       group: 'style',
       description:
         'Check this to show a caption (video title) under the video player.',
+    },
+    hideImageOnSmallScreen: {
+      displayName: 'Hide image on small screens',
+      type: 'Boolean',
+      defaultValue: false,
+      group: 'style',
+      description: 'Check this to hide the image on small screens.',
     },
     announcementBannerIconName: {
       displayName: 'Announcement Banner Icon Name',
@@ -66,6 +73,7 @@ export const HeroBannerContentfulComponentDefinition: ComponentDefinition = {
       displayName: 'Heading',
       type: 'Text',
       group: 'content',
+      defaultValue: 'Hero Banner heading goes here',
       validations: {
         required: true,
         bindingSourceType: ['entry', 'manual'],
@@ -88,7 +96,7 @@ export const HeroBannerContentfulComponentDefinition: ComponentDefinition = {
       },
     },
     sectionImages: {
-      displayName: 'Section Image',
+      displayName: 'Image',
       type: 'Array',
       group: 'content',
       validations: {
@@ -97,7 +105,7 @@ export const HeroBannerContentfulComponentDefinition: ComponentDefinition = {
       },
     },
     backgroundImage: {
-      displayName: 'Section Background Image',
+      displayName: 'Background Image',
       type: 'Media',
       group: 'content',
       validations: {
@@ -172,7 +180,7 @@ export const HeroBannerContentfulComponentDefinition: ComponentDefinition = {
     },
     announcementBannerLink: {
       displayName: 'Announcement Banner Link',
-      type: 'Link',
+      type: 'Array',
       group: 'content',
       description:
         'This is the link that will be used in the announcement banner.',
