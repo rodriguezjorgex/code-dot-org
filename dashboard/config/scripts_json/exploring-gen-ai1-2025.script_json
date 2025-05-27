@@ -19,7 +19,7 @@
     },
     "new_name": null,
     "family_name": null,
-    "serialized_at": "2025-05-23 21:33:49 UTC",
+    "serialized_at": "2025-05-27 03:03:20 UTC",
     "hide_within_course": false,
     "published_state": null,
     "instruction_type": null,
@@ -226,6 +226,7 @@
       "has_lesson_plan": true,
       "relative_position": 9,
       "properties": {
+        "overview": "This lesson gives students the chance to investigate how their wording shapes what a chatbot says. By comparing how the bot responds to similar prompts, students begin to unpack how language models weigh and process input. They connect these patterns to the concept of neural networks and consider how AI “decides” what to say next."
       },
       "seeding_key": {
         "lesson.key": "lesson-3",
@@ -443,8 +444,7 @@
       "key": "1f95cfae-6c59-4feb-baf3-d0d0127c35e6",
       "position": 1,
       "properties": {
-        "duration": 5,
-        "name": "Warm Up"
+        "name": "Student Levels"
       },
       "seeding_key": {
         "lesson_activity.key": "1f95cfae-6c59-4feb-baf3-d0d0127c35e6",
@@ -454,28 +454,42 @@
       }
     },
     {
-      "key": "c7568b69-e52e-4a80-ab7a-2e29d9b54377",
+      "key": "aad2cd75-bfc4-4e86-ba11-fac7ba83c073",
       "position": 2,
       "properties": {
-        "duration": 30,
-        "name": "Activity"
+        "duration": 5,
+        "name": "Warm Up"
       },
       "seeding_key": {
-        "lesson_activity.key": "c7568b69-e52e-4a80-ab7a-2e29d9b54377",
+        "lesson_activity.key": "aad2cd75-bfc4-4e86-ba11-fac7ba83c073",
         "lesson.key": "lesson-10",
         "lesson_group.key": "lessonGroup-2",
         "script.name": "exploring-gen-ai1-2025"
       }
     },
     {
-      "key": "97e3dc3e-e919-4220-b459-5d311dc2850e",
+      "key": "99d2dc3e-d710-4257-a7f4-29adddc02536",
       "position": 3,
+      "properties": {
+        "duration": 30,
+        "name": "Activity"
+      },
+      "seeding_key": {
+        "lesson_activity.key": "99d2dc3e-d710-4257-a7f4-29adddc02536",
+        "lesson.key": "lesson-10",
+        "lesson_group.key": "lessonGroup-2",
+        "script.name": "exploring-gen-ai1-2025"
+      }
+    },
+    {
+      "key": "c4119563-a62e-4524-9e62-a6fcafcdb6a0",
+      "position": 4,
       "properties": {
         "duration": 10,
         "name": "Wrap Up"
       },
       "seeding_key": {
-        "lesson_activity.key": "97e3dc3e-e919-4220-b459-5d311dc2850e",
+        "lesson_activity.key": "c4119563-a62e-4524-9e62-a6fcafcdb6a0",
         "lesson.key": "lesson-10",
         "lesson_group.key": "lessonGroup-2",
         "script.name": "exploring-gen-ai1-2025"
@@ -621,8 +635,7 @@
       "key": "c8fa5880-4693-4667-8331-29178ef3cfaf",
       "position": 1,
       "properties": {
-        "duration": 5,
-        "name": "Warm Up"
+        "name": "Student Levels"
       },
       "seeding_key": {
         "lesson_activity.key": "c8fa5880-4693-4667-8331-29178ef3cfaf",
@@ -632,28 +645,42 @@
       }
     },
     {
-      "key": "367cfc90-877b-4d09-8bd9-5996e5df7f00",
+      "key": "ce88e4cf-e4f4-48f6-a9a2-426d5c717de6",
       "position": 2,
       "properties": {
-        "duration": 35,
-        "name": "Activity"
+        "duration": 5,
+        "name": "Warm Up"
       },
       "seeding_key": {
-        "lesson_activity.key": "367cfc90-877b-4d09-8bd9-5996e5df7f00",
+        "lesson_activity.key": "ce88e4cf-e4f4-48f6-a9a2-426d5c717de6",
         "lesson.key": "lesson-2",
         "lesson_group.key": "lessonGroup-2",
         "script.name": "exploring-gen-ai1-2025"
       }
     },
     {
-      "key": "2d3036a3-09c1-4dad-8499-2287364f9208",
+      "key": "7a662228-e7f7-4906-9eca-1e392a5a0fa7",
       "position": 3,
+      "properties": {
+        "duration": 35,
+        "name": "Activity"
+      },
+      "seeding_key": {
+        "lesson_activity.key": "7a662228-e7f7-4906-9eca-1e392a5a0fa7",
+        "lesson.key": "lesson-2",
+        "lesson_group.key": "lessonGroup-2",
+        "script.name": "exploring-gen-ai1-2025"
+      }
+    },
+    {
+      "key": "f23b0626-efe9-4d3c-ae65-8764fe4af59e",
+      "position": 4,
       "properties": {
         "duration": 5,
         "name": "Wrap Up"
       },
       "seeding_key": {
-        "lesson_activity.key": "2d3036a3-09c1-4dad-8499-2287364f9208",
+        "lesson_activity.key": "f23b0626-efe9-4d3c-ae65-8764fe4af59e",
         "lesson.key": "lesson-2",
         "lesson_group.key": "lessonGroup-2",
         "script.name": "exploring-gen-ai1-2025"
@@ -1495,46 +1522,128 @@
       }
     },
     {
-      "key": "8d79bd76-42a1-454d-aa4c-3d90127db436",
-      "position": 1,
-      "properties": {
-        "progression_name": "Warm Up"
-      },
-      "seeding_key": {
-        "activity_section.key": "8d79bd76-42a1-454d-aa4c-3d90127db436",
-        "lesson_activity.key": "1f95cfae-6c59-4feb-baf3-d0d0127c35e6"
-      }
-    },
-    {
-      "key": "d60e1ddd-b13b-42ea-8740-abb5d6d02fcc",
+      "key": "640750be-296a-46e2-98b4-442a11bd4c81",
       "position": 1,
       "properties": {
         "progression_name": "AI Newsroom Playground"
       },
       "seeding_key": {
-        "activity_section.key": "d60e1ddd-b13b-42ea-8740-abb5d6d02fcc",
-        "lesson_activity.key": "c7568b69-e52e-4a80-ab7a-2e29d9b54377"
+        "activity_section.key": "640750be-296a-46e2-98b4-442a11bd4c81",
+        "lesson_activity.key": "1f95cfae-6c59-4feb-baf3-d0d0127c35e6"
       }
     },
     {
-      "key": "1a05e13d-d315-4b7e-9a08-58c7bbd96101",
-      "position": 1,
-      "properties": {
-      },
-      "seeding_key": {
-        "activity_section.key": "1a05e13d-d315-4b7e-9a08-58c7bbd96101",
-        "lesson_activity.key": "97e3dc3e-e919-4220-b459-5d311dc2850e"
-      }
-    },
-    {
-      "key": "39705368-cf3f-45bf-b6a7-e92a2985cd6c",
+      "key": "bca0785b-53a1-410f-86d6-95fd69f78057",
       "position": 2,
       "properties": {
         "progression_name": "Lesson Recap"
       },
       "seeding_key": {
-        "activity_section.key": "39705368-cf3f-45bf-b6a7-e92a2985cd6c",
-        "lesson_activity.key": "97e3dc3e-e919-4220-b459-5d311dc2850e"
+        "activity_section.key": "bca0785b-53a1-410f-86d6-95fd69f78057",
+        "lesson_activity.key": "1f95cfae-6c59-4feb-baf3-d0d0127c35e6"
+      }
+    },
+    {
+      "key": "83887e54-713d-497e-9800-580fba787867",
+      "position": 1,
+      "properties": {
+        "description": "<table>\n  <tr>\n    <td style=\"width: 25%\">Slide</td>\n    <td style=\"width: 75%\">Lesson Guide</td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw/export/png?id=1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw&pageid=g34feef8a4c7_0_0\"></td>\n    <td style=\"width: 75%\">\n      <br />\n\t\t<br /><i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> <strong>Do This:</strong> Introduce the scenario: Students are on the school newspaper team, deciding whether to use AI to help write their next issue. Read the opinion for the AI Hype Person and the AI Skeptic aloud to the class.\n\t\t<br />\n    </td>\n  </tr>\n\n</table>    ",
+        "duration": "10",
+        "name": "Scenario: Student Newspaper Debate",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "**Teaching Tip:** - Let students know they will see the AI Hype Person and AI Skeptic show up in different lessons. These personas will help them explore different sides of important questions about how AI is used in real life."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "83887e54-713d-497e-9800-580fba787867",
+        "lesson_activity.key": "aad2cd75-bfc4-4e86-ba11-fac7ba83c073"
+      }
+    },
+    {
+      "key": "4c77dd67-8ee8-440b-859f-c491ecd6a290",
+      "position": 2,
+      "properties": {
+        "description": "<table>\n  <tr>\n    <td style=\"width: 25%\">Slide</td>\n    <td style=\"width: 75%\">Lesson Guide</td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw/export/png?id=1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw&pageid=g34feef8a4c7_0_117\"></td>\n    <td style=\"width: 75%\">\n      <i class=\"fa fa-comments\" aria-hidden=\"true\"></i> <strong>Discuss:</strong> What does the AI Hype Person seem excited about?\n\t\t<br />\n\t\t<br /><i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\"></i> <strong>Discussion Goal:</strong> Students should notice that the AI Hype Person is focused on saving time, making writing faster or easier, and using AI to get drafts started.\n\t\t<br />\n\t\t<br /><i class=\"fa fa-comments\" aria-hidden=\"true\"></i> <strong>Discuss:</strong> What does the AI Skeptic seem unsure about?\n\t\t<br />\n\t\t<br /><i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\"></i> <strong>Discussion Goal:</strong> Students should notice that the AI Skeptic Persona is concerned about accuracy, reliability of information, and whether the AI-generated writing will sound natural and well-organized.\n    </td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw/export/png?id=1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw&pageid=g356ab3fb0b2_0_0\"></td>\n    <td style=\"width: 75%\">\n      <i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> <strong>Do This:</strong> Introduce the lesson objectives.\n    </td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw/export/png?id=1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw&pageid=g356ab3fb0b2_0_4\"></td>\n    <td style=\"width: 75%\">\n      <i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> <strong>Do This:</strong> Introduce the Question of the Day.\n    </td>\n  </tr>\n\n</table>"
+      },
+      "seeding_key": {
+        "activity_section.key": "4c77dd67-8ee8-440b-859f-c491ecd6a290",
+        "lesson_activity.key": "aad2cd75-bfc4-4e86-ba11-fac7ba83c073"
+      }
+    },
+    {
+      "key": "a974ce28-8c5b-41cb-b330-efaa07436f12",
+      "position": 1,
+      "properties": {
+        "description": "<table>\n  <tr>\n    <td style=\"width: 25%\">Slide</td>\n    <td style=\"width: 75%\">Lesson Guide</td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw/export/png?id=1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw&pageid=g34feef8a4c7_0_28\"></td>\n    <td style=\"width: 75%\">\n      <br />\n\t\t<br /><i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i> <strong>Distribute:</strong> Give each student a copy of the “How Smart Is It, Really?” Activity Guide.\n    </td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw/export/png?id=1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw&pageid=g34feef8a4c7_0_120\"></td>\n    <td style=\"width: 75%\">\n      <i class=\"fa fa-desktop\" aria-hidden=\"true\"></i> <strong>Transition:</strong> Direct students to Lesson 2, Level 1. \n\t\t<br />\n\t\t<br /><i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> <strong>Do This:</strong> Students browse the newsroom task choices. Student pick 3-5 tasks that they’re interested in testing and list them in the Task column of the KWL chart in the activity guide.\n    </td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw/export/png?id=1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw&pageid=g34feef8a4c7_0_93\"></td>\n    <td style=\"width: 75%\">\n      <i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> <strong>Do This:</strong>Before students start using AI, have them fill in the K and W columns of their KWL chart:\n\t\t<br />K = What they already know or think they know about the task\n\t\t<br />W = What they want to find out or test when trying the task\n\t\t<br />\n    </td>\n  </tr>\n\n</table>    \n    ",
+        "duration": "25",
+        "name": "Scenario: AI Newsroom Playground",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "**Teaching Tip:** - Model one quick example if needed. For example:\n- Task: Write a School Event Ad\n- K: I think AI can list basic event details\n- W:  Will the ad actually sound exciting and fun?"
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "a974ce28-8c5b-41cb-b330-efaa07436f12",
+        "lesson_activity.key": "99d2dc3e-d710-4257-a7f4-29adddc02536"
+      }
+    },
+    {
+      "key": "18602aa7-2b6f-483a-a81c-4db077a8e995",
+      "position": 2,
+      "properties": {
+        "description": "<table>\n  <tr>\n    <td style=\"width: 25%\">Slide</td>\n    <td style=\"width: 75%\">Lesson Guide</td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw/export/png?id=1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw&pageid=g34feef8a4c7_0_52\"></td>\n    <td style=\"width: 75%\">\n      <i class=\"fa fa-desktop\" aria-hidden=\"true\"></i> <strong>Transition:</strong> Direct students back to Lesson 2, Level 1. \n\t\t<br />\n\t\t<br /><i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> <strong>Do This:</strong> Students complete their chosen tasks using AI Chat. After each task, they write in the L column:\n\t\t<br />What they learned about how the AI responded in\n\t\t<br />What worked\n\t\t<br />What felt off\n    </td>\n  </tr>\n\n</table>"
+      },
+      "seeding_key": {
+        "activity_section.key": "18602aa7-2b6f-483a-a81c-4db077a8e995",
+        "lesson_activity.key": "99d2dc3e-d710-4257-a7f4-29adddc02536"
+      }
+    },
+    {
+      "key": "cf19bf4c-7747-4aa7-9447-1a15286a2b8b",
+      "position": 3,
+      "properties": {
+        "description": "<table>\n  <tr>\n    <td style=\"width: 25%\">Slide</td>\n    <td style=\"width: 75%\">Lesson Guide</td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw/export/png?id=1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw&pageid=g34feef8a4c7_0_57\"></td>\n    <td style=\"width: 75%\">\n      <br />\n\t\t<br /><i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> <strong>Do This:</strong> Have students turn to the Ethical Checkpoint section of their activity guide. They list two tasks where AI Chat did well and two tasks AI Chat got it wrong or felt off. After, students complete the sentence frame to reflect on their experience.\n\t\t<br />\n\t\t<br /><i class=\"fa fa-refresh\" aria-hidden=\"true\"></i><strong>Circulate:</strong> While students work on the Ethical Checkpoint, circulate and listen for the types of examples they are choosing. If you notice that students are only listing mistakes or only listing successes, prompt them to think about both sides. Encourage students to back up their answers with specific evidence from their KWL charts, not just opinions.\n    </td>\n  </tr>\n\n</table>",
+        "duration": "5",
+        "name": "Ethical Checkpoint"
+      },
+      "seeding_key": {
+        "activity_section.key": "cf19bf4c-7747-4aa7-9447-1a15286a2b8b",
+        "lesson_activity.key": "99d2dc3e-d710-4257-a7f4-29adddc02536"
+      }
+    },
+    {
+      "key": "57c43622-6ab7-4141-ab4a-c8273224139f",
+      "position": 1,
+      "properties": {
+        "description": "<table>\n  <tr>\n    <td style=\"width: 25%\">Slide</td>\n    <td style=\"width: 75%\">Lesson Guide</td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw/export/png?id=1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw&pageid=g34feef8a4c7_0_12\"></td>\n    <td style=\"width: 75%\">\n      <i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> <strong>Do This:</strong> Review the lesson objectives.\n    </td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw/export/png?id=1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw&pageid=g34feef8a4c7_0_16\"></td>\n    <td style=\"width: 75%\">\n      <i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> <strong>Do This:</strong> Review the Question of the Day.\n    </td>\n  </tr>\n\n</table>"
+      },
+      "seeding_key": {
+        "activity_section.key": "57c43622-6ab7-4141-ab4a-c8273224139f",
+        "lesson_activity.key": "c4119563-a62e-4524-9e62-a6fcafcdb6a0"
+      }
+    },
+    {
+      "key": "4662d22c-3b42-456e-8e4c-a3e406688356",
+      "position": 2,
+      "properties": {
+        "description": "<table>\n  <tr>\n    <td style=\"width: 25%\">Slide</td>\n    <td style=\"width: 75%\">Lesson Guide</td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw/export/png?id=1GQ6C1FXlocrS3rFuESLQNA1MtdNhi2nlpwJzdKTTICw&pageid=g34feef8a4c7_0_36\"></td>\n    <td style=\"width: 75%\">\n      <br />\n\t\t<br /><i class=\"fa fa-video-camera\" aria-hidden=\"true\"></i> <strong>Video:</strong> Show the “How AI Can Help Journalists” video.\n\t\t<br />\n\t\t<br />Questions to consider with the video:\n\t\t<br />What’s one benefit and one risk of using AI in journalism?\n\t\t<br />Would you want to use AI in a student newspaper or journalism class?\n\t\t<br />\n\t\t<br /><i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\"></i> <strong>Discussion Goal:</strong> Answers will vary. Students should recognize that AI can help with speed, organization, and idea generation, but also creates risks around accuracy, missing important context, or losing a personal voice.\n\t\t<br />\n    </td>\n  </tr>\n\n</table>    \n    \n\n",
+        "duration": "5",
+        "name": "Real-World Scenario: How AI Can Help Journalists",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "**Teaching Tip:** - Videos are used throughout the curriculum to spark discussions, supplement key concepts with additional explanations and examples, and expose students to the various roles and career paths. While interacting with the video, turn on closed captioning so students can also read along as they watch. To encourage active engagement and reflection, use one or more of the strategies discussed in the <a href=\"https://docs.google.com/document/d/1Y-kGl_pc2afuSBKhKkdulu53X50mc7T-RQZA4vGLpY4/edit?usp=sharing\" target=\"_blank\">Guide to Curriculum Videos</a>."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "4662d22c-3b42-456e-8e4c-a3e406688356",
+        "lesson_activity.key": "c4119563-a62e-4524-9e62-a6fcafcdb6a0"
       }
     },
     {
@@ -1874,67 +1983,189 @@
       }
     },
     {
-      "key": "38ab3236-0128-46da-ab1a-7c03c47834cb",
-      "position": 1,
-      "properties": {
-      },
-      "seeding_key": {
-        "activity_section.key": "38ab3236-0128-46da-ab1a-7c03c47834cb",
-        "lesson_activity.key": "c8fa5880-4693-4667-8331-29178ef3cfaf"
-      }
-    },
-    {
-      "key": "7b60682a-c5a1-4c00-a1f2-f14f559d5ec4",
+      "key": "709cef9a-a3de-498a-90b3-175a1a0c5e83",
       "position": 1,
       "properties": {
         "progression_name": "Exploring AI Recommendations"
       },
       "seeding_key": {
-        "activity_section.key": "7b60682a-c5a1-4c00-a1f2-f14f559d5ec4",
-        "lesson_activity.key": "367cfc90-877b-4d09-8bd9-5996e5df7f00"
+        "activity_section.key": "709cef9a-a3de-498a-90b3-175a1a0c5e83",
+        "lesson_activity.key": "c8fa5880-4693-4667-8331-29178ef3cfaf"
       }
     },
     {
-      "key": "f9bed184-f887-4727-9a74-095d6d5ae02b",
+      "key": "2fc55224-5907-4de1-9b70-5c13d5b33613",
       "position": 2,
       "properties": {
       },
       "seeding_key": {
-        "activity_section.key": "f9bed184-f887-4727-9a74-095d6d5ae02b",
-        "lesson_activity.key": "367cfc90-877b-4d09-8bd9-5996e5df7f00"
+        "activity_section.key": "2fc55224-5907-4de1-9b70-5c13d5b33613",
+        "lesson_activity.key": "c8fa5880-4693-4667-8331-29178ef3cfaf"
       }
     },
     {
-      "key": "d4e5a2a3-a8c2-4233-a854-42505bf266ff",
+      "key": "657008e4-52bc-46ac-badc-4000623f2f6d",
       "position": 3,
       "properties": {
         "progression_name": "Refine Prompts to Mitigate Bias"
       },
       "seeding_key": {
-        "activity_section.key": "d4e5a2a3-a8c2-4233-a854-42505bf266ff",
-        "lesson_activity.key": "367cfc90-877b-4d09-8bd9-5996e5df7f00"
+        "activity_section.key": "657008e4-52bc-46ac-badc-4000623f2f6d",
+        "lesson_activity.key": "c8fa5880-4693-4667-8331-29178ef3cfaf"
       }
     },
     {
-      "key": "2b85ad2b-b0fe-41e9-9f89-cde1ffcfc2ba",
-      "position": 1,
+      "key": "4aad45b3-15b2-448c-860b-203667c5b1a4",
+      "position": 4,
       "properties": {
         "progression_name": "Ethical Checkpoint"
       },
       "seeding_key": {
-        "activity_section.key": "2b85ad2b-b0fe-41e9-9f89-cde1ffcfc2ba",
-        "lesson_activity.key": "2d3036a3-09c1-4dad-8499-2287364f9208"
+        "activity_section.key": "4aad45b3-15b2-448c-860b-203667c5b1a4",
+        "lesson_activity.key": "c8fa5880-4693-4667-8331-29178ef3cfaf"
       }
     },
     {
-      "key": "6fc8a483-32cb-453e-89ba-a920eccda865",
-      "position": 2,
+      "key": "163813c6-1115-4048-bdca-a19eeb0ae957",
+      "position": 5,
       "properties": {
         "progression_name": "Lesson Recap"
       },
       "seeding_key": {
-        "activity_section.key": "6fc8a483-32cb-453e-89ba-a920eccda865",
-        "lesson_activity.key": "2d3036a3-09c1-4dad-8499-2287364f9208"
+        "activity_section.key": "163813c6-1115-4048-bdca-a19eeb0ae957",
+        "lesson_activity.key": "c8fa5880-4693-4667-8331-29178ef3cfaf"
+      }
+    },
+    {
+      "key": "6e3da413-c46a-41f4-bc04-50e5d2af9a04",
+      "position": 1,
+      "properties": {
+        "description": "<table>\n  <tr>\n    <td style=\"width: 25%\">Slide</td>\n    <td style=\"width: 75%\">Lesson Guide</td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I/export/png?id=1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I&pageid=g34feef8a4c7_0_0\"></td>\n    <td style=\"width: 75%\"><i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> <strong>Do This:</strong> Introduce the scenario: Students are helping build an AI-powered recommendation tool for a community organization. Read the quotes aloud from the AI Hype Person and AI Skeptic to frame the discussion.\n    </td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I/export/png?id=1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I&pageid=g34feef8a4c7_0_117\"></td>\n    <td style=\"width: 75%\">\n      <i class=\"fa fa-comments\" aria-hidden=\"true\"></i> <strong>Discuss:</strong> What is the AI Hype Person trying to improve?\n\t\t<br />\n\t\t<br /><i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\"></i> <strong>Discussion Goal:</strong> Students should notice that the Hype Persona values things like efficiency, speed, consistency, and making tools that are easy to use and helpful across the board.\n\t\t<br />\n\t\t<br /><i class=\"fa fa-comments\" aria-hidden=\"true\"></i> <strong>Discuss:</strong> What is the AI Skeptic trying to protect?\n\t\t<br />\n\t\t<br /><i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\"></i> <strong>Discussion Goal:</strong> Students should notice that the Skeptic Persona is concerned with representation, inclusion, and making sure AI doesn’t reinforce patterns that leave people out or repeat stereotypes.\n    </td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I/export/png?id=1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I&pageid=g356ab3fb0b2_0_0\"></td>\n    <td style=\"width: 75%\">\n      <i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> <strong>Do This:</strong> Introduce the lesson objectives.\n    </td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I/export/png?id=1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I&pageid=g356ab3fb0b2_0_4\"></td>\n    <td style=\"width: 75%\">\n      <i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> <strong>Do This:</strong> Introduce the Question of the Day.\n    </td>\n  </tr>\n\n</table>",
+        "duration": "5",
+        "name": "Scenario: AI Recommendation Tool"
+      },
+      "seeding_key": {
+        "activity_section.key": "6e3da413-c46a-41f4-bc04-50e5d2af9a04",
+        "lesson_activity.key": "ce88e4cf-e4f4-48f6-a9a2-426d5c717de6"
+      }
+    },
+    {
+      "key": "7ad36013-9f48-4907-b822-1154892cef32",
+      "position": 2,
+      "properties": {
+      },
+      "seeding_key": {
+        "activity_section.key": "7ad36013-9f48-4907-b822-1154892cef32",
+        "lesson_activity.key": "ce88e4cf-e4f4-48f6-a9a2-426d5c717de6"
+      }
+    },
+    {
+      "key": "46ef59ca-2f68-4ffa-a240-3eea9ca76c22",
+      "position": 1,
+      "properties": {
+        "description": "<table>\n  <tr>\n    <td style=\"width: 25%\">Slide</td>\n    <td style=\"width: 75%\">Lesson Guide</td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I/export/png?id=1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I&pageid=g34feef8a4c7_0_28\"></td>\n    <td style=\"width: 75%\">\n<i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i> <strong>Distribute:</strong> Give each student a copy of the “Is It Biased?” Activity Guide.\n    </td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I/export/png?id=1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I&pageid=g34feef8a4c7_0_120\"></td>\n    <td style=\"width: 75%\">\n      <i class=\"fa fa-desktop\" aria-hidden=\"true\"></i> <strong>Transition:</strong> Direct students to Lesson 5, Level 1. \n\t\t<br />\n\t\t<br /><i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> <strong>Do This:</strong> Have students choose 2-3 general “Recommend 5…” prompts from the list (books, foods, hairstyles, etc.). They should run each prompt through AI Chat, then save one response that felt balanced or helpful and one that felt limited or repetitive. After that, they annotate each example:\n\t\t<br />What’s showing up?\n\t\t<br />What’s missing or assumed?\n\t\t<br />Would this recommendation work for you?\n    </td>\n  </tr>\n\n</table>",
+        "duration": "15",
+        "name": "Exploring AI Recommendations"
+      },
+      "seeding_key": {
+        "activity_section.key": "46ef59ca-2f68-4ffa-a240-3eea9ca76c22",
+        "lesson_activity.key": "7a662228-e7f7-4906-9eca-1e392a5a0fa7"
+      }
+    },
+    {
+      "key": "49f2679f-390b-43c5-81e0-f903f62b356a",
+      "position": 2,
+      "properties": {
+        "description": "<table>\n  <tr>\n    <td style=\"width: 25%\">Slide</td>\n    <td style=\"width: 75%\">Lesson Guide</td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I/export/png?id=1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I&pageid=g356fe8380ff_0_32\"></td>\n    <td style=\"width: 75%\">\n      <i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> <strong>Do This:</strong> Review the definition of bias. Walk students through the bullet points:\n\t\t<br />Bias isn’t always easy to spot\n\t\t<br />It can show up in what’s included or left out\n\t\t<br />AI works based on patterns, not understanding\n\t\t<br />\n    </td>\n  </tr>\n\n</table>    ",
+        "duration": "5",
+        "name": "Teacher Talk: What is Bias?",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "**Teaching Tip:** - Remind students that bias will always show up in some way. No AI system is completely neutral. The goal isn’t to remove all bias, but to learn how to recognize different kinds of bias and notice what might be missing, so we can make better choices about how we use AI and how we respond to its outputs."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "49f2679f-390b-43c5-81e0-f903f62b356a",
+        "lesson_activity.key": "7a662228-e7f7-4906-9eca-1e392a5a0fa7"
+      }
+    },
+    {
+      "key": "52621942-e103-41b2-b850-ee79dcc7c93e",
+      "position": 3,
+      "properties": {
+        "description": "<table>\n  <tr>\n    <td style=\"width: 25%\">Slide</td>\n    <td style=\"width: 75%\">Lesson Guide</td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I/export/png?id=1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I&pageid=g356fe8380ff_0_59\"></td>\n    <td style=\"width: 75%\">\n      <i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> <strong>Do This:</strong> Review each item on the “Things to Watch For” tip sheet.\n    </td>\n  </tr>\n\n</table>"
+      },
+      "seeding_key": {
+        "activity_section.key": "52621942-e103-41b2-b850-ee79dcc7c93e",
+        "lesson_activity.key": "7a662228-e7f7-4906-9eca-1e392a5a0fa7"
+      }
+    },
+    {
+      "key": "33d59bed-7f5c-4667-9677-f03b354e6540",
+      "position": 4,
+      "properties": {
+        "description": "<table>\n  <tr>\n    <td style=\"width: 25%\">Slide</td>\n    <td style=\"width: 75%\">Lesson Guide</td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I/export/png?id=1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I&pageid=g356fe8380ff_0_38\"></td>\n    <td style=\"width: 75%\">\n<i class=\"fa fa-desktop\" aria-hidden=\"true\"></i> <strong>Transition:</strong> Direct students to Lesson 5, Level 2. \n\t\t<br />\n\t\t<br /><i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> <strong>Do This:</strong> Have students take at least one of their earlier prompts and rewrite it to include a specific context, identity, or perspective. Then, they should compare how the AI responds to the original vs. the revised prompt in their activity guide.\n\t\t<br />\n    </td>\n  </tr>\n\n</table>    \n    \n\n",
+        "duration": "15",
+        "name": "Refining Prompts to Mitigate Bias",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "**Teaching Tip:** - Encourage students to be curious. The goal isn’t to “catch” the AI, but to explore how input shapes output."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "33d59bed-7f5c-4667-9677-f03b354e6540",
+        "lesson_activity.key": "7a662228-e7f7-4906-9eca-1e392a5a0fa7"
+      }
+    },
+    {
+      "key": "b89513e2-f7a7-4882-b2bf-abe99e45811b",
+      "position": 5,
+      "properties": {
+        "description": "<table>\n  <tr>\n    <td style=\"width: 25%\">Slide</td>\n    <td style=\"width: 75%\">Lesson Guide</td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I/export/png?id=1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I&pageid=g356fe8380ff_1_10\"></td>\n    <td style=\"width: 75%\">\n      <i class=\"fa fa-video-camera\" aria-hidden=\"true\"></i> <strong>Video:</strong> Show the “Ethics and AI: Equal Access & Algorithmic Bias” video.\n\t\t<br />\n\t\t<br /><i class=\"fa fa-comments\" aria-hidden=\"true\"></i><strong>Discuss:</strong> How does bias in real-world data influence the decisions made by AI systems?\n\t\t<br />\n\t\t<br /><i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\"></i> <strong>Discussion Goal:</strong> Answers will vary. Students should recognize that bias in AI often comes from the real-world data it's trained on, and that this can affect how AI systems make decisions or provide recommendations.\n\t\t<br />\n\t\t<br /><i class=\"fa fa-comments\" aria-hidden=\"true\"></i><strong>Discuss:</strong> Why is the inclusion of diverse data critical in creating fairer AI systems?\n\t\t<br />\n\t\t<br /><i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\"></i> <strong>Discussion Goal:</strong> Answers will vary. Students should understand that including diverse data helps reduce bias and leads to more inclusive, accurate, and trustworthy AI systems.\n\t\t<br />\n    </td>\n  </tr>\n\n</table>    \n    ",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "**Teaching Tip:** - Videos are used throughout the curriculum to spark discussions, supplement key concepts with additional explanations and examples, and expose students to the various roles and career paths. While interacting with the video, turn on closed captioning so students can also read along as they watch. To encourage active engagement and reflection, use one or more of the strategies discussed in the <a href=\"https://docs.google.com/document/d/1Y-kGl_pc2afuSBKhKkdulu53X50mc7T-RQZA4vGLpY4/edit?usp=sharing\" target=\"_blank\">Guide to Curriculum Videos</a>."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "b89513e2-f7a7-4882-b2bf-abe99e45811b",
+        "lesson_activity.key": "7a662228-e7f7-4906-9eca-1e392a5a0fa7"
+      }
+    },
+    {
+      "key": "c59c2f30-9f11-4eca-9bf5-01f121e2cde4",
+      "position": 1,
+      "properties": {
+        "description": "<table>\n  <tr>\n    <td style=\"width: 25%\">Slide</td>\n    <td style=\"width: 75%\">Lesson Guide</td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I/export/png?id=1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I&pageid=g34feef8a4c7_0_12\"></td>\n    <td style=\"width: 75%\">\n      <i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> <strong>Do This:</strong> Review the lesson objectives.\n    </td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I/export/png?id=1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I&pageid=g34feef8a4c7_0_16\"></td>\n    <td style=\"width: 75%\">\n      <i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> <strong>Do This:</strong> Review the Question of the Day.\n    </td>\n  </tr>\n\n</table>"
+      },
+      "seeding_key": {
+        "activity_section.key": "c59c2f30-9f11-4eca-9bf5-01f121e2cde4",
+        "lesson_activity.key": "f23b0626-efe9-4d3c-ae65-8764fe4af59e"
+      }
+    },
+    {
+      "key": "2030bee8-196b-4bce-bff0-46c32cdc29ad",
+      "position": 2,
+      "properties": {
+        "description": "<table>\n  <tr>\n    <td style=\"width: 25%\">Slide</td>\n    <td style=\"width: 75%\">Lesson Guide</td>\n  </tr>\n\n  <tr>\n    <td style=\"width: 25%\"><img src=\"https://docs.google.com/presentation/d/1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I/export/png?id=1-E_VHTD2V9NAuucYo6l3VPyv8eKTRoo48sCVQMZ6F2I&pageid=g356fe8380ff_0_10\"></td>\n    <td style=\"width: 75%\">\n      <br />\n\t\t<br /><i class=\"fa fa-desktop\" aria-hidden=\"true\"></i> <strong>Transition:</strong> Direct students to Lesson 5, Level 3. \n\t\t<br />\n\t\t<br /><i class=\"fa fa-check-square-o\" aria-hidden=\"true\"></i> <strong>Do This:</strong> Have them review the prompt and chatbot response. They’ll complete a sentence frame to share their opinion and reasoning.\n\t\t<br />\n    </td>\n  </tr>\n\n</table>    \n    ",
+        "duration": "5",
+        "name": "Refining Prompts to Mitigate Bias",
+        "tips": [
+          {
+            "type": "teachingTip",
+            "markdown": "**Teaching Tip:** - Remind students that there’s no single correct answer here. Some might see bias, some might not. The goal is to support their thinking with clear observations and begin to practice identifying patterns that may reflect bias in AI-generated content."
+          }
+        ]
+      },
+      "seeding_key": {
+        "activity_section.key": "2030bee8-196b-4bce-bff0-46c32cdc29ad",
+        "lesson_activity.key": "f23b0626-efe9-4d3c-ae65-8764fe4af59e"
       }
     },
     {
@@ -2573,6 +2804,17 @@
       },
       "seeding_key": {
         "activity_section.key": "722592d3-fb7f-49a1-84de-1cc17c4bf6c7",
+        "lesson_activity.key": "781a7a9f-145d-4669-a6be-c11922c8845c"
+      }
+    },
+    {
+      "key": "8ac6bf02-ca85-4e51-bbf4-35185881b541",
+      "position": 4,
+      "properties": {
+        "progression_name": "Lesson Recap"
+      },
+      "seeding_key": {
+        "activity_section.key": "8ac6bf02-ca85-4e51-bbf4-35185881b541",
         "lesson_activity.key": "781a7a9f-145d-4669-a6be-c11922c8845c"
       }
     },
@@ -3652,9 +3894,6 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
-        "level_keys": [
-          "exploring_generative_ai_lesson1_2_level1"
-        ],
         "progression": "AI Newsroom Playground"
       },
       "bonus": false,
@@ -3665,7 +3904,7 @@
         "lesson.key": "lesson-10",
         "lesson_group.key": "lessonGroup-2",
         "script.name": "exploring-gen-ai1-2025",
-        "activity_section.key": "d60e1ddd-b13b-42ea-8740-abb5d6d02fcc"
+        "activity_section.key": "640750be-296a-46e2-98b4-442a11bd4c81"
       },
       "level_keys": [
         "exploring_generative_ai_lesson1_2_level1"
@@ -3677,9 +3916,6 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
-        "level_keys": [
-          "gen-ai-student-level-L2"
-        ],
         "progression": "Lesson Recap"
       },
       "bonus": false,
@@ -3690,7 +3926,7 @@
         "lesson.key": "lesson-10",
         "lesson_group.key": "lessonGroup-2",
         "script.name": "exploring-gen-ai1-2025",
-        "activity_section.key": "39705368-cf3f-45bf-b6a7-e92a2985cd6c"
+        "activity_section.key": "bca0785b-53a1-410f-86d6-95fd69f78057"
       },
       "level_keys": [
         "gen-ai-student-level-L2"
@@ -3927,9 +4163,6 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
-        "level_keys": [
-          "exploring_generative_ai_l32_l1"
-        ],
         "progression": "Exploring AI Recommendations"
       },
       "bonus": false,
@@ -3940,7 +4173,7 @@
         "lesson.key": "lesson-2",
         "lesson_group.key": "lessonGroup-2",
         "script.name": "exploring-gen-ai1-2025",
-        "activity_section.key": "7b60682a-c5a1-4c00-a1f2-f14f559d5ec4"
+        "activity_section.key": "709cef9a-a3de-498a-90b3-175a1a0c5e83"
       },
       "level_keys": [
         "exploring_generative_ai_l32_l1"
@@ -3952,9 +4185,6 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
-        "level_keys": [
-          "exploring_generative_ai_l32_l2"
-        ],
         "progression": "Refine Prompts to Mitigate Bias"
       },
       "bonus": false,
@@ -3965,7 +4195,7 @@
         "lesson.key": "lesson-2",
         "lesson_group.key": "lessonGroup-2",
         "script.name": "exploring-gen-ai1-2025",
-        "activity_section.key": "d4e5a2a3-a8c2-4233-a854-42505bf266ff"
+        "activity_section.key": "657008e4-52bc-46ac-badc-4000623f2f6d"
       },
       "level_keys": [
         "exploring_generative_ai_l32_l2"
@@ -3977,9 +4207,6 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
-        "level_keys": [
-          "exploring_generative_ai_l32_wrap_up"
-        ],
         "progression": "Ethical Checkpoint"
       },
       "bonus": false,
@@ -3990,7 +4217,7 @@
         "lesson.key": "lesson-2",
         "lesson_group.key": "lessonGroup-2",
         "script.name": "exploring-gen-ai1-2025",
-        "activity_section.key": "2b85ad2b-b0fe-41e9-9f89-cde1ffcfc2ba"
+        "activity_section.key": "4aad45b3-15b2-448c-860b-203667c5b1a4"
       },
       "level_keys": [
         "exploring_generative_ai_l32_wrap_up"
@@ -4002,9 +4229,6 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
-        "level_keys": [
-          "gen-ai-student-level-L5"
-        ],
         "progression": "Lesson Recap"
       },
       "bonus": false,
@@ -4015,7 +4239,7 @@
         "lesson.key": "lesson-2",
         "lesson_group.key": "lessonGroup-2",
         "script.name": "exploring-gen-ai1-2025",
-        "activity_section.key": "6fc8a483-32cb-453e-89ba-a920eccda865"
+        "activity_section.key": "163813c6-1115-4048-bdca-a19eeb0ae957"
       },
       "level_keys": [
         "gen-ai-student-level-L5"
@@ -4027,6 +4251,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "genai-lesson4-warmup-level1_2025"
+        ],
         "progression": "Warm Up (Option 2)"
       },
       "bonus": false,
@@ -4049,6 +4276,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "genai-embeddings-widget_2025"
+        ],
         "progression": "Character Quiz"
       },
       "bonus": false,
@@ -4071,6 +4301,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "gen-ai-student-level-L6"
+        ],
         "progression": "Lesson Recap"
       },
       "bonus": false,
@@ -4243,6 +4476,9 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
+        "level_keys": [
+          "genai-choices-cfugroup_2025"
+        ],
         "progression": "Check for Understanding"
       },
       "bonus": false,
@@ -4261,6 +4497,28 @@
     },
     {
       "chapter": 28,
+      "position": 4,
+      "activity_section_position": 1,
+      "assessment": false,
+      "properties": {
+        "progression": "Lesson Recap"
+      },
+      "bonus": false,
+      "seeding_key": {
+        "script_level.level_keys": [
+          "gen-ai-student-level-L9"
+        ],
+        "lesson.key": "lesson-3",
+        "lesson_group.key": "lessonGroup-2",
+        "script.name": "exploring-gen-ai1-2025",
+        "activity_section.key": "8ac6bf02-ca85-4e51-bbf4-35185881b541"
+      },
+      "level_keys": [
+        "gen-ai-student-level-L9"
+      ]
+    },
+    {
+      "chapter": 29,
       "position": 1,
       "activity_section_position": 1,
       "assessment": false,
@@ -4285,7 +4543,7 @@
       ]
     },
     {
-      "chapter": 29,
+      "chapter": 30,
       "position": 2,
       "activity_section_position": 1,
       "assessment": false,
@@ -4310,7 +4568,7 @@
       ]
     },
     {
-      "chapter": 30,
+      "chapter": 31,
       "position": 1,
       "activity_section_position": 1,
       "assessment": false,
@@ -4335,7 +4593,7 @@
       ]
     },
     {
-      "chapter": 31,
+      "chapter": 32,
       "position": 2,
       "activity_section_position": 2,
       "assessment": false,
@@ -4360,7 +4618,7 @@
       ]
     },
     {
-      "chapter": 32,
+      "chapter": 33,
       "position": 3,
       "activity_section_position": 1,
       "assessment": false,
@@ -4385,7 +4643,7 @@
       ]
     },
     {
-      "chapter": 33,
+      "chapter": 34,
       "position": 4,
       "activity_section_position": 2,
       "assessment": false,
@@ -4410,7 +4668,7 @@
       ]
     },
     {
-      "chapter": 34,
+      "chapter": 35,
       "position": 5,
       "activity_section_position": 1,
       "assessment": false,
@@ -4435,7 +4693,7 @@
       ]
     },
     {
-      "chapter": 35,
+      "chapter": 36,
       "position": 1,
       "activity_section_position": 1,
       "assessment": false,
@@ -4460,7 +4718,7 @@
       ]
     },
     {
-      "chapter": 36,
+      "chapter": 37,
       "position": 1,
       "activity_section_position": 1,
       "assessment": false,
@@ -4485,7 +4743,7 @@
       ]
     },
     {
-      "chapter": 37,
+      "chapter": 38,
       "position": 2,
       "activity_section_position": 1,
       "assessment": false,
@@ -4510,7 +4768,7 @@
       ]
     },
     {
-      "chapter": 38,
+      "chapter": 39,
       "position": 3,
       "activity_section_position": 1,
       "assessment": true,
@@ -4535,7 +4793,7 @@
       ]
     },
     {
-      "chapter": 39,
+      "chapter": 40,
       "position": 1,
       "activity_section_position": 1,
       "assessment": false,
@@ -4560,7 +4818,7 @@
       ]
     },
     {
-      "chapter": 40,
+      "chapter": 41,
       "position": 2,
       "activity_section_position": 1,
       "assessment": false,
@@ -4585,7 +4843,7 @@
       ]
     },
     {
-      "chapter": 41,
+      "chapter": 42,
       "position": 3,
       "activity_section_position": 1,
       "assessment": false,
@@ -4610,7 +4868,7 @@
       ]
     },
     {
-      "chapter": 42,
+      "chapter": 43,
       "position": 1,
       "activity_section_position": 1,
       "assessment": false,
@@ -4635,7 +4893,7 @@
       ]
     },
     {
-      "chapter": 43,
+      "chapter": 44,
       "position": 2,
       "activity_section_position": 1,
       "assessment": false,
@@ -4694,7 +4952,7 @@
         "lesson.key": "lesson-10",
         "lesson_group.key": "lessonGroup-2",
         "script.name": "exploring-gen-ai1-2025",
-        "activity_section.key": "d60e1ddd-b13b-42ea-8740-abb5d6d02fcc"
+        "activity_section.key": "640750be-296a-46e2-98b4-442a11bd4c81"
       }
     },
     {
@@ -4706,7 +4964,7 @@
         "lesson.key": "lesson-10",
         "lesson_group.key": "lessonGroup-2",
         "script.name": "exploring-gen-ai1-2025",
-        "activity_section.key": "39705368-cf3f-45bf-b6a7-e92a2985cd6c"
+        "activity_section.key": "bca0785b-53a1-410f-86d6-95fd69f78057"
       }
     },
     {
@@ -4826,7 +5084,7 @@
         "lesson.key": "lesson-2",
         "lesson_group.key": "lessonGroup-2",
         "script.name": "exploring-gen-ai1-2025",
-        "activity_section.key": "7b60682a-c5a1-4c00-a1f2-f14f559d5ec4"
+        "activity_section.key": "709cef9a-a3de-498a-90b3-175a1a0c5e83"
       }
     },
     {
@@ -4838,7 +5096,7 @@
         "lesson.key": "lesson-2",
         "lesson_group.key": "lessonGroup-2",
         "script.name": "exploring-gen-ai1-2025",
-        "activity_section.key": "d4e5a2a3-a8c2-4233-a854-42505bf266ff"
+        "activity_section.key": "657008e4-52bc-46ac-badc-4000623f2f6d"
       }
     },
     {
@@ -4850,7 +5108,7 @@
         "lesson.key": "lesson-2",
         "lesson_group.key": "lessonGroup-2",
         "script.name": "exploring-gen-ai1-2025",
-        "activity_section.key": "2b85ad2b-b0fe-41e9-9f89-cde1ffcfc2ba"
+        "activity_section.key": "4aad45b3-15b2-448c-860b-203667c5b1a4"
       }
     },
     {
@@ -4862,7 +5120,7 @@
         "lesson.key": "lesson-2",
         "lesson_group.key": "lessonGroup-2",
         "script.name": "exploring-gen-ai1-2025",
-        "activity_section.key": "6fc8a483-32cb-453e-89ba-a920eccda865"
+        "activity_section.key": "163813c6-1115-4048-bdca-a19eeb0ae957"
       }
     },
     {
@@ -4983,6 +5241,18 @@
         "lesson_group.key": "lessonGroup-2",
         "script.name": "exploring-gen-ai1-2025",
         "activity_section.key": "722592d3-fb7f-49a1-84de-1cc17c4bf6c7"
+      }
+    },
+    {
+      "seeding_key": {
+        "level.key": "gen-ai-student-level-L9",
+        "script_level.level_keys": [
+          "gen-ai-student-level-L9"
+        ],
+        "lesson.key": "lesson-3",
+        "lesson_group.key": "lessonGroup-2",
+        "script.name": "exploring-gen-ai1-2025",
+        "activity_section.key": "8ac6bf02-ca85-4e51-bbf4-35185881b541"
       }
     },
     {
@@ -5433,11 +5703,11 @@
       }
     },
     {
-      "name": "Bias in AI Outputs",
+      "name": "[Exemplar] Bias in AI Outputs",
       "url": "https://docs.google.com/document/d/1FwCqYk3YzQa0kvBL3XqEPM3zx-dt2iPJCgs9UWKM42A/",
       "key": "bias_in_ai_outputs",
       "properties": {
-        "audience": "Teacher",
+        "audience": "Verified Teacher",
         "type": "Answer Key"
       },
       "seeding_key": {
@@ -6654,7 +6924,7 @@
     {
       "key": "09b83e64-dd75-422a-9db5-cd7632159b66",
       "properties": {
-        "description": "Explain how a language model uses probabilities to generate words as ouput"
+        "description": "Explain how a language model uses probabilities to generate words as output"
       },
       "seeding_key": {
         "lesson.key": "Outputs & Probabilities",
@@ -6749,6 +7019,16 @@
       "seeding_key": {
         "lesson.key": "Input & Training Data",
         "objective.key": "65faaae8-324f-430c-be9f-1f6b6d35a2a2"
+      }
+    },
+    {
+      "key": "68a5e208-8d0d-4c10-a81d-43ebfe4e6c0a",
+      "properties": {
+        "description": "Analyze how language affects the choices an AI system makes when generating output."
+      },
+      "seeding_key": {
+        "lesson.key": "lesson-3",
+        "objective.key": "68a5e208-8d0d-4c10-a81d-43ebfe4e6c0a"
       }
     },
     {
