@@ -10,14 +10,10 @@ import {
 import React from 'react';
 
 import {DATA_SHARING_NOTICE} from './../../constants';
-import {GetWorkshopInfoScriptDataResponse, SessionInfo} from './../types';
+import {GetWorkshopInfoScriptDataResponse} from './../types';
+import WorkshopSessionsList from './WorkshsopSessionsList';
 
 import moduleStyles from './../workshopMarketingPage.module.scss';
-
-const formatSession = (s: SessionInfo) =>
-  `${new Date(s.start).toLocaleDateString()} • ${
-    s.location_name || s.meeting_link || 'TBD'
-  }`;
 
 interface WorkshopDetailsProps
   extends Pick<
@@ -74,13 +70,7 @@ const WorkshopDetails: React.FC<WorkshopDetailsProps> = ({
         <Heading3 visualAppearance={'heading-xs'}>
           Sessions in This Workshop
         </Heading3>
-        <ul className={moduleStyles.workshopSessionsList}>
-          {sessions.map(session => (
-            <li key={session.id} className={moduleStyles.workshopSessionItem}>
-              <BodyTwoText>{formatSession(session)}</BodyTwoText>
-            </li>
-          ))}
-        </ul>
+        <WorkshopSessionsList sessions={sessions} />
       </section>
 
       <section className={moduleStyles.workshopDetailsItem}>
