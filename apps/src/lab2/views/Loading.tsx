@@ -1,4 +1,3 @@
-import {useTheme} from '@code-dot-org/component-library/common/contexts';
 import classNames from 'classnames';
 import React from 'react';
 

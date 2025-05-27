@@ -46,7 +46,7 @@ const LabViewsRenderer: React.FunctionComponent = () => {
   const dispatch = useAppDispatch();
 
   // We only use the global user preference for theme if the current lesson has
-  // at least one python lab level.
+  // at least one python lab level or the current level is a python lab level.
   const useThemeUserPreference = useMemo(
     () =>
       levelProperties?.appName === 'pythonlab' ||
@@ -65,7 +65,7 @@ const LabViewsRenderer: React.FunctionComponent = () => {
         // If the body has a class use that to set the theme, if its supported by the lab.
         // Otherwise, use the first supported theme.
         // We will only run this if we are not using the user preference, so it's safe to pull
-        // from the body class, as the user cannot dynamically change the theme.
+        // from the body class, as the user is not dynamically changing the theme.
         const bodyClassList = document.body.classList;
         const bodyTheme = bodyClassList.contains('background-light')
           ? 'Light'

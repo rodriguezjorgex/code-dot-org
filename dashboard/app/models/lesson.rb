@@ -991,7 +991,8 @@ class Lesson < ApplicationRecord
   # For now, the lesson background color is determined by the following rules, which
   # generally will only come into play in lab2 levels:
   # 1. If this lesson contains any python lab levels, we check the user's theme preference.
-  #    If the user has a theme preference, we use that. If not, we check the lesson's background color.
+  #    If the user has a theme preference, we use that. If not, we use the lesson's background color, if it exists.
+  #    Otherwise, we default to dark mode.
   # 2. If the lesson does not contain any python lab levels, we use the lesson's background color, if it exists.
   # 3. If the lesson does not have a background color, we check the number of music and aichat levels in the lesson.
   #    If there are more aichat levels, we use light. If there are more music levels, we use dark. If they are equal
