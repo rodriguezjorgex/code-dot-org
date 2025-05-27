@@ -8,3 +8,36 @@ export interface FacilitatorInfo {
   email: string;
   bio?: string;
 }
+
+export interface SessionInfo {
+  id: number;
+  start: string;
+  end: string;
+  is_local: boolean;
+  location_name?: string;
+  location_address?: string;
+  meeting_link?: string;
+  session_format: string;
+}
+
+export interface GetWorkshopInfoScriptDataResponse {
+  id: number;
+  course: string;
+  subject?: string;
+  course_offerings?: string[];
+  name?: string;
+  capacity: number;
+  num_enrollments: number;
+  grade_levels?: string[];
+  sessions: SessionInfo[];
+  format: string;
+  location_name?: string;
+  fee?: string;
+  prereq?: string;
+  description?: string;
+  notes?: string;
+  custom_registration_link?: string;
+  regional_partner_name?: string;
+  organizer: OrganizerInfo;
+  facilitators?: FacilitatorInfo[];
+}

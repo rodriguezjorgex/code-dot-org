@@ -17,6 +17,7 @@ type OrganizerInformationProps = {
   regional_partner_name?: string;
 };
 
+/** Component to display the organizer information for a workshop. */
 const OrganizerInformation: React.FC<OrganizerInformationProps> = ({
   organizer,
   regional_partner_name,

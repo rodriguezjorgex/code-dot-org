@@ -11,6 +11,7 @@ type EnrollInWorkshopProps = {
   custom_registration_link?: string;
 };
 
+/** Component to display the enrollment information for a workshop. */
 const EnrollInWorkshop: React.FC<EnrollInWorkshopProps> = ({
   custom_registration_link,
 }) => {
