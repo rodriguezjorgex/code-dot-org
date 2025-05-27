@@ -168,7 +168,6 @@ export default class UserPreferences extends Record({userId: 'me'}) {
       const themeResponse = await HttpClient.fetchJson(
         '/user_preference/theme'
       );
-      console.log({themeResponse});
       return themeResponse.value?.theme?.global;
     } catch (error) {
       // Don't log error if 'Not found', as it just means the

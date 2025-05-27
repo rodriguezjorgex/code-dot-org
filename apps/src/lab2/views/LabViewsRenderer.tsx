@@ -8,10 +8,11 @@ import React, {Suspense, useEffect, useMemo} from 'react';
 
 import {getCurrentLesson} from '@cdo/apps/code-studio/progressReduxSelectors';
 import {queryParams} from '@cdo/apps/code-studio/utils';
+import {setIsLoadingTheme} from '@cdo/apps/lab2/lab2Redux';
 import UserPreferences from '@cdo/apps/lib/util/UserPreferences';
 import {SignInState} from '@cdo/apps/templates/currentUserRedux';
 import {Level} from '@cdo/apps/types/progressTypes';
-import {useAppSelector} from '@cdo/apps/util/reduxHooks';
+import {useAppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
 
 import {lab2EntryPoints} from '../../../lab2EntryPoints';
 import {PERMISSIONS} from '../constants';
@@ -42,6 +43,7 @@ const LabViewsRenderer: React.FunctionComponent = () => {
   const isViewingExemplar = getAppOptionsViewingExemplar();
   const lesson = useAppSelector(state => getCurrentLesson(state));
   const {signInState} = useAppSelector(state => state.currentUser);
+  const dispatch = useAppDispatch();
 
   // We only use the global user preference for theme if the current lesson has
   // at least one python lab level.
@@ -57,6 +59,7 @@ const LabViewsRenderer: React.FunctionComponent = () => {
   useEffect(() => {
     if (currentAppName) {
       const supportedThemes = lab2EntryPoints[currentAppName]?.themes;
+      dispatch(setIsLoadingTheme(true));
 
       const setThemeHelper = () => {
         // If the body has a class use that to set the theme, if its supported by the lab.
@@ -72,6 +75,7 @@ const LabViewsRenderer: React.FunctionComponent = () => {
         } else {
           setTheme(supportedThemes[0]);
         }
+        dispatch(setIsLoadingTheme(false));
       };
 
       if (useThemeUserPreference && signInState === SignInState.SignedIn) {
@@ -79,6 +83,7 @@ const LabViewsRenderer: React.FunctionComponent = () => {
           const userTheme = await new UserPreferences().getGlobalTheme();
           if (userTheme && supportedThemes.includes(userTheme)) {
             setTheme(userTheme);
+            dispatch(setIsLoadingTheme(false));
           } else {
             setThemeHelper();
           }
@@ -89,7 +94,7 @@ const LabViewsRenderer: React.FunctionComponent = () => {
         setThemeHelper();
       }
     }
-  }, [currentAppName, setTheme, useThemeUserPreference, signInState]);
+  }, [currentAppName, setTheme, useThemeUserPreference, signInState, dispatch]);
 
   // Do not render lab view if project is blocked and user is not a project validator.
   if (!currentAppName || (isBlocked && !isProjectValidator)) {
