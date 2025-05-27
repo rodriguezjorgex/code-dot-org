@@ -89,32 +89,56 @@ class AiDiffController < ApplicationController
   def curriculum_courses
     begin
       params.require([:context])
+      context = params[:context]
+      context.require(:type)
     rescue ActionController::ParameterMissing
       return render status: :bad_request, json: {}
     end
 
     courses = []
-    if params[:context] == SharedConstants::AI_DIFF_CONTEXT[:GENERAL]
+    if context[:type] == SharedConstants::AI_DIFF_CONTEXT[:GENERAL]
       get_active_sections.each do |c|
         courses.push(*c[:course_names])
       end
     else
       begin
-        params.require([:context, :contextId])
+        case context[:type]
+        when SharedConstants::AI_DIFF_CONTEXT[:LESSON]
+          context.require(:lessonId)
+        when SharedConstants::AI_DIFF_CONTEXT[:LEVEL]
+          context.require(:levelId)
+        when SharedConstants::AI_DIFF_CONTEXT[:UNIT]
+          context.require(:unitId)
+        when SharedConstants::AI_DIFF_CONTEXT[:COURSE]
+          context.require(:courseId)
+        end
       rescue ActionController::ParameterMissing
         return render status: :bad_request, json: {}
       end
-      case params[:context]
-      when SharedConstants::AI_DIFF_CONTEXT[:LESSON]
-        lesson = Lesson.find_by(id: params[:contextId])
-        unit = Unit.find_by(id: lesson&.script_id)
-        unit_group = unit&.unit_groups&.first
-      when SharedConstants::AI_DIFF_CONTEXT[:UNIT]
-        unit = Unit.find_by(id: params[:contextId])
-        unit_group = unit&.unit_groups&.first
-      when SharedConstants::AI_DIFF_CONTEXT[:COURSE]
-        unit_group = UnitGroup.find_by(id: params[:contextId])
+
+      if context[:levelId]
+        level = Level.find(context[:levelId])
       end
+
+      if context[:lessonId]
+        lesson = Lesson.find(context[:lessonId])
+      elsif level
+        script_level = level.script_levels&.first
+        lesson = script_level&.lesson
+      end
+
+      if context[:unitId]
+        unit = Unit.find(context[:unitId])
+      elsif lesson
+        unit = Unit.find(lesson.script_id)
+      end
+
+      if context[:courseId]
+        unit_group = UnitGroup.find(context[:courseId])
+      elsif unit
+        unit_group = unit&.unit_groups&.first
+      end
+
       courses.push(*(unit_group.present? ? [unit_group.name, unit_group.family_name] : ([unit&.name, unit&.family_name] if unit.present?)))
     end
 
