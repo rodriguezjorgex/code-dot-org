@@ -1,4 +1,4 @@
-import Button from '@code-dot-org/component-library/button';
+import {LinkButton} from '@code-dot-org/component-library/button';
 import FontAwesomeV6Icon from '@code-dot-org/component-library/fontAwesomeV6Icon';
 import Link from '@code-dot-org/component-library/link';
 import {
@@ -45,12 +45,12 @@ const OrganizerInformation: React.FC<OrganizerInformationProps> = ({
             {regional_partner_name}
           </BodyThreeText>
         )}
-        <Button
+        <LinkButton
           className={moduleStyles.fullWidthButton}
           type="secondary"
           color="gray"
           size="s"
-          onClick={e => e.preventDefault()}
+          href="/professional-learning/contact-regional-partner"
           text="Contact regional partner"
         />
       </div>
