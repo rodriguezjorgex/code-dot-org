@@ -82,16 +82,20 @@ export default function CourseOfferingEditor(props) {
       });
   };
 
+  const getSelectedOptions = e =>
+    Array.from(e.target.options)
+      .filter(option => option.selected && Boolean(option.value))
+      .map(option => option.value);
+
   // Converts selected options within the given fieldName into a string for the table
   const handleMultipleSelected = (e, fieldName) => {
-    var options = e.target.options;
-    var selectedOptions = [];
-    for (var i = 0, l = options.length; i < l; i++) {
-      if (options[i].selected && options[i].value !== '') {
-        selectedOptions.push(options[i].value);
-      }
-    }
+    const selectedOptions = getSelectedOptions(e);
     updateCourseOffering(fieldName, selectedOptions.join(','));
+  };
+
+  const handleFacilitatorsCourses = e => {
+    const selectedOptions = getSelectedOptions(e);
+    updateCourseOffering(e.target.name, selectedOptions);
   };
 
   // Converts selected device compatibility options into a string for the table
@@ -479,6 +483,30 @@ export default function CourseOfferingEditor(props) {
         </select>
       </label>
       <label>
+        Facilitator Course Permissions
+        <HelpTip>
+          <p>
+            Pick the courses matching the permissions for facilitators that will
+            facilitate this course topic
+          </p>
+        </HelpTip>
+        <select
+          multiple
+          value={courseOffering.facilitators_courses}
+          style={styles.dropdown}
+          onChange={e => {
+            handleFacilitatorsCourses(e, 'facilitators_courses');
+          }}
+        >
+          <option value={''}>Anyone</option>
+          {Object.values(props.facilitatorsCourses).map(course => (
+            <option key={course} value={course}>
+              {course}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label>
         <div style={styles.flexContainer}>
           <h3>Published Date </h3>
           <HelpTip>
@@ -517,6 +545,7 @@ CourseOfferingEditor.propTypes = {
     self_paced_pl_course_offering_id: PropTypes.number,
     video: PropTypes.string,
     published_date: PropTypes.string,
+    facilitators_courses: PropTypes.arrayOf(PropTypes.string),
   }),
   selfPacedPLCourseOfferings: PropTypes.arrayOf(
     PropTypes.shape({
@@ -534,6 +563,7 @@ CourseOfferingEditor.propTypes = {
       locale: PropTypes.string,
     })
   ),
+  facilitatorsCourses: PropTypes.arrayOf(PropTypes.string),
 };
 
 const styles = {
