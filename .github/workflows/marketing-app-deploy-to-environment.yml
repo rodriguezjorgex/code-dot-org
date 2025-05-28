@@ -60,7 +60,7 @@ jobs:
       - name: Configure ECS/Github Deployer AWS credentials
         uses: aws-actions/configure-aws-credentials@f24d7193d98baebaeacc7e2227925dd47cc267f5 # v4.2.0
         with:
-          role-to-assume: ${{ secrets.GITHUB_ACTIONS_DEPLOYER_ROLE_ARN }}
+          role-to-assume: ${{ secrets.GH_ACTIONS_DEPLOYER_IAM_ROLE_ARN }}
           role-session-name: GithubActions-${{ inputs.GITHUB_ENVIRONMENT_NAME }}
           aws-region: ${{ vars.AWS_REGION }}
 
@@ -93,7 +93,7 @@ jobs:
             --base_domain_name ${{ vars.APPLICATION_BASE_DOMAIN }} \
             --subdomain_name ${{ vars.APPLICATION_SUBDOMAIN_NAME }} \
             --container_image_hash ${{ inputs.CONTAINER_IMAGE_DIGEST }} \
-            --role_arn ${{ secrets.GH_ACTIONS_DEPLOYER_IAM_ROLE_ARN }} \
+            --role_arn ${{ secrets.CLOUDFORMATION_DEPLOYER_ROLE_ARN }} \
             --web_application_server_secrets_arn ${{ secrets.APPLICATION_SERVER_SECRETS_ARN }}
 
       - name: "[Test] Invalidate CloudFront Cache"
