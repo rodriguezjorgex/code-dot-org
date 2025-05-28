@@ -1,4 +1,5 @@
 import Button from '@code-dot-org/component-library/button';
+import Link from '@code-dot-org/component-library/link';
 import {
   Heading3,
   BodyThreeText,
@@ -35,7 +36,9 @@ const EnrollInWorkshop: React.FC<EnrollInWorkshopProps> = ({
           text="Enrollment Closed"
         />
       )}
-      <p>Click to see data sharing notice</p>
+      <Link type="secondary" size="xs" href="#data-sharing-notice">
+        Click to see data sharing notice
+      </Link>
     </div>
   );
 };
