@@ -33,17 +33,17 @@ export const FileRow: React.FunctionComponent<FileRowProps> = ({
 }) => {
   const {openFile} = useCodebridgeContext();
   const dropdownOptions = useFileRowOptions(item, hasValidationFile);
-  const isOpen = item.active || false;
+  const isActive = item.active || false;
   const className = useMemo(() => {
     const classes = [];
-    if (isOpen) {
-      classes.push(moduleStyles.openFile);
+    if (isActive) {
+      classes.push(moduleStyles.activeFile);
     }
     if (isDragging) {
       classes.push(moduleStyles.dragging);
     }
     return classNames(...classes);
-  }, [isOpen, isDragging]);
+  }, [isActive, isDragging]);
 
   return (
     <ItemRow
