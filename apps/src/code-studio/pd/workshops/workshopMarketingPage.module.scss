@@ -75,6 +75,15 @@ $mobile-padding: 4rem;
           &:first-child {
             gap: 1.12rem;
           }
+
+          .plTopicsTags {
+            flex-wrap: wrap;
+            gap: 0.375rem;
+
+            & > div {
+              max-width: unset;
+            }
+          }
         }
       }
 

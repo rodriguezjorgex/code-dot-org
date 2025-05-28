@@ -101,7 +101,10 @@ const WorkshopDetails: React.FC<WorkshopDetailsProps> = ({
         <WorkshopFacilitatorsList facilitators={facilitators} />
       </section>
 
-      <section className={moduleStyles.workshopDetailsItem}>
+      <section
+        id="data-sharing-notice"
+        className={moduleStyles.workshopDetailsItem}
+      >
         <Heading3 visualAppearance="heading-xs">Data Sharing Notice</Heading3>
         <BodyThreeText>{DATA_SHARING_NOTICE}</BodyThreeText>
       </section>
