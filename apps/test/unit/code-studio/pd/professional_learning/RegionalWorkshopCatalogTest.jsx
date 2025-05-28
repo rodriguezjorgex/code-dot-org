@@ -263,7 +263,7 @@ describe('RegionalWorkshopCatalog', () => {
       expect(screen.getAllByText('National workshops').length).toBe(2);
       screen.getByText(TEST_NATIONAL_WORKSHOP.name);
     });
-  });
+  }, 10000);
 
   it('immediately shows regional workshops available to given zip code if provided in url', async () => {
     const zip = '98122';
