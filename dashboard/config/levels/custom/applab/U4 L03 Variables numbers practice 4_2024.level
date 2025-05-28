@@ -36,7 +36,7 @@
     "expand_debugger": "true",
     "watchers_prepopulated": "[\"petName\",\"petType\",\"petWeight\"]",
     "fail_on_lint_errors": "false",
-    "debugger_disabled": "true",
+  "debugger_disabled": "true",
     "makerlab_enabled": "false",
     "parent_level_id": 15816,
     "mini_rubric": "false",
@@ -46,7 +46,8 @@
     "libraries_enabled": "false",
     "name_suffix": "_2024",
     "ai_enabled": "false",
-    "preload_asset_list": null
+    "preload_asset_list": null,
+    "skill_keys": "[\"variables_name\", \"variables_declare\"]"
   },
   "published": true,
   "notes": "",
