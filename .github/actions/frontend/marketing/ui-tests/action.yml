@@ -5,9 +5,6 @@ inputs:
   CONTENTFUL_SPACE_ID:
     description: "Contentful Space ID"
     required: true
-  CONTENTFUL_DELIVERY_TOKEN:
-    description: "Contentful API Key"
-    required: true
   DRAFT_MODE_TOKEN:
     description: "Marketing App Draft Mode Token"
     required: true

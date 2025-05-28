@@ -51,7 +51,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           sparse-checkout: |
-            aws
+            frontend/apps/marketing
 
       - uses: ruby/setup-ruby@eaecf785f6a34567a6d97f686bbb7bccc1ac1e5c # v1.237.0
 
@@ -60,15 +60,9 @@ jobs:
       - name: Configure ECS/Github Deployer AWS credentials
         uses: aws-actions/configure-aws-credentials@f24d7193d98baebaeacc7e2227925dd47cc267f5 # v4.2.0
         with:
-          role-to-assume: ${{ vars.GITHUB_ACTIONS_DEPLOYER_ROLE_ARN }}
+          role-to-assume: ${{ secrets.GITHUB_ACTIONS_DEPLOYER_ROLE_ARN }}
           role-session-name: GithubActions-${{ inputs.GITHUB_ENVIRONMENT_NAME }}
           aws-region: ${{ vars.AWS_REGION }}
-
-      # This must be converted to a rake task before deploy to non-dev environments
-      - name: Synthesize Cloudformation Template
-        working-directory: ./aws/cloudformation/standalone/marketing/deployment
-        run: |
-          ruby ./render.rb --region $AWS_REGION --stage $STAGE
 
       - name: "Download Built Docker Image"
         run: |
@@ -91,12 +85,16 @@ jobs:
           aws s3 cp static/ "s3://$BUCKET_NAME/_next/static" --recursive --quiet
 
       - name: "[${{ inputs.GITHUB_ENVIRONMENT_NAME }}] Deploy Marketing App to AWS"
-        uses: aws-actions/aws-cloudformation-github-deploy@33527b83bddcf6b3f0b135d9550bde8475325c73 # v1
-        with:
-          name: ${{ vars.MARKETING_CLOUDFORMATION_STACK_NAME }}
-          template: ./aws/cloudformation/standalone/marketing/deployment/marketing.yml
-          parameter-overrides: "ContainerImageHashDigest=${{ needs.build-and-push-image.outputs.digest }},BaseHostedZoneId=${{ vars.MARKETING_BASE_HOSTED_ZONE_ID }},BaseDomainName=${{ vars.MARKETING_BASE_DOMAIN }},SubdomainName=${{ vars.MARKETING_SUBDOMAIN_NAME }},CloudFrontTLSCertificateArn=${{ vars.MARKETING_CLOUDFRONT_TLS_CERTIFICATE_ARN }}"
-          capabilities: CAPABILITY_IAM, CAPABILITY_NAMED_IAM
+        working-directory: ./aws/cloudformation/standalone/marketing/deployment
+        run: |
+          ruby ./deploy.rb --environment_type ${{ vars.ENVIRONMENT_TYPE }} \
+            --region ${{ vars.AWS_REGION }} \
+            --hosted_zone_id ${{ secrets.ROOT_HOSTED_ZONE_ID }} \
+            --base_domain_name ${{ vars.APPLICATION_BASE_DOMAIN }} \
+            --subdomain_name ${{ vars.APPLICATION_SUBDOMAIN_NAME }} \
+            --container_image_hash ${{ inputs.CONTAINER_IMAGE_DIGEST }} \
+            --role_arn ${{ secrets.GH_ACTIONS_DEPLOYER_IAM_ROLE_ARN }} \
+            --web_application_server_secrets_arn ${{ secrets.APPLICATION_SERVER_SECRETS_ARN }}
 
       - name: "[Test] Invalidate CloudFront Cache"
         env:
@@ -130,9 +128,8 @@ jobs:
       - name: UI Tests
         uses: ./.github/actions/frontend/marketing/ui-tests
         with:
-          STAGE: test
+          STAGE: ${{ vars.ENVIRONMENT_TYPE }}
           CONTENTFUL_SPACE_ID: ${{ vars.CONTENTFUL_SPACE_ID }}
-          CONTENTFUL_DELIVERY_TOKEN: ${{ secrets.CONTENTFUL_DELIVERY_TOKEN}}
           APPLITOOLS_API_KEY: ${{ secrets.APPLITOOLS_API_KEY}}
-          APPLICATION_BASE_ADDRESS: "${{ vars.MARKETING_SUBDOMAIN_NAME }}.${{ vars.MARKETING_BASE_DOMAIN }}"
+          APPLICATION_BASE_ADDRESS: "${{ vars.APPLICATION_SUBDOMAIN_NAME }}.${{ vars.APPLICATION_BASE_DOMAIN }}"
           DRAFT_MODE_TOKEN: ${{ secrets.DRAFT_MODE_TOKEN }}
