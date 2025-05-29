@@ -23,7 +23,8 @@ const StudentCodeDatasetMaker: React.FC = () => {
   const [datasetName, setDatasetName] = useState<string>('');
   const [levelId, setLevelId] = useState<string>('');
   const [unitId, setUnitId] = useState<string>('');
-  const [numSamples, setNumSamples] = useState<string>('25');
+  const [studentIds, setStudentIds] = useState<string>('');
+  // const [numSamples, setNumSamples] = useState<string>('25');
   const [pending, setPending] = useState<boolean>(false);
   const [fetchedSamples, setFetchedSamples] = useState<StudentAnswer[]>([]);
   const [evaluationPending, setEvaluationPending] = useState<boolean>(false);
@@ -44,7 +45,8 @@ const StudentCodeDatasetMaker: React.FC = () => {
   const getStudentCodeSamples = async () => {
     setPending(true);
     const studentWorkRequest = {
-      numSamples: Number(numSamples),
+      // numSamples: Number(numSamples),
+      studentIds: studentIds.split(','),
       unitId: Number(unitId),
       levelId: Number(levelId),
     };
@@ -121,13 +123,21 @@ const StudentCodeDatasetMaker: React.FC = () => {
         <br />
         <br />
         <TextField
+          name="Student Ids"
+          label="Student Ids (comma separated)"
+          onChange={e => setStudentIds(e.target.value)}
+          value={studentIds}
+        />
+        <br />
+        <br />
+        {/* <TextField
           name="Number of Samples"
           label="How many samples of student work do you want?"
           onChange={e => setNumSamples(e.target.value)}
           value={numSamples}
-        />
-        <br />
-        <br />
+        /> */}
+        {/* <br />
+        <br /> */}
         <TextField
           name="Dataset Name"
           label="What do you want to name this dataset?"
