@@ -78,7 +78,7 @@ jobs:
           APPLICATION_BASE_DOMAIN: ${{ vars.APPLICATION_BASE_DOMAIN }}
           APPLICATION_SUBDOMAIN_NAME: ${{ vars.APPLICATION_SUBDOMAIN_NAME }}
         run: |
-          BUCKET_NAME="$APPLICATION_SUBDOMAIN_NAME.APPLICATION_BASE_DOMAIN-static-assets"
+          BUCKET_NAME="$APPLICATION_SUBDOMAIN_NAME.$APPLICATION_BASE_DOMAIN-static-assets"
           
           echo "Uploading static assets to $BUCKET_NAME"
           
