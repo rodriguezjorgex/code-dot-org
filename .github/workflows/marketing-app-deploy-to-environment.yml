@@ -66,8 +66,8 @@ jobs:
 
       - name: "Download Built Docker Image"
         run: |
-          docker pull ${{ needs.build-and-push-image.outputs.fullImageUri }}
-          docker create --name temp ${{ needs.build-and-push-image.outputs.fullImageUri }}
+          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ inputs.CONTAINER_IMAGE_DIGEST }}
+          docker create --name temp ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ inputs.CONTAINER_IMAGE_DIGEST }}
 
       - name: "Extract Static Assets from Docker"
         run: |
