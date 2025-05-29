@@ -65,7 +65,13 @@ describe('AIDiffFloatingActionButton', () => {
     expect(screen.getByText('AI Teaching Assistant')).not.toBeVisible();
   });
 
-  it('begins open if no session storage and has not been opened before', () => {
+  it('begins closed if has been closed before', () => {
+    localStorage.setItem('AiDiffHasClosedKey', 'true');
+    renderDefault();
+    expect(screen.getByText('AI Teaching Assistant')).not.toBeVisible();
+  });
+
+  it('begins open if no session or local storage and has not been opened before', () => {
     renderDefault({});
     expect(screen.getByText('AI Teaching Assistant')).toBeVisible();
   });
