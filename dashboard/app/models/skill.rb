@@ -20,7 +20,7 @@ class Skill < ApplicationRecord
   has_and_belongs_to_many :levels, join_table: 'levels_skills'
 
   def self.setup
-    update_columns = [:key, :description, :evaluation_criteria, :concept]
+    update_columns = [:description, :evaluation_criteria, :concept]
     # TODO: Remove this method when the skills are created by levelbuilders
     starter_skills = [
       {

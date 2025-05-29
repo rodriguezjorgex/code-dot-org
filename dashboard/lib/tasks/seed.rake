@@ -473,9 +473,7 @@ namespace :seed do
   end
 
   timed_task_with_logging levels_skills: :environment do
-    levels_with_skills = Level.all.select do |level|
-      level.skill_keys.present?
-    end
+    levels_with_skills = Level.where('properties like ?', '%"skill_keys":%').all
     levels_with_skills.each do |level|
       JSON.parse(level.skill_keys).each do |skill_key|
         skill_id = Skill.find_by_key(skill_key).id
