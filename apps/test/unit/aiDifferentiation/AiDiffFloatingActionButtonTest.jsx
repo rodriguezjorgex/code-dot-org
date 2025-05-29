@@ -90,7 +90,25 @@ describe('AIDiffFloatingActionButton', () => {
     expect(screen.getByText('AI Teaching Assistant')).not.toBeVisible();
   });
 
-  it('begins open if no session storage and has not been opened before', async () => {
+  it('begins closed if has been closed before', async () => {
+    localStorage.setItem('AiDiffHasClosedKey', 'true');
+    renderDefault();
+    await waitFor(() => {
+      expect(fetchStub).toHaveBeenCalledWith(
+        '/ai_diff/curriculum_courses',
+        JSON.stringify({
+          context: DEFAULT_PROPS.context,
+        }),
+        true,
+        {
+          'Content-Type': 'application/json',
+        }
+      );
+    });
+    expect(screen.getByText('AI Teaching Assistant')).not.toBeVisible();
+  });
+
+  it('begins open if no session or local storage and has not been opened before', async () => {
     renderDefault({});
     await waitFor(() => {
       expect(fetchStub).toHaveBeenCalledWith(
