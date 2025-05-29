@@ -331,6 +331,7 @@ class Unit < ApplicationRecord
     is_deprecated
     content_area
     topic_tags
+    enable_blockly_keyboard_navigation
   )
 
   def self.twenty_hour_unit
@@ -1546,9 +1547,9 @@ class Unit < ApplicationRecord
         }
       end
 
-      has_older_course_progress = unit_group_unit&.unit_group.try(:has_older_version_progress?, user)
+      has_older_course_progress = unit_group_unit&.cached_unit_group.try(:has_older_version_progress?, user)
       has_older_unit_progress = has_older_version_progress?(user)
-      user_unit = user && user_scripts.find {|us| us.user ==  user}
+      user_unit = user && user_scripts.find_by(user: user)
 
       # If the current user is assigned to this unit, get the section
       # that assigned it.
@@ -1556,16 +1557,16 @@ class Unit < ApplicationRecord
 
       unit_path = script_path(self)
       if Policies::Courses.modularity_enabled? && unit_group_unit
-        unit_path = course_unit_path(unit_group_unit.unit_group, unit_group_unit.position)
+        unit_path = course_unit_path(unit_group_unit.cached_unit_group, unit_group_unit.position)
       end
 
       summary = {
         id: id,
         name: name,
-        title: title_for_display,
+        title: title_for_display(unit_group_unit: unit_group_unit),
         description: Services::MarkdownPreprocessor.process(localized_description),
         studentDescription: Services::MarkdownPreprocessor.process(localized_student_description),
-        course_id: unit_group_unit&.unit_group.try(:id),
+        course_id: unit_group_unit&.cached_unit_group&.id,
         hide_within_course: hide_within_course,
         publishedState: get_published_state,
         instructionType: get_instruction_type,
@@ -1592,7 +1593,7 @@ class Unit < ApplicationRecord
         curriculum_path: curriculum_path,
         announcements: localized_announcements,
         age_13_required: logged_out_age_13_required?,
-        show_course_unit_version_warning: !unit_group_unit&.unit_group&.has_dismissed_version_warning?(user) && has_older_course_progress,
+        show_course_unit_version_warning: !unit_group_unit&.cached_unit_group&.has_dismissed_version_warning?(user) && has_older_course_progress,
         show_script_version_warning: !user_unit&.version_warning_dismissed && !has_older_course_progress && has_older_unit_progress,
         course_versions: summarize_course_versions(user, locale_code),
         supported_locales: supported_locales,
@@ -1603,7 +1604,7 @@ class Unit < ApplicationRecord
         project_sharing: project_sharing,
         curriculum_umbrella: curriculum_umbrella,
         family_name: family_name,
-        version_year: unit_group_unit&.unit_group&.version_year || version_year,
+        version_year: unit_group_unit&.cached_unit_group&.version_year || version_year,
         assigned_section_id: assigned_section_id,
         hasStandards: has_standards_associations?,
         tts: tts?,
@@ -1615,8 +1616,8 @@ class Unit < ApplicationRecord
         weeklyInstructionalMinutes: weekly_instructional_minutes,
         includeStudentLessonPlans: is_migrated ? include_student_lesson_plans : false,
         useLegacyLessonPlans: is_migrated && use_legacy_lesson_plans,
-        courseVersionId: get_course_version&.id,
-        courseOfferingId: get_course_version&.course_offering&.id,
+        courseVersionId: unit_group_unit&.unit_group&.course_version&.id,
+        courseOfferingId: unit_group_unit&.unit_group&.course_version&.course_offering&.id,
         scriptOverviewPdfUrl: get_unit_overview_pdf_url,
         scriptResourcesPdfUrl: get_unit_resources_pdf_url,
         updated_at: updated_at.to_s,
@@ -1624,6 +1625,7 @@ class Unit < ApplicationRecord
         showAiAssessmentsAnnouncement: show_ai_assessments_announcement?(user),
         content_area: content_area,
         topic_tags: topic_tags,
+        enableBlocklyKeyboardNavigation: enable_blockly_keyboard_navigation,
       }
 
       #TODO: lessons should be summarized through lesson groups in the future
@@ -1652,10 +1654,10 @@ class Unit < ApplicationRecord
     end
     summary = {
       unitId: id,
-      title: title_for_display,
+      title: title_for_display(unit_group_unit: unit_group_unit),
       name: name,
       unitNumber: unit_position,
-      unitName: title_for_display,
+      unitName: title_for_display(unit_group_unit: unit_group_unit),
       scriptOverviewPdfUrl: get_unit_overview_pdf_url,
       scriptResourcesPdfUrl: get_unit_resources_pdf_url,
       teacher_resources: resources.sort_by(&:name).map(&:summarize_for_resources_dropdown),
@@ -1676,7 +1678,7 @@ class Unit < ApplicationRecord
       link_path = course_unit_path(unit_group_unit.unit_group, unit_group_unit.position)
     end
     summary = {
-      title: title_for_display,
+      title: title_for_display(unit_group_unit: unit_group_unit),
       name: name,
       link: link_path
     }
@@ -1733,7 +1735,7 @@ class Unit < ApplicationRecord
   def summarize_header(unit_group_unit: nil)
     {
       name: name,
-      displayName: title_for_display,
+      displayName: title_for_display(unit_group_unit: unit_group_unit),
       disablePostMilestone: disable_post_milestone?,
       student_detail_progress_view: student_detail_progress_view?,
       age_13_required: logged_out_age_13_required?,
@@ -1746,7 +1748,7 @@ class Unit < ApplicationRecord
 
   def summarize_for_lesson_show(is_student = false, unit_group_unit: nil)
     {
-      displayName: title_for_display,
+      displayName: title_for_display(unit_group_unit: unit_group_unit),
       link: link(unit_group_unit: unit_group_unit),
       lessonGroups: lesson_groups.select {|lg| lg.lessons.any?(&:has_lesson_plan)}.map {|lg| lg.summarize_for_lesson_dropdown(is_student, unit_group_unit: unit_group_unit)},
       publishedState: get_published_state,
@@ -1786,9 +1788,9 @@ class Unit < ApplicationRecord
     data
   end
 
-  def summarize_i18n_for_display
+  def summarize_i18n_for_display(unit_group_unit: nil)
     data = summarize_i18n_for_edit
-    data[:title] = title_for_display
+    data[:title] = title_for_display(unit_group_unit: unit_group_unit)
     data
   end
 
@@ -1833,12 +1835,14 @@ class Unit < ApplicationRecord
     unit_group_units&.first&.position
   end
 
-  def title_for_display
+  def title_for_display(unit_group_unit: nil)
+    unit_group_unit ||= Queries::Courses.unit_group_unit(self)
+    unit_group = unit_group_unit&.cached_unit_group
     title = localized_title
     has_prefix = unit_group&.has_numbered_units
     return title unless has_prefix
 
-    position = unit_group_units&.first&.position
+    position = unit_group_unit&.position
     prefix = I18n.t "unit_prefix", n: position
     "#{prefix} - #{title}"
   end
@@ -1918,7 +1922,8 @@ class Unit < ApplicationRecord
       :show_calendar,
       :is_migrated,
       :include_student_lesson_plans,
-      :use_legacy_lesson_plans
+      :use_legacy_lesson_plans,
+      :enable_blockly_keyboard_navigation
     ]
 
     result = {}

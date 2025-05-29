@@ -252,7 +252,11 @@ class LessonsController < ApplicationController
 
   private def get_unit_context(params)
     # /s/.../lessons/... URL
-    return Queries::Courses.get_course_context(params[:script_id]) if params[:script_id]
+    if params[:script_id]
+      context = Queries::Courses.get_course_context(params[:script_id])
+      raise ActiveRecord::RecordNotFound unless context && context[:unit]
+      return context
+    end
     # /courses/.../unit/.../lessons/...
     course_name = params[:course_course_name]
     unit_position = params[:unit_position]
@@ -266,7 +270,7 @@ class LessonsController < ApplicationController
 
   private def redirect_to_canonical_path
     unit_name_or_id = params[:script_id]
-    canonical_path = Services::Courses.canonical_path(request.fullpath, unit_name_or_id, current_user)
+    canonical_path = Services::Courses.canonical_path(request.fullpath, unit_name_or_id)
     redirect_to canonical_path unless canonical_path == request.fullpath
   end
 end

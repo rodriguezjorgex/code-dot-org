@@ -162,7 +162,9 @@ class ScriptLevelsController < ApplicationController
     canonical_path = build_script_level_path(@script_level, unit_group_unit: @unit_group_unit, **@extra_params)
     if request.path != canonical_path && params[:view] != 'summary'
       canonical_path << "?#{request.query_string}" unless request.query_string.empty?
-      redirect_to canonical_path, status: :moved_permanently
+      # TODO: TEACH-1916 Restore :moved_permanently after nested url migration is stable.
+      #redirect_to canonical_path, status: :moved_permanently
+      redirect_to canonical_path
       return
     end
 
@@ -195,9 +197,16 @@ class ScriptLevelsController < ApplicationController
       end
     end
 
-    # The lesson might contain a background that should be applied to all levels.
-    lesson_background = @script_level.lesson.properties['background'] if @script_level.level.uses_lab2? && @script_level.lesson
-    @body_classes = lesson_background ? "background-#{lesson_background}" : @level.properties['background']
+    # We decide the background color based on the following rules:
+    # 1. If this is a lab2 level and part of a lesson, we get the background color from the lesson (see lesson.rb for details).
+    # 2. Otherwise, we use the level's background color, if it exists.
+    @body_classes = @level.properties['background']
+    if @level.uses_lab2? && @script_level.lesson
+      background = @script_level.lesson.get_background_for_user(current_user)
+      if background
+        @body_classes = "background-#{background}"
+      end
+    end
 
     @rubric = @script_level.lesson.rubric
     ai_rubrics_enabled_for_user = @view_as_user&.verified_teacher? || @view_as_user&.teachers&.any?(&:verified_teacher?)
@@ -680,7 +689,7 @@ class ScriptLevelsController < ApplicationController
 
   private def redirect_to_canonical_path
     unit_name_or_id = params[:script_id]
-    canonical_path = Services::Courses.canonical_path(request.fullpath, unit_name_or_id, current_user)
+    canonical_path = Services::Courses.canonical_path(request.fullpath, unit_name_or_id)
     redirect_to canonical_path unless canonical_path == request.fullpath
   end
 end
