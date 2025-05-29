@@ -80,7 +80,6 @@ describe('AIDiffFloatingActionButton', () => {
         '/ai_diff/curriculum_courses',
         JSON.stringify({
           context: DEFAULT_PROPS.context,
-          contextId: DEFAULT_PROPS.scriptId,
         }),
         true,
         {
@@ -98,7 +97,6 @@ describe('AIDiffFloatingActionButton', () => {
         '/ai_diff/curriculum_courses',
         JSON.stringify({
           context: DEFAULT_PROPS.context,
-          contextId: DEFAULT_PROPS.scriptId,
         }),
         true,
         {
@@ -117,7 +115,6 @@ describe('AIDiffFloatingActionButton', () => {
         '/ai_diff/curriculum_courses',
         JSON.stringify({
           context: DEFAULT_PROPS.context,
-          contextId: DEFAULT_PROPS.scriptId,
         }),
         true,
         {
@@ -136,7 +133,6 @@ describe('AIDiffFloatingActionButton', () => {
         '/ai_diff/curriculum_courses',
         JSON.stringify({
           context: DEFAULT_PROPS.context,
-          contextId: DEFAULT_PROPS.scriptId,
         }),
         true,
         {
@@ -159,7 +155,6 @@ describe('AIDiffFloatingActionButton', () => {
           '/ai_diff/curriculum_courses',
           JSON.stringify({
             context: DEFAULT_PROPS.context,
-            contextId: DEFAULT_PROPS.scriptId,
           }),
           true,
           {
@@ -186,7 +181,6 @@ describe('AIDiffFloatingActionButton', () => {
           '/ai_diff/curriculum_courses',
           JSON.stringify({
             context: DEFAULT_PROPS.context,
-            contextId: DEFAULT_PROPS.scriptId,
           }),
           true,
           {

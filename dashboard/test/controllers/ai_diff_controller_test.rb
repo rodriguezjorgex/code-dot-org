@@ -308,7 +308,7 @@ class AiDiffControllerTest < ActionController::TestCase
       assert_response :bad_request
     end
 
-    test "returns bad_request when getting curriculum_courses if no context is provided" do
+    test "returns bad_request when getting curriculum_courses if no context type is provided" do
       sign_in @teacher
 
       post :curriculum_courses, params: {
