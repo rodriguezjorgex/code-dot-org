@@ -27,17 +27,13 @@ interface WorkshopMarketingPageProps
 const WorkshopMarketingPage: React.FunctionComponent<
   WorkshopMarketingPageProps
 > = ({
-  // id,
-  // course,
-  // subject,
+  id,
   course_offerings,
   name,
-  // capacity,
-  // num_enrollments,
+  capacity,
+  num_enrollments,
   grade_levels,
   sessions,
-  // format,
-  // location_name,
   fee,
   prereq,
   description,
@@ -46,6 +42,10 @@ const WorkshopMarketingPage: React.FunctionComponent<
   regional_partner_name,
   organizer,
   facilitators,
+  course,
+  subject,
+  format,
+  location_name,
 }) => {
   return (
     <div className={moduleStyles.workshopCatalog}>
@@ -74,7 +74,10 @@ const WorkshopMarketingPage: React.FunctionComponent<
 
           <aside className={moduleStyles.sidebar}>
             <EnrollInWorkshop
+              id={id}
               custom_registration_link={custom_registration_link}
+              capacity={capacity}
+              num_enrollments={num_enrollments}
             />
 
             <OrganizerInformation
