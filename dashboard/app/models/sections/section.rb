@@ -493,7 +493,7 @@ class Section < ApplicationRecord
         course_version_name = unit_group.name
         if script_id
           title_of_current_unit = script.title_for_display
-          link_to_current_unit = if Policies::Courses.modularity_enabled?
+          link_to_current_unit = if Policies::Courses.modularity_enabled? && unit_group_unit
                                    course_unit_path(unit_group, unit_group_unit.position)
                                  else
                                    script_path(script)
@@ -831,10 +831,6 @@ class Section < ApplicationRecord
   end
 
   private def unit_group_unit
-    if unit_group && script
-      script.unit_group_units.find {|ugu| ugu.unit_group == unit_group}
-    elsif script
-      script.unit_group_units.first
-    end
+    Queries::Courses.unit_group_unit(script, unit_group)
   end
 end
