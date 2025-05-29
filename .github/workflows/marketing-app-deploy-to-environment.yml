@@ -98,7 +98,7 @@ jobs:
             --web_application_server_secrets_arn ${{ secrets.APPLICATION_SERVER_SECRETS_ARN }} \
             --cloudformation_role_boundary ${{ secrets.CLOUDFORMATION_ROLE_BOUNDARY_ARN }}
 
-      - name: "[Test] Invalidate CloudFront Cache"
+      - name: "[${{ inputs.GITHUB_ENVIRONMENT_NAME }}] Invalidate CloudFront Cache"
         env:
           CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
         run: |
