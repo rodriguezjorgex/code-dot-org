@@ -87,35 +87,18 @@ class AiDiffController < ApplicationController
 
   # POST /ai_diff/curriculum_courses
   def curriculum_courses
-    begin
-      params.require([:context])
-      context = params[:context]
-      context.require(:type)
-    rescue ActionController::ParameterMissing
+    unless validate_context?
       return render status: :bad_request, json: {}
     end
 
+    context = params[:context]
     courses = []
+
     if context[:type] == SharedConstants::AI_DIFF_CONTEXT[:GENERAL]
       get_active_sections.each do |c|
         courses.push(*c[:course_names])
       end
     else
-      begin
-        case context[:type]
-        when SharedConstants::AI_DIFF_CONTEXT[:LESSON]
-          context.require(:lessonId)
-        when SharedConstants::AI_DIFF_CONTEXT[:LEVEL]
-          context.require(:levelId)
-        when SharedConstants::AI_DIFF_CONTEXT[:UNIT]
-          context.require(:unitId)
-        when SharedConstants::AI_DIFF_CONTEXT[:COURSE]
-          context.require(:courseId)
-        end
-      rescue ActionController::ParameterMissing
-        return render status: :bad_request, json: {}
-      end
-
       if context[:levelId]
         level = Level.find(context[:levelId])
       end
@@ -248,23 +231,31 @@ class AiDiffController < ApplicationController
   end
 
   private def has_required_params?
-    return false if params[:context].nil?
-
+    return false unless validate_context?
     begin
-      params.require([:inputText, :isPreset, :context])
+      params.require([:inputText, :isPreset])
+      unless params[:context][:type] == SharedConstants::AI_DIFF_CONTEXT[:COURSE] ||  params[:context][:type] == SharedConstants::AI_DIFF_CONTEXT[:GENERAL]
+        params.require(:unitDisplayName)
+      end
+    rescue ActionController::ParameterMissing
+      return false
+    end
+    return true
+  end
 
+  private def validate_context?
+    return false if params[:context].nil?
+    begin
+      params.require(:context)
       context = params[:context]
       context.require(:type)
 
       case context[:type]
       when SharedConstants::AI_DIFF_CONTEXT[:LESSON]
-        params.require(:unitDisplayName)
         context.require(:lessonId)
       when SharedConstants::AI_DIFF_CONTEXT[:LEVEL]
-        params.require(:unitDisplayName)
         context.require(:levelId)
       when SharedConstants::AI_DIFF_CONTEXT[:UNIT]
-        params.require(:unitDisplayName)
         context.require(:unitId)
       when SharedConstants::AI_DIFF_CONTEXT[:COURSE]
         context.require(:courseId)
