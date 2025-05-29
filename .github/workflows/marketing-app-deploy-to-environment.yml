@@ -64,26 +64,6 @@ jobs:
           role-session-name: GithubActions-${{ inputs.GITHUB_ENVIRONMENT_NAME }}
           aws-region: ${{ vars.AWS_REGION }}
 
-      - name: "Download Built Docker Image"
-        run: |
-          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ inputs.CONTAINER_IMAGE_DIGEST }}
-          docker create --name temp ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ inputs.CONTAINER_IMAGE_DIGEST }}
-
-      - name: "Extract Static Assets from Docker"
-        run: |
-          docker cp temp:/app/apps/marketing/.next/static/ ./static
-
-      - name: "[${{ inputs.GITHUB_ENVIRONMENT_NAME }}] Upload Static Assets to S3"
-        env:
-          APPLICATION_BASE_DOMAIN: ${{ vars.APPLICATION_BASE_DOMAIN }}
-          APPLICATION_SUBDOMAIN_NAME: ${{ vars.APPLICATION_SUBDOMAIN_NAME }}
-        run: |
-          BUCKET_NAME="$APPLICATION_SUBDOMAIN_NAME.$APPLICATION_BASE_DOMAIN-static-assets"
-          
-          echo "Uploading static assets to $BUCKET_NAME"
-          
-          aws s3 cp static/ "s3://$BUCKET_NAME/_next/static" --recursive --quiet
-
       - name: "[${{ inputs.GITHUB_ENVIRONMENT_NAME }}] Deploy Marketing App to AWS"
         working-directory: ./frontend/apps/marketing/cicd
         run: |
