@@ -85,7 +85,7 @@ jobs:
           aws s3 cp static/ "s3://$BUCKET_NAME/_next/static" --recursive --quiet
 
       - name: "[${{ inputs.GITHUB_ENVIRONMENT_NAME }}] Deploy Marketing App to AWS"
-        working-directory: ./aws/cloudformation/standalone/marketing/deployment
+        working-directory: ./frontend/apps/marketing/cicd
         run: |
           ruby ./deploy.rb --environment_type ${{ vars.ENVIRONMENT_TYPE }} \
             --region ${{ vars.AWS_REGION }} \
