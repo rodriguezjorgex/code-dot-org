@@ -257,15 +257,13 @@ class FilesApi < Sinatra::Base
     # contain script that we don't want to host as authentic web content from
     # our domain.
     #
-    # We use Sinatra's built-in attachment helper which properly handles Content-Disposition
-    # headers according to RFC 6266/5987, safely escaping filenames to prevent header injection.
+    # Use Sinatra's attachment helper to set Content-Disposition header
+    #  NOTE: this protects against header injection attacks by escaping the filename
+    #  the safe_filename below is just an extra precaution, as the attachment helper
+    #  would have escaped the filename as well.  See Jira task: BC-72
     unless code_projects_domain_root_route || safely_viewable_file_type?(type)
       # Sanitize filename for header: strip CR and LF
       safe_filename = filename.gsub(/[\r\n]/, '')
-      # Use Sinatra's attachment helper to set Content-Disposition header
-      #  NOTE: this protects against header injection attacks by escaping the filename
-      #  the safe_filename above is just an extra precaution, as the attachment helper
-      #  would have escaped the filename as well.  See Jira task: BC-72
       attachment(safe_filename)
     end
 
