@@ -22,7 +22,7 @@ const FacilitatorItem: React.FC<{facilitator: FacilitatorInfo}> = ({
   return (
     <div className={moduleStyles.workshopFacilitatorItem}>
       <div className={moduleStyles.workshopFacilitatorItemHeader}>
-        <div>
+        <div className={moduleStyles.workshopFacilitatorContactImage}>
           <FontAwesomeV6Icon iconName="user" />
         </div>
         <div className={moduleStyles.workshopFacilitatorContactInfo}>
@@ -35,6 +35,7 @@ const FacilitatorItem: React.FC<{facilitator: FacilitatorInfo}> = ({
           <div>
             <Button
               type="tertiary"
+              size="s"
               text={showBio ? 'Hide biography' : 'Show biography'}
               iconRight={{iconName: showBio ? 'chevron-up' : 'chevron-down'}}
               onClick={() => handleShowBio(!showBio)}
