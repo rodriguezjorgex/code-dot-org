@@ -1011,7 +1011,6 @@ class Lesson < ApplicationRecord
     elsif !has_python_levels
       music_count = levels.count {|level| level.is_a?(Music)}
       aichat_count = levels.count {|level| level.is_a?(Aichat)}
-      puts "music_count: #{music_count}, aichat_count: #{aichat_count}"
       if music_count > aichat_count
         theme_default = 'dark'
       elsif aichat_count > music_count
