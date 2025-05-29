@@ -75,10 +75,10 @@ jobs:
 
       - name: "[${{ inputs.GITHUB_ENVIRONMENT_NAME }}] Upload Static Assets to S3"
         env:
-          BASE_DOMAIN: ${{ vars.MARKETING_BASE_DOMAIN }}
-          SUBDOMAIN_NAME: ${{ vars.MARKETING_SUBDOMAIN_NAME }}
+          APPLICATION_BASE_DOMAIN: ${{ vars.APPLICATION_BASE_DOMAIN }}
+          APPLICATION_SUBDOMAIN_NAME: ${{ vars.APPLICATION_SUBDOMAIN_NAME }}
         run: |
-          BUCKET_NAME="$SUBDOMAIN_NAME.$BASE_DOMAIN-static-assets"
+          BUCKET_NAME="$APPLICATION_SUBDOMAIN_NAME.APPLICATION_BASE_DOMAIN-static-assets"
           
           echo "Uploading static assets to $BUCKET_NAME"
           
