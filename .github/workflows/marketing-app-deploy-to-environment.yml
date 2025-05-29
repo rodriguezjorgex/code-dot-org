@@ -76,7 +76,6 @@ jobs:
             --container_image_hash ${{ inputs.CONTAINER_IMAGE_DIGEST }} \
             --role_arn ${{ secrets.CLOUDFORMATION_DEPLOYER_ROLE_ARN }} \
             --web_application_server_secrets_arn ${{ secrets.APPLICATION_SERVER_SECRETS_ARN }}
-            --no_interactive
 
   tests:
     runs-on: ubuntu-24.04
