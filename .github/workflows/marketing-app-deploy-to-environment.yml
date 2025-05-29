@@ -100,9 +100,11 @@ jobs:
       - name: "[${{ inputs.GITHUB_ENVIRONMENT_NAME }}] Invalidate CloudFront Cache"
         env:
           AWS_REGION: ${{ vars.AWS_REGION }}
-          STACK_NAME: "${{ vars.APPLICATION_SUBDOMAIN_NAME }}-${{ vars.APPLICATION_BASE_DOMAIN }}".replace('.', '-')
+          STACK_NAME: "${{ vars.APPLICATION_SUBDOMAIN_NAME }}-${{ vars.APPLICATION_BASE_DOMAIN }}"
         run: |
-          CLOUDFRONT_DISTRIBUTION_ID=$(aws cloudformation describe-stacks --region $AWS_REGION --stack-name $STACK_NAME --query "Stacks[0].Outputs[?OutputKey=='CloudFrontDistributionId'].OutputValue" --output text)
+          CFN_STACK_NAME=$(echo "$STACK_NAME" | tr '.' '-')
+          CLOUDFRONT_DISTRIBUTION_ID=$(aws cloudformation describe-stacks --region $AWS_REGION --stack-name $CFN_STACK_NAME --query "Stacks[0].Outputs[?OutputKey=='CloudFrontDistributionId'].OutputValue" --output text)
+          
           echo "::add-mask::$CLOUDFRONT_DISTRIBUTION_ID"
           
           aws cloudfront create-invalidation \
