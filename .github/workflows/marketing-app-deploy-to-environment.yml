@@ -95,7 +95,8 @@ jobs:
             --container_image_name ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}} \
             --container_image_hash ${{ inputs.CONTAINER_IMAGE_DIGEST }} \
             --role_arn ${{ secrets.CLOUDFORMATION_DEPLOYER_ROLE_ARN }} \
-            --web_application_server_secrets_arn ${{ secrets.APPLICATION_SERVER_SECRETS_ARN }}
+            --web_application_server_secrets_arn ${{ secrets.APPLICATION_SERVER_SECRETS_ARN }} \
+            --cloudformation_role_boundary ${{ secrets.CLOUDFORMATION_ROLE_BOUNDARY_ARN }}
 
       - name: "[Test] Invalidate CloudFront Cache"
         env:
