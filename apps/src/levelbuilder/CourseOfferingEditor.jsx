@@ -486,8 +486,8 @@ export default function CourseOfferingEditor(props) {
         Facilitator Course Permissions
         <HelpTip>
           <p>
-            Pick the courses matching the permissions for facilitators that will
-            facilitate this course topic
+            Pick the courses matching the permissions for facilitators. Choosing
+            "None" will allow any facilitator to facilitate this course topic.
           </p>
         </HelpTip>
         <select
@@ -502,7 +502,7 @@ export default function CourseOfferingEditor(props) {
             handleFacilitatorsCourses(e, 'facilitators_courses');
           }}
         >
-          <option value="">Anyone</option>
+          <option value="">{translatedNoneOption}</option>
           {Object.values(props.facilitatorsCourses).map(course => (
             <option key={course} value={course}>
               {course}
