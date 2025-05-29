@@ -84,7 +84,7 @@ export default function CourseOfferingEditor(props) {
 
   const getSelectedOptions = e =>
     Array.from(e.target.options)
-      .filter(option => option.selected && Boolean(option.value))
+      .filter(option => option.selected && option.value !== '')
       .map(option => option.value);
 
   // Converts selected options within the given fieldName into a string for the table
@@ -95,7 +95,7 @@ export default function CourseOfferingEditor(props) {
 
   const handleFacilitatorsCourses = e => {
     const selectedOptions = getSelectedOptions(e);
-    updateCourseOffering(e.target.name, selectedOptions);
+    updateCourseOffering('facilitators_courses', selectedOptions);
   };
 
   // Converts selected device compatibility options into a string for the table
@@ -492,13 +492,17 @@ export default function CourseOfferingEditor(props) {
         </HelpTip>
         <select
           multiple
-          value={courseOffering.facilitators_courses}
+          value={
+            courseOffering.facilitators_courses.length
+              ? courseOffering.facilitators_courses
+              : ['']
+          }
           style={styles.dropdown}
           onChange={e => {
             handleFacilitatorsCourses(e, 'facilitators_courses');
           }}
         >
-          <option value={''}>Anyone</option>
+          <option value="">Anyone</option>
           {Object.values(props.facilitatorsCourses).map(course => (
             <option key={course} value={course}>
               {course}
