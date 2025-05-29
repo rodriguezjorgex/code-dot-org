@@ -16,8 +16,6 @@ const FacilitatorItem: React.FC<{facilitator: FacilitatorInfo}> = ({
   facilitator,
 }) => {
   const [showBio, handleShowBio] = useState(false);
-  facilitator.bio = '123123123123132131';
-  console.log(facilitator);
 
   return (
     <div className={moduleStyles.workshopFacilitatorItem}>
