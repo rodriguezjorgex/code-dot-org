@@ -1,6 +1,9 @@
 @use '@code-dot-org/component-library-styles/colors';
 
 .workshopSessionsList {
+  display: flex;
+    flex-direction: column;
+  gap: 0.5rem;
   margin: 0;
   width: 100%;
 
