@@ -66,7 +66,7 @@ export default function CourseOfferingEditor(props) {
       method: 'PUT',
       dataType: 'json',
       contentType: 'application/json;charset=UTF-8',
-      data: JSON.stringify(courseOffering),
+      data: JSON.stringify({course_offering: courseOffering}),
     })
       .done(data => {
         if (shouldCloseAfterSave) {
