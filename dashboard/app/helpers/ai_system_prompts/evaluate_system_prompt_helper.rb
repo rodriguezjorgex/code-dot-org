@@ -3,6 +3,7 @@ module AiSystemPrompts::EvaluateSystemPromptHelper
     evaluation_criteria = get_evaluation_criteria(level)
     evaluation_summary = get_evaluation_criteria_summary(level)
     skills = get_skills_for_level(level.id)
+    # TODO figure out how to handle skills id and fix merge conflict with non-responses and not hardcoding skills PRs
     structure_with_skills = <<~TEXT
       Please review the student's work. Respond in correctly formatted JSON.
       evaluationCriteria should be a copy of #{evaluation_summary}.
