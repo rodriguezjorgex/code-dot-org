@@ -7,6 +7,7 @@ const marketingDomain = '${InternalMarketingDomainName}'
 const marketingPaths = {
   // Add key-value pairs for each path that should be served by the CMS
   // e.g. '/videos': true,
+  '/en-US/engineering/all-the-things': true
 }
 
 const nextJsAssetsPath = '/_next/static/';
