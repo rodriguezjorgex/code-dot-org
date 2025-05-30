@@ -63,7 +63,7 @@ class StudentWorkSampleController < ApplicationController
   def fetch_student_code_samples
     level_id = student_work_params[:level_id]
     unit_id = student_work_params[:unit_id]
-    student_ids = student_work_params[:student_ids]
+    student_ids = student_work_params[:student_ids] || []
 
     begin
       level = Level.find(level_id)
@@ -79,7 +79,6 @@ class StudentWorkSampleController < ApplicationController
       return render status: :not_found, json: "Unit with id #{unit_id}"
     end
 
-    # Find users who have worked on this level.
     code_samples = []
     student_ids.each do |student_id|
       student_code = get_student_code(student_id.to_i, level, unit_id)
@@ -127,7 +126,7 @@ class StudentWorkSampleController < ApplicationController
   end
 
   def student_work_params
-    params.require(:student_work_sample).transform_keys(&:underscore).permit(
+    params.transform_keys(&:underscore).permit(
       :level_id,
       :unit_id,
       {student_ids: []},
