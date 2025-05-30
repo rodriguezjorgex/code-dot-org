@@ -7,7 +7,7 @@ const marketingDomain = '${InternalMarketingDomainName}'
 const marketingPaths = {
   // Add key-value pairs for each path that should be served by the CMS
   // e.g. '/videos': true,
-  '/en-US/engineering/all-the-things': true
+  '/en-US/engineering/all-the-things': true,
   // P-0-1
   "/about/supporters/amazon": true,
   '/computer-science-advanced-placement-data': true,
