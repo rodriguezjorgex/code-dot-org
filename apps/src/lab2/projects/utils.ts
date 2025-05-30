@@ -2,7 +2,7 @@ import {START_SOURCES} from '@cdo/apps/lab2/constants';
 import currentLocale from '@cdo/apps/util/currentLocale';
 import getScriptData, {hasScriptData} from '@cdo/apps/util/getScriptData';
 
-import {MultiFileSource, ProjectFile, ProjectFileType} from '../types';
+import {MultiFileSource, ProjectFile, ProjectFileType, Theme} from '../types';
 
 // Partial definition of the App Options structure, only defining the
 // pieces we need in this component.
@@ -14,6 +14,7 @@ export interface PartialAppOptions {
   isEditingExemplar: boolean;
   isViewingExemplar: boolean;
   publicCaching: boolean;
+  theme?: Theme;
 }
 
 /**
@@ -75,6 +76,14 @@ export function getAppOptionsViewingExemplar(): boolean | undefined {
     return appOptions.isViewingExemplar;
   }
 }
+
+export function getAppOptionsTheme(): Theme | undefined {
+  if (hasScriptData('script[data-appoptions]')) {
+    const appOptions = getScriptData('appoptions') as PartialAppOptions;
+    return appOptions.theme;
+  }
+}
+
 /**
  * Returns if the lab should presented in a share/play-only view,
  * if present in App Options. Only used in standalone project levels.
