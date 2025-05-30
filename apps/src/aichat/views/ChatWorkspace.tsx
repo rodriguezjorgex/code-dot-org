@@ -219,11 +219,7 @@ const ChatWorkspace: React.FunctionComponent<ChatWorkspaceProps> = ({
         )}
         <div className={moduleStyles.buttonRow}>
           {multimodalEnabled && (
-            <UploadButton
-              isDisabled={!canChatWithModel || !!selectedStudent}
-              buttonTextOverride="Add file"
-              iconLeftOverride="plus"
-            />
+            <UploadButton isDisabled={!canChatWithModel || !!selectedStudent} />
           )}
           <Button
             text={aichatI18n.clearChatButtonText()}

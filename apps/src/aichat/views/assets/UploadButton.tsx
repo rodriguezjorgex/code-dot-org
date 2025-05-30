@@ -28,14 +28,7 @@ import {AssetSource} from '../../types';
 
 import styles from './upload-button.module.scss';
 
-type UploadButtonProps = {
-  isDisabled: boolean;
-  iconLeftOverride?: string;
-  buttonTextOverride?: string;
-};
-
-const UploadButton: React.FC<UploadButtonProps> = props => {
-  const {isDisabled, iconLeftOverride, buttonTextOverride} = props;
+const UploadButton: React.FC<{isDisabled: boolean}> = ({isDisabled}) => {
   const dispatch = useAppDispatch();
   const currentChannelId = useAppSelector(state => state.lab.channel?.id);
   const numStagedFiles = useAppSelector(
@@ -181,10 +174,8 @@ const UploadButton: React.FC<UploadButtonProps> = props => {
   const buttonProps: ButtonProps = {
     type: 'secondary',
     color: 'gray',
-    iconLeft: iconLeftOverride
-      ? {iconName: iconLeftOverride}
-      : {iconName: 'upload'},
-    text: buttonTextOverride ?? aichatI18n.upload(),
+    iconLeft: {iconName: 'plus'},
+    text: 'Add file',
   };
 
   const commonProps = {
