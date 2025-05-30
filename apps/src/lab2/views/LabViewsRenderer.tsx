@@ -66,8 +66,10 @@ const LabViewsRenderer: React.FunctionComponent = () => {
       dispatch(setIsLoadingTheme(true));
 
       const setThemeHelper = () => {
-        // Use the theme from level properties if it exists and is supported,
+        // Use the theme from app options if it exists and is supported,
         // otherwise fall back to the first supported theme.
+        // We will only use the app options theme if we are not using the user preference,
+        // so it is safe to use that statically set theme.
         if (initialTheme && supportedThemes.includes(initialTheme)) {
           setTheme(initialTheme);
         } else {
