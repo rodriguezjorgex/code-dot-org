@@ -14,9 +14,12 @@ inputs:
   APPLICATION_BASE_ADDRESS:
     description: "The base URL for the application. Defaults to http://localhost:3001"
     default: "localhost:3001"
-  STAGE:
+  ENVIRONMENT_TYPE:
     description: "local, pr, test, or production"
     required: true
+  GITHUB_ENVIRONMENT_NAME:
+    description: "The name of the GitHub environment to use for this action"
+    required: false
 
 runs:
   using: composite
@@ -37,7 +40,7 @@ runs:
     - name: UI Tests
       shell: bash
       env:
-        STAGE: ${{ inputs.stage }}
+        STAGE: ${{ inputs.ENVIRONMENT_TYPE }}
         APPLICATION_BASE_ADDRESS: ${{ inputs.APPLICATION_BASE_ADDRESS }}
       run: yarn workspace @code-dot-org/marketing test:ui:ci
       working-directory: ./frontend
@@ -58,4 +61,5 @@ runs:
         urls: ${{ env.HTTP_PROTOCOL }}://${{ inputs.APPLICATION_BASE_ADDRESS }}/en-US/engineering/all-the-things
         uploadArtifacts: true
         temporaryPublicStorage: true
-        configPath: './frontend/apps/marketing/.lighthouserc.js'
+        configPath: "./frontend/apps/marketing/.lighthouserc.js"
+        artifactName: "lighthouse-report-${{ inputs.GITHUB_ENVIRONMENT_NAME || 'local' }}"
