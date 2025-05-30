@@ -486,8 +486,11 @@ export default function CourseOfferingEditor(props) {
         Facilitator Course Permissions
         <HelpTip>
           <p>
-            Pick the courses matching the permissions for facilitators. Choosing
-            "None" will allow any facilitator to facilitate this course topic.
+            For self paced professional learning courses only!
+            <br />
+            <br />
+            Pick which types of facilitators can facilitate workshops associated
+            with this professional learning topic.
           </p>
         </HelpTip>
         <select
@@ -502,7 +505,7 @@ export default function CourseOfferingEditor(props) {
             handleFacilitatorsCourses(e, 'facilitator_course_permissions');
           }}
         >
-          <option value="">{translatedNoneOption}</option>
+          <option value="">(Anyone)</option>
           {Object.values(props.facilitatorsCourses).map(course => (
             <option key={course} value={course}>
               {course}
