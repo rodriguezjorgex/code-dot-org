@@ -63,15 +63,7 @@ class StudentWorkSampleController < ApplicationController
   def fetch_student_code_samples
     level_id = student_work_params[:level_id]
     unit_id = student_work_params[:unit_id]
-    # num_samples = student_work_params[:num_samples].to_i
     student_ids = student_work_params[:student_ids]
-    puts "-------------------------"
-    puts
-    puts "student_ids: #{student_ids}"
-    puts
-    puts "student_work_params: #{student_work_params}"
-
-    # return render json: [] if num_samples == 0
 
     begin
       level = Level.find(level_id)
@@ -88,11 +80,8 @@ class StudentWorkSampleController < ApplicationController
     end
 
     # Find users who have worked on this level.
-    # student_ids = UserLevel.where(level_id: level.id, script_id: unit_id).pluck(:user_id)
     code_samples = []
-    # have_enough_samples = false
     student_ids.each do |student_id|
-      # unless have_enough_samples
       student_code = get_student_code(student_id.to_i, level, unit_id)
       if student_code[:student_code]
         code_samples << {
@@ -103,8 +92,6 @@ class StudentWorkSampleController < ApplicationController
           student_work: student_code[:student_code]
         }.transform_keys {|key| key.to_s.camelize(:lower)}
       end
-      # have_enough_samples = code_samples.length >= num_samples
-      # end
     end
     render json: code_samples
   end
@@ -140,9 +127,6 @@ class StudentWorkSampleController < ApplicationController
   end
 
   def student_work_params
-    puts "-------------------------"
-    puts "params: #{params.inspect}"
-    puts "-------------------------"
     params.require(:student_work_sample).transform_keys(&:underscore).permit(
       :level_id,
       :unit_id,

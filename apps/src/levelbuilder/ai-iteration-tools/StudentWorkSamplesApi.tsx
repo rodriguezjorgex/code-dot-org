@@ -10,10 +10,6 @@ interface StudentWorkRequest {
 export async function fetchStudentCodeSamples(
   studentWorkRequest: StudentWorkRequest
 ): Promise<string | null> {
-  console.log(
-    'studentWorkRequest in StudentWorkSamplesApi',
-    studentWorkRequest
-  );
   try {
     const response = await fetch(`/student_code_samples`, {
       method: 'POST',
