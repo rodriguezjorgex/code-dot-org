@@ -3,7 +3,7 @@
  * currently active Lab (determined by the current app name). This
  * helps facilitate level-switching between labs without page reloads.
  */
-import {useTheme} from '@code-dot-org/component-library/common/contexts';
+import {Theme, useTheme} from '@code-dot-org/component-library/common/contexts';
 import React, {Suspense, useEffect, useMemo} from 'react';
 
 import {getCurrentLesson} from '@cdo/apps/code-studio/progressReduxSelectors';
@@ -12,6 +12,7 @@ import {setIsLoadingTheme} from '@cdo/apps/lab2/lab2Redux';
 import UserPreferences from '@cdo/apps/lib/util/UserPreferences';
 import {SignInState} from '@cdo/apps/templates/currentUserRedux';
 import {Level} from '@cdo/apps/types/progressTypes';
+import {capitalizeFirstLetter} from '@cdo/apps/util/capitalizeFirstLetter';
 import {useAppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
 
 import {lab2EntryPoints} from '../../../lab2EntryPoints';
@@ -70,8 +71,11 @@ const LabViewsRenderer: React.FunctionComponent = () => {
         // otherwise fall back to the first supported theme.
         // We will only use the app options theme if we are not using the user preference,
         // so it is safe to use that statically set theme.
-        if (initialTheme && supportedThemes.includes(initialTheme)) {
-          setTheme(initialTheme);
+        const upperCasedTheme = initialTheme
+          ? (capitalizeFirstLetter(initialTheme) as Theme)
+          : undefined;
+        if (upperCasedTheme && supportedThemes.includes(upperCasedTheme)) {
+          setTheme(upperCasedTheme);
         } else {
           setTheme(supportedThemes[0]);
         }

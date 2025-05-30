@@ -6,14 +6,20 @@
 // boundary; a fade-in between levels; a loading spinner when a level takes a
 // while to load; and a sad bee when things go wrong.
 
-import {useTheme} from '@code-dot-org/component-library/common/contexts';
+import {Theme, useTheme} from '@code-dot-org/component-library/common/contexts';
 import classNames from 'classnames';
 import React, {useEffect} from 'react';
 import {useSelector} from 'react-redux';
 
 import {setCurrentLevelId} from '@cdo/apps/code-studio/progressRedux';
+import {
+  getAppOptionsLevelId,
+  getAppOptionsTheme,
+  getIsShareView,
+} from '@cdo/apps/lab2/projects/utils';
 import fetchPermissions from '@cdo/apps/lab2/utils/fetchPermissions';
 import {useBrowserTextToSpeech} from '@cdo/apps/sharedComponents/BrowserTextToSpeechWrapper';
+import {capitalizeFirstLetter} from '@cdo/apps/util/capitalizeFirstLetter';
 import {useAppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
 
 import {PERMISSIONS} from '../constants';
@@ -27,7 +33,6 @@ import {
   setPermissions,
 } from '../lab2Redux';
 import Lab2Registry from '../Lab2Registry';
-import {getAppOptionsLevelId, getIsShareView} from '../projects/utils';
 import {LifecycleEvent} from '../utils';
 
 import {ErrorFallbackPage, ErrorUI} from './ErrorFallbackPage';
@@ -64,16 +69,17 @@ const Lab2Wrapper: React.FunctionComponent<Lab2WrapperProps> = ({children}) => {
   const {theme, setTheme} = useTheme();
 
   useEffect(() => {
-    // Initialize the theme based on the body class, which is set on the server.
+    // Initialize the theme based on app options, which is set on the server.
     // This allows us to take advantage of the server-side logic to show the correct loading theme
     // based on the lesson and user preference.
     // We default to dark theme if the body class is not set.
-    const bodyClassList = document.body.classList;
-    if (bodyClassList.contains('background-light')) {
-      setTheme('Light');
-    } else {
-      setTheme('Dark');
-    }
+    const appOptionsTheme = getAppOptionsTheme();
+    const upperCasedTheme = appOptionsTheme
+      ? (capitalizeFirstLetter(appOptionsTheme) as Theme)
+      : undefined;
+    const theme = upperCasedTheme || 'Dark';
+
+    setTheme(theme);
   }, [setTheme]);
 
   // We duplicate the theme to Lab2Registry, because modals opened via the header (such as the share modal)

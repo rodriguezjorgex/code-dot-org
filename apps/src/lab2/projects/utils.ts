@@ -2,7 +2,7 @@ import {START_SOURCES} from '@cdo/apps/lab2/constants';
 import currentLocale from '@cdo/apps/util/currentLocale';
 import getScriptData, {hasScriptData} from '@cdo/apps/util/getScriptData';
 
-import {MultiFileSource, ProjectFile, ProjectFileType, Theme} from '../types';
+import {MultiFileSource, ProjectFile, ProjectFileType} from '../types';
 
 // Partial definition of the App Options structure, only defining the
 // pieces we need in this component.
@@ -14,7 +14,7 @@ export interface PartialAppOptions {
   isEditingExemplar: boolean;
   isViewingExemplar: boolean;
   publicCaching: boolean;
-  theme?: Theme;
+  theme?: string;
 }
 
 /**
@@ -77,7 +77,7 @@ export function getAppOptionsViewingExemplar(): boolean | undefined {
   }
 }
 
-export function getAppOptionsTheme(): Theme | undefined {
+export function getAppOptionsTheme(): string | undefined {
   if (hasScriptData('script[data-appoptions]')) {
     const appOptions = getScriptData('appoptions') as PartialAppOptions;
     return appOptions.theme;
