@@ -175,7 +175,7 @@ const UploadButton: React.FC<{isDisabled: boolean}> = ({isDisabled}) => {
     type: 'secondary',
     color: 'gray',
     iconLeft: {iconName: 'plus'},
-    text: 'Add file',
+    text: aichatI18n.aichatAddFile(),
   };
 
   const commonProps = {
