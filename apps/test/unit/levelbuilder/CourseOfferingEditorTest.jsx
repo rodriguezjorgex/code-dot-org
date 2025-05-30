@@ -38,7 +38,7 @@ describe('CourseOfferingEditor', () => {
         self_paced_pl_course_offering_id: 1,
         video: 'https://www.youtube-nocookie.com/test_video',
         published_date: '2019-07-16 14:00:00',
-        facilitators_courses: [],
+        facilitator_course_permissions: [],
       },
       selfPacedPLCourseOfferings: [
         {
@@ -114,7 +114,7 @@ describe('CourseOfferingEditor', () => {
         professional_learning: 'code.org/apply',
         video: 'https://www.youtube-nocookie.com/test_video',
         published_date: '2019-07-16 14:00:00',
-        facilitators_courses: [],
+        facilitator_course_permissions: [],
       };
       server.respondWith('PUT', '/course_offerings/test-course-offering', [
         200,
@@ -191,7 +191,7 @@ describe('CourseOfferingEditor', () => {
         professional_learning: 'code.org/apply',
         video: 'https://www.youtube-nocookie.com/test_video',
         published_date: '2019-07-16 14:00:00',
-        facilitators_courses: [],
+        facilitator_course_permissions: [],
       };
 
       server.respondWith('PUT', '/course_offerings/test-course-offering', [

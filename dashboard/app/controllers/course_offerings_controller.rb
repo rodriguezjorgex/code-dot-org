@@ -45,7 +45,7 @@ class CourseOfferingsController < ApplicationController
 
   private def course_offering_params
     permitted = [
-      :display_name, :is_featured, :assignable, :grade_levels, :curriculum_type, :header, :marketing_initiative, :image, :cs_topic, :school_subject, :device_compatibility, :description, :professional_learning_program, :self_paced_pl_course_offering_id, :video, :published_date, :ai_teaching_assistant_available, {facilitators_courses: []}
+      :display_name, :is_featured, :assignable, :grade_levels, :curriculum_type, :header, :marketing_initiative, :image, :cs_topic, :school_subject, :device_compatibility, :description, :professional_learning_program, :self_paced_pl_course_offering_id, :video, :published_date, :ai_teaching_assistant_available, {facilitator_course_permissions: []}
     ]
     if params[:course_offering]
       # rails convention is to use nested strong parameter

@@ -43,7 +43,7 @@ class CourseOfferingsControllerTest < ActionController::TestCase
       display_name: 'New Display Name',
       marketing_initiative: 'CSD',
       is_featured: false,
-      facilitators_courses: ["CS Fundamentals", "CS Principles", "CS Discoveries"]
+      facilitator_course_permissions: ["CS Fundamentals", "CS Principles", "CS Discoveries"]
     }
 
     course_offering.reload
@@ -51,7 +51,7 @@ class CourseOfferingsControllerTest < ActionController::TestCase
     assert_equal 'New Display Name', course_offering.display_name
     assert_equal 'CSD', course_offering.marketing_initiative
     assert_equal false, course_offering.is_featured
-    assert_equal ["CS Fundamentals", "CS Principles", "CS Discoveries"], course_offering.facilitators_courses
+    assert_equal ["CS Fundamentals", "CS Principles", "CS Discoveries"], course_offering.facilitator_course_permissions
   end
 
   test 'update course offering updates fields with nested strong parameters' do
@@ -65,7 +65,7 @@ class CourseOfferingsControllerTest < ActionController::TestCase
         display_name: 'New Display Name',
         marketing_initiative: 'CSD',
         is_featured: false,
-        facilitators_courses: ["CS Fundamentals", "CS Principles", "CS Discoveries"]
+        facilitator_course_permissions: ["CS Fundamentals", "CS Principles", "CS Discoveries"]
       }
     }
 
@@ -74,6 +74,6 @@ class CourseOfferingsControllerTest < ActionController::TestCase
     assert_equal 'New Display Name', course_offering.display_name
     assert_equal 'CSD', course_offering.marketing_initiative
     assert_equal false, course_offering.is_featured
-    assert_equal ["CS Fundamentals", "CS Principles", "CS Discoveries"], course_offering.facilitators_courses
+    assert_equal ["CS Fundamentals", "CS Principles", "CS Discoveries"], course_offering.facilitator_course_permissions
   end
 end

@@ -95,7 +95,7 @@ export default function CourseOfferingEditor(props) {
 
   const handleFacilitatorsCourses = e => {
     const selectedOptions = getSelectedOptions(e);
-    updateCourseOffering('facilitators_courses', selectedOptions);
+    updateCourseOffering('facilitator_course_permissions', selectedOptions);
   };
 
   // Converts selected device compatibility options into a string for the table
@@ -493,13 +493,13 @@ export default function CourseOfferingEditor(props) {
         <select
           multiple
           value={
-            courseOffering.facilitators_courses.length
-              ? courseOffering.facilitators_courses
+            courseOffering.facilitator_course_permissions.length
+              ? courseOffering.facilitator_course_permissions
               : ['']
           }
           style={styles.dropdown}
           onChange={e => {
-            handleFacilitatorsCourses(e, 'facilitators_courses');
+            handleFacilitatorsCourses(e, 'facilitator_course_permissions');
           }}
         >
           <option value="">{translatedNoneOption}</option>
@@ -549,7 +549,7 @@ CourseOfferingEditor.propTypes = {
     self_paced_pl_course_offering_id: PropTypes.number,
     video: PropTypes.string,
     published_date: PropTypes.string,
-    facilitators_courses: PropTypes.arrayOf(PropTypes.string),
+    facilitator_course_permissions: PropTypes.arrayOf(PropTypes.string),
   }),
   selfPacedPLCourseOfferings: PropTypes.arrayOf(
     PropTypes.shape({
