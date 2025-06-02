@@ -32,7 +32,7 @@ export async function logStudentWorkEvaluations(
           codeVersion: studentWorkSample.codeVersion,
           levelId: levelId,
           unitId: unitId,
-          skillId: skillEvaluation.id,
+          skillId: skillEvaluation.skillId,
           evaluator: 'AI',
           evaluationCriteria: skillEvaluation.evaluationCriteria,
           evaluation: skillEvaluation.aiEvaluation,
