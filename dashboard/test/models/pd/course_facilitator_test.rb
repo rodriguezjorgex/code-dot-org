@@ -35,7 +35,7 @@ class Pd::CourseFacilitatorTest < ActiveSupport::TestCase
     offering1 = create_offering([@csf, @csd])
     offering2 = create_offering([@aif])
     facilitators = Pd::CourseFacilitator.facilitators_for_course_offerings([offering1.id, offering2.id])
-    assert_equal [@facilitator1, @facilitator2, @facilitator3].sort_by(&:name), facilitators.sort_by(&:name)
+    assert_equal [@facilitator1, @facilitator2, @facilitator3].sort_by(&:id), facilitators.sort_by(&:id)
   end
 
   test 'facilitators_for_course_offerings and some have permissions' do
@@ -44,7 +44,7 @@ class Pd::CourseFacilitatorTest < ActiveSupport::TestCase
     create_course_facilitator(@facilitator3, @aif)
     offering1 = create_offering([@csf, @csd])
     facilitators = Pd::CourseFacilitator.facilitators_for_course_offerings([offering1.id])
-    assert_equal [@facilitator1, @facilitator2].sort_by(&:name), facilitators.sort_by(&:name)
+    assert_equal [@facilitator1, @facilitator2].sort_by(&:id), facilitators.sort_by(&:id)
   end
 
   test 'facilitators_for_course_offerings and any blank permissions returns all' do

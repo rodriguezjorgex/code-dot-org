@@ -107,9 +107,7 @@ describe('PartnerFacilitator', () => {
     it('fetches course facilitators for the course_offerings', async () => {
       render(<PartnerFacilitatorWithState courseOfferings={['1', '2']} />);
       expect(mockedUseFetch).toHaveBeenCalledWith(
-        `/api/v1/pd/course_facilitators?course=${encodeURIComponent(
-          byoCourseName
-        )}&course_offerings=1&course_offerings=2`
+        `/api/v1/pd/course_facilitators?course_offerings=1&course_offerings=2`
       );
     });
   });

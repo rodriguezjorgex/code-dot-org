@@ -57,16 +57,18 @@ export const PartnerFacilitator: FC<PartnerFacilitatorProps> = ({
   >(courseOfferings, COURSE_OFFERINGS_FETCH_DEBOUNCE);
 
   useEffect(() => {
-    if (label) {
-      const courseOfferingsParams =
-        debouncedCourseOfferings
-          ?.map(co => `&course_offerings=${encodeURIComponent(co)}`)
-          .join('') ?? '';
-      setFacilitatorUrl(
-        `/api/v1/pd/course_facilitators?course=${encodeURIComponent(
-          label
-        )}${courseOfferingsParams}`
-      );
+    let url = '/api/v1/pd/course_facilitators';
+
+    if (debouncedCourseOfferings.length) {
+      const courseOfferingsParams = debouncedCourseOfferings
+        .map(co => `course_offerings=${encodeURIComponent(co)}`)
+        .join('&');
+
+      url += '?' + courseOfferingsParams;
+      setFacilitatorUrl(url);
+    } else if (label) {
+      url += `?course=${encodeURIComponent(label)}`;
+      setFacilitatorUrl(url);
     }
   }, [label, debouncedCourseOfferings]);
 
