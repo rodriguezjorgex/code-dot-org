@@ -322,6 +322,7 @@ export default function RegionalWorkshopCatalog({
                   disabled={!regionalPartnerName}
                 />
                 <LinkButton
+                  id="rpContactLink"
                   text="Contact"
                   target="_blank"
                   color="black"

@@ -40,8 +40,8 @@ Feature: Regional Workshop Catalog page
     Then I click selector "button:contains('Return to workshops')"
 
     # Contact button sends user to RP contact form
-    And I wait until element "a:contains(Contact)" is visible
-    And the href of selector "a:contains(Contact)" contains "/professional-learning/contact-regional-partner?zip=12345"
+    And I wait until element "#rpContactLink" is visible
+    And the href of selector "#rpContactLink" contains "/professional-learning/contact-regional-partner?zip=12345"
 
   Scenario: Entering a zip with a regional partner match allows user to see their workshops and enroll in them
     Given I have a regional partner named "Reggie Partner" in the zip code "12345"
