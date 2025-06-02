@@ -7,7 +7,7 @@ Feature: Regional Workshop Catalog page
     Then I am on "http://studio.code.org/professional-learning/workshops"
 
     # Sees default view
-    And I wait until element "h1:contains(Find your local workshop and apply)" is visible
+    And I wait until element "h1:contains(Find Code.org workshops near you)" is visible
     And I wait until element "h2:contains(Enter zip code to see workshops)" is visible
 
     # Enter zip with no match and no workshops
@@ -25,14 +25,14 @@ Feature: Regional Workshop Catalog page
     Then I am on "http://studio.code.org/professional-learning/workshops"
 
     # Sees default view
-    And I wait until element "h1:contains(Find your local workshop and apply)" is visible
+    And I wait until element "h1:contains(Find Code.org workshops near you)" is visible
     And I wait until element "h2:contains(Enter zip code to see workshops)" is visible
 
     # Enter zip with regional partner match
     Then I press keys "12345" for element "input[name='zipSearch']"
     Then I click selector "span:contains(Submit)"
     And I wait until element "p:contains(Reggie Partner)" is visible
-    And I wait until element "h2:contains(Upcoming workshops)" is visible
+    And I wait until element "h2:contains(Upcoming local workshops)" is visible
     
     # View the Partner info modal
     Then I click selector "button:contains('Partner info')"
@@ -43,7 +43,7 @@ Feature: Regional Workshop Catalog page
     And I wait until element "#rpContactLink" is visible
     And the href of selector "#rpContactLink" contains "/professional-learning/contact-regional-partner?zip=12345"
 
-  Scenario: Entering a zip with a regional partner match allows user to see their workshops and enroll in them
+  Scenario: Entering a zip with a regional partner match shows user the available workshops
     Given I have a regional partner named "Reggie Partner" in the zip code "12345"
     And I create a workshop under the regional partner named "Reggie Partner"
 
@@ -52,18 +52,14 @@ Feature: Regional Workshop Catalog page
     Then I am on "http://studio.code.org/professional-learning/workshops"
 
     # Sees default view
-    And I wait until element "h1:contains(Find your local workshop and apply)" is visible
+    And I wait until element "h1:contains(Find Code.org workshops near you)" is visible
     And I wait until element "h2:contains(Enter zip code to see workshops)" is visible
 
     # Enter zip with regional partner match
     Then I press keys "12345" for element "input[name='zipSearch']"
     Then I click selector "span:contains(Submit)"
     And I wait until element "p:contains(Reggie Partner)" is visible
-    And I wait until element "h2:contains(Upcoming workshops)" is visible
-
-    # Shows workshops that can be taught in the given zip code
-    And I wait until element "a:contains(Enroll now)" is visible
-    And the href of selector "a:contains(Enroll now)" contains "/pd/application/teacher"
+    And I wait until element "h2:contains(Upcoming local workshops)" is visible
 
   Scenario: If sent to this page with a zip code url param the page obtains the regional partner and relevant workshops
     Given I have a regional partner named "Reggie Partner" in the zip code "12345"
@@ -73,8 +69,6 @@ Feature: Regional Workshop Catalog page
     And I sign in as "New Teacher" and go home
     Then I am on "http://studio.code.org/professional-learning/workshops?zip=12345"
 
-    # Shows regional partner and workshops associated with the given zip
+    # Shows regional partner associated with the given zip
     And I wait until element "p:contains(Reggie Partner)" is visible
-    And I wait until element "h2:contains(Upcoming workshops)" is visible
-    And I wait until element "a:contains(Enroll now)" is visible
-    And the href of selector "a:contains(Enroll now)" contains "/pd/application/teacher"
+    And I wait until element "h2:contains(Upcoming local workshops)" is visible
