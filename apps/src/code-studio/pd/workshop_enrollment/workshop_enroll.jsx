@@ -4,6 +4,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import {EVENTS, PLATFORMS} from '@cdo/apps/metrics/AnalyticsConstants';
+import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
 import {navigateToHref} from '@cdo/apps/utils';
 
 import {SUBMISSION_STATUSES} from './constants';
@@ -65,6 +67,12 @@ export default class WorkshopEnroll extends React.Component {
         this.props.workshop_enrollment_status ||
         SUBMISSION_STATUSES.UNSUBMITTED,
     };
+
+    analyticsReporter.sendEvent(
+      EVENTS.WORKSHOP_ENROLLMENT_PAGE_VISITED_EVENT,
+      {source: 'workshop enroll'},
+      PLATFORMS.BOTH
+    );
   }
 
   onSubmissionComplete = result => {
