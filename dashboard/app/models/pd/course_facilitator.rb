@@ -18,21 +18,26 @@ class Pd::CourseFacilitator < ApplicationRecord
   validates_inclusion_of :course, in: Pd::Workshop::COURSES
   validates_uniqueness_of :course, scope: :facilitator_id, case_sensitive: true
 
-  def self.facilitators_for_course(course, course_offering_ids = nil)
-    permitted_courses = [course]
-    if course_offering_ids.present?
-      course_offerings = CourseOffering.where(id: course_offering_ids)
-      permissions_arrays = course_offerings.map(&:facilitator_course_permissions)
-      # If any permissions array is nil or empty, return all facilitator users
-      if permissions_arrays.any?(&:blank?)
-        return User.joins(:courses_as_facilitator).order(:name)
-      else
-        # Get all facilitator_course_permissions arrays, flatten, remove nils, and filter to unique values
-        permitted_courses = permissions_arrays.compact.flatten.uniq
-      end
+  def self.facilitators_for_course(course)
+    get_facilitators_for_course([course])
+  end
+
+  def self.facilitators_for_course_offerings(course_offering_ids)
+    course_offerings = CourseOffering.where(id: course_offering_ids)
+    permissions_arrays = course_offerings.map(&:facilitator_course_permissions)
+    # If any permissions array is nil or empty, return all facilitator users
+    if permissions_arrays.any?(&:blank?)
+      User.joins(:courses_as_facilitator).order(:name)
+    else
+      # Get all facilitator_course_permissions arrays, flatten, remove nils, and filter to unique values
+      permitted_courses = permissions_arrays.compact.flatten.uniq
+      get_facilitators_for_course(permitted_courses)
     end
+  end
+
+  private def get_facilitators_for_course(courses)
     User.joins(:courses_as_facilitator).
-      where(table_name => {course: permitted_courses}).
+      where(pd_course_facilitators: {course: courses}).
       order(:name)
   end
 end

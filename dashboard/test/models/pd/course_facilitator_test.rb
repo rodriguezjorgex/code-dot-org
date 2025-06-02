@@ -28,40 +28,40 @@ class Pd::CourseFacilitatorTest < ActiveSupport::TestCase
     assert_equal 2, facilitators.length
   end
 
-  test 'facilitators_for_course with course_offering_ids and all have permissions' do
+  test 'facilitators_for_course_offerings and all have permissions' do
     create_course_facilitator(@facilitator1, @csf)
     create_course_facilitator(@facilitator2, @csd)
     create_course_facilitator(@facilitator3, @aif)
     offering1 = create_offering([@csf, @csd])
     offering2 = create_offering([@aif])
-    facilitators = Pd::CourseFacilitator.facilitators_for_course(@csf, [offering1.id, offering2.id])
+    facilitators = Pd::CourseFacilitator.facilitators_for_course_offerings([offering1.id, offering2.id])
     assert_equal [@facilitator1, @facilitator2, @facilitator3].sort_by(&:name), facilitators.sort_by(&:name)
   end
 
-  test 'facilitators_for_course with course_offering_ids and some have permissions' do
+  test 'facilitators_for_course_offerings and some have permissions' do
     create_course_facilitator(@facilitator1, @csf)
     create_course_facilitator(@facilitator2, @csd)
     create_course_facilitator(@facilitator3, @aif)
     offering1 = create_offering([@csf, @csd])
-    facilitators = Pd::CourseFacilitator.facilitators_for_course(@csf, [offering1.id])
+    facilitators = Pd::CourseFacilitator.facilitators_for_course_offerings([offering1.id])
     assert_equal [@facilitator1, @facilitator2].sort_by(&:name), facilitators.sort_by(&:name)
   end
 
-  test 'facilitators_for_course with course_offering_ids and any blank permissions returns all' do
+  test 'facilitators_for_course_offerings and any blank permissions returns all' do
     create_course_facilitator(@facilitator1, @csf)
     create_course_facilitator(@facilitator2, @csd)
     offering1 = create_offering(nil)
     offering2 = create_offering([@csf])
-    facilitators = Pd::CourseFacilitator.facilitators_for_course(@csf, [offering1.id, offering2.id])
+    facilitators = Pd::CourseFacilitator.facilitators_for_course_offerings([offering1.id, offering2.id])
     all_facilitators = Pd::CourseFacilitator.all.map(&:facilitator)
     assert_equal all_facilitators.sort_by(&:id), facilitators.sort_by(&:id)
   end
 
-  test 'facilitators_for_course with course_offering_ids and all empty permissions returns all' do
+  test 'facilitators_for_course_offerings and all empty permissions returns all' do
     create_course_facilitator(@facilitator1, @csf)
     create_course_facilitator(@facilitator2, @csd)
     offering1 = create_offering([])
-    facilitators = Pd::CourseFacilitator.facilitators_for_course(@csf, [offering1.id])
+    facilitators = Pd::CourseFacilitator.facilitators_for_course_offerings([offering1.id])
     all_facilitators = Pd::CourseFacilitator.all.map(&:facilitator)
     assert_equal all_facilitators.sort_by(&:id), facilitators.sort_by(&:id)
   end
