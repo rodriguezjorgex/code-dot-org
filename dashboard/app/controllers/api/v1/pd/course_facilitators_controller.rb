@@ -5,7 +5,11 @@ class Api::V1::Pd::CourseFacilitatorsController < ApplicationController
   def index
     facilitators =
       if params.key?(:course)
-        Pd::CourseFacilitator.facilitators_for_course(params.require(:course))
+        course_offerings = params[:course_offerings] if params.key?(:course_offerings)
+        Pd::CourseFacilitator.facilitators_for_course(
+          params.require(:course),
+          course_offerings
+        )
       else
         Pd::CourseFacilitator.all.map(&:facilitator)
       end.compact.uniq.sort_by(&:name)
