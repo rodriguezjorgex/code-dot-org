@@ -5,8 +5,6 @@ import {
 } from '@code-dot-org/component-library/typography';
 import React, {useEffect, useState} from 'react';
 
-import CourseCatalogNoSearchResultPenguin from '@cdo/apps/static/curriculum_catalog/course-catalog-no-search-result-penguin.png';
-
 import SelfPacedPLCatalogCard from './SelfPacedPLCatalogCard';
 import SelfPacedPLCatalogFilters from './SelfPacedPLCatalogFilters';
 
@@ -50,8 +48,6 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
       co => expandedCardKey === co['key']
     );
 
-    // Worried this could infinite loop with setting expandedCardKey while expandedCardKey is a dependency
-
     if (!expandedCardFound) {
       setExpandedCardKey('');
     }
@@ -81,7 +77,6 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
     } else {
       return (
         <div className={style.catalogContentNoResults}>
-          <img src={CourseCatalogNoSearchResultPenguin} alt="" />
           <Heading5>
             No matching Self-Paced Professional Learning Course Offerings
           </Heading5>
