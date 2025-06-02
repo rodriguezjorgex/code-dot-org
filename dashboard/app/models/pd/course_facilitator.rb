@@ -25,7 +25,7 @@ class Pd::CourseFacilitator < ApplicationRecord
       permissions_arrays = course_offerings.map(&:facilitator_course_permissions)
       # If any permissions array is nil or empty, return all facilitator users
       if permissions_arrays.any?(&:blank?)
-        return all.includes(:facilitator).map(&:facilitator).sort_by(&:name)
+        return User.joins(:courses_as_facilitator).order(:name)
       else
         # Get all facilitator_course_permissions arrays, flatten, remove nils, and filter to unique values
         permitted_courses = permissions_arrays.compact.flatten.uniq
