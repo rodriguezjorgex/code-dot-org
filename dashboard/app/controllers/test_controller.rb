@@ -306,6 +306,22 @@ class TestController < ApplicationController
     }
   end
 
+  def create_regional_partner
+    return unless (user = current_user)
+    rp_name = params[:partner_name].presence || "regional-partner#{Time.now.to_i}-#{rand(1_000_000)}"
+    regional_partner = RegionalPartner.create!(name: rp_name, is_active: true)
+    regional_partner.mappings.find_or_create_by!(zip_code: params[:zip_code].to_s)
+    head :ok
+  end
+
+  def create_workshop_under_rp
+    return unless (user = current_user)
+    regional_partner = RegionalPartner.find_by(name: params[:partner_name], is_active: true)
+    workshop = Pd::Workshop.find(params[:workshop_id].to_i)
+    workshop.update!(regional_partner_id: regional_partner.id)
+    head :ok
+  end
+
   def create_teacher_application
     return unless (user = current_user)
     regional_partner = RegionalPartner.create!(name: "regional-partner#{Time.now.to_i}-#{rand(1_000_000)}", is_active: true)
