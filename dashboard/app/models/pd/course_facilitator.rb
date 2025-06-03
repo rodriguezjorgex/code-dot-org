@@ -22,12 +22,22 @@ class Pd::CourseFacilitator < ApplicationRecord
     get_facilitators_for_courses([course])
   end
 
+  def self.all_facilitators
+    User.joins(:courses_as_facilitator).
+      order(:name).
+      distinct
+  end
+
+  # Facilitators are returned based on the facilitator_course_permissions for each course_offering.
+  # Fetched facilitators are returned based on the most permissive course_offering. Meaning if one
+  # course_offering has permissions for CSF and another has permissions for CSD, both CSF and CSD
+  # facilitators will be returned. If any course_offering has no permissions, all facilitators will be returned.
   def self.facilitators_for_course_offerings(course_offering_ids)
     course_offerings = CourseOffering.where(id: course_offering_ids)
     permissions_arrays = course_offerings.map(&:facilitator_course_permissions)
     # If any permissions array is nil or empty, return all facilitator users
     if permissions_arrays.any?(&:blank?)
-      User.joins(:courses_as_facilitator).order(:name)
+      all_facilitators
     else
       # Get all facilitator_course_permissions arrays, flatten, remove nils, and filter to unique values
       permitted_courses = permissions_arrays.compact.flatten.uniq
@@ -38,7 +48,8 @@ class Pd::CourseFacilitator < ApplicationRecord
   def self.get_facilitators_for_courses(courses)
     User.joins(:courses_as_facilitator).
       where(pd_course_facilitators: {course: courses}).
-      order(:name)
+      order(:name).
+      distinct
   end
 
   private_class_method :get_facilitators_for_courses
