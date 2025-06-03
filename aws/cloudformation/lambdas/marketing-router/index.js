@@ -264,6 +264,14 @@ const marketingPaths = {
   "/en-US/curriculum/artificial-intelligence-foundations": true,
   "/en-US/tools/python-lab": true,
   "/en-US/curriculum/computer-science-connections": true,
+  // Farsi Redirects
+  "/global/fa": true,
+  "/global/fa/csf": true,
+  "/global/fa/hourofcode": true,
+  "/global/fa/videos": true,
+  "/global/fa/about": true,
+  "/global/fa/teacher": true,
+  "/farsi": true,
 }
 
 const nextJsAssetsPath = '/_next/static/';
