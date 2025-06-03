@@ -10,7 +10,7 @@ class Api::V1::Pd::CourseFacilitatorsController < ApplicationController
         )
       elsif params.key?(:course_offerings)
         Pd::CourseFacilitator.facilitators_for_course_offerings(
-          params.require(:course_offerings)
+          Array(params.require(:course_offerings))
         )
       else
         Pd::CourseFacilitator.all_facilitators
