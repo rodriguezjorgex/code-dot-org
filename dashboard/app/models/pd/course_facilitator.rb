@@ -13,6 +13,8 @@
 #
 
 class Pd::CourseFacilitator < ApplicationRecord
+  class InvalidCourseOfferingIdError < StandardError; end
+
   belongs_to :facilitator, class_name: 'User', optional: true
 
   validates_inclusion_of :course, in: Pd::Workshop::COURSES
@@ -34,6 +36,9 @@ class Pd::CourseFacilitator < ApplicationRecord
   # facilitators will be returned. If any course_offering has no permissions, all facilitators will be returned.
   def self.facilitators_for_course_offerings(course_offering_ids)
     course_offerings = CourseOffering.where(id: course_offering_ids)
+    if course_offerings.size != course_offering_ids.size
+      raise InvalidCourseOfferingIdError, "One or more course_offering ids are invalid: #{course_offering_ids.join(', ')}"
+    end
     permissions_arrays = course_offerings.map(&:facilitator_course_permissions)
     # If any permissions array is nil or empty, return all facilitator users
     if permissions_arrays.any?(&:blank?)

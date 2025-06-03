@@ -66,6 +66,16 @@ class Pd::CourseFacilitatorTest < ActiveSupport::TestCase
     assert_equal all_facilitators.sort_by(&:id), facilitators.sort_by(&:id)
   end
 
+  test 'facilitators_for_course_offerings with bad course_offering id' do
+    create_course_facilitator(@facilitator1, @csf)
+    create_course_facilitator(@facilitator2, @csd)
+    offering1 = create_offering([@csf])
+    error = assert_raises Pd::CourseFacilitator::InvalidCourseOfferingIdError do
+      Pd::CourseFacilitator.facilitators_for_course_offerings([offering1.id, 'bad id'])
+    end
+    assert_equal "One or more course_offering ids are invalid: #{offering1.id}, bad id", error.message
+  end
+
   test 'duplicates are not allowed' do
     facilitator = create :facilitator
     create :pd_course_facilitator, facilitator: facilitator, course: @csf

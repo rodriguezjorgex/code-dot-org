@@ -17,5 +17,7 @@ class Api::V1::Pd::CourseFacilitatorsController < ApplicationController
       end
 
     render json: facilitators, each_serializer: Api::V1::Pd::CourseFacilitatorSerializer
+  rescue Pd::CourseFacilitator::InvalidCourseOfferingIdError => exception
+    render json: {error: exception.message}, status: :bad_request
   end
 end
