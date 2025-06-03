@@ -53,12 +53,13 @@ export default function RegionalWorkshopCatalog({
         {
           'zip code': null,
           'regional partner': null,
-          'number of workshops': null,
+          'number of regional workshops': null,
+          'number of national workshops': availableNationalWorkshops.length,
         },
         PLATFORMS.BOTH
       );
     }
-  }, [zipFromSchoolInfo, handleSubmitZip]);
+  }, [zipFromSchoolInfo, handleSubmitZip, availableNationalWorkshops]);
 
   const handleSubmitZip = useCallback(
     async (submittedZip, prepopulatingZip) => {
@@ -114,9 +115,10 @@ export default function RegionalWorkshopCatalog({
             {
               'zip code': submittedZip,
               'regional partner': regionalPartner.name,
-              'number of workshops':
+              'number of regional workshops':
                 jsonData.regional_workshop_data.available_regional_workshops
                   .length,
+              'number of national workshops': availableNationalWorkshops.length,
             },
             PLATFORMS.BOTH
           );
@@ -130,7 +132,7 @@ export default function RegionalWorkshopCatalog({
         setIsSubmitting(false);
       }
     },
-    [isSubmitting]
+    [isSubmitting, availableNationalWorkshops]
   );
 
   const RenderUpcomingLocalWorkshopsHeading = () => {
