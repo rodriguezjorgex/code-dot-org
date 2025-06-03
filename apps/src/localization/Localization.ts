@@ -285,13 +285,6 @@ export class Localization {
       return ret as T;
     }
   }
-
-  /**
-   * Retrieves a list of supported language codes.
-   */
-  languages(): string[] {
-    return [];
-  }
 }
 
 /**
