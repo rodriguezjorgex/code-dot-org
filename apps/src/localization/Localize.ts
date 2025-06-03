@@ -351,12 +351,6 @@ declare global {
   }
 }
 
-declare global {
-  interface Window {
-    Localize: LocalizeJS | undefined;
-  }
-}
-
 export {LocalizeJS};
 
 const Localize = typeof window !== 'undefined' ? window.Localize : undefined;
