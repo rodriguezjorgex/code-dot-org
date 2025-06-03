@@ -8,15 +8,6 @@
 import {get, set} from 'js-cookie';
 
 /**
- * If the current locale is not English, we must reload in English.
- */
-const locale = get('language_') || 'en';
-if (!locale.startsWith('en')) {
-  set('language_', 'en-US');
-  window.location.reload();
-}
-
-/**
  * The current course listing and a mapping between them and Localize project
  * keys. This is a temporary measure for now.
  */
@@ -201,25 +192,34 @@ function loadLocalize() {
 }
 
 if (projectKeys.length > 0 && inExperiment) {
-  // Load the Localize widget
-  const script = document.createElement('script');
-  const scriptUrl = 'https://global.localizecdn.com/localize.js';
-  script.src = scriptUrl;
-  script.type = 'text/javascript';
+  /**
+   * If the current locale is not English, we must reload in English.
+   */
+  const locale = get('language_') || 'en';
+  if (!locale.startsWith('en')) {
+    set('language_', 'en-US');
+    window.location.reload();
+  } else {
+    // Load the Localize widget
+    const script = document.createElement('script');
+    const scriptUrl = 'https://global.localizecdn.com/localize.js';
+    script.src = scriptUrl;
+    script.type = 'text/javascript';
 
-  // Create the loader promise for upstream initialization in the
-  // Localization class.
-  window.LocalizeLoader = new Promise((resolve, reject) => {
-    script.onload = () => {
-      // Optional: Handle script load event
-      loadLocalize();
-      resolve(window.Localize);
-    };
-    script.onerror = () => {
-      // Optional: Handle script load error
-      console.error(`Failed to load Localize script: ${scriptUrl}`);
-      reject();
-    };
-  });
-  document.head.appendChild(script);
+    // Create the loader promise for upstream initialization in the
+    // Localization class.
+    window.LocalizeLoader = new Promise((resolve, reject) => {
+      script.onload = () => {
+        // Optional: Handle script load event
+        loadLocalize();
+        resolve(window.Localize);
+      };
+      script.onerror = () => {
+        // Optional: Handle script load error
+        console.error(`Failed to load Localize script: ${scriptUrl}`);
+        reject();
+      };
+    });
+    document.head.appendChild(script);
+  }
 }
