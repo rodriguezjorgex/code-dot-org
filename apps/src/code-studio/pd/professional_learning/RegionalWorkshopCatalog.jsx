@@ -53,7 +53,7 @@ export default function RegionalWorkshopCatalog({
         {
           'zip code': null,
           'regional partner': null,
-          'number of regional workshops': null,
+          'number of regional workshops': 0,
           'number of national workshops': availableNationalWorkshops.length,
         },
         PLATFORMS.BOTH
