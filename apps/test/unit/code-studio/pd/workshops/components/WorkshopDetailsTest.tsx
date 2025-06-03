@@ -2,6 +2,7 @@ import {render, screen} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import React from 'react';
 
+import {SessionFormat} from '@cdo/apps/code-studio/pd/workshop_dashboard/WorkshopFormTemplate/types';
 import WorkshopDetails from '@cdo/apps/code-studio/pd/workshops/components/WorkshopDetails';
 
 const baseProps = {
@@ -16,7 +17,7 @@ const baseProps = {
       location_name: 'Kyiv, Intercontinental Hotel',
       location_address: '',
       meeting_link: '',
-      session_format: 'In Person',
+      session_format: 'in_person' as SessionFormat,
     },
   ],
   fee: '0',

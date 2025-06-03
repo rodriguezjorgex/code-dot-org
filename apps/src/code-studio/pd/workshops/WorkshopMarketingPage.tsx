@@ -17,7 +17,7 @@ const workshopMarketingBreadcrumbs: LinkWithText[] = [
   },
   {
     text: 'Workshop information',
-    href: '/pd/workshops/1',
+    href: window.location.pathname,
   },
 ];
 

@@ -1,3 +1,5 @@
+import {SessionFormat} from '@cdo/apps/code-studio/pd/workshop_dashboard/WorkshopFormTemplate/types';
+
 export interface OrganizerInfo {
   name: string;
   email: string;
@@ -17,7 +19,7 @@ export interface SessionInfo {
   location_name?: string;
   location_address?: string;
   meeting_link?: string;
-  session_format: string;
+  session_format: SessionFormat;
 }
 
 export interface GetWorkshopInfoScriptDataResponse {

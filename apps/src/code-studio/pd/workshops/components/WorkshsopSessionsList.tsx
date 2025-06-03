@@ -6,32 +6,30 @@ import {
 } from '@code-dot-org/component-library/typography';
 import React from 'react';
 
+import {
+  getSessionDate,
+  getSessionTimes,
+} from '@cdo/apps/code-studio/pd/sessionDateUtils';
+import {TIME_FORMAT} from '@cdo/apps/code-studio/pd/workshop_dashboard/workshopConstants';
+
 import {GetWorkshopInfoScriptDataResponse, SessionInfo} from './../types';
 
 import moduleStyles from './workshopSessionsList.module.scss';
 
 const renderSessionsListItem = (session: SessionInfo) => {
-  const startDate = new Date(session.start);
-  const endDate = new Date(session.end);
-
-  const dateFormatter = new Intl.DateTimeFormat('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
+  const dateLabel = getSessionDate({
+    session,
+    format: 'MMMM Do, YYYY',
+    isLocal: session.is_local,
   });
-
-  const timeFormatter = new Intl.DateTimeFormat('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
+  const {startTime, endTime, tzAbbreviation} = getSessionTimes({
+    session,
+    format: TIME_FORMAT,
+    isLocal: session.is_local,
   });
+  const timeRange = `${startTime} - ${endTime} ${tzAbbreviation}`;
 
-  const dateLabel = dateFormatter.format(startDate);
-  const timeRange = `${timeFormatter.format(
-    startDate
-  )} – ${timeFormatter.format(endDate)}`;
-
-  const isVirtual = !!session.meeting_link;
+  const isVirtual = session.session_format === 'virtual';
 
   const locationLabel = isVirtual
     ? 'Virtual / Zoom'
