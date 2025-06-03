@@ -1,6 +1,6 @@
 import {get} from 'js-cookie';
 
-import Localize, {LocalizeOptions} from '@cdo/apps/localization/Localize';
+import {LocalizeOptions} from '@cdo/apps/localization/Localize';
 import experiments from '@cdo/apps/util/experiments';
 import getScriptData from '@cdo/apps/util/getScriptData';
 import {DefaultLocale} from '@cdo/generated-scripts/sharedConstants';
@@ -53,6 +53,7 @@ export class Localization {
   private options: LocalizeOptions | undefined;
 
   private localeList: LanguageInfo[] = [];
+  private Localize: LocalizeJS | undefined;
 
   /**
    * Instantiates our localization code and binds events to the LocalizeJS
@@ -65,25 +66,30 @@ export class Localization {
       return;
     }
 
-    // Hook into the widget code
-    Localize?.on('initialize', options => {
-      this.options = options as LocalizeOptions;
-    });
+    this.localeList = [];
+    window.LocalizeLoader?.then(loadedLocalize => {
+      this.Localize = loadedLocalize;
 
-    Localize?.on('setLanguage', _ => {
-      // Call our own 'change' event
-      this.trigger('change', {
-        code: this.locale,
-        rtl: this.rtl,
+      // Hook into the widget code
+      this.Localize?.on('initialize', options => {
+        this.options = options as LocalizeOptions;
       });
-    });
 
-    Localize?.getAvailableLanguages((_, data) => {
-      this.localeList = data.map(({name, code}) => ({
-        text: name,
-        value: code,
-        rtl: this.isRTL(code),
-      }));
+      this.Localize.on('setLanguage', _ => {
+        // Call our own 'change' event
+        this.trigger('change', {
+          code: this.locale,
+          rtl: this.rtl,
+        });
+      });
+
+      this.Localize.getAvailableLanguages((_, data) => {
+        this.localeList = data.map(({name, code}) => ({
+          text: name,
+          value: code,
+          rtl: this.isRTL(code),
+        }));
+      });
     });
   }
 
@@ -91,7 +97,7 @@ export class Localization {
    * Updates the locale to the given region code.
    */
   set locale(languageCode: string) {
-    Localize?.setLanguage(languageCode);
+    this.Localize?.setLanguage(languageCode);
   }
 
   /**
@@ -101,7 +107,7 @@ export class Localization {
     // If not using LocalizeJS, then pull from the language cookie
     // And always fall back to the DefaultLocale
     const language =
-      Localize?.getLanguage() || get('language_') || DefaultLocale;
+      this.Localize?.getLanguage() || get('language_') || DefaultLocale;
 
     return (
       this.localeList.find(info => info.value === language)?.value ||
@@ -246,7 +252,7 @@ export class Localization {
       return key.map(key => this.translate(key, labels)) as T;
     } else if (key instanceof HTMLElement) {
       // TODO: add labels to data-localize attribute before sending
-      return Localize?.translate(key) || (key as T);
+      return this.Localize?.translate(key) || (key as T);
     } else if (typeof key === 'string') {
       // Calls out to LocalizeJS, our third-party provider, to get the translation
       let payload: string | HTMLElement = key;
@@ -256,7 +262,7 @@ export class Localization {
         dummy.textContent = payload;
         payload = dummy;
       }
-      const ret = Localize?.translate(payload) || payload;
+      const ret = this.Localize?.translate(payload) || payload;
       if (ret instanceof HTMLElement) {
         return ((ret as HTMLElement).textContent || key) as T;
       }

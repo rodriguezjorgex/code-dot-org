@@ -210,7 +210,7 @@ export type LocalizeCallbackData =
 /**
  * The LocalizeJS frontend API object.
  */
-interface Localize {
+interface LocalizeJS {
   /**
    * Translates the page into the given language.
    */
@@ -347,7 +347,7 @@ interface Localize {
 
 declare global {
   interface Window {
-    Localize: Localize | undefined;
+    Localize: LocalizeJS | undefined;
   }
 }
 
