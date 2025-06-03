@@ -221,5 +221,5 @@ if (projectKeys.length > 0 && inExperiment) {
       reject();
     };
   });
-  document.head.appendChild(script); // Or document.body.appendChild(script)
+  document.head.appendChild(script);
 }
