@@ -11,7 +11,7 @@ Feature: Regional Workshop Catalog page
     And I wait until element "h2:contains(Enter zip code to see workshops)" is visible
 
     # Enter zip with no match and no workshops
-    Then I press keys "11" for element "input[name='zipSearch']"
+    Then I press keys "99999" for element "input[name='zipSearch']"
     Then I click selector "span:contains(Submit)"
     And I wait until element "p:contains(No regional partner found)" is visible
     And I wait until element "h2:contains(No workshops found)" is visible

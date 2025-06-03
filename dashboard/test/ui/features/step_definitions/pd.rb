@@ -53,11 +53,10 @@ Given(/^I am a program manager$/) do
 end
 
 Given(/^I have a regional partner named "([^"]*)" in the zip code "([^"]*)"$/) do |partner_name, zip_code|
-  browser_request(
-    url: '/api/test/create_regional_partner',
-    method: 'POST',
-    body: {partner_name: partner_name, zip_code: zip_code}
-  )
+  require_rails_env
+
+  regional_partner = RegionalPartner.find_or_create_by(name: partner_name, group: 1, is_active: true)
+  regional_partner.mappings.find_or_create_by!(zip_code: zip_code.to_s)
 end
 
 Given(/^I have a regional partner with a teacher application$/) do
@@ -82,13 +81,11 @@ Given(/^I get the workshop id from the current url$/) do
 end
 
 Given(/^I create a workshop under the regional partner named "([^"]+)"$/) do |partner_name|
-  workshop = FactoryBot.create :summer_workshop
+  require_rails_env
 
-  browser_request(
-    url: '/api/test/create_workshop_under_rp',
-    method: 'POST',
-    body: {partner_name: partner_name, workshop_id: workshop.id}
-  )
+  regional_partner = RegionalPartner.find_by(name: partner_name, is_active: true)
+  workshop = FactoryBot.create :summer_workshop
+  workshop.update!(regional_partner_id: regional_partner.id)
 end
 
 Given(/^I delete the workshop$/) do
