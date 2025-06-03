@@ -161,12 +161,14 @@ export default class WorkshopEnroll extends React.Component {
       'rpName',
       this.props.workshop.regional_partner?.name || ''
     );
+    sessionStorage.setItem('workshopId', this.props.workshop.id);
     sessionStorage.setItem('workshopCourse', this.props.workshop.course);
     sessionStorage.setItem(
       'workshopSubject',
       this.props.workshop.subject || ''
     );
     sessionStorage.setItem('workshopName', this.props.workshop.name || '');
+    sessionStorage.setItem('workshopFormat', this.props.workshop.format);
     sessionStorage.setItem(
       'sessionTimeInfo',
       JSON.stringify(this.props.session_info_for_calendar)
