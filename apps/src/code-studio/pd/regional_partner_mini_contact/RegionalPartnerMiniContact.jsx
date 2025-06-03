@@ -108,6 +108,7 @@ export class RegionalPartnerMiniContact extends React.Component {
       this.setState({submitted: true, submitting: false});
       analyticsReporter.sendEvent(EVENTS.SUBMIT_RP_CONTACT_FORM_EVENT, {
         'source page id': this.props.sourcePageId,
+        'regional partner': results.responseJSON['regional_partner_name'],
       });
     } else {
       this.setState({submitted: false, submitting: false});
