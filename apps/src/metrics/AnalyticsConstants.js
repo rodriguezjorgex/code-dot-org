@@ -115,6 +115,7 @@ const EVENTS = {
   WORKSHOP_ENROLLMENT_COMPLETED_EVENT: 'Workshop Enrollment Completed',
   WORKSHOP_ADD_SESSION_TO_CALENDAR_CLICK_EVENT:
     'Workshop Add Session to Calendar Clicked',
+  RP_LANDING_ZIP_ENTERED: 'Regional Partner Landing Zip Entered',
   RP_LANDING_ENROLL_CLICKED: 'Regional Partner Landing Enroll Button Clicked',
 
   // Workshop session attendance
