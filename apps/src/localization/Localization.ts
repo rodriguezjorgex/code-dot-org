@@ -1,9 +1,18 @@
 import {get} from 'js-cookie';
 
-import {LocalizeOptions} from '@cdo/apps/localization/Localize';
+import type {
+  LocalizeJS,
+  LocalizeOptions,
+} from '@cdo/apps/localization/Localize';
 import experiments from '@cdo/apps/util/experiments';
 import getScriptData from '@cdo/apps/util/getScriptData';
 import {DefaultLocale} from '@cdo/generated-scripts/sharedConstants';
+
+declare global {
+  interface Window {
+    LocalizeLoader: Promise<LocalizeJS>;
+  }
+}
 
 export type TranslatableHash = {[key: string]: string};
 
