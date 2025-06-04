@@ -138,20 +138,25 @@ export class Localization {
   get locales(): LanguageInfo[] {
     // These workarounds will go away when the localization is done completely
     // on the frontend.
+    type ScriptData = {localeOptions: Omit<LanguageInfo, 'rtl'>[]};
+
     if (this.localeList.length === 0) {
       // Localize has not given us any languages... build from the existing
       // localization dropdown.
-      this.localeList = (
-        (
-          getScriptData('smallfooter') as
-            | {localeOptions: Omit<LanguageInfo, 'rtl'>[]}
-            | undefined
-        )?.localeOptions || []
-      ).map(({text, value}) => ({
-        text,
-        value,
-        rtl: this.isRTL(value),
-      }));
+      let scriptData: ScriptData | undefined = undefined;
+      try {
+        scriptData = getScriptData('smallfooter') as ScriptData | undefined;
+      } catch (_) {
+        // Ignore the situation where the small or large footer doesn't exist
+      }
+
+      this.localeList = (scriptData?.localeOptions || []).map(
+        ({text, value}) => ({
+          text,
+          value,
+          rtl: this.isRTL(value),
+        })
+      );
     }
 
     if (this.localeList.length === 0) {
