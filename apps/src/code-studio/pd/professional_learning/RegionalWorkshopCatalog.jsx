@@ -63,6 +63,12 @@ export default function RegionalWorkshopCatalog({
     }
   }, [zipFromSchoolInfo, handleSubmitZip, nationalWorkshops]);
 
+  const submitOnEnter = event => {
+    if (event.key === 'Enter') {
+      handleSubmitZip(zipCode, false);
+    }
+  };
+
   const handleSubmitZip = useCallback(
     async (submittedZip, prepopulatingZip) => {
       if (isSubmitting) {
@@ -329,6 +335,7 @@ export default function RegionalWorkshopCatalog({
               aria-label="zipSearch"
               label="School ZIP Code:"
               onChange={e => setZipCode(e.target.value)}
+              onKeyDown={submitOnEnter}
               value={zipCode}
               maxLength={255}
               placeholder="12345"
