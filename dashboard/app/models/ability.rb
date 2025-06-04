@@ -413,6 +413,7 @@ class Ability
         Video,
         Vocabulary,
         Skill,
+        LevelsSkill,
         :foorm_editor,
         Foorm::Form,
         Foorm::Library,
