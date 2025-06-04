@@ -84,8 +84,7 @@ Given(/^I create a workshop under the regional partner named "([^"]+)"$/) do |pa
   require_rails_env
 
   regional_partner = RegionalPartner.find_by(name: partner_name, is_active: true)
-  workshop = FactoryBot.create :summer_workshop
-  workshop.update!(regional_partner_id: regional_partner.id)
+  FactoryBot.create(:summer_workshop, regional_partner_id: regional_partner.id)
 end
 
 Given(/^I delete the workshop$/) do
