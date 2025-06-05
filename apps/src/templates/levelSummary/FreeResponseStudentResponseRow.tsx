@@ -7,13 +7,13 @@ import {
   FeedbackData,
   logAiInteractionFeedback as logUserFeedbackOnStudentEvaluation,
 } from '@cdo/apps/aiEvaluation/aiInteractionFeedbackApi';
+import {StudentWorkEvaluationStatus} from '@cdo/generated-scripts/sharedConstants';
 
 import AiEvaluationFeedbackModal from './AiEvaluationFeedbackModal';
 import {FEEDBACK_TYPE} from './AiFeedbackType';
 import FeedbackToggle from './FeedbackToggle';
 
 import styles from './summary.module.scss';
-import {StudentWorkEvaluationStatus} from '@cdo/generated-scripts/sharedConstants';
 
 type FreeResponseStudentResponseRowProps = {
   studentWorkEvaluation: StudentWorkEvaluation;

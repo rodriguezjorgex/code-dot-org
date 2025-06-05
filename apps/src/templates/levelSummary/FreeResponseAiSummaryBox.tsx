@@ -11,6 +11,7 @@ import {StudentWorkEvaluation} from '@cdo/apps/aiEvaluation/aiEvaluationApi';
 import {EVENTS} from '@cdo/apps/metrics/AnalyticsConstants';
 import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
 import {useAppSelector} from '@cdo/apps/util/reduxHooks';
+import {StudentWorkEvaluationStatus} from '@cdo/generated-scripts/sharedConstants';
 import i18n from '@cdo/locale';
 
 import aiBot from './AI-Bot-default.png';
@@ -19,8 +20,6 @@ import FeedbackToggle from './FeedbackToggle';
 import FreeResponseSummaryDataBox from './FreeResponseSummaryDataBox';
 
 import styles from './summary.module.scss';
-import {StudentWorkEvaluationStatus} from '@cdo/generated-scripts/sharedConstants';
-import Student from '../codeReviewGroups/Student';
 
 type FreeResponseAiSummaryBoxProps = {
   aiEvaluationHandler: () => void;
