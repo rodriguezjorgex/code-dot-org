@@ -13,6 +13,7 @@ import {FEEDBACK_TYPE} from './AiFeedbackType';
 import FeedbackToggle from './FeedbackToggle';
 
 import styles from './summary.module.scss';
+import {StudentWorkEvaluationStatus} from '@cdo/generated-scripts/sharedConstants';
 
 type FreeResponseStudentResponseRowProps = {
   studentWorkEvaluation: StudentWorkEvaluation;
@@ -65,7 +66,10 @@ const FreeResponseStudentResponseRow: React.FC<
           className={styles.needsReviewStudentTag}
         />
       );
-    } else if (studentWorkEvaluation?.aiEvaluation === 'No attempt') {
+    } else if (
+      studentWorkEvaluation?.aiEvaluation ===
+      StudentWorkEvaluationStatus.NO_ATTEMPT
+    ) {
       return (
         <Tags
           tagsList={[
@@ -83,7 +87,12 @@ const FreeResponseStudentResponseRow: React.FC<
           className={styles.noAttemptTag}
         />
       );
-    } else if (studentWorkEvaluation?.aiEvaluation === 'Profanity detected') {
+    } else if (
+      studentWorkEvaluation?.aiEvaluation ===
+        StudentWorkEvaluationStatus.STUDENT_PROFANITY ||
+      studentWorkEvaluation?.aiEvaluation ===
+        StudentWorkEvaluationStatus.STUDENT_PII
+    ) {
       return (
         <Tags
           tagsList={[
@@ -130,9 +139,9 @@ const FreeResponseStudentResponseRow: React.FC<
         {studentWorkEvaluation?.studentWork}
       </BodyThreeText>
       <div className={styles.aiAnalysisTagColumn}>{analysisTag()}</div>
-      <BodyThreeText
-        className={styles.aiAnalysisReasoningColumn}
-      >{`${studentWorkEvaluation?.aiEvaluation}. ${studentWorkEvaluation?.aiReasoning}`}</BodyThreeText>
+      <BodyThreeText className={styles.aiAnalysisReasoningColumn}>
+        {studentWorkEvaluation?.aiReasoning}
+      </BodyThreeText>
       <div>
         <FeedbackToggle
           onThumbsUpClick={() => handleFeedbackClick(true)}

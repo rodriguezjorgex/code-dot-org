@@ -29,20 +29,20 @@ class OpenaiEvaluateController < ApplicationController
     # for evaluation. Instead, return a custom response explaining why the student's
     # work was not evaluated.
     no_attempt_response = {
-      aiEvaluation: "No attempt",
+      aiEvaluation: SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:NO_ATTEMPT],
       evaluationCriteria: "Did the student attempt the level?",
     }
 
     profanity_detected_response = {
-      aiEvaluation: "Profanity detected",
+      aiEvaluation: SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:STUDENT_PROFANITY],
       evaluationCriteria: "Did the student use profanity?",
       aiReasoning: "The response contains profanity and could not be evaluated.",
     }
 
     pii_detected_response = {
-      aiEvaluation: "PII detected",
+      aiEvaluation: SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:STUDENT_PII],
       evaluationCriteria: "Does the student work contain personally identifying information?",
-      aiReasoning: "The response contains PII and could not be evaluated.",
+      aiReasoning: "The response contains personal information that is not safe for your student to share and could not be evaluated.",
     }
 
     if level.is_a?(FreeResponse) && student_work.delete(' ').empty?

@@ -19,6 +19,8 @@ import FeedbackToggle from './FeedbackToggle';
 import FreeResponseSummaryDataBox from './FreeResponseSummaryDataBox';
 
 import styles from './summary.module.scss';
+import {StudentWorkEvaluationStatus} from '@cdo/generated-scripts/sharedConstants';
+import Student from '../codeReviewGroups/Student';
 
 type FreeResponseAiSummaryBoxProps = {
   aiEvaluationHandler: () => void;
@@ -109,13 +111,18 @@ const FreeResponseAiSummaryBox: React.FC<FreeResponseAiSummaryBoxProps> = ({
     : 0;
 
   const flaggedStudentCount = studentWorkEvaluations
-    ? countEvaluationsByType(studentWorkEvaluations, ['Profanity detected'])
+    ? countEvaluationsByType(studentWorkEvaluations, [
+        StudentWorkEvaluationStatus.STUDENT_PII,
+        StudentWorkEvaluationStatus.STUDENT_PROFANITY,
+      ])
     : 0;
 
   // A student can have "no response" if they have not started the level yet OR
   // if they have submitted a response but it is empty.
   const noResponseStudentCount = studentWorkEvaluations
-    ? countEvaluationsByType(studentWorkEvaluations, ['No attempt']) +
+    ? countEvaluationsByType(studentWorkEvaluations, [
+        StudentWorkEvaluationStatus.NO_ATTEMPT,
+      ]) +
       (totalNumberOfStudents - studentWorkEvaluations.length)
     : 0;
 
