@@ -6,7 +6,7 @@ import AccountBanner from '@cdo/apps/templates/account/AccountBanner';
 import AccountCard from '@cdo/apps/templates/account/AccountCard';
 import i18n from '@cdo/locale';
 
-import styles from './link-account.module.scss';
+import styles from './gate-pages.module.scss';
 
 const SOURCE_PAGE_TEXT: {
   [key: string]: {
