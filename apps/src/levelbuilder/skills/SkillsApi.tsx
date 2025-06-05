@@ -20,7 +20,7 @@ export async function createSkill(skill: Skill) {
   )
     .then(response => response.json())
     .then(json => {
-      if (json.success) {
+      if (json.status === 'success') {
         return json;
       } else {
         throw new Error(`Failed to create skill: ${json.error}`);
@@ -32,8 +32,7 @@ export async function createSkill(skill: Skill) {
         errorMessage: (error as Error).message || 'Failed to save Skill',
       });
     });
-
-  return response.json();
+  return response;
 }
 
 interface LevelsSkill {
@@ -65,5 +64,5 @@ export async function createLevelsSkill(levelsSkill: LevelsSkill) {
       });
     });
 
-  return response.json();
+  return response;
 }
