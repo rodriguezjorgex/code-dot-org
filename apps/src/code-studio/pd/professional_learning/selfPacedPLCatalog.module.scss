@@ -15,18 +15,53 @@
   }
 
   .headerContainer {
-    max-width: 60em;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 30px;
+    background-color: var(--brand-teal-5);
+
+    .headerContent {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 30px;
+      max-width: 60em;
+      margin: 0 auto;
+    }
   }
 
   .bodyContainer {
-    .catalogFiltersContainer {
+    background-color: var(--neutral-base-white);
 
+    .catalogFiltersContainer {
+      .catalogDropdownFiltersTopRow {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        max-width: 60em;
+        margin: 0 auto;
+        padding: 1em 0 0 0;
+
+        button {
+          background-color: var(--neutral-base-white);
+          color: var(--brand-purple-50);
+        }
+      }
+
+      .catalogDropdownFilters {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 16px;
+        max-width: 60em;
+        margin: 0 auto;
+        padding: 0 0 1em 0;
+
+        .dropdownButton {
+          background-color: var(--neutral-base-white);
+        }
+      }
+
+      button {
+        margin: 0;
+      }
     }
 
     .catalogContentNoResults {

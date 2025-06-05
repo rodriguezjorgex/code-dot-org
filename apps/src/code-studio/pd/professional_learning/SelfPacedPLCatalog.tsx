@@ -92,7 +92,9 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
   return (
     <div className={style.selfPacedPLCatalog}>
       <section className={style.headerContainer}>
-        <Heading1>Self-Paced Professional Learning Catalog</Heading1>
+        <div className={style.headerContent}>
+          <Heading1>Self-Paced Professional Learning Catalog</Heading1>
+        </div>
       </section>
       <section className={style.bodyContainer}>
         <SelfPacedPLCatalogFilters
