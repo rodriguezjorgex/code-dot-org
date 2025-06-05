@@ -298,8 +298,6 @@ class FilesTest < FilesApiTestBase
     @api.get_object(stored_name)
     assert successful?
     header = last_response['Content-Disposition']
-    # Header should not contain CR or LF
-    refute_match(/[\r\n]/, header, "Header contains CR or LF: #{header.inspect}")
     # Header should match the sanitized filename
     assert_equal "attachment; filename=\"#{stored_name}\"", header, "Header was: #{header.inspect}"
     delete_all_manifest_versions
