@@ -32,6 +32,9 @@ const EVENT_STATUSES = {
   MovedOnline: 'https://schema.org/EventMovedOnline',
 } as const;
 
+// Prevent any issues with hash fragments in URLs
+const getPageUrl = (): string => window.location.href.split('#')[0];
+
 const getWorkshopDates = (sessions: SessionInfo[]) => {
   if (!sessions?.length) return {startDate: undefined, endDate: undefined};
 
@@ -97,7 +100,7 @@ const getLocation = (
   if (format === 'virtual') {
     return {
       '@type': 'VirtualLocation',
-      url: window.location.href,
+      url: getPageUrl(),
     };
   }
 
@@ -107,23 +110,29 @@ const getLocation = (
   };
 };
 
+const parseFee = (fee?: string): number => {
+  const parsed = Number(fee);
+  return !isNaN(parsed) && parsed >= 0 ? parsed : 0;
+};
+
 const getOffer = (
   fee?: string,
   capacity?: number,
   num_enrollments?: number
 ): {offer: Offer; priceNumber: number} => {
-  const priceNumber = fee && !isNaN(Number(fee)) ? Number(fee) : 0;
+  const priceNumber = parseFee(fee);
 
   const offer: Offer = {
     '@type': 'Offer',
     price: priceNumber,
     priceCurrency: 'USD',
     availability: getAvailability(capacity ?? 0, num_enrollments ?? 0),
-    url: window.location.href,
+    url: getPageUrl(),
   };
 
   return {offer, priceNumber};
 };
+
 const getOrganizer = (
   organizer?: OrganizerInfo,
   regional_partner_name?: string
@@ -135,25 +144,72 @@ const getOrganizer = (
   };
 };
 
-/** JSON-LD for structured data. Needed for Google SEO.
- *  (see https://developers.google.com/search/docs/appearance/structured-data/event)
- */
-const WorkshopEventJsonLdData: React.FC<
-  GetWorkshopInfoScriptDataResponse
-> = props => {
-  const {
-    name,
-    description,
-    sessions,
-    format,
-    location_name,
-    fee,
-    capacity,
-    num_enrollments,
-    organizer,
-    regional_partner_name,
-  } = props;
+const getKeywords = (
+  course?: string,
+  subject?: string,
+  course_offerings?: string[]
+): string | undefined => {
+  const keywords = [course, subject, ...(course_offerings ?? [])].filter(
+    Boolean
+  );
+  return keywords.length ? keywords.join(', ') : undefined;
+};
 
+const summarizeGradeLevels = (grade_levels?: string[]): string | undefined => {
+  if (!grade_levels?.length) return undefined;
+
+  const grades = grade_levels.map(g => g.trim().toUpperCase());
+  const hasKindergarten = grades.includes('K');
+  const numericGrades = grades
+    .filter(g => g !== 'K')
+    .map(Number)
+    .filter(n => !isNaN(n))
+    .sort((a, b) => a - b);
+
+  let numericPart = '';
+  if (numericGrades.length === 1) {
+    numericPart = `Grade ${numericGrades[0]}`;
+  } else if (numericGrades.length > 1) {
+    numericPart = `Grades ${numericGrades[0]}-${
+      numericGrades[numericGrades.length - 1]
+    }`;
+  }
+
+  if (hasKindergarten && numericPart) {
+    return `Kindergarten, ${numericPart}`;
+  } else if (hasKindergarten) {
+    return 'Kindergarten';
+  } else {
+    return numericPart || undefined;
+  }
+};
+
+const getAudience = (grade_levels?: string[]) => {
+  const summarized = summarizeGradeLevels(grade_levels);
+  return summarized
+    ? ({
+        '@type': 'EducationalAudience',
+        name: summarized,
+      } as const)
+    : undefined;
+};
+
+const WorkshopEventJsonLdData: React.FC<GetWorkshopInfoScriptDataResponse> = ({
+  name,
+  description,
+  sessions,
+  format,
+  location_name,
+  fee,
+  capacity,
+  num_enrollments,
+  organizer,
+  regional_partner_name,
+  grade_levels,
+  course,
+  subject,
+  course_offerings,
+}) => {
   const {startDate, endDate} = getWorkshopDates(sessions);
   const {offer, priceNumber} = getOffer(fee, capacity, num_enrollments);
 
@@ -168,10 +224,13 @@ const WorkshopEventJsonLdData: React.FC<
         description,
         eventAttendanceMode: EVENT_ATTENDANCE_MODES[format],
         eventStatus: EVENT_STATUSES.Scheduled as EventStatusType,
-        location: getLocation(format, location_name),
+        location: getLocation(format, location_name, sessions),
         organizer: getOrganizer(organizer, regional_partner_name),
         offers: offer,
         isAccessibleForFree: priceNumber === 0 ? true : undefined,
+        audience: getAudience(grade_levels),
+        keywords: getKeywords(course, subject, course_offerings),
+        url: getPageUrl(),
       }}
     />
   );
