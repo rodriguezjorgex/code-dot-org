@@ -262,8 +262,6 @@ class FilesApi < Sinatra::Base
     #  the safe_filename below is just an extra precaution, as the attachment helper
     #  would have escaped the filename as well.  See Jira task: BC-72
     unless code_projects_domain_root_route || safely_viewable_file_type?(type)
-      # Sanitize filename for header: strip CR and LF
-      safe_filename = filename.gsub(/[\r\n]/, '')
       attachment(safe_filename)
     end
 
