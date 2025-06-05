@@ -1,7 +1,6 @@
-import HttpClient from '@cdo/apps/util/HttpClient';
-import MetricsReporter from '@cdo/apps/metrics/MetricsReporter';
 import {MetricEvent} from '@cdo/apps/metrics/events';
-import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
+import MetricsReporter from '@cdo/apps/metrics/MetricsReporter';
+import HttpClient from '@cdo/apps/util/HttpClient';
 
 interface Skill {
   key: string;
