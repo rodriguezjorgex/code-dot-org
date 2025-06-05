@@ -42,7 +42,7 @@ class OpenaiEvaluateController < ApplicationController
     pii_detected_response = {
       aiEvaluation: SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:STUDENT_PII],
       evaluationCriteria: "Does the student work contain personally identifying information?",
-      aiReasoning: "The response contains personal information that is not safe for your student to share and could not be evaluated.",
+      aiReasoning: "The response could not be evaluated because it contains personal information that is not safe for your student to share.",
     }
 
     if level.is_a?(FreeResponse) && student_work.delete(' ').empty?
