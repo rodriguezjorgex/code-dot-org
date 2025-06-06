@@ -25,6 +25,11 @@ const SOURCE_PAGE_TEXT: {
     newAccountDesc: i18n.accountNewAccountCardContentWorkshopEnroll(),
     existingAccountDesc: i18n.accountExistingAccountCardContentWorkshopEnroll(),
   },
+  'join section': {
+    headerDesc: i18n.accountNeededJoinSectionWithoutCodeBannerLabel(),
+    newAccountDesc: i18n.accountNeededJoinSectionCreateAccountCardContent(),
+    existingAccountDesc: i18n.accountNeededJoinSectionSignInCardContent(),
+  },
 };
 
 const LinkAccountPage: React.FunctionComponent<{
@@ -57,7 +62,7 @@ const LinkAccountPage: React.FunctionComponent<{
             id={'new-account-card'}
             icon={'user-plus'}
             title={i18n.ltiLinkAccountNewAccountCardHeaderLabel()}
-            content={i18n.accountNewAccountCardContentWorkshopEnroll()}
+            content={SOURCE_PAGE_TEXT[sourcePageTextKey].newAccountDesc}
             buttonText={i18n.createAccount()}
             buttonType="secondary"
             href={newAccountUrl}
@@ -66,7 +71,7 @@ const LinkAccountPage: React.FunctionComponent<{
             id={'existing-account-card'}
             icon={'user-check'}
             title={i18n.ltiLinkAccountExistingAccountCardHeaderLabel()}
-            content={i18n.accountExistingAccountCardContentWorkshopEnroll()}
+            content={SOURCE_PAGE_TEXT[sourcePageTextKey].existingAccountDesc}
             buttonText={i18n.ltiLinkAccountExistingAccountCardActionLabel()}
             buttonType="primary"
             href={existingAccountUrl}
