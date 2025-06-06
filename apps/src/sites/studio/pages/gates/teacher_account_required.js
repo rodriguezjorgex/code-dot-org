@@ -15,6 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
       sourcePage={urlParams['source_page']}
       editAccountLink={editAccountLink}
     />,
-    document.getElementById('logged-out-page')
+    document.getElementById('teacher-account-required-page')
   );
 });
