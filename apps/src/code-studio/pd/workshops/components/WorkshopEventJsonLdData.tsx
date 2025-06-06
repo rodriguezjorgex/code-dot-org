@@ -67,12 +67,7 @@ const determineWorkshopLocationName = (
     return '';
   }
 
-  // priority 1: main location_name from workshop itself
-  if (location_name?.trim()) {
-    return location_name.trim();
-  }
-
-  // priority 2: attempt extracting from sessions
+  // priority 1: check sessions first
   if (sessions && sessions.length > 0) {
     const locationNames = sessions
       .map(session => session.location_name?.trim())
@@ -86,6 +81,11 @@ const determineWorkshopLocationName = (
     if (uniqueLocations.length > 1) {
       return 'Location varies by session';
     }
+  }
+
+  // priority 2: fallback to workshop-level location_name
+  if (location_name?.trim()) {
+    return location_name.trim();
   }
 
   // priority 3: final fallback
