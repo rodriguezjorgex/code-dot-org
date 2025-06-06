@@ -75,7 +75,7 @@ class Pd::WorkshopEnrollmentControllerTest < ActionController::TestCase
     assert_template :new
   end
 
-  test 'students are shown students_cannot_enroll view' do
+  test 'students are sent to Teacher Acount Required page' do
     student = create :student
     sign_in student
     workshop = create :workshop, course: Pd::Workshop::COURSE_CSD
