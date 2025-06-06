@@ -36,7 +36,10 @@ class Pd::WorkshopEnrollmentController < ApplicationController
 
       redirect_to "/logged_out?source_page=#{source_page}&return_to=#{return_to}"
     elsif current_user.user_type == 'student'
-      render :students_cannot_enroll
+      source_page = ERB::Util.url_encode('workshop enroll')
+      return_to = ERB::Util.url_encode("/pd/workshops/#{@workshop.id}/enroll")
+
+      redirect_to "/teacher_account_required?source_page=#{source_page}&return_to=#{return_to}"
     elsif missing_application?
       render :missing_application
     elsif current_user.teacher? && current_user.email.blank?
