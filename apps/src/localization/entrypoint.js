@@ -191,7 +191,6 @@ if (projectKeys.length > 0 && inExperiment) {
         resolve(window.Localize);
       };
       script.onerror = () => {
-        // Optional: Handle script load error
         console.error(`Failed to load Localize script: ${scriptUrl}`);
         reject();
       };
