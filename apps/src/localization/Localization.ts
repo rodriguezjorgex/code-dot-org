@@ -11,9 +11,11 @@ import {DefaultLocale} from '@cdo/generated-scripts/sharedConstants';
 
 declare global {
   interface Window {
-    LocalizeLoader: Promise<LocalizeJS>;
+    LocalizeLoader?: Promise<LocalizeJS>;
   }
 }
+
+export const RTLLocales = ['fa'];
 
 export type TranslatableHash = {[key: string]: string};
 
@@ -109,6 +111,7 @@ export class Localization extends TypedEventEmitter<LocalizationEventMap> {
 
   private localeList: LanguageInfo[] = [];
   private Localize: LocalizeJS | undefined;
+  private loader?: Promise<boolean>;
 
   /**
    * Instantiates our localization code and binds events to the LocalizeJS
@@ -117,34 +120,51 @@ export class Localization extends TypedEventEmitter<LocalizationEventMap> {
   constructor() {
     super();
 
+    this.localeList = [];
+
     // Only allow when enableExperiments=localizejs has been set
     // or localizejs=1 is specified in the URL
     if (!experiments.isEnabledAllowingQueryString(experiments.LOCALIZEJS)) {
       return;
     }
 
-    this.localeList = [];
-    window.LocalizeLoader?.then(loadedLocalize => {
-      this.Localize = loadedLocalize;
+    this.loader = new Promise(resolve => {
+      window.LocalizeLoader?.then(loadedLocalize => {
+        this.Localize = loadedLocalize;
 
-      // Hook into the widget code
-      this.Localize?.on('initialize', options => {
-        this.options = options as LocalizeOptions;
+        // Hook into the widget code
+        this.Localize?.on('initialize', options => {
+          this.options = options as LocalizeOptions;
+        });
+
+        this.Localize?.on('setLanguage', _ => {
+          // Call our own 'change' event
+          this.emit('change', {locale: this.locale, rtl: this.rtl});
+        });
+
+        this.Localize?.getAvailableLanguages((_, data) => {
+          this.localeList = data.map(({name, code}) => ({
+            text: name,
+            value: code,
+            rtl: this.isRTL(code),
+          }));
+        });
+
+        resolve(true);
       });
 
-      this.Localize?.on('setLanguage', _ => {
-        // Call our own 'change' event
-        this.emit('change', {locale: this.locale, rtl: this.rtl});
-      });
-
-      this.Localize?.getAvailableLanguages((_, data) => {
-        this.localeList = data.map(({name, code}) => ({
-          text: name,
-          value: code,
-          rtl: this.isRTL(code),
-        }));
-      });
+      if (window.LocalizeLoader === undefined) {
+        resolve(false);
+      }
     });
+  }
+
+  async waitUntilLoaded(): Promise<boolean> {
+    if (this.loader === undefined) {
+      return true;
+    }
+
+    return await this.loader;
   }
 
   /**
@@ -161,7 +181,7 @@ export class Localization extends TypedEventEmitter<LocalizationEventMap> {
     // If not using LocalizeJS, then pull from the language cookie
     // And always fall back to the DefaultLocale
     const language =
-      this.Localize?.getLanguage?.() || get('language_') || DefaultLocale;
+      this.Localize?.getLanguage() || get('language_') || DefaultLocale;
 
     return (
       this.localeList.find(info => info.value === language)?.value ||
@@ -235,6 +255,7 @@ export class Localization extends TypedEventEmitter<LocalizationEventMap> {
     event: K,
     listener: (payload: LocalizationEventMap[K]) => void
   ): this {
+    // We have to override this to ensure `addListener` is an alias to `on`
     return this.on(event, listener);
   }
 
@@ -260,7 +281,7 @@ export class Localization extends TypedEventEmitter<LocalizationEventMap> {
    * @param code - The language code (e.g. 'en-US')
    */
   isRTL(code: string): boolean {
-    return ['fa'].includes(code.split('-')[0]);
+    return RTLLocales.includes(code?.split('-')[0]);
   }
 
   /**
@@ -279,11 +300,14 @@ export class Localization extends TypedEventEmitter<LocalizationEventMap> {
     labels: string[] = []
   ): T {
     if (Array.isArray(key)) {
-      //key = key as unknown as string[];
       return key.map(key => this.translate(key, labels)) as T;
     } else if (key instanceof HTMLElement) {
-      // TODO: add labels to data-localize attribute before sending
-      return this.Localize?.translate(key) || (key as T);
+      // Add labels as data-localize before sending
+      key.setAttribute('data-localize', labels.join(' '));
+      const ret = this.Localize?.translate(key) || (key as T);
+      // Remove the labels
+      key.removeAttribute('data-localize');
+      return ret;
     } else if (typeof key === 'string') {
       // Calls out to LocalizeJS, our third-party provider, to get the translation
       let payload: string | HTMLElement = key;
@@ -299,7 +323,6 @@ export class Localization extends TypedEventEmitter<LocalizationEventMap> {
       }
       return ret as T;
     } else {
-      //key = key as TranslatableHash;
       const ret: TranslatableHash = {};
       for (const [subkey, value] of Object.entries(key)) {
         ret[subkey] = this.translate(value, labels);
