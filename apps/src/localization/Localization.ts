@@ -136,16 +136,16 @@ export class Localization extends TypedEventEmitter<LocalizationEventMap> {
         this.Localize = loadedLocalize;
 
         // Hook into the widget code
-        this.Localize?.on('initialize', options => {
+        this.Localize?.on?.('initialize', options => {
           this.options = options as LocalizeOptions;
         });
 
-        this.Localize?.on('setLanguage', _ => {
+        this.Localize?.on?.('setLanguage', _ => {
           // Call our own 'change' event
           this.emit('change', {locale: this.locale, rtl: this.rtl});
         });
 
-        this.Localize?.getAvailableLanguages((_, data) => {
+        this.Localize?.getAvailableLanguages?.((_, data) => {
           this.localeList = data.map(({name, code}) => ({
             text: name,
             value: code,
@@ -177,7 +177,7 @@ export class Localization extends TypedEventEmitter<LocalizationEventMap> {
    * Updates the locale to the given region code.
    */
   set locale(languageCode: string) {
-    this.Localize?.setLanguage(languageCode);
+    this.Localize?.setLanguage?.(languageCode);
   }
 
   /**
@@ -187,7 +187,7 @@ export class Localization extends TypedEventEmitter<LocalizationEventMap> {
     // If not using LocalizeJS, then pull from the language cookie
     // And always fall back to the DefaultLocale
     const language =
-      this.Localize?.getLanguage() || get('language_') || DefaultLocale;
+      this.Localize?.getLanguage?.() || get('language_') || DefaultLocale;
 
     return (
       this.localeList.find(info => info.value === language)?.value ||
@@ -310,7 +310,7 @@ export class Localization extends TypedEventEmitter<LocalizationEventMap> {
     } else if (key instanceof HTMLElement) {
       // Add labels as data-localize before sending
       key.setAttribute('data-localize', labels.join(' '));
-      const ret = this.Localize?.translate(key) || (key as T);
+      const ret = this.Localize?.translate?.(key) || (key as T);
       // Remove the labels
       key.removeAttribute('data-localize');
       return ret;
@@ -323,7 +323,7 @@ export class Localization extends TypedEventEmitter<LocalizationEventMap> {
         dummy.textContent = payload;
         payload = dummy;
       }
-      const ret = this.Localize?.translate(payload) || payload;
+      const ret = this.Localize?.translate?.(payload) || payload;
       if (ret instanceof HTMLElement) {
         return ((ret as HTMLElement).textContent || key) as T;
       }
