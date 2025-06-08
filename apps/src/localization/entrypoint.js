@@ -11,49 +11,24 @@ import {get, set} from 'js-cookie';
  * The current course listing and a mapping between them and Localize project
  * keys. This is a temporary measure for now.
  */
-const csd_prefixes = [
-  '/courses/csd-2024',
-  '/s/csd1-2024',
-  '/s/csd2-2024',
-  '/s/csd3-2024',
-  '/s/csd4-2024',
-  '/s/csd5-2024',
-  '/s/csd6a-2024',
-  '/s/csd6b-2024',
-  '/s/csd7-2024',
-  '/s/csd-post-survey-2024',
-];
+const csd_prefixes = ['/courses/csd-2024'];
 
 const csf_prefixes = [
-  '/s/k5-unplugged',
-  '/s/express-2024',
-  '/s/pre-express-2024',
+  '/courses/k5-unplugged',
+  '/courses/express-2024',
+  '/courses/pre-express-2024',
 ];
 
 const donor_prefixes = [
-  '/s/k5-ai-data-2024',
-  '/s/elementaryai-2024',
-  '/s/getting-started-with-code',
-  '/s/k5howaimakesdecisions',
-  '/s/3-5gamedesign-2024',
+  '/courses/k5-ai-data-2024',
   '/courses/elementaryai-2024',
-  '/s/elem-game-design-2024',
   '/courses/3-5gamedesign-2024',
-  '/s/getting-started-with-code',
-  '/s/k5howaimakesdecisions',
-  '/s/getting-started-with-code-game-design',
-  '/s/k5plgamedesign',
+  '/courses/elementaryai-2024',
+  '/courses/elem-game-design-2024',
+  '/courses/3-5gamedesign-2024',
 ];
 
-const aif_prefixes = [
-  '/courses/artificial-intelligence-foundations-2025',
-  '/s/aif1-2025',
-  '/s/aif2-2025',
-  '/s/aif3-2025',
-  '/s/aif4-2025',
-  '/s/aif5-2025',
-  '/s/aif6-2025',
-];
+const aif_prefixes = ['/courses/artificial-intelligence-foundations-2025'];
 
 const prefixes = {
   MlKri360o3v2T: csd_prefixes,
@@ -198,6 +173,7 @@ if (projectKeys.length > 0 && inExperiment) {
   const locale = get('language_') || 'en';
   if (!locale.startsWith('en')) {
     set('language_', 'en-US');
+    set('language_', 'en-US', {domain: '.code.org'});
     window.location.reload();
   } else {
     // Load the Localize widget

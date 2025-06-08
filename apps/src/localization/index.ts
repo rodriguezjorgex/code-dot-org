@@ -1,5 +1,4 @@
-import {Localization, localization} from './Localization';
+import localization, {Localization} from './Localization';
 import {useLocalization} from './useLocalization';
 export {Localization, useLocalization};
-const localizationInstance = localization();
-export default localizationInstance;
+export default localization;

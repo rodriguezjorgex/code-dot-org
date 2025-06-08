@@ -1,3 +1,4 @@
+import {EventEmitter} from 'events';
 import {get} from 'js-cookie';
 
 import type {
@@ -22,13 +23,6 @@ export type TranslatableHash = {[key: string]: string};
  */
 export type Translatable = string[] | string | HTMLElement | TranslatableHash;
 
-export type TranslationCallbackData = {
-  code: string;
-  rtl: boolean;
-};
-
-export type TranslationCallback = (info: TranslationCallbackData) => void;
-
 /**
  * Describes an available language.
  */
@@ -47,17 +41,69 @@ export type LanguageInfo = {
   rtl: boolean;
 };
 
+export interface LocalizationChangeEvent {
+  locale: string;
+  rtl: boolean;
+}
+
+export interface LocalizationEventMap {
+  change: LocalizationChangeEvent;
+}
+
+type Listener<T> = (payload: T) => void;
+
+// A type mapping for the event emitter
+class TypedEventEmitter<
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any -- any callback data */
+  Events extends Record<string, any>
+> extends EventEmitter {
+  override on<K extends keyof Events>(
+    event: K | symbol | string,
+    listener: Listener<Events[K]>
+  ): this {
+    return super.on(event as string, listener);
+  }
+
+  override once<K extends keyof Events>(
+    event: K | symbol | string,
+    listener: Listener<Events[K]>
+  ): this {
+    return super.once(event as string, listener);
+  }
+
+  override off<K extends keyof Events>(
+    event: K | symbol | string,
+    listener: Listener<Events[K]>
+  ): this {
+    return super.off(event as string, listener);
+  }
+
+  override emit<K extends keyof Events>(
+    event: K | symbol | string,
+    payload: Events[K]
+  ): boolean {
+    return super.emit(event as string, payload);
+  }
+
+  override addListener<K extends keyof Events>(
+    event: K | symbol | string,
+    listener: Listener<Events[K]>
+  ): this {
+    return super.addListener(event as string, listener);
+  }
+
+  override removeListener<K extends keyof Events>(
+    event: K | symbol | string,
+    listener: Listener<Events[K]>
+  ): this {
+    return super.removeListener(event as string, listener);
+  }
+}
+
 /**
  * This class handles our dynamic localization engine.
  */
-export class Localization {
-  /**
-   * Keeps track of the only instance of the Localization class.
-   */
-  static singleton: Localization | undefined;
-
-  /* Keep track of callbacks for events */
-  private callbacks: {[key: string]: TranslationCallback[]} = {};
+export class Localization extends TypedEventEmitter<LocalizationEventMap> {
   /* Keep track of the options we gave to LocalizeJS */
   private options: LocalizeOptions | undefined;
 
@@ -69,6 +115,8 @@ export class Localization {
    * widget.
    */
   constructor() {
+    super();
+
     // Only allow when enableExperiments=localizejs has been set
     // or localizejs=1 is specified in the URL
     if (!experiments.isEnabledAllowingQueryString(experiments.LOCALIZEJS)) {
@@ -84,15 +132,12 @@ export class Localization {
         this.options = options as LocalizeOptions;
       });
 
-      this.Localize.on('setLanguage', _ => {
+      this.Localize?.on('setLanguage', _ => {
         // Call our own 'change' event
-        this.trigger('change', {
-          code: this.locale,
-          rtl: this.rtl,
-        });
+        this.emit('change', {locale: this.locale, rtl: this.rtl});
       });
 
-      this.Localize.getAvailableLanguages((_, data) => {
+      this.Localize?.getAvailableLanguages((_, data) => {
         this.localeList = data.map(({name, code}) => ({
           text: name,
           value: code,
@@ -116,7 +161,7 @@ export class Localization {
     // If not using LocalizeJS, then pull from the language cookie
     // And always fall back to the DefaultLocale
     const language =
-      this.Localize?.getLanguage() || get('language_') || DefaultLocale;
+      this.Localize?.getLanguage?.() || get('language_') || DefaultLocale;
 
     return (
       this.localeList.find(info => info.value === language)?.value ||
@@ -174,51 +219,23 @@ export class Localization {
     return this.localeList;
   }
 
-  /**
-   * Registers a callback for the given event.
-   *
-   * @param event - The name of the event to register.
-   * @param callback - The callback to perform when the event is triggered.
-   */
-  on(event: string, callback: TranslationCallback): void {
-    this.callbacks ||= {};
-    this.callbacks[event] ||= [];
-    this.callbacks[event].push(callback);
+  override on<K extends keyof LocalizationEventMap>(
+    event: K,
+    listener: (payload: LocalizationEventMap[K]) => void
+  ): this {
+    return super.on(event, listener);
 
+    // Ensure that we call the 'change' event at least once
     if (event === 'change') {
-      // If we aren't in the source language, let's trigger the change event
-      // right away.
-      this.trigger('change', {
-        code: this.locale,
-        rtl: this.rtl,
-      });
+      this.emit('change', {locale: this.locale, rtl: this.rtl});
     }
   }
 
-  /**
-   * Deregisters a callback for the given event.
-   *
-   * @param event - The name of the event to deregister.
-   * @param callback - The callback that was registered.
-   */
-  off(event: string, callback: TranslationCallback): void {
-    this.callbacks ||= {};
-    this.callbacks[event] = (this.callbacks[event] || []).filter(
-      item => item !== callback
-    );
-  }
-
-  /**
-   * Triggers an event with the given data to provide to the event callbacks.
-   *
-   * @param event - The name of the event to trigger.
-   * @param data - The data to pass to the previously registered event callbacks.
-   */
-  trigger(event: string, info: TranslationCallbackData) {
-    const callbacks = this.callbacks[event] || [];
-    for (const callback of callbacks) {
-      callback(info);
-    }
+  override addListener<K extends keyof LocalizationEventMap>(
+    event: K,
+    listener: (payload: LocalizationEventMap[K]) => void
+  ): this {
+    return this.on(event, listener);
   }
 
   /**
@@ -292,12 +309,4 @@ export class Localization {
   }
 }
 
-/**
- * Gets an instance to the Localization instance.
- */
-export const localization = () => {
-  Localization.singleton ||= new Localization();
-  return Localization.singleton;
-};
-
-export default localization;
+export default new Localization();

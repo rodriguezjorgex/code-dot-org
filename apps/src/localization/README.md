@@ -71,7 +71,7 @@ the relevant string using:
 import localization from '@cdo/apps/localization';
 
 localization.on('change', (info) => {
-  console.log("updating the language to", info.code, "rtl?" info.rtl);
+  console.log("updating the language to", info.locale, "rtl?" info.rtl);
   const myLocalizedString: string = localization.translate("my english string");
 });
 ```
