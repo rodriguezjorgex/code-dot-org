@@ -2,6 +2,19 @@ class SkillsController < ApplicationController
   before_action :authenticate_user!
   load_and_authorize_resource
 
+  def index
+    skills = Skill.all
+    skills_by_concept = {}
+    skills.each do |skill|
+      if skills_by_concept.key?(skill.concept)
+        skills_by_concept[skill.concept] << skill
+      else
+        skills_by_concept[skill.concept] = [skill]
+      end
+    end
+    @skills_by_concept = skills_by_concept
+  end
+
   def create
     @skill = Skill.new(skill_params)
 
