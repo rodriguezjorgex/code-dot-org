@@ -98,7 +98,7 @@ const SkillsContainer: React.FC<SkillsContainerProps> = ({
     <div>
       <h1>Skills</h1>
       {!canEditSkills && (
-        <h3>You need levebuilder permissions to view and edit Skills.</h3>
+        <h3>You need levelbuilder permissions to view and edit Skills.</h3>
       )}
       {canEditSkills && (
         <div>
