@@ -52,6 +52,17 @@ const SkillsContainer: React.FC<SkillsContainerProps> = ({
 
   const columns = [
     {
+      property: 'id',
+      header: {
+        label: 'Id',
+        props: {style: {...style.headerCell, ...styleOverrides.headerCell}},
+      },
+      cell: {
+        formatters: [(id: string) => <span>{id}</span>],
+        props: {style: style.cell},
+      },
+    },
+    {
       property: 'key',
       header: {
         label: 'Key',
