@@ -14,7 +14,7 @@ import {
 } from '@cdo/apps/templates/teacherDashboard/CourseOfferingHelpers';
 import i18n from '@cdo/locale';
 
-import {CourseOfferingInfo} from './SelfPacedPLCatalog';
+import {SelfPacedPLCourseInfo} from './SelfPacedPLCatalog';
 
 import style from './selfPacedPLCatalog.module.scss';
 
@@ -97,10 +97,10 @@ const getInitialFilterStates = () => {
 };
 
 const SelfPacedPLCatalogFilters: React.FunctionComponent<{
-  selfPacedPLCourseOfferings: Array<CourseOfferingInfo>;
-  filteredSelfPacedCourseOfferings: Array<CourseOfferingInfo>;
+  selfPacedPLCourseOfferings: Array<SelfPacedPLCourseInfo>;
+  filteredSelfPacedCourseOfferings: Array<SelfPacedPLCourseInfo>;
   setFilteredSelfPacedCourseOfferings: Dispatch<
-    SetStateAction<CourseOfferingInfo[]>
+    SetStateAction<SelfPacedPLCourseInfo[]>
   >;
 }> = ({
   selfPacedPLCourseOfferings,

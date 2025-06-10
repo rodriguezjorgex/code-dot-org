@@ -10,32 +10,20 @@ import SelfPacedPLCatalogFilters from './SelfPacedPLCatalogFilters';
 
 import style from './selfPacedPLCatalog.module.scss';
 
-export interface CourseOfferingInfo {
+export interface SelfPacedPLCourseInfo {
   key: string;
   display_name: string;
-  display_name_with_latest_year: string;
-  marketing_initiative: string;
   grade_levels: string;
   duration: string;
-  image?: string;
   cs_topic: string;
-  school_subject: string;
-  device_compatibility: string;
-  course_version_path: string;
-  course_version_id: number;
-  course_id: number;
-  course_offering_id: number;
-  script_id: number;
-  is_standalone_unit: boolean;
   description: string;
-  professional_learning_program: string;
+  image?: string;
   video?: string;
-  published_date: Date;
-  available_resources?: object;
+  course_version_path: string;
 }
 
 const SelfPacedPLCatalog: React.FunctionComponent<{
-  selfPacedPLCourseOfferings: Array<CourseOfferingInfo>;
+  selfPacedPLCourseOfferings: Array<SelfPacedPLCourseInfo>;
 }> = ({selfPacedPLCourseOfferings}) => {
   const [
     filteredSelfPacedCourseOfferings,
@@ -53,10 +41,9 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
     }
   }, [expandedCardKey, filteredSelfPacedCourseOfferings]);
 
-  const handleQuickViewClicked = (key: string) => {
-    // If Quick View is clicked again to close the card (or the 'X' on the expanded card is clicked), then
-    // the expandedCardKey will equal 'key' so we can just set expandedCardKey to ''. Otherwise, expand the
-    // card of the given key.
+  const updateExpandedCardKey = (key: string) => {
+    // If updateExpandedCardKey receives the same key as it currently is, then that indicates it's open and
+    // we want to close it so we set it to ''. Otherwise, we expand the card of the provided key.
     setExpandedCardKey(expandedCardKey === key ? '' : key);
   };
 
@@ -68,8 +55,19 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
         <div className={style.catalogContentCards}>
           {filteredSelfPacedCourseOfferings.map(courseOffering => (
             <SelfPacedPLCatalogCard
-              {...courseOffering}
-              handleQuickViewClicked={handleQuickViewClicked}
+              key={courseOffering.key}
+              display_name={courseOffering.display_name}
+              grade_levels={courseOffering.grade_levels}
+              duration={courseOffering.duration}
+              cs_topic={courseOffering.cs_topic}
+              description={courseOffering.description}
+              image={courseOffering.image}
+              video={courseOffering.video}
+              course_version_path={courseOffering.course_version_path}
+              isExpanded={expandedCardKey === courseOffering.key}
+              updateExpandedCardKey={() =>
+                updateExpandedCardKey(courseOffering.key)
+              }
             />
           ))}
         </div>

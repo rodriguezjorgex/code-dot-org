@@ -65,12 +65,233 @@
     }
 
     .catalogContentNoResults {
-
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 70%;
+      margin: 3em auto;
+      text-align: justify;
     }
 
     .catalogContentCards {
-      .cardContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, $container-width);
+      justify-content: center;
+      grid-gap: 1em;
+      max-width: 60em;
+      margin: 0 auto 1em auto;
 
+      .cardContainer {
+        display: flex;
+        flex-flow: column;
+        background-color: $neutral_light;
+        border-radius: $border-radius;
+        width: $container-width;
+        height: 25em;
+
+        .curriculumInfoContainer {
+          display: flex;
+          flex-flow: column;
+          height: 100%;
+          border: 1px solid $neutral_dark20;
+          border-top: 0;
+          border-radius: 0 0 $border-radius $border-radius;
+          padding: 1.25em 1em;
+
+          .csTopicLabels {
+            display: flex;
+            column-gap: 0.25em;
+            justify-content: space-between;
+            margin-bottom: 0.5em;
+            height: 1.5em;
+
+            i {
+              font-size: 1.5em;
+            }
+          }
+
+          i {
+            color: $neutral_dark80;
+          }
+
+          h4 {
+            margin-bottom: 0.75em;
+            color: $neutral_dark;
+          }
+        }
+
+        .buttonsContainer {
+          display: flex;
+          flex-wrap: wrap;
+          margin-top: auto;
+
+          button,
+          a,
+          a:link,
+          a:visited {
+            margin: 0;
+            height: 40px;
+            font-size: 1em;
+            line-height: 38px;
+          }
+        }
+
+        img {
+          height: 140px;
+          object-fit: cover;
+          border-radius: $border-radius $border-radius 0 0;
+        }
+      }
+
+      .cardContainer:nth-child(3n + 1) .centerExpandedCard {
+        justify-content: flex-start;
+      }
+
+      .cardContainer:nth-child(3n + 2) .centerExpandedCard {
+        justify-content: center;
+      }
+
+      .cardContainer:nth-child(3n + 3) {
+        .centerExpandedCard {
+          justify-content: flex-end;
+        }
+
+        .arrowContainer:before {
+          background: $neutral_light;
+        }
+      }
+
+      button.buttonFlex {
+        flex: 1;
+      }
+
+      .arrowContainer {
+        position: relative;
+        max-width: 600px;
+        height: auto;
+        border: 1px solid $neutral_white;
+        padding-top: 16px;
+        box-sizing: border-box;
+      }
+
+      .arrowContainer::before {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border-top: 1px solid $neutral_dark;
+        border-left: 1px solid $neutral_dark;
+        top: 100%;
+        left: 54.5%;
+        margin-left: -25px;
+        content: '';
+        transform: rotate(45deg);
+        margin-top: -9px;
+        background: $neutral_white;
+        z-index: 1;
+      }
+
+      .centerExpandedCard {
+        display: flex;
+      }
+
+      .iconWithDescription {
+        margin: 0 0 0.5em 0;
+      }
+
+      .horizontalDivider {
+        border-top: 1px solid $neutral_dark20;
+      }
+
+      .expandedCardContainer {
+        .flexDivider {
+          display: flex;
+
+          .plCourseOfferingContainer {
+            width: 736px;
+            padding: 16px 32px 16px 16px;
+            box-sizing: border-box;
+
+            > h3 {
+              margin-bottom: 8px;
+            }
+
+            .infoContainer {
+              display: flex;
+              column-gap: 20px;
+            }
+
+            .centerContentContainer {
+              display: flex;
+              column-gap: 48px;
+
+              .descriptionContentContainer {
+                width: 440px;
+
+                .descriptionContainer {
+                  margin-bottom: 20px;
+
+                  > p {
+                    font-size: 0.875em;
+                  }
+                }
+
+                .mediaContainer {
+                  display: flex;
+                  justify-content: center;
+
+                  .videoContainer {
+                    height: 246.5px;
+                    width: 100%;
+                  }
+
+                  .imageContainer {
+                    height: 166px;
+
+                    img {
+                      height: 100%;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          .sideBar {
+            background-color: $neutral_light;
+            width: 224px;
+            padding: 16px;
+            border-radius: 0 4px 4px 0;
+
+            .closeButtonContainer {
+              display: flex;
+              justify-content: end;
+              line-height: normal;
+
+              button.closeButton {
+                background: none;
+                border: none;
+                padding: 0;
+                margin: 0;
+                outline: none;
+                height: auto;
+              }
+
+              button:active {
+                border: none !important;
+              }
+
+              button:hover {
+                background-color: transparent;
+              }
+
+              i {
+                text-decoration: none;
+                color: $neutral_dark80;
+                font-size: 20px;
+              }
+            }
+          }
+        }
       }
     }
   }
