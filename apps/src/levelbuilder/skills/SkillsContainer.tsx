@@ -1,5 +1,9 @@
 import React from 'react';
 import {SimpleDropdown} from '@code-dot-org/component-library/dropdown';
+import * as Table from 'reactabular-table';
+import color from '@cdo/apps/util/color';
+import styleConstants from '@cdo/apps/styleConstants';
+import {tableLayoutStyles as style} from '@cdo/apps/templates/tables/tableConstants';
 
 interface SkillsByConcept {
   [key: string]: Array<Skill>;
@@ -18,11 +22,24 @@ interface SkillsContainerProps {
   skills: SkillsByConcept;
 }
 
+export const styleOverrides = {
+  table: {
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: color.border_gray,
+    width: `${styleConstants['content-width']}`,
+    backgroundColor: color.table_light_row,
+  },
+  headerCell: {
+    paddingLeft: '10px',
+    paddingRight: '10px',
+  },
+};
+
 const SkillsContainer: React.FC<SkillsContainerProps> = ({
   canEditSkills,
   skills,
 }) => {
-  console.log('skills', skills);
   const [selectedConcept, setSelectedConcept] = React.useState('');
   const concepts = Object.keys(skills)
     .sort((a, b) => a.localeCompare(b))
@@ -30,10 +47,53 @@ const SkillsContainer: React.FC<SkillsContainerProps> = ({
       value: concept,
       text: concept,
     }));
-  concepts.push({value: '', text: 'Select a concept'});
-  console.log('concepts', concepts);
-  console.log('selectedConcept', selectedConcept);
+  concepts.push({value: '', text: ''});
   const skillsToShow = skills[selectedConcept] || [];
+
+  const columns = [
+    {
+      property: 'key',
+      header: {
+        label: 'Key',
+        props: {style: {...style.headerCell, ...styleOverrides.headerCell}},
+      },
+      cell: {
+        formatters: [(key: string) => <span>{key}</span>],
+        props: {style: style.cell},
+      },
+    },
+    {
+      property: 'description',
+      header: {
+        label: 'description',
+        props: {style: {...style.headerCell, ...styleOverrides.headerCell}},
+      },
+      cell: {
+        formatters: [(description: string) => <span>{description}</span>],
+        props: {style: style.cell},
+      },
+    },
+    {
+      property: 'evaluationCriteria',
+      header: {
+        label: 'evaluation criteria',
+        // Override the default max-width style to allow for longer content
+        props: {
+          style: {
+            ...style.headerCell,
+            ...styleOverrides.headerCell,
+            maxWidth: 'unset',
+          },
+        },
+      },
+      cell: {
+        formatters: [
+          (evaluationCriteria: string) => <span>{evaluationCriteria}</span>,
+        ],
+        props: {style: {...style.cell, maxWidth: 'unset'}},
+      },
+    },
+  ];
   return (
     <div>
       <h1>Skills</h1>
@@ -51,19 +111,25 @@ const SkillsContainer: React.FC<SkillsContainerProps> = ({
             }}
             selectedValue={selectedConcept}
             items={concepts}
+            isLabelVisible={false}
           ></SimpleDropdown>
-          {skillsToShow.length > 0 ? (
-            skillsToShow.map(skill => (
-              <div key={skill.id}>
-                <p>Id: {skill.id}</p>
-                <p>Key: {skill.key}</p>
-                <p>{skill.description}</p>
-                <p>{skill.evaluationCriteria}</p>
-              </div>
-            ))
-          ) : (
-            <p>No skills available for this concept.</p>
-          )}
+          <br />
+          <br />
+          <Table.Provider
+            columns={columns}
+            style={{...style.table, ...styleOverrides.table}}
+          >
+            <Table.Header />
+            <Table.Body
+              rows={skillsToShow.map(skill => ({
+                id: skill.id,
+                key: skill.key,
+                description: skill.description,
+                evaluationCriteria: skill.evaluationCriteria,
+              }))}
+              rowKey="key"
+            />
+          </Table.Provider>
         </div>
       )}
     </div>

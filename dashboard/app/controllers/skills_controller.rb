@@ -6,10 +6,11 @@ class SkillsController < ApplicationController
     skills = Skill.all
     skills_by_concept = {}
     skills.each do |skill|
+      formatted_skill = skill.attributes.deep_transform_keys {|key| key.to_s.camelize(:lower)}
       if skills_by_concept.key?(skill.concept)
-        skills_by_concept[skill.concept] << skill
+        skills_by_concept[skill.concept] << formatted_skill
       else
-        skills_by_concept[skill.concept] = [skill]
+        skills_by_concept[skill.concept] = [formatted_skill]
       end
     end
     @skills_by_concept = skills_by_concept
