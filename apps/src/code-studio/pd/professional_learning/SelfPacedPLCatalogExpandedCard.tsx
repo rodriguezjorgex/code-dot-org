@@ -12,36 +12,39 @@ import React from 'react';
 
 import i18n from '@cdo/locale';
 
-import {SelfPacedPLCourseInfo} from './SelfPacedPLCatalog';
-
 import style from './selfPacedPLCatalog.module.scss';
 
-interface SelfPacedPLExpandedCard extends SelfPacedPLCourseInfo {
+const SelfPacedPLCatalogExpandedCard: React.FunctionComponent<{
+  courseKey: string;
+  displayName: string;
+  gradeLevels: string;
+  duration: string;
+  csTopics: string;
+  description: string;
+  image?: string;
+  video?: string;
+  pathToCourse: string;
   onClose: () => void;
-}
-
-const SelfPacedPLCatalogExpandedCard: React.FunctionComponent<
-  SelfPacedPLExpandedCard
-> = ({
-  key,
-  display_name,
-  grade_levels,
+}> = ({
+  courseKey,
+  displayName,
+  gradeLevels,
   duration,
-  image,
-  cs_topic,
+  csTopics,
   description,
+  image,
   video,
-  course_version_path,
+  pathToCourse,
   onClose,
 }) => {
   return (
-    <div id={`${key}ExpandedCardContainer`}>
+    <div id={`${courseKey}-expandedCardContainer`}>
       <div className={style.arrowContainer} />
       <div className={style.centerExpandedCard}>
         <div className={style.expandedCardContainer}>
           <div className={style.flexDivider}>
             <div className={style.plCourseOfferingContainer}>
-              <Heading3>{display_name}</Heading3>
+              <Heading3>{displayName}</Heading3>
               <div className={style.infoContainer}>
                 <div className={style.iconWithDescription}>
                   <FontAwesomeV6Icon
@@ -49,7 +52,7 @@ const SelfPacedPLCatalogExpandedCard: React.FunctionComponent<
                     iconStyle="solid"
                     className="fa-solid"
                   />
-                  <BodyTwoText>{grade_levels}</BodyTwoText>
+                  <BodyTwoText>{gradeLevels}</BodyTwoText>
                 </div>
                 <div className={style.iconWithDescription}>
                   <FontAwesomeV6Icon
@@ -65,7 +68,7 @@ const SelfPacedPLCatalogExpandedCard: React.FunctionComponent<
                     iconStyle="solid"
                     className="fa-solid"
                   />
-                  <BodyTwoText>{i18n.topic() + ': ' + cs_topic}</BodyTwoText>
+                  <BodyTwoText>{i18n.topic() + ': ' + csTopics}</BodyTwoText>
                 </div>
               </div>
               <hr className={style.horizontalDivider} />
@@ -98,21 +101,20 @@ const SelfPacedPLCatalogExpandedCard: React.FunctionComponent<
               <hr className={style.horizontalDivider} />
               <div className={style.buttonsContainer}>
                 <LinkButton
+                  text={i18n.seeCurriculumDetails()}
+                  ariaLabel={i18n.quickViewDescription({
+                    course_name: displayName,
+                  })}
                   color={buttonColors.black}
                   type="secondary"
-                  href={course_version_path}
-                  text={i18n.seeCurriculumDetails()}
                   className={style.buttonFlex}
-                  ariaLabel={i18n.quickViewDescription({
-                    course_name: display_name,
-                  })}
+                  href={pathToCourse}
                 />
               </div>
             </div>
             <div className={style.sideBar}>
               <div className={style.closeButtonContainer}>
                 <Button
-                  onClick={onClose}
                   icon={{
                     iconName: 'xmark',
                     iconStyle: 'solid',
@@ -122,6 +124,7 @@ const SelfPacedPLCatalogExpandedCard: React.FunctionComponent<
                   type="tertiary"
                   color={buttonColors.black}
                   className={style.closeButton}
+                  onClick={onClose}
                 />
               </div>
             </div>

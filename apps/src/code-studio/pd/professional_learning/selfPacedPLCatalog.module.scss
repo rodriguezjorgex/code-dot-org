@@ -3,6 +3,8 @@
 @import '@code-dot-org/component-library-styles/variables.scss';
 @import 'breakpoints';
 
+$card-width: 309px;
+
 .selfPacedPLCatalog {
   background-color: var(--background-neutral-secondary);
 
@@ -75,7 +77,7 @@
 
     .catalogContentCards {
       display: grid;
-      grid-template-columns: repeat(auto-fill, $container-width);
+      grid-template-columns: repeat(auto-fill, $card-width);
       justify-content: center;
       grid-gap: 1em;
       max-width: 60em;
@@ -84,18 +86,18 @@
       .cardContainer {
         display: flex;
         flex-flow: column;
-        background-color: $neutral_light;
-        border-radius: $border-radius;
-        width: $container-width;
+        background-color: var(--neutral-gray-5);
+        border-radius: $regular-border-radius;
+        width: $card-width;
         height: 25em;
 
         .curriculumInfoContainer {
           display: flex;
           flex-flow: column;
           height: 100%;
-          border: 1px solid $neutral_dark20;
+          border: 1px solid var(--neutral-gray-20);
           border-top: 0;
-          border-radius: 0 0 $border-radius $border-radius;
+          border-radius: 0 0 $regular-border-radius $regular-border-radius;
           padding: 1.25em 1em;
 
           .csTopicLabels {
@@ -111,12 +113,12 @@
           }
 
           i {
-            color: $neutral_dark80;
+            color: var(--neutral-gray-80);
           }
 
           h4 {
             margin-bottom: 0.75em;
-            color: $neutral_dark;
+            color: var(--neutral-base-black);
           }
         }
 
@@ -139,7 +141,7 @@
         img {
           height: 140px;
           object-fit: cover;
-          border-radius: $border-radius $border-radius 0 0;
+          border-radius: $regular-border-radius $regular-border-radius 0 0;
         }
       }
 
@@ -157,7 +159,7 @@
         }
 
         .arrowContainer:before {
-          background: $neutral_light;
+          background: var(--neutral-gray-5);
         }
       }
 
@@ -169,7 +171,7 @@
         position: relative;
         max-width: 600px;
         height: auto;
-        border: 1px solid $neutral_white;
+        border: 1px solid var(--neutral-base-white);
         padding-top: 16px;
         box-sizing: border-box;
       }
@@ -178,15 +180,15 @@
         position: absolute;
         width: 20px;
         height: 20px;
-        border-top: 1px solid $neutral_dark;
-        border-left: 1px solid $neutral_dark;
+        border-top: 1px solid var(--neutral-base-black);
+        border-left: 1px solid var(--neutral-base-black);
         top: 100%;
         left: 54.5%;
         margin-left: -25px;
         content: '';
         transform: rotate(45deg);
         margin-top: -9px;
-        background: $neutral_white;
+        background: var(--neutral-base-white);
         z-index: 1;
       }
 
@@ -199,7 +201,7 @@
       }
 
       .horizontalDivider {
-        border-top: 1px solid $neutral_dark20;
+        border-top: 1px solid var(--neutral-gray-20);
       }
 
       .expandedCardContainer {
@@ -257,7 +259,7 @@
           }
 
           .sideBar {
-            background-color: $neutral_light;
+            background-color: var(--neutral-gray-5);
             width: 224px;
             padding: 16px;
             border-radius: 0 4px 4px 0;
@@ -286,7 +288,7 @@
 
               i {
                 text-decoration: none;
-                color: $neutral_dark80;
+                color: var(--neutral-gray-80);
                 font-size: 20px;
               }
             }

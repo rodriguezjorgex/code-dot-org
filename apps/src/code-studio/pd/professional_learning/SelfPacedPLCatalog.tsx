@@ -50,20 +50,22 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
   // Renders search results based on the applied filters (or shows the No matching course offerings
   // message if no results).
   const renderSearchResults = () => {
+    console.log(filteredSelfPacedCourseOfferings);
     if (filteredSelfPacedCourseOfferings.length > 0) {
       return (
         <div className={style.catalogContentCards}>
           {filteredSelfPacedCourseOfferings.map(courseOffering => (
             <SelfPacedPLCatalogCard
               key={courseOffering.key}
-              display_name={courseOffering.display_name}
-              grade_levels={courseOffering.grade_levels}
+              courseKey={courseOffering.key}
+              displayName={courseOffering.display_name}
+              gradeLevels={courseOffering.grade_levels}
               duration={courseOffering.duration}
-              cs_topic={courseOffering.cs_topic}
+              csTopics={courseOffering.cs_topic}
               description={courseOffering.description}
               image={courseOffering.image}
               video={courseOffering.video}
-              course_version_path={courseOffering.course_version_path}
+              pathToCourse={courseOffering.course_version_path}
               isExpanded={expandedCardKey === courseOffering.key}
               updateExpandedCardKey={() =>
                 updateExpandedCardKey(courseOffering.key)
