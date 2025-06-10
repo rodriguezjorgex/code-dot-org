@@ -50,7 +50,6 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
   // Renders search results based on the applied filters (or shows the No matching course offerings
   // message if no results).
   const renderSearchResults = () => {
-    console.log(filteredSelfPacedCourseOfferings);
     if (filteredSelfPacedCourseOfferings.length > 0) {
       return (
         <div className={style.catalogContentCards}>
