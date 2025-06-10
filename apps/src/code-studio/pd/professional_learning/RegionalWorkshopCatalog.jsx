@@ -339,6 +339,7 @@ export default function RegionalWorkshopCatalog({
               value={zipCode}
               maxLength={255}
               placeholder="12345"
+              color="gray"
             />
             <Button
               aria-label="submitZip"
