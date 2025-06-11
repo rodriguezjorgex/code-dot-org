@@ -1,4 +1,6 @@
 class RegionalPartnersController < ApplicationController
+  load_and_authorize_resource
+
   # restrict the PII returned by the controller to the view by selecting only these columns from the model
   RESTRICTED_USER_ATTRIBUTES_FOR_VIEW = %w(
     id
