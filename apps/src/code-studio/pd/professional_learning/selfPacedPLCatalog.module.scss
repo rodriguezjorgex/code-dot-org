@@ -87,6 +87,7 @@ $card-width: 309px;
         display: flex;
         flex-flow: column;
         background-color: var(--neutral-gray-5);
+        border: 1px solid var(--neutral-gray-20);
         border-radius: $regular-border-radius;
         width: $card-width;
         height: 25em;
@@ -94,10 +95,6 @@ $card-width: 309px;
         .curriculumInfoContainer {
           display: flex;
           flex-flow: column;
-          height: 100%;
-          border: 1px solid var(--neutral-gray-20);
-          border-top: 0;
-          border-radius: 0 0 $regular-border-radius $regular-border-radius;
           padding: 1.25em 1em;
 
           .csTopicLabels {
