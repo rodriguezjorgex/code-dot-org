@@ -609,6 +609,9 @@ Dashboard::Application.routes.draw do
     get '/join(/:section_code)', to: 'followers#student_user_new', as: 'student_user_new'
     post '/join(/:section_code)', to: 'followers#student_register', as: 'student_register'
 
+    get '/logged_out', to: 'gates#logged_out'
+    get '/teacher_account_required', to: 'gates#teacher_account_required'
+
     post '/milestone/:user_id/level/:level_id', to: 'activities#milestone', as: 'milestone_level'
     post '/milestone/:user_id/:script_level_id', to: 'activities#milestone', as: 'milestone'
     post '/milestone/:user_id/:script_level_id/:level_id', to: 'activities#milestone', as: 'milestone_script_level'
