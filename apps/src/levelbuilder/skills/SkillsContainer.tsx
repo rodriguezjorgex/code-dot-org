@@ -1,9 +1,10 @@
-import React from 'react';
 import {SimpleDropdown} from '@code-dot-org/component-library/dropdown';
+import React from 'react';
 import * as Table from 'reactabular-table';
-import color from '@cdo/apps/util/color';
+
 import styleConstants from '@cdo/apps/styleConstants';
 import {tableLayoutStyles as style} from '@cdo/apps/templates/tables/tableConstants';
+import color from '@cdo/apps/util/color';
 
 interface SkillsByConcept {
   [key: string]: Array<Skill>;
@@ -123,7 +124,7 @@ const SkillsContainer: React.FC<SkillsContainerProps> = ({
             selectedValue={selectedConcept}
             items={concepts}
             isLabelVisible={false}
-          ></SimpleDropdown>
+          />
           <br />
           <br />
           <Table.Provider
