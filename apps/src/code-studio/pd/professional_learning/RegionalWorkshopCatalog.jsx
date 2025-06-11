@@ -41,8 +41,14 @@ export default function RegionalWorkshopCatalog({
   // the "National workshops" section since they'll show up under the
   // "Upcoming local workshops" section.
   const availableNationalWorkshops = useMemo(() => {
-    return nationalWorkshops.filter(
-      ws => !availableRegionalWorkshops.includes(ws.id)
+    if (!availableRegionalWorkshops) {
+      return nationalWorkshops;
+    }
+    const availableRegionalWorkshopIds = availableRegionalWorkshops.map(
+      ws => ws.id
+    );
+    return nationalWorkshops?.filter(
+      ws => !availableRegionalWorkshopIds.includes(ws.id)
     );
   }, [nationalWorkshops, availableRegionalWorkshops]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -62,7 +68,7 @@ export default function RegionalWorkshopCatalog({
           'zip code': null,
           'regional partner': null,
           'number of regional workshops': 0,
-          'number of national workshops': nationalWorkshops.length,
+          'number of national workshops': nationalWorkshops?.length || 0,
         },
         PLATFORMS.BOTH
       );
@@ -130,8 +136,9 @@ export default function RegionalWorkshopCatalog({
             {
               'zip code': submittedZip,
               'regional partner': regionalPartner.name,
-              'number of regional workshops': newRegionalWorkshops.length,
-              'number of national workshops': availableNationalWorkshops.length,
+              'number of regional workshops': newRegionalWorkshops?.length || 0,
+              'number of national workshops':
+                availableNationalWorkshops?.length || 0,
             },
             PLATFORMS.BOTH
           );

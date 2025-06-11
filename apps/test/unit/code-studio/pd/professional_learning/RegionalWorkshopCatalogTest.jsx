@@ -81,7 +81,7 @@ const TEST_REGIONAL_WORKSHOPS = [
 const renderDefault = (overrideProps = {}) => {
   const props = {
     ...{
-      availableNationalWorkshops: [TEST_NATIONAL_WORKSHOP],
+      nationalWorkshops: [TEST_NATIONAL_WORKSHOP],
       zipFromSchoolInfo: '',
     },
     ...overrideProps,
@@ -360,7 +360,7 @@ describe('RegionalWorkshopCatalog', () => {
   });
 
   it('does not show national workshops if none are present', () => {
-    renderDefault({availableNationalWorkshops: []});
+    renderDefault({nationalWorkshops: []});
 
     // Only shows one instance of "National workshops", which is the skip link at the top of the page.
     expect(screen.getAllByText('National workshops').length).toBe(1);
