@@ -8,7 +8,7 @@ import {
   OverlineTwoText,
 } from '@code-dot-org/component-library/typography';
 import PropTypes from 'prop-types';
-import React, {useEffect, useCallback, useState} from 'react';
+import React, {useEffect, useCallback, useMemo, useState} from 'react';
 
 import {queryParams, updateQueryParam} from '@cdo/apps/code-studio/utils';
 import {EVENTS, PLATFORMS} from '@cdo/apps/metrics/AnalyticsConstants';
@@ -37,8 +37,14 @@ export default function RegionalWorkshopCatalog({
   const [availableRegionalWorkshops, setAvailableRegionalWorkshops] = useState(
     []
   );
-  const [availableNationalWorkshops, setAvailableNationalWorkshops] =
-    useState(nationalWorkshops);
+  // Don't show national workshops run by the given regional partner under
+  // the "National workshops" section since they'll show up under the
+  // "Upcoming local workshops" section.
+  const availableNationalWorkshops = useMemo(() => {
+    return nationalWorkshops.filter(
+      ws => !availableRegionalWorkshops.includes(ws.id)
+    );
+  }, [nationalWorkshops, availableRegionalWorkshops]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Load workshops for the given zip if one is present in the URL or is passed in as a prop
@@ -114,15 +120,6 @@ export default function RegionalWorkshopCatalog({
             jsonData.regional_workshop_data.available_regional_workshops;
           setAvailableRegionalWorkshops(newRegionalWorkshops);
 
-          // Don't show national workshops run by the given regional partner under
-          // the "National workshops" section since they'll show up under the
-          // "Upcoming local workshops" section.
-          const newRegionalWorkshopsIds = newRegionalWorkshops.map(ws => ws.id);
-          const onlyNonRegionalWorkshops = nationalWorkshops.filter(
-            ws => !newRegionalWorkshopsIds.includes(ws.id)
-          );
-          setAvailableNationalWorkshops(onlyNonRegionalWorkshops);
-
           // Log regional partner and workshop data as the page visit event if
           // this query is triggered by a prepopulated zip (from the user info
           // or from a URL param), otherwise log the data as the zip enter event.
@@ -134,7 +131,7 @@ export default function RegionalWorkshopCatalog({
               'zip code': submittedZip,
               'regional partner': regionalPartner.name,
               'number of regional workshops': newRegionalWorkshops.length,
-              'number of national workshops': onlyNonRegionalWorkshops.length,
+              'number of national workshops': availableNationalWorkshops.length,
             },
             PLATFORMS.BOTH
           );
@@ -148,7 +145,7 @@ export default function RegionalWorkshopCatalog({
         setIsSubmitting(false);
       }
     },
-    [isSubmitting, nationalWorkshops]
+    [isSubmitting, availableNationalWorkshops]
   );
 
   const RenderUpcomingLocalWorkshopsHeading = () => {
