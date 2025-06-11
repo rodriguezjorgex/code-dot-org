@@ -5,6 +5,8 @@ import {
 } from '@code-dot-org/component-library/typography';
 import React, {useEffect, useState} from 'react';
 
+import {defaultImageSrc} from '@cdo/apps/templates/curriculumCatalog/curriculumCatalogConstants';
+
 import SelfPacedPLCatalogCard from './SelfPacedPLCatalogCard';
 import SelfPacedPLCatalogFilters from './SelfPacedPLCatalogFilters';
 
@@ -62,7 +64,7 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
               duration={courseOffering.duration}
               csTopics={courseOffering.cs_topic}
               description={courseOffering.description}
-              image={courseOffering.image}
+              image={courseOffering.image || defaultImageSrc}
               video={courseOffering.video}
               pathToCourse={courseOffering.course_version_path}
               isExpanded={expandedCardKey === courseOffering.key}
