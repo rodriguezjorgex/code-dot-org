@@ -1,6 +1,4 @@
 class RegionalPartnersController < ApplicationController
-  load_and_authorize_resource except: [:regional_partner_search]
-
   # restrict the PII returned by the controller to the view by selecting only these columns from the model
   RESTRICTED_USER_ATTRIBUTES_FOR_VIEW = %w(
     id
@@ -144,9 +142,6 @@ class RegionalPartnersController < ApplicationController
       flash[:upload_error] = parse_upload_errors(errors)
     end
     redirect_to @regional_partner
-  end
-
-  def regional_partner_search
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
