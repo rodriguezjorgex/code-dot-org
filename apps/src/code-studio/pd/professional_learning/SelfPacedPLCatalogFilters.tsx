@@ -1,9 +1,9 @@
 import {Button, buttonColors} from '@code-dot-org/component-library/button';
+import {CheckboxDropdown} from '@code-dot-org/component-library/dropdown';
 import {Heading6} from '@code-dot-org/component-library/typography';
 import React, {Dispatch, SetStateAction, useState} from 'react';
 
 import {queryParams, updateQueryParam} from '@cdo/apps/code-studio/utils';
-import CheckboxDropdown from '@cdo/apps/templates/CheckboxDropdown';
 import {
   translatedCourseOfferingCsTopics,
   translatedInterdisciplinary,
@@ -140,23 +140,10 @@ const SelfPacedPLCatalogFilters: React.FunctionComponent<{
     handleUpdateFilter(filterKey, updatedFilters);
   };
 
-  // Selects all options within the given filter.
-  const handleSelectAllOfFilter = (filterKey: string) => {
-    const currFilter = FILTERS.find(filter => filter.key === filterKey);
-    if (currFilter) {
-      handleUpdateFilter(filterKey, Object.keys(currFilter.options));
-    }
-  };
-
   // Clears all filter selections.
   const handleClear = () => {
     setAppliedFilters(getEmptyFilters());
     FILTERS.forEach(filter => updateQueryParam(filter.key, undefined, false));
-  };
-
-  // Clears selections within the given filter.
-  const handleClearAllOfFilter = (filterKey: string) => {
-    handleUpdateFilter(filterKey, []);
   };
 
   return (
@@ -176,14 +163,16 @@ const SelfPacedPLCatalogFilters: React.FunctionComponent<{
       <div className={style.catalogDropdownFilters}>
         {FILTERS.map(filter => (
           <CheckboxDropdown
-            key={filter.key}
             name={filter.key}
-            label={filter.label}
-            allOptions={filter.options}
-            checkedOptions={appliedFilters[filter.key] || []}
+            labelText={filter.label}
+            allOptions={Object.entries(filter.options).map(([key, value]) => ({
+              value: key,
+              label: value,
+            }))}
+            checkedOptions={appliedFilters[filter.key]}
+            size="s"
+            hideControls
             onChange={e => handleSelect(e, filter.key)}
-            handleSelectAll={() => handleSelectAllOfFilter(filter.key)}
-            handleClearAll={() => handleClearAllOfFilter(filter.key)}
           />
         ))}
       </div>
