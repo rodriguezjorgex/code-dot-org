@@ -306,6 +306,10 @@ const OTHER_ENTRIES = {
   regionalPartnerMiniContact: './src/regionalPartnerMiniContact/regionalPartnerMiniContact',
 };
 
+const LOCALIZATION_ENTRIES = {
+  localization: './src/localization/entrypoint.js',
+};
+
 /**
  * Generate webpack entry points for all our apps, or just a subset
  *
@@ -340,4 +344,5 @@ module.exports = {
   PROFESSIONAL_DEVELOPMENT_ENTRIES,
   SHARED_ENTRIES,
   OTHER_ENTRIES,
+  LOCALIZATION_ENTRIES,
 };
