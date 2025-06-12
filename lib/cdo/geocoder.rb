@@ -102,10 +102,6 @@ module Geocoder
     results = Geocoder.search(first_number_to_end)
     return nil if results.empty?
 
-    # Return nil if none of the results returned from Geocoder matched on a
-    # street address with relevance >= 0.8
-    return nil if results.none? {|r| r.relevance >= 0.8 && r.street_address}
-
     first_number_to_end
   end
 
