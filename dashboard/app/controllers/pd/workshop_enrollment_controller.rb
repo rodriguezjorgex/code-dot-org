@@ -109,6 +109,50 @@ class Pd::WorkshopEnrollmentController < ApplicationController
     end
   end
 
+  # GET /pd/workshops/1/join
+  # This is for users who have registered for an external workshop. They'll receive a link to complete their
+  # enrollment in our system via this join workshop page.
+  def join
+    if !current_user
+      source_page = ERB::Util.url_encode('workshop join')
+      return_to = ERB::Util.url_encode("/pd/workshops/#{@workshop.id}/join")
+
+      redirect_to "/logged_out?source_page=#{source_page}&return_to=#{return_to}"
+    elsif current_user.user_type == 'student'
+      source_page = ERB::Util.url_encode('workshop join')
+      return_to = ERB::Util.url_encode("/pd/workshops/#{@workshop.id}/join")
+
+      redirect_to "/teacher_account_required?source_page=#{source_page}&return_to=#{return_to}"
+    else
+      @workshop = ::Pd::Workshop.find_by_id params[:workshop_id]
+      enroll_status =
+        if @workshop.nil?
+          "not found"
+        elsif workshop_closed?
+          "closed"
+        elsif workshop_full?
+          "full"
+        elsif @workshop.organizer_or_facilitator? user
+          "own"
+        elsif @workshop.enrollments.any? {|enrollment| enrollment.user_id == current_user.id}
+          "duplicate"
+        else
+          "unsubmitted"
+        end
+
+      @script_data = {
+        props: {
+          workshopEnrollmentStatus: enroll_status,
+          userInfo: {
+            name: current_user.current_user,
+            email: current_user.email,
+            schoolName: current_user.try(:school_info).try(:effective_school_name).try(:titleize)
+          }
+        }.to_json
+      }
+    end
+  end
+
   # GET /pd/workshop_enrollment/:code
   def show
     @enrollment = ::Pd::Enrollment.find_by_code params[:code]
