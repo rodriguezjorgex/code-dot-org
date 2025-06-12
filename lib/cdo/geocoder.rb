@@ -102,6 +102,10 @@ module Geocoder
     results = Geocoder.search(first_number_to_end)
     return nil if results.empty?
 
+    # Return nil if none of the results returned from Geocoder matched on a
+    # street address with relevance >= 0.8
+    return nil if results.none? {|r| r.relevance >= 0.8 && r.address}
+
     first_number_to_end
   end
 
@@ -147,7 +151,7 @@ module Geocoder
   # servers. Localhost lookups are usually because UI tests are making requests and we want our developer and CI
   # environments to behave similar to production and staging.
   # https://github.com/alexreisner/geocoder/blob/350cf0cc6a158d510aec3d91594d9b5718f877a9/lib/geocoder/lookups/freegeoip.rb#L41-L54
-  module LocahostOverride
+  module LocalhostOverride
     def search(query, options = {})
       ip = begin
         IPAddr.new(query)
@@ -167,7 +171,7 @@ module Geocoder
       end
     end
   end
-  singleton_class.prepend LocahostOverride
+  singleton_class.prepend LocalhostOverride
 end
 
 # We need to override some of the behavior of Geocoder::Lookup::Freegeoip in order for is to work with our self-hosted
