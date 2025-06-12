@@ -93,6 +93,7 @@ const SkillsTable: React.FC<SkillsTableProps> = ({skills}) => {
   ];
   return (
     <div>
+      <h2>View Available Skills</h2>
       <SimpleDropdown
         labelText="Concept"
         name="concept"

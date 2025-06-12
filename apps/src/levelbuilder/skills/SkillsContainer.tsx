@@ -19,8 +19,8 @@ const SkillsContainer: React.FC<SkillsContainerProps> = ({
       {!canEditSkills && (
         <h3>You need levelbuilder permissions to edit Skills.</h3>
       )}
+      {canEditSkills && <SkillsCreator skills={skills} />}
       <SkillsTable skills={skills} />
-      {canEditSkills && <SkillsCreator />}
     </div>
   );
 };
