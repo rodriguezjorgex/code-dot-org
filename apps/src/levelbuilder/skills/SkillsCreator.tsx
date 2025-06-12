@@ -10,12 +10,17 @@ const SkillsCreator: React.FC = ({}) => {
   return (
     <div>
       <h2>Add New Skills</h2>
+      <p>
+        Skills can be added by entering them in the following format, one skill
+        per line: key, concept, description, evaluation criteria
+      </p>
       <TextareaAutosize
         aria-label="minimum height"
         minRows={20}
         placeholder="key, concept, description, evaluation criteria"
         style={{width: 650}}
         onChange={e => setSkillsText(e.target.value)}
+        value={skillsText}
       />
       <br />
       <br />
@@ -36,11 +41,12 @@ const SkillsCreator: React.FC = ({}) => {
                 evaluationCriteria: evaluationCriteria.trim(),
               };
             });
-          console.log('Skills to be added:', skills);
           skills.forEach(skill => {
             createSkill(skill);
           });
-          setSkillsText('Check the skills table for your newly added skills.');
+          setSkillsText(
+            'Reload the page to check the skills table for your newly added skills.'
+          );
         }}
       />
     </div>
