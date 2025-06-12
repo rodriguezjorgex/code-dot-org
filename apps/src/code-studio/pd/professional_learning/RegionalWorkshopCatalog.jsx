@@ -44,11 +44,11 @@ export default function RegionalWorkshopCatalog({
     if (!availableRegionalWorkshops) {
       return nationalWorkshops;
     }
-    const availableRegionalWorkshopIds = availableRegionalWorkshops.map(
-      ws => ws.id
+    const availableRegionalWorkshopIds = new Set(
+      availableRegionalWorkshops.map(ws => ws.id)
     );
     return nationalWorkshops?.filter(
-      ws => !availableRegionalWorkshopIds.includes(ws.id)
+      ws => !availableRegionalWorkshopIds.has(ws.id)
     );
   }, [nationalWorkshops, availableRegionalWorkshops]);
   const [isSubmitting, setIsSubmitting] = useState(false);
