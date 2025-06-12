@@ -5,6 +5,7 @@ import * as Table from 'reactabular-table';
 import styleConstants from '@cdo/apps/styleConstants';
 import {tableLayoutStyles as style} from '@cdo/apps/templates/tables/tableConstants';
 import color from '@cdo/apps/util/color';
+
 import {SkillsByConcept} from './types';
 
 interface SkillsTableProps {

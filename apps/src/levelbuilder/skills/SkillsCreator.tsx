@@ -1,9 +1,9 @@
 import {Button} from '@code-dot-org/component-library/button';
-
+import Papa from 'papaparse';
 import React, {useState} from 'react';
+
 import {createSkill} from './SkillsApi';
 import {Skill, SkillsByConcept} from './types';
-import Papa from 'papaparse';
 
 interface SkillsCreatorProps {
   skills: SkillsByConcept;

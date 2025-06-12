@@ -1,8 +1,8 @@
 import React from 'react';
 
+import SkillsCreator from './SkillsCreator';
 import SkillsTable from './SkillsTable';
 import {SkillsByConcept} from './types';
-import SkillsCreator from './SkillsCreator';
 
 interface SkillsContainerProps {
   canEditSkills: boolean;
