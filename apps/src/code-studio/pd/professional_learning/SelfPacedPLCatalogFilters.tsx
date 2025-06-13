@@ -163,6 +163,7 @@ const SelfPacedPLCatalogFilters: React.FunctionComponent<{
       <div className={style.catalogDropdownFilters}>
         {FILTERS.map(filter => (
           <CheckboxDropdown
+            key={filter.key}
             name={filter.key}
             labelText={filter.label}
             allOptions={Object.entries(filter.options).map(([key, value]) => ({
