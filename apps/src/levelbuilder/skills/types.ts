@@ -9,3 +9,10 @@ export interface Skill {
   description: string;
   evaluationCriteria: string;
 }
+
+export interface LevelsSkill {
+  levelId: number;
+  levelName: string;
+  unitNames: string[];
+  skillKeys: string;
+}

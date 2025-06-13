@@ -10,6 +10,7 @@ $(document).ready(() => {
     <SkillsContainer
       canEditSkills={skillsData.canEditSkills}
       skills={skillsData.skills}
+      levelsSkills={skillsData.levelsSkills}
     />,
     document.getElementById('skills')
   );
