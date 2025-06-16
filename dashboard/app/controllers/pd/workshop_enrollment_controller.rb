@@ -140,11 +140,12 @@ class Pd::WorkshopEnrollmentController < ApplicationController
           "unsubmitted"
         end
 
+      view_options(full_width: true, responsive_content: true, no_padding_container: true)
       @script_data = {
         props: {
           workshopEnrollmentStatus: enroll_status,
           userInfo: {
-            name: current_user.current_user,
+            name: current_user.name,
             email: current_user.email,
             schoolName: current_user.try(:school_info).try(:effective_school_name).try(:titleize)
           }
