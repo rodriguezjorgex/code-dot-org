@@ -35,7 +35,7 @@ const LevelsSkillsCreator: React.FC = () => {
     result.data.forEach((levelsSkill, index) => {
       if (!levelsSkill.skillId || !levelsSkill.levelId) {
         validationErrors.push(
-          `Row ${index + 1} is missing skillKey and/or levelUrl.`
+          `Row ${index + 1} is missing skillKey and/or levelId.`
         );
       }
     });
@@ -80,11 +80,11 @@ const LevelsSkillsCreator: React.FC = () => {
       <p>
         Upload a CSV with the following columns: skillId and levelId. These ids
         are environment specific. You can check the Skills table on this page
-        for skillId and the gray admin box on a level page for the level id. The
-        level id is also in the url of the level edit page:
-        /levels/level_id/edit. After upload of your CSV, reload the page and
-        double-check the Levels Skills association table to ensure skills are
-        associated with levels correctly.
+        for skillId and the gray admin box on a level page for the levelId. The
+        levelId is also in the url of the level edit page: /levels/levelId/edit.
+        After upload of your CSV, reload the page and double-check the Levels
+        Skills association table to ensure skills are associated with levels
+        correctly.
       </p>
       <br />
       <div>
