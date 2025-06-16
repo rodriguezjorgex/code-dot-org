@@ -35,7 +35,7 @@ const LevelsSkillsCreator: React.FC = () => {
     result.data.forEach((levelsSkill, index) => {
       if (!levelsSkill.skillId || !levelsSkill.levelId) {
         validationErrors.push(
-          `Row ${index + 1} is missing skillKey and/or levelId.`
+          `Row ${index + 1} is missing skillId and/or levelId.`
         );
       }
     });
@@ -53,7 +53,7 @@ const LevelsSkillsCreator: React.FC = () => {
   };
 
   const createLevelsSkills = async (levelsSkillsData: LevelsSkill[]) => {
-    if (data.length === 0) {
+    if (levelsSkillsData.length === 0) {
       alert('No LevelsSkills to create. Please upload a CSV first.');
       return;
     }
