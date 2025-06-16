@@ -7,7 +7,6 @@ import {LevelsSkill} from './types';
 
 const LevelsSkillsCreator: React.FC = () => {
   const [csvFile, setCsvFile] = useState<File | null>(null);
-  const [data, setData] = useState<LevelsSkill[]>([]);
   const csvSelected = !!csvFile;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +46,6 @@ const LevelsSkillsCreator: React.FC = () => {
       );
       return;
     } else {
-      setData(result.data);
       createLevelsSkills(result.data);
     }
   };
