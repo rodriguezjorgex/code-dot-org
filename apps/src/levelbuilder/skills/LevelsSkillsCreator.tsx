@@ -48,17 +48,17 @@ const LevelsSkillsCreator: React.FC = () => {
       return;
     } else {
       setData(result.data);
-      createLevelsSkills();
+      createLevelsSkills(result.data);
     }
   };
 
-  const createLevelsSkills = async () => {
+  const createLevelsSkills = async (levelsSkillsData: LevelsSkill[]) => {
     if (data.length === 0) {
       alert('No LevelsSkills to create. Please upload a CSV first.');
       return;
     }
 
-    for (const levelsSkill of data) {
+    for (const levelsSkill of levelsSkillsData) {
       try {
         await createLevelsSkill(levelsSkill);
       } catch (error) {

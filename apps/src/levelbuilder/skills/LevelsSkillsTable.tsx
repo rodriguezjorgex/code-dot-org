@@ -123,7 +123,7 @@ const LevelsSkillsTable: React.FC<LevelsSkillsTableProps> = ({levels}) => {
             levelId: level.levelId,
             levelName: level.levelName,
             unitNames: level.unitNames.join(', '),
-            skills: JSON.parse(level.skillKeys).join(', '),
+            skills: level.skillKeys.join(', '),
           }))}
           rowKey="levelId"
         />
