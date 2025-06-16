@@ -6,10 +6,10 @@ import styleConstants from '@cdo/apps/styleConstants';
 import {tableLayoutStyles as style} from '@cdo/apps/templates/tables/tableConstants';
 import color from '@cdo/apps/util/color';
 
-import {LevelsSkill} from './types';
+import {Levels} from './types';
 
 interface LevelsSkillsTableProps {
-  levelsSkills: LevelsSkill[];
+  levels: Levels[];
 }
 
 export const styleOverrides = {
@@ -26,13 +26,9 @@ export const styleOverrides = {
   },
 };
 
-const LevelsSkillsTable: React.FC<LevelsSkillsTableProps> = ({
-  levelsSkills,
-}) => {
+const LevelsSkillsTable: React.FC<LevelsSkillsTableProps> = ({levels}) => {
   const [selectedUnit, setSelectedUnit] = React.useState('');
-  const units = Array.from(
-    new Set(levelsSkills.flatMap(levelSkill => levelSkill.unitNames))
-  );
+  const units = Array.from(new Set(levels.flatMap(level => level.unitNames)));
   const unitsForDropdown = units
     .sort((a, b) => a.localeCompare(b))
     .map(unit => ({
@@ -41,9 +37,7 @@ const LevelsSkillsTable: React.FC<LevelsSkillsTableProps> = ({
     }));
   unitsForDropdown.push({value: '', text: ''});
   const levelsToShow =
-    levelsSkills.filter(levelSkill =>
-      levelSkill.unitNames.includes(selectedUnit)
-    ) || [];
+    levels.filter(level => level.unitNames.includes(selectedUnit)) || [];
 
   const columns = [
     {

@@ -3,6 +3,21 @@ class LevelsSkillsController < ApplicationController
   load_and_authorize_resource
 
   def create
+    level_id = levels_skill_params[:levelId]
+    skill_id  = levels_skill_params[:skillId]
+
+    begin
+      Level.find(level_id)
+    rescue ActiveRecord::RecordNotFound
+      return render status: :not_found, json: "Level with id #{level_id}"
+    end
+
+    begin
+      Skill.find(skill_id)
+    rescue ActiveRecord::RecordNotFound
+      return render status: :not_found, json: "Skill with id #{skill_id}"
+    end
+
     @levels_skill = LevelsSkill.new(levels_skill_params)
 
     if @levels_skill.save

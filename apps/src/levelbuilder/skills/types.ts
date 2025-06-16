@@ -3,16 +3,21 @@ export interface SkillsByConcept {
 }
 
 export interface Skill {
-  id: string;
+  id?: string;
   key: string;
   concept: string;
   description: string;
   evaluationCriteria: string;
 }
 
-export interface LevelsSkill {
+export interface Levels {
   levelId: number;
   levelName: string;
   unitNames: string[];
   skillKeys: string;
+}
+
+export interface LevelsSkill {
+  skillId: number;
+  levelId: number;
 }

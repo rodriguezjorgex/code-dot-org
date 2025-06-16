@@ -1,20 +1,21 @@
 import React from 'react';
 
+import LevelsSkillsCreator from './LevelsSkillsCreator';
 import LevelsSkillsTable from './LevelsSkillsTable';
 import SkillsCreator from './SkillsCreator';
 import SkillsTable from './SkillsTable';
-import {LevelsSkill, SkillsByConcept} from './types';
+import {SkillsByConcept, Levels} from './types';
 
 interface SkillsContainerProps {
   canEditSkills: boolean;
   skills: SkillsByConcept;
-  levelsSkills: LevelsSkill[];
+  levels: Levels[];
 }
 
 const SkillsContainer: React.FC<SkillsContainerProps> = ({
   canEditSkills,
   skills,
-  levelsSkills,
+  levels,
 }) => {
   return (
     <div>
@@ -24,7 +25,8 @@ const SkillsContainer: React.FC<SkillsContainerProps> = ({
       )}
       {canEditSkills && <SkillsCreator skills={skills} />}
       <SkillsTable skills={skills} />
-      <LevelsSkillsTable levelsSkills={levelsSkills} />
+      <LevelsSkillsCreator />
+      <LevelsSkillsTable levels={levels} />
     </div>
   );
 };
