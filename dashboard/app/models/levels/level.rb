@@ -928,7 +928,7 @@ class Level < ApplicationRecord
       # Verified instructors can view exemplars and levelbuilders can edit them, so we include them in the properties
       # for these users.
       # For levels that support exemplar validation or an exemplar music player, we also need to include the exemplar sources.
-      properties_camelized[:exemplarSources] = try(:exemplar_sources)
+      properties_camelized[:exemplar_sources] = try(:exemplar_sources)
     end
     unless is_verified_instructor
       # Users who are not verified teachers or levelbuilders should not be able to see predict level solutions
@@ -1000,12 +1000,12 @@ class Level < ApplicationRecord
       level_id: id,
       level_name: name,
       unit_names: script_levels.map {|sl| sl.script.name}.uniq.sort,
-      skill_keys: skill_keys,
+      skills: skill_keys,
     }.deep_transform_keys {|key| key.to_s.camelize(:lower)}
   end
 
   def skill_keys
-    skills.pluck(:key)
+    skills.map {|skill| {id: skill.id, key: skill.key}}
   end
 
   # Returns the level name, removing the name_suffix first (if present), and

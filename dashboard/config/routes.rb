@@ -68,7 +68,8 @@ Dashboard::Application.routes.draw do
     resources :user_level_interactions, only: [:create]
 
     resources :skills, only: [:create, :index]
-    resources :levels_skills, only: [:create]
+    resources :levels_skills, only: [:create, :delete] 
+    delete 'levels_skills/:level_id/:skill_id', action: 'delete', controller: 'levels_skills'
 
     patch '/api/v1/user_scripts/:script_id', to: 'api/v1/user_scripts#update'
 

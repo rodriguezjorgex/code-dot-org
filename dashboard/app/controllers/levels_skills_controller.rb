@@ -27,6 +27,18 @@ class LevelsSkillsController < ApplicationController
     end
   end
 
+  def delete
+    level_id = params[:level_id].to_i
+    skill_id = params[:skill_id].to_i
+    begin
+      level = Level.find(level_id)
+      Skill.find(skill_id).levels.destroy(level)
+      render json: {status: 'success', message: 'LevelsSkill deleted successfully'}, status: :ok
+    rescue ActiveRecord::RecordNotFound
+      render status: :not_found, json: "No LevelsSkill with level_id #{level_id} and skill_id #{skill_id}"
+    end
+  end
+
   private def levels_skill_params
     params.permit(
       :skillId,

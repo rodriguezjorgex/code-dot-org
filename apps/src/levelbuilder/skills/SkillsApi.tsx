@@ -56,3 +56,28 @@ export async function createLevelsSkill(levelsSkill: LevelsSkill) {
 
   return response;
 }
+
+export async function removeSkillFromLevel(levelId: number, skillId: number) {
+  try {
+    const response = await HttpClient.delete(
+      `/levels_skills/${levelId}/${skillId}`,
+      true,
+      {
+        'Content-Type': 'application/json; charset=UTF-8',
+      }
+    );
+    const json = await response.json();
+    if (json.status === 'success') {
+      return json;
+    } else {
+      throw new Error(`Failed to remove skill from level: ${json.error}`);
+    }
+  } catch (error) {
+    MetricsReporter.logError({
+      event: MetricEvent.LEVELS_SKILL_DELETE_FAIL,
+      errorMessage:
+        (error as Error).message || 'Failed to remove Skill from Leve',
+    });
+    throw error;
+  }
+}
