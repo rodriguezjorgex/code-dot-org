@@ -132,7 +132,7 @@ class Pd::WorkshopEnrollmentController < ApplicationController
           "closed"
         elsif workshop_full?
           "full"
-        elsif @workshop.organizer_or_facilitator? user
+        elsif @workshop.organizer_or_facilitator? current_user
           "own"
         elsif @workshop.enrollments.any? {|enrollment| enrollment.user_id == current_user.id}
           "duplicate"
@@ -143,9 +143,20 @@ class Pd::WorkshopEnrollmentController < ApplicationController
       view_options(full_width: true, responsive_content: true, no_padding_container: true)
       @script_data = {
         props: {
-          workshopEnrollmentStatus: enroll_status,
-          userInfo: {
-            name: current_user.name,
+          workshop_enrollment_status: enroll_status,
+          workshop_info: {
+            id: @workshop.id.to_s,
+            course: @workshop.course,
+            subject: @workshop.subject,
+            name: @workshop.name,
+            format: @workshop.format,
+            rpName: @workshop.try(:regional_partner).try(:name),
+            sessionInfoForCalendar: @workshop.sessions.map(&:session_info_for_calendar)
+          },
+          user_info: {
+            displayName: current_user.name,
+            givenName: current_user.given_name,
+            familyName: current_user.family_name,
             email: current_user.email,
             schoolName: current_user.try(:school_info).try(:effective_school_name).try(:titleize)
           }
