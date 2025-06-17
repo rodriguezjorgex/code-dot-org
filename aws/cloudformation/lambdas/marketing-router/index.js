@@ -297,7 +297,7 @@ const marketingPaths = {
   "/pluralsight": true,
   "/project-ideas": true,
   "/quotes": true,
-  "/youngwomen ": true,
+  "/youngwomen": true,
   "/afe/india": true,
   "/girls": true,
   "/translate": true,
@@ -308,7 +308,10 @@ const marketingPaths = {
   "/resources/amazon-future-engineer": true,
   "/starwars": true,
   "/hour-of-code/starwars": true,
-  '/engineering/all-the-things': true,
+  "/engineering/all-the-things": true,
+  "/hourofcode": true,
+  "/hour-of-code": true,
+  "/csjourneys": true
 }
 
 const nextJsAssetsPath = '/_next/static/';
