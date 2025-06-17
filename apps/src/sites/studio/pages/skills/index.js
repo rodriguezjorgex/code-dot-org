@@ -6,7 +6,6 @@ import getScriptData from '@cdo/apps/util/getScriptData';
 
 $(document).ready(() => {
   const skillsData = getScriptData('skillsData');
-  console.log('skillsData', skillsData);
   ReactDOM.render(
     <SkillsContainer
       canEditSkills={skillsData.canEditSkills}

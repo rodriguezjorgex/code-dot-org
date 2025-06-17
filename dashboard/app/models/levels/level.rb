@@ -928,7 +928,7 @@ class Level < ApplicationRecord
       # Verified instructors can view exemplars and levelbuilders can edit them, so we include them in the properties
       # for these users.
       # For levels that support exemplar validation or an exemplar music player, we also need to include the exemplar sources.
-      properties_camelized[:exemplar_sources] = try(:exemplar_sources)
+      properties_camelized[:exemplarSources] = try(:exemplar_sources)
     end
     unless is_verified_instructor
       # Users who are not verified teachers or levelbuilders should not be able to see predict level solutions
