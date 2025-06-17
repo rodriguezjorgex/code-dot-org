@@ -1,18 +1,16 @@
 import Alert from '@code-dot-org/component-library/alert';
 import Button, {LinkButton} from '@code-dot-org/component-library/button';
-import Link, {LinkProps} from '@code-dot-org/component-library/link';
+import Link from '@code-dot-org/component-library/link';
 import {
   Heading3,
   BodyThreeText,
 } from '@code-dot-org/component-library/typography';
-import React, {useState} from 'react';
+import React from 'react';
 
-import {SUBMISSION_STATUSES} from '@cdo/apps/code-studio/pd/workshop_enrollment/constants';
 import {
   GetUserInfoForWorkshopResponse,
   GetWorkshopInfoScriptDataResponse,
 } from '@cdo/apps/code-studio/pd/workshops/types';
-import {navigateToHref} from '@cdo/apps/utils';
 
 import {useWorkshopEnrollment} from './../hooks/useWorkshopEnrollment';
 
@@ -49,88 +47,20 @@ const EnrollInWorkshop: React.FC<EnrollInWorkshopProps> = ({
   name,
   subject,
 }) => {
-  const {
-    submitEnrollment,
-    isSubmitting,
-    error = '',
-  } = useWorkshopEnrollment(id);
-  const [alertState, setAlertState] = useState({
-    show: false,
-    text: '',
-    link: undefined as LinkProps | undefined,
-  });
+  const {handleClick, isSubmitting, alertState, setAlertState} =
+    useWorkshopEnrollment({
+      workshopId: id,
+      userInfo,
+      regional_partner_name,
+      course,
+      format,
+      name,
+      subject,
+      sessions,
+    });
 
+  const is_student = userInfo?.is_student || false;
   const is_signed_out = !userInfo;
-  const {is_student = false} = userInfo || {};
-
-  const handleClick = async () => {
-    const result = await submitEnrollment(
-      userInfo && {
-        user_id: userInfo.id,
-        email: userInfo?.email,
-        first_name: userInfo?.first_name,
-        last_name: userInfo?.last_name,
-      }
-    );
-    console.log(result);
-
-    switch (result?.workshop_enrollment_status) {
-      case SUBMISSION_STATUSES.DUPLICATE:
-        setAlertState({
-          show: true,
-          text: ' You are already registered, and should have received a confirmation email.',
-          link: {
-            text: 'Cancel enrollment',
-            href: result?.cancel_url,
-          },
-        });
-        break;
-      case SUBMISSION_STATUSES.OWN:
-        setAlertState({
-          show: true,
-          text: 'You are attempting to join your own workshop.',
-          link: undefined,
-        });
-        break;
-      case SUBMISSION_STATUSES.CLOSED:
-        setAlertState({
-          show: true,
-          text: 'Sorry, this workshop is closed. For more information, please contact the organizer.',
-          link: undefined,
-        });
-        break;
-      case SUBMISSION_STATUSES.FULL:
-        setAlertState({
-          show: true,
-          text: 'Sorry, this workshop is full. For more information, please contact the organizer.',
-          link: undefined,
-        });
-        break;
-      case SUBMISSION_STATUSES.NOT_FOUND:
-        setAlertState({
-          show: true,
-          text: 'Sorry, we could not find this workshop. Please check the link and try again.',
-          link: undefined,
-        });
-        break;
-      case SUBMISSION_STATUSES.SUCCESS:
-        // Redirect to My PL landing page. The WORKSHOP_ENROLLMENT_COMPLETED_EVENT event will be logged
-        // on that page since event logs immediately followed by redirects sometimes do not fire.
-        sessionStorage.setItem('rpName', regional_partner_name || '');
-        sessionStorage.setItem('workshopId', `${id}`);
-        sessionStorage.setItem('workshopCourse', course);
-        sessionStorage.setItem('workshopSubject', subject || '');
-        sessionStorage.setItem('workshopName', name || '');
-        sessionStorage.setItem('workshopFormat', format);
-        sessionStorage.setItem('sessionTimeInfo', JSON.stringify(sessions));
-
-        navigateToHref('/my-professional-learning');
-
-        break;
-      default:
-    }
-  };
-
   const isFull = num_enrollments >= capacity;
 
   const buildEnrollButtonLink = (enrollLink: string) => {
@@ -206,14 +136,13 @@ const EnrollInWorkshop: React.FC<EnrollInWorkshopProps> = ({
     );
   };
 
-  const showAlert = alertState.show || !!error;
   return (
     <div className={moduleStyles.card}>
       <Heading3 visualAppearance="heading-xs">Enroll in this workshop</Heading3>
-      {showAlert && (
+      {alertState.show && (
         <Alert
           type={'danger'}
-          text={alertState.text || (error as string)}
+          text={alertState.text}
           link={alertState.link}
           onClose={() =>
             setAlertState({show: false, text: '', link: undefined})
