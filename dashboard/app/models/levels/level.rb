@@ -101,6 +101,7 @@ class Level < ApplicationRecord
     use_secondary_finish_button
     skip_url
     stay_on_level_after_submit
+    skill_keys
   )
 
   # Fix STI routing http://stackoverflow.com/a/9463495
@@ -1000,12 +1001,16 @@ class Level < ApplicationRecord
       level_id: id,
       level_name: name,
       unit_names: script_levels.map {|sl| sl.script.name}.uniq.sort,
-      skills: skill_keys,
+      skills: skill_identifiers,
     }.deep_transform_keys {|key| key.to_s.camelize(:lower)}
   end
 
-  def skill_keys
+  def skill_identifiers
     skills.map {|skill| {id: skill.id, key: skill.key}}
+  end 
+
+  def skill_keys
+    skills.pluck(:key)
   end
 
   # Returns the level name, removing the name_suffix first (if present), and
