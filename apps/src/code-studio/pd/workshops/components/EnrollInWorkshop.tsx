@@ -80,15 +80,20 @@ const EnrollInWorkshop: React.FC<EnrollInWorkshopProps> = ({
       );
     }
 
-    return (
-      <LinkButton
-        className={moduleStyles.fullWidthButton}
-        type="primary"
-        size="m"
-        href={buildEnrollButtonLink(`/pd/workshops/${id}/enroll`)}
-        text="Enroll in this workshop"
-      />
-    );
+    if (is_student || is_signed_out) {
+      return (
+        <LinkButton
+          className={moduleStyles.fullWidthButton}
+          type="primary"
+          size="m"
+          href={buildEnrollButtonLink(`/professional-learning/workshops/${id}`)}
+          text="Sign-in to enroll"
+          iconRight={{iconName: 'right-to-bracket'}}
+        />
+      );
+    }
+
+    return null;
   };
 
   return (
