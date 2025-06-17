@@ -1349,6 +1349,14 @@ class User < ApplicationRecord
     }
   end
 
+  def summarize_for_workshop
+    {
+      id: id,
+      email: email,
+      isStudent: user_type == TYPE_STUDENT,
+    }
+  end
+
   def at_risk_age_gated_date
     Policies::ChildAccount::StatePolicies.state_policy(self)&.dig(:lockout_date) unless Policies::ChildAccount.compliant?(self, future: true)
   end
