@@ -113,6 +113,8 @@ class Pd::WorkshopEnrollmentController < ApplicationController
   # This is for users who have registered for an external workshop. They'll receive a link to complete their
   # enrollment in our system via this join workshop page.
   def join
+    @workshop = ::Pd::Workshop.find_by_id params[:workshop_id]
+
     if !current_user
       source_page = ERB::Util.url_encode('workshop join')
       return_to = ERB::Util.url_encode("/pd/workshops/#{@workshop.id}/join")
@@ -124,7 +126,6 @@ class Pd::WorkshopEnrollmentController < ApplicationController
 
       redirect_to "/teacher_account_required?source_page=#{source_page}&return_to=#{return_to}"
     else
-      @workshop = ::Pd::Workshop.find_by_id params[:workshop_id]
       enroll_status =
         if @workshop.nil?
           "not found"
@@ -145,18 +146,18 @@ class Pd::WorkshopEnrollmentController < ApplicationController
         props: {
           workshop_enrollment_status: enroll_status,
           workshop_info: {
-            id: @workshop.id.to_s,
-            course: @workshop.course,
-            subject: @workshop.subject,
-            name: @workshop.name,
-            format: @workshop.format,
+            id: @workshop.try(:id)&.to_s,
+            course: @workshop.try(:course),
+            subject: @workshop.try(:subject),
+            name: @workshop.try(:name),
+            format: @workshop.try(:format),
             rpName: @workshop.try(:regional_partner).try(:name),
-            sessionInfoForCalendar: @workshop.sessions.map(&:session_info_for_calendar)
+            sessionInfoForCalendar: @workshop.try(:sessions)&.map(&:session_info_for_calendar)
           },
           user_info: {
             displayName: current_user.name,
-            givenName: current_user.given_name,
-            familyName: current_user.family_name,
+            givenName: current_user.try(:given_name),
+            familyName: current_user.try(:family_name),
             email: current_user.email,
             schoolName: current_user.try(:school_info).try(:effective_school_name).try(:titleize)
           }
