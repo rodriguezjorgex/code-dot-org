@@ -277,6 +277,32 @@ const marketingPaths = {
 
 const nextJsAssetsPath = '/_next/static/';
 
+const SUPPORTED_LOCALES = new Set([
+  'en-US',
+  'es',
+  'ar',
+  'de',
+  'fa',
+  'fr',
+  'hi',
+  'id',
+  'it',
+  'ja',
+  'ko',
+  'mr',
+  'pl',
+  'pt-BR',
+  'sk',
+  'th',
+  'tr',
+  'uk',
+  'vi',
+  'zh-TW',
+  'sq',
+  'tl',
+  'he',
+]);
+
 // Remove the localized portion of paths, if there is a localized portion.
 // For example:
 // 1. /en-US/engineering/all-the-things becomes /engineering/all-the-things
@@ -285,7 +311,7 @@ function extractPaths(uri) {
   const parts = uri.split('/').filter(Boolean); // Remove empty segments
   const localeRegex = /^[a-z]{2}(-[A-Z]{2})?$/;
 
-  if (parts.length && localeRegex.test(parts[0])) {
+  if (parts.length && localeRegex.test(parts[0]) && SUPPORTED_LOCALES.has(parts[0])) {
     // Has locale, return everything after locale
     return '/' + parts.slice(1).join('/');
   }
