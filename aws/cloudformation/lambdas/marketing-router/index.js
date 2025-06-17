@@ -305,6 +305,7 @@ const marketingPaths = {
   "/hour-of-code/helloworld": true,
   "/hour-of-code/minecraft": true,
   "/incubator": true,
+  "/amazon-future-engineer": true,
 }
 
 const nextJsAssetsPath = '/_next/static/';
