@@ -124,14 +124,18 @@ To specify an alternate branch name, run `rake adhoc:start branch=BRANCH`."
     def certificate_arn
       acm = Aws::ACM::Client.new(region: ACM_REGION)
       wildcard = "*.#{domain}"
-      acm.
+
+      selected = acm.
         list_certificates(certificate_statuses: ['ISSUED']).
         certificate_summary_list.
         select {|cert| cert.domain_name == wildcard || cert.domain_name == domain}.
         map {|cert| acm.describe_certificate(certificate_arn: cert.certificate_arn).certificate}.
         select {|cert| cert.subject_alternative_names.include? wildcard}.
-        max_by(&:not_after).
-        certificate_arn
+        max_by(&:not_after)
+
+      raise "No valid ACM certificate found for domain #{domain}" unless selected
+
+      selected.certificate_arn
     end
 
     # S3 path to bootstrap script.
