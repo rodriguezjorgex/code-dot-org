@@ -71,7 +71,7 @@ Dashboard::Application.routes.draw do
     resources :levels do
       resources :skills, only: [:create, :delete], controller: 'levels_skills'
     end
-  
+
     patch '/api/v1/user_scripts/:script_id', to: 'api/v1/user_scripts#update'
 
     get '/download/:product', to: 'hoc_download#index'
