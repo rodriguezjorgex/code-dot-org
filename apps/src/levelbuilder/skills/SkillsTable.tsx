@@ -1,17 +1,21 @@
 import {SimpleDropdown} from '@code-dot-org/component-library/dropdown';
-import React from 'react';
+import FontAwesomeV6Icon from '@code-dot-org/component-library/fontAwesomeV6Icon';
+import React, {useState} from 'react';
 import * as Table from 'reactabular-table';
 
 import './skills.css';
 
-import {SkillsByConcept} from './types';
+import SkillsEditDialog from './SkillsEditDialog';
+import {Skill, SkillsByConcept} from './types';
 
 interface SkillsTableProps {
   skills: SkillsByConcept;
 }
 
 const SkillsTable: React.FC<SkillsTableProps> = ({skills}) => {
-  const [selectedConcept, setSelectedConcept] = React.useState('');
+  const [selectedConcept, setSelectedConcept] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const concepts = Object.keys(skills)
     .sort((a, b) => a.localeCompare(b))
     .map(concept => ({
@@ -20,6 +24,7 @@ const SkillsTable: React.FC<SkillsTableProps> = ({skills}) => {
     }));
   concepts.push({value: '', text: ''});
   const skillsToShow = skills[selectedConcept] || [];
+  const [skillToEdit, setSkillToEdit] = useState<Skill | undefined>(undefined);
 
   const columns = [
     {
@@ -71,7 +76,24 @@ const SkillsTable: React.FC<SkillsTableProps> = ({skills}) => {
         props: {className: 'skills-table-cell-unset-maxwidth'},
       },
     },
+    {
+      property: 'edit',
+      header: {
+        label: 'Edit',
+        props: {className: 'skills-table-header-cell'},
+      },
+      cell: {
+        formatters: [(edit: string) => <span>{edit}</span>],
+        props: {},
+      },
+    },
   ];
+
+  const handleEditClick = (skill: Skill) => {
+    setIsModalOpen(true);
+    setSkillToEdit(skill);
+  };
+
   return (
     <div>
       <h2>View Available Skills</h2>
@@ -99,10 +121,25 @@ const SkillsTable: React.FC<SkillsTableProps> = ({skills}) => {
             key: skill.key,
             description: skill.description,
             evaluationCriteria: skill.evaluationCriteria,
+            edit: (
+              <span
+                style={{cursor: 'pointer'}}
+                onClick={() => handleEditClick(skill)}
+              >
+                <FontAwesomeV6Icon iconName="pencil-alt" />
+              </span>
+            ),
           }))}
           rowKey="key"
         />
       </Table.Provider>
+      {isModalOpen && skillToEdit && (
+        <SkillsEditDialog
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          skill={skillToEdit}
+        />
+      )}
     </div>
   );
 };
