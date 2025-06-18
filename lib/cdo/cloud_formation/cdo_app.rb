@@ -126,7 +126,7 @@ To specify an alternate branch name, run `rake adhoc:start branch=BRANCH`."
       wildcard = "*.#{domain}"
 
       selected = acm.
-        list_certificates(certificate_statuses: ['ISSUED']).
+        list_certificates(certificate_statuses: ['ISSUED'], max_items: 200).
         certificate_summary_list.
         select {|cert| cert.domain_name == wildcard || cert.domain_name == domain}.
         map {|cert| acm.describe_certificate(certificate_arn: cert.certificate_arn).certificate}.
