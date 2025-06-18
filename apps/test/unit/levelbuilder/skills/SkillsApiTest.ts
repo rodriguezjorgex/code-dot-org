@@ -75,7 +75,7 @@ describe('skillsApi', () => {
       const response = await createLevelsSkill(levelsSkillData);
       expect(postSpy).toHaveBeenCalledTimes(1);
       expect(postSpy).toHaveBeenCalledWith(
-        '/levels_skills',
+        `/levels/${levelsSkillData.levelId}/skills/${levelsSkillData.skillId}`,
         JSON.stringify(levelsSkillData),
         true,
         {'Content-Type': 'application/json; charset=UTF-8'}

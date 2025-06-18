@@ -28,8 +28,8 @@ class LevelsSkillsController < ApplicationController
   end
 
   def delete
-    level_id = params[:level_id].to_i
-    skill_id = params[:skill_id].to_i
+    level_id = levels_skill_params[:level_id].to_i
+    skill_id = levels_skill_params[:skill_id].to_i
     begin
       level = Level.find(level_id)
       Skill.find(skill_id).levels.destroy(level)

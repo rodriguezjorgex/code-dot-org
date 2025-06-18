@@ -32,7 +32,7 @@ export async function createSkill(skill: Skill) {
 
 export async function createLevelsSkill(levelsSkill: LevelsSkill) {
   const response = await HttpClient.post(
-    '/levels_skills',
+    `/levels/${levelsSkill.levelId}/skills/${levelsSkill.skillId}`,
     JSON.stringify(levelsSkill),
     true,
     {
@@ -41,7 +41,7 @@ export async function createLevelsSkill(levelsSkill: LevelsSkill) {
   )
     .then(response => response.json())
     .then(json => {
-      if (json.success) {
+      if (json.status === 'success') {
         return json;
       } else {
         throw new Error(`Failed to create LevelsSkill: ${json.error}`);
@@ -60,7 +60,7 @@ export async function createLevelsSkill(levelsSkill: LevelsSkill) {
 export async function removeSkillFromLevel(levelId: number, skillId: number) {
   try {
     const response = await HttpClient.delete(
-      `/levels_skills/${levelId}/${skillId}`,
+      `/levels/${levelId}/skills/${skillId}`,
       true,
       {
         'Content-Type': 'application/json; charset=UTF-8',
