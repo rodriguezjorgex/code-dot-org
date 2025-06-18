@@ -33,18 +33,18 @@ const WorkshopJoin: React.FunctionComponent<{
   workshop_info: {
     id: string;
     course: string;
-    subject: string;
-    name: string;
+    subject?: string;
+    name?: string;
     format: string;
-    rpName: string;
-    sessionInfoForCalendar: SessionCalendarEvent[];
+    rpName?: string;
+    sessionInfoForCalendar?: SessionCalendarEvent[];
   };
   user_info: {
     displayName: string;
-    givenName: string;
-    familyName: string;
+    givenName?: string;
+    familyName?: string;
     email: string;
-    schoolName: string;
+    schoolName?: string;
   };
 }> = ({workshop_enrollment_status, workshop_info, user_info}) => {
   const [enrollmentStatus, setEnrollmentStatus] = useState(
@@ -66,13 +66,15 @@ const WorkshopJoin: React.FunctionComponent<{
     // on that page since event logs immediately followed by redirects sometimes do not fire.
     sessionStorage.setItem('workshopId', workshop_info.id);
     sessionStorage.setItem('workshopCourse', workshop_info.course);
-    sessionStorage.setItem('workshopSubject', workshop_info.subject);
-    sessionStorage.setItem('workshopName', workshop_info.name);
+    sessionStorage.setItem('workshopSubject', workshop_info.subject || '');
+    sessionStorage.setItem('workshopName', workshop_info.name || '');
     sessionStorage.setItem('workshopFormat', workshop_info.format);
-    sessionStorage.setItem('rpName', workshop_info.rpName);
+    sessionStorage.setItem('rpName', workshop_info.rpName || '');
     sessionStorage.setItem(
       'sessionTimeInfo',
-      JSON.stringify(workshop_info.sessionInfoForCalendar)
+      workshop_info.sessionInfoForCalendar
+        ? JSON.stringify(workshop_info.sessionInfoForCalendar)
+        : ''
     );
 
     navigateToHref('/my-professional-learning');
