@@ -57,8 +57,10 @@ const defaultProps = {
     ['California', 'CA'],
     ['New York', 'NY'],
   ],
-  userDisplayName: 'John Doe',
+  userDisplayName: 'Mr. Doe',
   userUsername: 'johndoe',
+  userGivenName: 'John',
+  userFamilyName: 'Doe',
   userEmail: 'john@example.com',
   userType: 'teacher',
   userProperties: {},
@@ -79,6 +81,8 @@ describe('AccountInformation', () => {
     render(<AccountInformation {...defaultProps} />);
     expect(screen.getByLabelText(/display name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/last name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/^password$/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/password confirmation/i)).toBeInTheDocument();
@@ -123,10 +127,16 @@ describe('AccountInformation', () => {
     render(<AccountInformation {...defaultProps} />);
 
     fireEvent.change(screen.getByLabelText(/display name/i), {
-      target: {value: 'Jane Doe'},
+      target: {value: 'Ms. Doe'},
     });
     fireEvent.change(screen.getByLabelText(/username/i), {
       target: {value: 'janedoe'},
+    });
+    fireEvent.change(screen.getByLabelText(/first name/i), {
+      target: {value: 'Jane'},
+    });
+    fireEvent.change(screen.getByLabelText(/last name/i), {
+      target: {value: 'Doe'},
     });
     fireEvent.change(screen.getByLabelText(/^password$/i), {
       target: {value: 'newpassword'},
@@ -154,6 +164,8 @@ describe('AccountInformation', () => {
       user: {
         name: 'Jane Doe',
         username: 'janedoe',
+        given_name: 'Jane',
+        family_name: 'Doe',
         password: 'newpassword',
         password_confirmation: 'newpassword',
         current_password: 'currentpassword',
