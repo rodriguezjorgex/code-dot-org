@@ -118,7 +118,7 @@ const EnrollInWorkshop: React.FC<EnrollInWorkshopProps> = ({
           type="primary"
           size="m"
           href={buildEnrollButtonLink(`/professional-learning/workshops/${id}`)}
-          text="Sign-in to enroll"
+          text={is_student ? 'Switch to teacher account' : 'Sign-in to enroll'}
           iconRight={{iconName: 'right-to-bracket'}}
         />
       );

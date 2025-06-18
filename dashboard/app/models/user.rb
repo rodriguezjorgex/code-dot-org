@@ -1353,7 +1353,7 @@ class User < ApplicationRecord
     {
       id: id,
       email: email,
-      isStudent: user_type == TYPE_STUDENT,
+      is_student: user_type == TYPE_STUDENT,
       first_name: name&.split&.first,
       last_name: name&.split&.last,
     }
