@@ -1,6 +1,7 @@
 import Modal from '@code-dot-org/component-library/modal';
 import React, {useState} from 'react';
 
+import {updateSkill} from './SkillsApi';
 import {Skill} from './types';
 
 interface SkillsEditDialogProps {
@@ -15,12 +16,11 @@ const SkillsEditDialog: React.FC<SkillsEditDialogProps> = ({
   onClose,
 }) => {
   const [editedSkill, setEditedSkill] = useState<Skill>(skill || {});
-  console.log('SkillsEditDialog', {isOpen, skill, editedSkill});
   if (!isOpen) return null;
 
   const handleSave = () => {
-    // TODO: Add API call to save the edited skill
-    console.log('Saving skill:', editedSkill);
+    updateSkill(editedSkill.id, editedSkill);
+    alert(`Skill ${editedSkill.key} has been updated successfully!`);
     onClose();
   };
 

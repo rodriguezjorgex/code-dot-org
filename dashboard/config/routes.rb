@@ -67,7 +67,7 @@ Dashboard::Application.routes.draw do
 
     resources :user_level_interactions, only: [:create]
 
-    resources :skills, only: [:create, :index]
+    resources :skills, only: [:create, :index, :update]
     resources :levels do
       resources :skills, only: [:create, :delete], controller: 'levels_skills'
     end

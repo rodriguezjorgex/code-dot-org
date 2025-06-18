@@ -28,6 +28,15 @@ class SkillsController < ApplicationController
     end
   end
 
+  def update
+    @skill = Skill.find(params[:id])
+    if @skill.update(skill_params)
+      render json: {status: 'success', message: 'Skill updated successfully'}, status: :ok
+    else
+      render json: {status: 'error', message: @skill.errors.full_messages.to_sentence}, status: :bad_request
+    end
+  end
+
   private def skill_params
     params.permit(
       :key,
