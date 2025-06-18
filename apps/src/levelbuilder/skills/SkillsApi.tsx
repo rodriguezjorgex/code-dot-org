@@ -76,7 +76,8 @@ export async function removeSkillFromLevel(levelId: number, skillId: number) {
     MetricsReporter.logError({
       event: MetricEvent.LEVELS_SKILL_DELETE_FAIL,
       errorMessage:
-        (error as Error).message || 'Failed to remove Skill from Leve',
+        (error as Error).message ||
+        `Failed to remove Skill ${skillId} from Level ${levelId}`,
     });
     throw error;
   }
