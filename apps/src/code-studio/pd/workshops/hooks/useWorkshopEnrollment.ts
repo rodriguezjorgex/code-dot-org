@@ -10,12 +10,6 @@ import {navigateToHref} from '@cdo/apps/utils';
 
 import {useWorkshopEnrollmentApi} from './useWorkshopEnrollmentApi';
 
-export type WorkshopEnrollmentResponse = {
-  workshop_enrollment_status: string;
-  error_message?: string;
-  cancel_url?: string;
-};
-
 type WorkshopEnrollmentHandlerProps = Pick<
   GetWorkshopInfoScriptDataResponse,
   | 'regional_partner_name'
@@ -102,14 +96,17 @@ export function useWorkshopEnrollment({
         sessionStorage.setItem('sessionTimeInfo', JSON.stringify(sessions));
         navigateToHref('/my-professional-learning');
         break;
-    }
-
-    if (!alertState.text && error) {
-      setAlertState({
-        show: true,
-        text: error,
-      });
+      case SUBMISSION_STATUSES.UNKNOWN_ERROR:
+      default:
+        setAlertState({
+          show: true,
+          text:
+            result?.error_message ||
+            error ||
+            'An unknown error occurred while processing your enrollment. Please try again later.',
+        });
     }
   };
+
   return {handleClick, isSubmitting, alertState, setAlertState};
 }
