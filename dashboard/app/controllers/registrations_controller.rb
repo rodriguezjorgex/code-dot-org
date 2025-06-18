@@ -529,6 +529,8 @@ class RegistrationsController < Devise::RegistrationsController
   private def upgrade_params
     params.require(:user).permit(
       :username,
+      :given_name,
+      :family_name,
       :parent_email,
       :email,
       :hashed_email,
@@ -542,6 +544,8 @@ class RegistrationsController < Devise::RegistrationsController
     params.require(:user).permit(
       :parent_email,
       :username,
+      :given_name,
+      :family_name,
       :password,
       :encrypted_password,
       :current_password,

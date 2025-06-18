@@ -86,10 +86,14 @@ module RegistrationsControllerTests
 
       parent_email = 'upgraded_parent@code.org'
       new_username = 'upgrade_username'
+      new_given_name = 'GivenName'
+      new_family_name = 'FamilyName'
 
       user_params = {
         parent_email: parent_email,
         username: new_username,
+        given_name: new_given_name,
+        family_name: new_family_name,
         password: NEW_PASSWORD,
         password_confirmation: NEW_PASSWORD,
       }
@@ -101,6 +105,8 @@ module RegistrationsControllerTests
       student_without_password.reload
       assert_equal parent_email, student_without_password.parent_email
       assert_equal new_username, student_without_password.username
+      assert_equal new_given_name, student_without_password.given_name
+      assert_equal new_family_name, student_without_password.family_name
       assert student_without_password.valid_password? NEW_PASSWORD
       refute student_without_password.teacher_managed_account?
       refute student_without_password.provider.nil?

@@ -33,6 +33,8 @@ export const AccountInformation: React.FC<AccountInformationProps> = ({
   userAge,
   userUsername,
   userDisplayName,
+  userGivenName,
+  userFamilyName,
   userProperties,
   userEmail,
   hashedEmail,
@@ -48,6 +50,8 @@ export const AccountInformation: React.FC<AccountInformationProps> = ({
 }) => {
   const [name, setName] = useState(userDisplayName ?? '');
   const [username, setUsername] = useState(userUsername ?? '');
+  const [givenName, setGivenName] = useState(userGivenName ?? '');
+  const [familyName, setFamilyName] = useState(userFamilyName ?? '');
   const [email, setEmail] = useState(userEmail ?? '');
   const [gender, setGender] = useState(
     userProperties?.gender_student_input ?? ''
@@ -105,6 +109,8 @@ export const AccountInformation: React.FC<AccountInformationProps> = ({
     const userUpdates = {
       name,
       username,
+      givenName,
+      familyName,
       password,
       password_confirmation: passwordConfirmation,
       current_password: currentPassword,
@@ -251,6 +257,36 @@ export const AccountInformation: React.FC<AccountInformationProps> = ({
             maxLength={255}
             helperMessage={displayNameHelperMessage}
             errorMessage={getError('name')}
+          />
+
+          {/* given name */}
+          <TextField
+            id="given_name"
+            className={commonStyles.input}
+            label={i18n.firstName()}
+            onChange={e => {
+              setGivenName(e.target.value);
+              clearError('given_name');
+            }}
+            value={givenName}
+            name="user[given_name]"
+            maxLength={255}
+            errorMessage={getError('given_name')}
+          />
+
+          {/* family name */}
+          <TextField
+            id="family_name"
+            className={commonStyles.input}
+            label={i18n.lastName()}
+            onChange={e => {
+              setFamilyName(e.target.value);
+              clearError('family_name');
+            }}
+            value={familyName}
+            name="user[family_name]"
+            maxLength={255}
+            errorMessage={getError('family_name')}
           />
 
           {/* username */}
