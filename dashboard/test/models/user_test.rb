@@ -2109,19 +2109,6 @@ class UserTest < ActiveSupport::TestCase
     assert_nil user.parent_email
   end
 
-  test 'upgrade_to_teacher given valid params should delete family_name property' do
-    family_name = 'TestFamName'
-    user = User.create(@good_data.merge({family_name: family_name}))
-    user.reload
-
-    assert_equal family_name, user.family_name
-
-    assert user.upgrade_to_teacher('example@email.com', email_preference_params)
-
-    user = User.find(user.id)
-    assert_nil user.family_name
-  end
-
   def assert_parent_email_params_equals_email_preference(parent_email_params, email_preference)
     assert_equal parent_email_params[:parent_email_preference_email], email_preference.email
     assert_equal parent_email_params[:parent_email_preference_opt_in].casecmp?('yes'), email_preference.opt_in
@@ -3307,6 +3294,7 @@ class UserTest < ActiveSupport::TestCase
         id: @student.id,
         name: @student.name,
         username: @student.username,
+        given_name: nil,
         family_name: nil,
         email: @student.email,
         hashed_email: @student.hashed_email,
@@ -4391,6 +4379,15 @@ class UserTest < ActiveSupport::TestCase
     user = create :user
     user.increment_section_attempts
     assert_equal 1, user.properties['section_attempts']
+  end
+
+  test 'given name is added to summarize' do
+    user = create :user
+    given_name = 'TestGivenName'
+    user.given_name = given_name
+
+    assert(user.summarize.key?(:given_name))
+    assert_equal(given_name, user.summarize[:given_name])
   end
 
   test 'family name is added to summarize' do

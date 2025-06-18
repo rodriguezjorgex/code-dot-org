@@ -198,6 +198,7 @@ class User < ApplicationRecord
     gender_third_party_input
     us_state
     country_code
+    given_name
     family_name
     ai_rubrics_disabled
     ai_rubrics_tour_seen
@@ -762,10 +763,6 @@ class User < ApplicationRecord
     return true if teacher? # No-op if user is already a teacher
     return false if email.blank?
 
-    # Remove family name, in case it was set on the student account.
-    # Must do this before updating user_type, to prevent validation failure.
-    self.family_name = nil
-
     hashed_email = User.hash_email(email)
     self.user_type = TYPE_TEACHER
     # teachers do not need another adult to have access to their account.
@@ -1327,6 +1324,7 @@ class User < ApplicationRecord
       id: id,
       name: name,
       username: username,
+      given_name: given_name,
       family_name: family_name,
       email: email,
       hashed_email: hashed_email,
