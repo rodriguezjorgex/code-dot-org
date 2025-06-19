@@ -73,7 +73,7 @@ describe('EnrollInWorkshop', () => {
       />
     );
     const linkButton = screen.getByRole('link', {
-      name: /Sign-in to enroll/i,
+      name: /Switch to teacher account/i,
     });
     expect(linkButton).toHaveAttribute(
       'href',
