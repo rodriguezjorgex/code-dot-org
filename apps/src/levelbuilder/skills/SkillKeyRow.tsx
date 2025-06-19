@@ -3,21 +3,21 @@ import React from 'react';
 
 import {removeSkillFromLevel} from './SkillsApi';
 import './skills.css';
+import {LevelSkill} from './types';
 
 interface Props {
-  levelId: number;
-  skillId: number;
+  levelSkill: LevelSkill;
   skillKey: string;
 }
 
-const SkillKeyRow: React.FC<Props> = ({levelId, skillId, skillKey}) => {
+const SkillKeyRow: React.FC<Props> = ({levelSkill, skillKey}) => {
   const handleRemoveSkill = () => {
     if (
       window.confirm(
-        `Are you sure you want to remove ${skillKey} from level ${levelId}?`
+        `Are you sure you want to remove ${skillKey} from level ${levelSkill.levelId}?`
       )
     ) {
-      removeSkillFromLevel(levelId, skillId);
+      removeSkillFromLevel(levelSkill);
     }
   };
 

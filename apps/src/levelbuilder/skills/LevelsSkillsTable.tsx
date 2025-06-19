@@ -103,8 +103,7 @@ const LevelsSkillsTable: React.FC<LevelsSkillsTableProps> = ({levels}) => {
             skills: level.skills.map(skill => (
               <SkillKeyRow
                 key={`${level.levelId}-${skill.key}`}
-                levelId={level.levelId}
-                skillId={skill.id}
+                levelSkill={{skillId: skill.id, levelId: level.levelId}}
                 skillKey={skill.key}
               />
             )),

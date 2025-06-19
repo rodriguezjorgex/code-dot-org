@@ -1320,6 +1320,8 @@ class LevelsControllerTest < ActionController::TestCase
     )
   end
 
+  # TODO - Erin on Friday :) add tests for remove_skill and add_skill
+
   # Allow our update_blocks tests to verify that real S3 urls are being
   # generated when solution images are uploaded. We don't want to actually
   # upload any S3 images in our tests, so just enable the codepath where an

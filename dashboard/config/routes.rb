@@ -68,9 +68,6 @@ Dashboard::Application.routes.draw do
     resources :user_level_interactions, only: [:create]
 
     resources :skills, only: [:create, :index]
-    resources :levels do
-      resources :skills, only: [:create, :delete], controller: 'levels_skills'
-    end
 
     patch '/api/v1/user_scripts/:script_id', to: 'api/v1/user_scripts#update'
 
@@ -395,6 +392,8 @@ Dashboard::Application.routes.draw do
         get 'level_properties'
         get 'extra_links'
         patch 'update_bubble_choice_settings'
+        post 'add_skill'
+        post 'remove_skill'
       end
     end
 

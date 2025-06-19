@@ -1,6 +1,6 @@
 import {
   createSkill,
-  createLevelsSkill,
+  addSkillToLevel,
   removeSkillFromLevel,
 } from '@cdo/apps/levelbuilder/skills/SkillsApi';
 import HttpClient from '@cdo/apps/util/HttpClient';
@@ -49,9 +49,9 @@ describe('skillsApi', () => {
     });
   });
 
-  describe('createLevelsSkill', () => {
-    const levelsSkillData = {levelId: 1, skillId: 2};
-    const levelsSkillSuccessResponse = {
+  describe('addSkillToLevel', () => {
+    const levelSkillData = {levelId: 1, skillId: 2};
+    const levelSkillSuccessResponse = {
       status: 'success',
       message: 'LevelsSkill saved successfully',
     };
@@ -59,7 +59,7 @@ describe('skillsApi', () => {
 
     beforeEach(() => {
       postSpy.mockResolvedValue(
-        new Response(JSON.stringify(levelsSkillSuccessResponse), {
+        new Response(JSON.stringify(levelSkillSuccessResponse), {
           status: 201,
           statusText: 'Created',
           headers: new Headers({'Content-Type': 'application/json'}),
@@ -72,15 +72,15 @@ describe('skillsApi', () => {
     });
 
     it('should call createLevelsSkill with correct URL and valid parameters', async () => {
-      const response = await createLevelsSkill(levelsSkillData);
+      const response = await addSkillToLevel(levelSkillData);
       expect(postSpy).toHaveBeenCalledTimes(1);
       expect(postSpy).toHaveBeenCalledWith(
-        `/levels/${levelsSkillData.levelId}/skills/${levelsSkillData.skillId}`,
-        JSON.stringify(levelsSkillData),
+        `/levels/${levelSkillData.levelId}/add_skill`,
+        JSON.stringify(levelSkillData),
         true,
         {'Content-Type': 'application/json; charset=UTF-8'}
       );
-      expect(response).toEqual(levelsSkillSuccessResponse);
+      expect(response).toEqual(levelSkillSuccessResponse);
     });
   });
 
@@ -108,10 +108,10 @@ describe('skillsApi', () => {
     });
 
     it('should call removeSkillFromLevel with correct URL and return success', async () => {
-      const response = await removeSkillFromLevel(levelId, skillId);
+      const response = await removeSkillFromLevel({levelId, skillId});
       expect(deleteSpy).toHaveBeenCalledTimes(1);
       expect(deleteSpy).toHaveBeenCalledWith(
-        `/levels/${levelId}/skills/${skillId}`,
+        `/levels/${levelId}/remove_skill`,
         true,
         {'Content-Type': 'application/json; charset=UTF-8'}
       );
