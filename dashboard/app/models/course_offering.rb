@@ -224,6 +224,15 @@ class CourseOffering < ApplicationRecord
     end
   end
 
+  def self.self_paced_course_offerings_for_catalog
+    all_course_offerings.select do |co|
+      co.get_participant_audience == 'teacher' &&
+        co.instruction_type == 'self_paced' &&
+        co.assignable? &&
+        co.any_version_is_in_published_state?
+    end.map(&:summarize_for_catalog)
+  end
+
   def summarize_for_unit_selector(unit_ids)
     {
       display_name: any_versions_launched? ? localized_display_name : localized_display_name + ' *',
