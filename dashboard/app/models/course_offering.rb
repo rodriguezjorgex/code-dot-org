@@ -224,12 +224,6 @@ class CourseOffering < ApplicationRecord
     end
   end
 
-  def self.self_paced_course_offerings_for_catalog
-    professional_learning_and_self_paced_course_offerings.
-      map(&:summarize_for_catalog).
-      filter {|co| co[:self_paced_pl_course_offering_path].present?}
-  end
-
   def summarize_for_unit_selector(unit_ids)
     {
       display_name: any_versions_launched? ? localized_display_name : localized_display_name + ' *',

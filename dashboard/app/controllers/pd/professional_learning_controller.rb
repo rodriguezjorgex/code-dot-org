@@ -32,7 +32,7 @@ class Pd::ProfessionalLearningController < ApplicationController
 
   # GET professional-learning/courses
   def courses
-    @self_paced_pl_course_offerings = CourseOffering.self_paced_course_offerings_for_catalog
+    @self_paced_pl_course_offerings = CourseOffering.professional_learning_and_self_paced_course_offerings.map(&:summarize_for_catalog)
     view_options(full_width: true, no_padding_container: true)
     render :self_paced_pl_catalog
   end
