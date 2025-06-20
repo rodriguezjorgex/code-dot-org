@@ -637,7 +637,7 @@ class LevelsController < ApplicationController
     end
 
     unless @level.skills.include?(@skill)
-       @level.skills << @skill
+      @level.skills << @skill
     end
 
     if @level.save
