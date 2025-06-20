@@ -85,13 +85,12 @@ describe('skillsApi', () => {
   });
 
   describe('removeSkillFromLevel', () => {
-    const levelId = 1;
-    const skillId = 2;
+    const levelSkillData = {levelId: 1, skillId: 2};
     const removeSuccessResponse = {
       status: 'success',
       message: 'LevelsSkill deleted successfully',
     };
-    const deleteSpy = jest.spyOn(HttpClient, 'delete');
+    const deleteSpy = jest.spyOn(HttpClient, 'post');
 
     beforeEach(() => {
       deleteSpy.mockResolvedValue(
@@ -108,10 +107,11 @@ describe('skillsApi', () => {
     });
 
     it('should call removeSkillFromLevel with correct URL and return success', async () => {
-      const response = await removeSkillFromLevel({levelId, skillId});
+      const response = await removeSkillFromLevel(levelSkillData);
       expect(deleteSpy).toHaveBeenCalledTimes(1);
       expect(deleteSpy).toHaveBeenCalledWith(
-        `/levels/${levelId}/remove_skill`,
+        `/levels/${levelSkillData.levelId}/remove_skill`,
+        JSON.stringify(levelSkillData),
         true,
         {'Content-Type': 'application/json; charset=UTF-8'}
       );
