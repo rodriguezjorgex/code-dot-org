@@ -8,7 +8,7 @@ import color from '@cdo/apps/util/color';
 
 import {SkillsByConcept} from './types';
 
-interface SkillsTableProps {
+interface SkillsByConceptTableProps {
   skills: SkillsByConcept;
 }
 
@@ -26,7 +26,65 @@ export const styleOverrides = {
   },
 };
 
-const SkillsTable: React.FC<SkillsTableProps> = ({skills}) => {
+export const columns = [
+  {
+    property: 'id',
+    header: {
+      label: 'Id',
+      props: {style: {...style.headerCell, ...styleOverrides.headerCell}},
+    },
+    cell: {
+      formatters: [(id: string) => <span>{id}</span>],
+      props: {style: style.cell},
+    },
+  },
+  {
+    property: 'key',
+    header: {
+      label: 'Key',
+      props: {style: {...style.headerCell, ...styleOverrides.headerCell}},
+    },
+    cell: {
+      formatters: [(key: string) => <span>{key}</span>],
+      props: {style: style.cell},
+    },
+  },
+  {
+    property: 'description',
+    header: {
+      label: 'description',
+      props: {style: {...style.headerCell, ...styleOverrides.headerCell}},
+    },
+    cell: {
+      formatters: [(description: string) => <span>{description}</span>],
+      props: {style: style.cell},
+    },
+  },
+  {
+    property: 'evaluationCriteria',
+    header: {
+      label: 'evaluation criteria',
+      // Override the default max-width style to allow for longer content
+      props: {
+        style: {
+          ...style.headerCell,
+          ...styleOverrides.headerCell,
+          maxWidth: 'unset',
+        },
+      },
+    },
+    cell: {
+      formatters: [
+        (evaluationCriteria: string) => <span>{evaluationCriteria}</span>,
+      ],
+      props: {style: {...style.cell, maxWidth: 'unset'}},
+    },
+  },
+];
+
+const SkillsByConceptTable: React.FC<SkillsByConceptTableProps> = ({
+  skills,
+}) => {
   const [selectedConcept, setSelectedConcept] = React.useState('');
   const concepts = Object.keys(skills)
     .sort((a, b) => a.localeCompare(b))
@@ -37,61 +95,6 @@ const SkillsTable: React.FC<SkillsTableProps> = ({skills}) => {
   concepts.push({value: '', text: ''});
   const skillsToShow = skills[selectedConcept] || [];
 
-  const columns = [
-    {
-      property: 'id',
-      header: {
-        label: 'Id',
-        props: {style: {...style.headerCell, ...styleOverrides.headerCell}},
-      },
-      cell: {
-        formatters: [(id: string) => <span>{id}</span>],
-        props: {style: style.cell},
-      },
-    },
-    {
-      property: 'key',
-      header: {
-        label: 'Key',
-        props: {style: {...style.headerCell, ...styleOverrides.headerCell}},
-      },
-      cell: {
-        formatters: [(key: string) => <span>{key}</span>],
-        props: {style: style.cell},
-      },
-    },
-    {
-      property: 'description',
-      header: {
-        label: 'description',
-        props: {style: {...style.headerCell, ...styleOverrides.headerCell}},
-      },
-      cell: {
-        formatters: [(description: string) => <span>{description}</span>],
-        props: {style: style.cell},
-      },
-    },
-    {
-      property: 'evaluationCriteria',
-      header: {
-        label: 'evaluation criteria',
-        // Override the default max-width style to allow for longer content
-        props: {
-          style: {
-            ...style.headerCell,
-            ...styleOverrides.headerCell,
-            maxWidth: 'unset',
-          },
-        },
-      },
-      cell: {
-        formatters: [
-          (evaluationCriteria: string) => <span>{evaluationCriteria}</span>,
-        ],
-        props: {style: {...style.cell, maxWidth: 'unset'}},
-      },
-    },
-  ];
   return (
     <div>
       <h2>View Available Skills</h2>
@@ -130,4 +133,4 @@ const SkillsTable: React.FC<SkillsTableProps> = ({skills}) => {
   );
 };
 
-export default SkillsTable;
+export default SkillsByConceptTable;
