@@ -32,6 +32,7 @@ class SkillsController < ApplicationController
   def update
     @skill = Skill.find(params[:id])
     if @skill.update(skill_params)
+      @skill.write_serialization
       render json: {status: 'success', message: 'Skill updated successfully'}, status: :ok
     else
       render json: {status: 'error', message: @skill.errors.full_messages.to_sentence}, status: :bad_request
