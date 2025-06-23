@@ -1007,7 +1007,7 @@ class Level < ApplicationRecord
 
   def skill_identifiers
     skills.map {|skill| {id: skill.id, key: skill.key}}
-  end 
+  end
 
   def skill_keys
     skills.pluck(:key)
