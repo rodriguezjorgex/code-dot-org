@@ -16,7 +16,7 @@ export interface Levels {
   unitNames: string[];
   skills: SkillIdentifier[];
 }
-export interface LevelsSkill {
+export interface LevelSkill {
   skillId: number;
   levelId: number;
 }

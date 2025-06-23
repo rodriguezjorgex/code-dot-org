@@ -2,7 +2,7 @@ import {MetricEvent} from '@cdo/apps/metrics/events';
 import MetricsReporter from '@cdo/apps/metrics/MetricsReporter';
 import HttpClient from '@cdo/apps/util/HttpClient';
 
-import {LevelsSkill, Skill} from './types';
+import {LevelSkill, Skill} from './types';
 
 export async function createSkill(skill: Skill) {
   const response = await HttpClient.post(
@@ -55,10 +55,10 @@ export async function updateSkill(skillId: number, skill: Partial<Skill>) {
   }
 }
 
-export async function createLevelsSkill(levelsSkill: LevelsSkill) {
+export async function addSkillToLevel(levelSkill: LevelSkill) {
   const response = await HttpClient.post(
-    `/levels/${levelsSkill.levelId}/skills/${levelsSkill.skillId}`,
-    JSON.stringify(levelsSkill),
+    `/levels/${levelSkill.levelId}/add_skill`,
+    JSON.stringify(levelSkill),
     true,
     {
       'Content-Type': 'application/json; charset=UTF-8',
@@ -82,10 +82,11 @@ export async function createLevelsSkill(levelsSkill: LevelsSkill) {
   return response;
 }
 
-export async function removeSkillFromLevel(levelId: number, skillId: number) {
+export async function removeSkillFromLevel(levelSkill: LevelSkill) {
   try {
-    const response = await HttpClient.delete(
-      `/levels/${levelId}/skills/${skillId}`,
+    const response = await HttpClient.post(
+      `/levels/${levelSkill.levelId}/remove_skill`,
+      JSON.stringify(levelSkill),
       true,
       {
         'Content-Type': 'application/json; charset=UTF-8',
@@ -101,7 +102,8 @@ export async function removeSkillFromLevel(levelId: number, skillId: number) {
     MetricsReporter.logError({
       event: MetricEvent.LEVELS_SKILL_DELETE_FAIL,
       errorMessage:
-        (error as Error).message || 'Failed to remove Skill from Leve',
+        (error as Error).message ||
+        `Failed to remove Skill ${levelSkill.skillId} from Level ${levelSkill.levelId}`,
     });
     throw error;
   }
