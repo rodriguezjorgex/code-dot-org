@@ -3,7 +3,7 @@ import * as Table from 'reactabular-table';
 
 import {tableLayoutStyles as style} from '@cdo/apps/templates/tables/tableConstants';
 
-import {columns, styleOverrides} from './SkillsByConceptTable';
+import {columns} from './SkillsByConceptTable';
 import {Skill} from './types';
 
 interface Props {
@@ -18,10 +18,7 @@ const SkillEvaluationSettings: React.FC<Props> = ({skills}) => {
         <h3>There are no skills associated with this level.</h3>
       )}
       {skills.length > 0 && (
-        <Table.Provider
-          columns={columns}
-          style={{...style.table, ...styleOverrides.table}}
-        >
+        <Table.Provider columns={columns} style={{...style.table}}>
           <Table.Header />
           <Table.Body
             rows={skills.map((skill: Skill) => ({
