@@ -7,7 +7,6 @@ import getScriptData from '@cdo/apps/util/getScriptData';
 
 $(document).ready(function () {
   const data = getScriptData('skillevaluationdata');
-  console.log('data', data);
   ReactDOM.render(
     <SkillEvaluationSettings skills={data} />,
     document.getElementById('skill-evaluation-settings-editor')

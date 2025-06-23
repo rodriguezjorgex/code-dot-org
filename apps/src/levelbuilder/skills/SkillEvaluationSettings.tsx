@@ -34,6 +34,8 @@ const SkillEvaluationSettings: React.FC<Props> = ({skills}) => {
           />
         </Table.Provider>
       )}
+      <br />
+      <br />
     </div>
   );
 };

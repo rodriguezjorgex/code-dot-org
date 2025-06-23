@@ -52,7 +52,7 @@ export const columns = [
   {
     property: 'description',
     header: {
-      label: 'description',
+      label: 'Description',
       props: {style: {...style.headerCell, ...styleOverrides.headerCell}},
     },
     cell: {
@@ -63,7 +63,7 @@ export const columns = [
   {
     property: 'evaluationCriteria',
     header: {
-      label: 'evaluation criteria',
+      label: 'Evaluation Criteria',
       // Override the default max-width style to allow for longer content
       props: {
         style: {
