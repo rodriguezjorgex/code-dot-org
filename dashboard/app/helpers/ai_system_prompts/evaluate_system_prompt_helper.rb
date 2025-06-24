@@ -40,7 +40,7 @@ module AiSystemPrompts::EvaluateSystemPromptHelper
     if skills.any?
       skills.each do |skill|
         skill_evaluations << {
-          skilKey: skill.key,
+          skillKey: skill.key,
           evaluationCriteria: skill.evaluation_criteria
         }
       end
