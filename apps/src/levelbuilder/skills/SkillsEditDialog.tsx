@@ -20,7 +20,6 @@ const SkillsEditDialog: React.FC<SkillsEditDialogProps> = ({
 
   const handleSave = () => {
     updateSkill(editedSkill.id, editedSkill);
-    alert(`Skill ${editedSkill.key} has been updated successfully!`);
     onClose();
   };
 

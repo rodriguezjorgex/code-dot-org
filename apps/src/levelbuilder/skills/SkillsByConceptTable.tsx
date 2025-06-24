@@ -8,14 +8,77 @@ import './skills.css';
 import SkillsEditDialog from './SkillsEditDialog';
 import {Skill, SkillsByConcept} from './types';
 
-interface SkillsTableProps {
+interface SkillsByConceptTableProps {
   skills: SkillsByConcept;
 }
 
-const SkillsTable: React.FC<SkillsTableProps> = ({skills}) => {
-  const [selectedConcept, setSelectedConcept] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export const columns = [
+  {
+    property: 'id',
+    header: {
+      label: 'Id',
+      props: {className: 'skills-table-header-cell'},
+    },
+    cell: {
+      formatters: [(id: string) => <span>{id}</span>],
+      props: {},
+    },
+  },
+  {
+    property: 'key',
+    header: {
+      label: 'Key',
+      props: {className: 'skills-table-header-cell'},
+    },
+    cell: {
+      formatters: [(key: string) => <span>{key}</span>],
+      props: {},
+    },
+  },
+  {
+    property: 'description',
+    header: {
+      label: 'Description',
+      props: {className: 'skills-table-header-cell'},
+    },
+    cell: {
+      formatters: [(description: string) => <span>{description}</span>],
+      props: {},
+    },
+  },
+  {
+    property: 'evaluationCriteria',
+    header: {
+      label: 'Evaluation Criteria',
+      props: {
+        className:
+          'skills-table-header-cell skills-table-header-cell-unset-maxwidth',
+      },
+    },
+    cell: {
+      formatters: [
+        (evaluationCriteria: string) => <span>{evaluationCriteria}</span>,
+      ],
+      props: {className: 'skills-table-cell-unset-maxwidth'},
+    },
+  },
+  {
+    property: 'edit',
+    header: {
+      label: 'Edit',
+      props: {className: 'skills-table-header-cell'},
+    },
+    cell: {
+      formatters: [(edit: string) => <span>{edit}</span>],
+      props: {},
+    },
+  },
+];
 
+const SkillsByConceptTable: React.FC<SkillsByConceptTableProps> = ({
+  skills,
+}) => {
+  const [selectedConcept, setSelectedConcept] = React.useState('');
   const concepts = Object.keys(skills)
     .sort((a, b) => a.localeCompare(b))
     .map(concept => ({
@@ -25,69 +88,7 @@ const SkillsTable: React.FC<SkillsTableProps> = ({skills}) => {
   concepts.push({value: '', text: ''});
   const skillsToShow = skills[selectedConcept] || [];
   const [skillToEdit, setSkillToEdit] = useState<Skill | undefined>(undefined);
-
-  const columns = [
-    {
-      property: 'id',
-      header: {
-        label: 'Id',
-        props: {className: 'skills-table-header-cell'},
-      },
-      cell: {
-        formatters: [(id: string) => <span>{id}</span>],
-        props: {},
-      },
-    },
-    {
-      property: 'key',
-      header: {
-        label: 'Key',
-        props: {className: 'skills-table-header-cell'},
-      },
-      cell: {
-        formatters: [(key: string) => <span>{key}</span>],
-        props: {},
-      },
-    },
-    {
-      property: 'description',
-      header: {
-        label: 'description',
-        props: {className: 'skills-table-header-cell'},
-      },
-      cell: {
-        formatters: [(description: string) => <span>{description}</span>],
-        props: {},
-      },
-    },
-    {
-      property: 'evaluationCriteria',
-      header: {
-        label: 'evaluation criteria',
-        props: {
-          className:
-            'skills-table-header-cell skills-table-header-cell-unset-maxwidth',
-        },
-      },
-      cell: {
-        formatters: [
-          (evaluationCriteria: string) => <span>{evaluationCriteria}</span>,
-        ],
-        props: {className: 'skills-table-cell-unset-maxwidth'},
-      },
-    },
-    {
-      property: 'edit',
-      header: {
-        label: 'Edit',
-        props: {className: 'skills-table-header-cell'},
-      },
-      cell: {
-        formatters: [(edit: string) => <span>{edit}</span>],
-        props: {},
-      },
-    },
-  ];
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleEditClick = (skill: Skill) => {
     setIsModalOpen(true);
@@ -144,4 +145,4 @@ const SkillsTable: React.FC<SkillsTableProps> = ({skills}) => {
   );
 };
 
-export default SkillsTable;
+export default SkillsByConceptTable;
