@@ -3,6 +3,7 @@ import * as Table from 'reactabular-table';
 
 import {tableLayoutStyles as style} from '@cdo/apps/templates/tables/tableConstants';
 
+import AccuracyCheck from './AccuracyCheck';
 import {columns} from './SkillsByConceptTable';
 import {Skill} from './types';
 
@@ -31,6 +32,7 @@ const SkillEvaluationSettings: React.FC<Props> = ({skills}) => {
           />
         </Table.Provider>
       )}
+      <AccuracyCheck />
       <br />
       <br />
     </div>

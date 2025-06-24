@@ -2,6 +2,7 @@ import HttpClient from '@cdo/apps/util/HttpClient';
 import {AiEvaluationTypes} from '@cdo/generated-scripts/sharedConstants';
 
 import {OpenaiChatCompletionMessage} from '../aiTutor/chatApi';
+import {Skill} from '../levelbuilder/skills/types';
 
 import {logStudentWorkEvaluations} from './studentWorkEvaluationsApi';
 
@@ -13,6 +14,15 @@ export interface StudentAnswer {
   projectId?: string;
 }
 
+export interface HumanEvaluation {
+  studentWork: string;
+  evaluation: string;
+  skillEvaluations?: [SkillBasedHumanEvaluation];
+}
+export interface SkillBasedHumanEvaluation {
+  evaluation: string;
+  skillKey: string;
+}
 export interface AIResponse {
   aiEvaluation: string;
   aiReasoning: string;
