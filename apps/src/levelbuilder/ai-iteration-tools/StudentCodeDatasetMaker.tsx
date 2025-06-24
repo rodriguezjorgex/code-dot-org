@@ -11,7 +11,7 @@ import {
 
 import {fetchStudentCodeSamples} from './StudentWorkSamplesApi';
 
-type EvaluatedCodeSample = StudentAnswer &
+export type EvaluatedCodeSample = StudentAnswer &
   AIResponse & {
     [key in `skill${number}${
       | 'evaluationCriteria'

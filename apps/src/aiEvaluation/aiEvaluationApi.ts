@@ -2,7 +2,6 @@ import HttpClient from '@cdo/apps/util/HttpClient';
 import {AiEvaluationTypes} from '@cdo/generated-scripts/sharedConstants';
 
 import {OpenaiChatCompletionMessage} from '../aiTutor/chatApi';
-import {Skill} from '../levelbuilder/skills/types';
 
 import {logStudentWorkEvaluations} from './studentWorkEvaluationsApi';
 
@@ -96,7 +95,7 @@ const EVALUATE_URL = '/openai/evaluate';
 type ValueOf<T> = T[keyof T];
 type EvaluationType = ValueOf<typeof AiEvaluationTypes>;
 
-async function evaluationFromOpenAI(
+export async function evaluationFromOpenAI(
   studentWork?: string,
   levelId?: number,
   unitId?: number,
