@@ -38,7 +38,7 @@ namespace :seed do
   CURRICULUM_CONTENT_PATHNAME = Pathname(CURRICULUM_CONTENT_DIR)
 
   timed_task_with_logging skills: :environment do
-    Skill.setup
+    Skill.seed_all(root_dir: CURRICULUM_CONTENT_PATHNAME)
   end
 
   timed_task_with_logging videos: :environment do
