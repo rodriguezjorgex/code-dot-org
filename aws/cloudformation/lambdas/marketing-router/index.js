@@ -312,6 +312,8 @@ const marketingPaths = {
   "/hourofcode": true,
   "/hour-of-code": true,
   "/csjourneys": true,
+  "/dance": true,
+  "/hour-of-code/dance": true,
   // Post Launch 2
   "/donate": true,
   "/poetry": true,
