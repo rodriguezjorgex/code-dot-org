@@ -50,10 +50,6 @@
 }
 
 /* Styles for ViewSystemPrompt component */
-.view-system-prompt {
-  /* Container styles if needed */
-}
-
 .view-system-prompt__toggle {
   cursor: pointer;
   user-select: none;
