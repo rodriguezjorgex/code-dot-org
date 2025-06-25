@@ -44,7 +44,7 @@ export async function updateSkill(skillId: number, skill: Partial<Skill>) {
     if (json.status === 'success') {
       return json;
     } else {
-      throw new Error(`Failed to update skill: ${json.error || json.message}`);
+      throw new Error(`Failed to update skill: ${json.error}`);
     }
   } catch (error) {
     MetricsReporter.logError({
