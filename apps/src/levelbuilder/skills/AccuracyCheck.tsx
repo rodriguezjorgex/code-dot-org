@@ -1,30 +1,38 @@
 import Button from '@code-dot-org/component-library/button';
+import Link from '@code-dot-org/component-library/link';
 import Papa from 'papaparse';
 import React, {useState} from 'react';
 
 import {
-  AIResponse,
   evaluationFromOpenAI,
   HumanEvaluation,
 } from '@cdo/apps/aiEvaluation/aiEvaluationApi';
 import {AiEvaluationTypes} from '@cdo/generated-scripts/sharedConstants';
 
-type EvaluatedCodeSample = HumanEvaluation &
+type AIResponse = {
+  aiEvaluation?: string;
+  aiReasoning?: string;
+  evaluationCriteria?: string;
+};
+
+type EvaluatedExample = ExampleAnswer &
   AIResponse & {
-    [key in `skill${number}${
+    [key in `skill${string}${
       | 'evaluationCriteria'
       | 'aiEvaluation'
       | 'aiReasoning'}`]?: string;
   };
 
-const AccuracyCheck: React.FC = () => {
+type ExampleAnswer = {
+  studentWork: string;
+};
+
+const AccuracyCheck: React.FC<{levelId: number}> = ({levelId}) => {
   const [csvFile, setCsvFile] = useState<File | null>(null);
-  const [humanEvaluatedSamples, setHumanEvaluatedSamples] = useState<
-    HumanEvaluation[]
-  >([]);
+  const [studentAnswers, setStudentAnswers] = useState<ExampleAnswer[]>([]);
   const [evaluationPending, setEvaluationPending] = useState<boolean>(false);
-  const [aiEvaluatedSamples, setAiEvaluatedSamples] = useState<
-    EvaluatedCodeSample[]
+  const [aiEvaluatedAnswers, setAiEvaluatedAnswers] = useState<
+    EvaluatedExample[]
   >([]);
   const csvSelected = !!csvFile;
   const datasetName = csvFile
@@ -32,7 +40,7 @@ const AccuracyCheck: React.FC = () => {
     : 'ai-evaluations.csv';
 
   const downloadCSV = () => {
-    const csv = Papa.unparse(aiEvaluatedSamples);
+    const csv = Papa.unparse(aiEvaluatedAnswers);
     const csvData = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
     const csvURL = window.URL.createObjectURL(csvData);
     const tempLink = document.createElement('a');
@@ -43,30 +51,26 @@ const AccuracyCheck: React.FC = () => {
 
   const getAIEvaluations = async () => {
     setEvaluationPending(true);
-    const responsePromises = humanEvaluatedSamples.map(
-      async humanEvaluatedSample => {
-        return evaluateStudentWork(humanEvaluatedSample);
-      }
-    );
+    const responsePromises = studentAnswers.map(async studentAnswer => {
+      return evaluateStudentWork(studentAnswer);
+    });
     await Promise.allSettled(responsePromises);
     setEvaluationPending(false);
   };
 
-  const evaluateStudentWork = async (humanEvaluatedSample: HumanEvaluation) => {
+  const evaluateStudentWork = async (example: ExampleAnswer) => {
     const aiResponse = await evaluationFromOpenAI(
-      humanEvaluatedSample.studentWork,
-      31684,
+      example.studentWork,
+      levelId,
       569,
       AiEvaluationTypes.SINGLE_STUDENT
     );
     const parsedResponse = JSON.parse(aiResponse?.content || '{}');
-    const evaluation: EvaluatedCodeSample = {
-      evaluation: humanEvaluatedSample.evaluation,
-      studentWork: humanEvaluatedSample.studentWork,
+    const evaluation: EvaluatedExample = {
+      studentWork: example.studentWork,
       aiEvaluation: parsedResponse?.aiEvaluation,
       aiReasoning: parsedResponse?.aiReasoning,
       evaluationCriteria: parsedResponse?.evaluationCriteria,
-      id: parsedResponse?.id,
     };
     if (parsedResponse?.skillEvaluations) {
       for (let i = 0; i < parsedResponse.skillEvaluations.length; i++) {
@@ -79,7 +83,7 @@ const AccuracyCheck: React.FC = () => {
         evaluation[`skill${skillId}aiReasoning`] = skillEvaluation.aiReasoning;
       }
     }
-    setAiEvaluatedSamples(prevSamples => [...prevSamples, evaluation]);
+    setAiEvaluatedAnswers(prevSamples => [...prevSamples, evaluation]);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,14 +102,14 @@ const AccuracyCheck: React.FC = () => {
     }
   };
 
-  const updateData = (result: {data: HumanEvaluation[]}) => {
+  const updateData = (result: {data: {studentWork: string}[]}) => {
     if (result.data.length === 0) {
       alert('No data found in the CSV file.');
       return;
     }
     const validationErrors: string[] = [];
-    result.data.forEach((humanEvaluation, index) => {
-      if (!humanEvaluation.studentWork) {
+    result.data.forEach((row, index) => {
+      if (!row.studentWork) {
         validationErrors.push(`Row ${index + 1} is missing student work.`);
       }
     });
@@ -117,7 +121,7 @@ const AccuracyCheck: React.FC = () => {
       );
       return;
     } else {
-      setHumanEvaluatedSamples(result.data);
+      setStudentAnswers(result.data);
       getAIEvaluations();
     }
   };
@@ -127,8 +131,25 @@ const AccuracyCheck: React.FC = () => {
       <h2>Check AI Evaluations</h2>
       <p>
         Upload a CSV of sample student solutions. The CSV should have a column
-        named studentWork. TODO: describe scale TODO: describe skill-based
-        evaluations format
+        named `studentWork`. The AI will evaluate each student work sample, and
+        then you can download the results as a CSV file. Review the evaluations
+        and reasoning provided by the AI for each sample to see if they match
+        your expectations.
+      </p>
+      <p>
+        If you find discrepancies, you can iterate by: editing evaluation
+        criteria for a mis-evaluated skill or adjusting the level's
+        instructions. For more tips & tricks see this{' '}
+        <Link
+          text="resource"
+          href="https://docs.google.com/document/d/143_guZFrAxY0fywoTvstJvD2V2_0E_0tvrvIJfLbru4/edit?tab=t.0"
+          openInNewTab={true}
+          size="s"
+        />
+      </p>
+      <p>
+        If you are noticing a widespread issue or a specific pattern in the AI's
+        evaluations, contact an engineer to help troubleshoot.
       </p>
       <br />
       <div>
@@ -153,7 +174,7 @@ const AccuracyCheck: React.FC = () => {
         <Button
           text="Download CSV"
           onClick={downloadCSV}
-          disabled={aiEvaluatedSamples.length === 0}
+          disabled={aiEvaluatedAnswers.length === 0}
         />
       </div>
     </div>

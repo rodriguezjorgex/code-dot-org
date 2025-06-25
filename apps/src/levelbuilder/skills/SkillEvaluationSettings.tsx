@@ -9,9 +9,11 @@ import {Skill} from './types';
 
 interface Props {
   skills: Skill[];
+  levelId: number;
 }
 
-const SkillEvaluationSettings: React.FC<Props> = ({skills}) => {
+const SkillEvaluationSettings: React.FC<Props> = ({skills, levelId}) => {
+  console.log('SkillEvaluationSettings', skills, levelId);
   return (
     <div className="skill-evaluation-settings">
       <h2>Skills associated with this Level</h2>
@@ -32,7 +34,7 @@ const SkillEvaluationSettings: React.FC<Props> = ({skills}) => {
           />
         </Table.Provider>
       )}
-      <AccuracyCheck />
+      <AccuracyCheck levelId={levelId} />
       <br />
       <br />
     </div>

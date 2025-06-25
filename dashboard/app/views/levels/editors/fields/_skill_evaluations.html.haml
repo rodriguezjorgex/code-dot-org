@@ -6,5 +6,5 @@
 
 - content_for :body_scripts do
   %script{src: webpack_asset_path('js/levels/editors/fields/_skill_evaluations.js'),
-        data: {skillevaluationdata: @skills.to_json}}
+        data: {skillevaluationdata: {skills: @skills, levelId: @level.id}.to_json}}
 
