@@ -3,18 +3,22 @@ import Link from '@code-dot-org/component-library/link';
 import Papa from 'papaparse';
 import React, {useState} from 'react';
 
-import {evaluationFromOpenAI} from '@cdo/apps/aiEvaluation/aiEvaluationApi';
+import {
+  evaluationFromOpenAI,
+  SkillBasedAIResponse,
+} from '@cdo/apps/aiEvaluation/aiEvaluationApi';
 import {AiEvaluationTypes} from '@cdo/generated-scripts/sharedConstants';
 
 type AIEvaluation = {
-  aiEvaluation?: string;
-  aiReasoning?: string;
-  evaluationCriteria?: string;
+  aiEvaluation: string;
+  aiReasoning: string;
+  evaluationCriteria: string;
+  skillEvaluations?: [SkillBasedAIResponse];
 };
 
 type EvaluatedExample = ExampleAnswer &
   AIEvaluation & {
-    [key in `skill${string}${
+    [key in `${string}-${
       | 'evaluationCriteria'
       | 'aiEvaluation'
       | 'aiReasoning'}`]?: string;
@@ -71,12 +75,11 @@ const AccuracyCheck: React.FC<{levelId: number}> = ({levelId}) => {
     if (parsedResponse?.skillEvaluations) {
       for (let i = 0; i < parsedResponse.skillEvaluations.length; i++) {
         const skillEvaluation = parsedResponse.skillEvaluations[i];
-        const skillId = skillEvaluation.skillId;
-        evaluation[`skill${skillId}evaluationCriteria`] =
+        const skillKey = skillEvaluation.skillKey;
+        evaluation[`${skillKey}-evaluationCriteria`] =
           skillEvaluation.evaluationCriteria;
-        evaluation[`skill${skillId}aiEvaluation`] =
-          skillEvaluation.aiEvaluation;
-        evaluation[`skill${skillId}aiReasoning`] = skillEvaluation.aiReasoning;
+        evaluation[`${skillKey}-aiEvaluation`] = skillEvaluation.aiEvaluation;
+        evaluation[`${skillKey}-aiReasoning`] = skillEvaluation.aiReasoning;
       }
     }
     setAiEvaluatedAnswers(prevSamples => [...prevSamples, evaluation]);

@@ -13,15 +13,6 @@ export interface StudentAnswer {
   projectId?: string;
 }
 
-export interface HumanEvaluation {
-  studentWork: string;
-  evaluation: string;
-  skillEvaluations?: [SkillBasedHumanEvaluation];
-}
-export interface SkillBasedHumanEvaluation {
-  evaluation: string;
-  skillKey: string;
-}
 export interface AIResponse {
   aiEvaluation: string;
   aiReasoning: string;

@@ -1,6 +1,8 @@
+import Link from '@code-dot-org/component-library/link';
 import React from 'react';
 import * as Table from 'reactabular-table';
 
+import {studio} from '@cdo/apps/lib/util/urlHelpers';
 import {tableLayoutStyles as style} from '@cdo/apps/templates/tables/tableConstants';
 
 import AccuracyCheck from './AccuracyCheck';
@@ -23,7 +25,18 @@ const SkillEvaluationSettings: React.FC<Props> = ({
     <div className="skill-evaluation-settings">
       <h2>Skills associated with this Level</h2>
       {skills.length === 0 && (
-        <h3>There are no skills associated with this level.</h3>
+        <div>
+          <h3>There are no skills associated with this level.</h3>
+          <p>
+            To add skills or associate them with levels, go to the{' '}
+            <Link
+              text="skills page"
+              href={studio('/skills')}
+              openInNewTab={true}
+              size="s"
+            />
+          </p>
+        </div>
       )}
       {skills.length > 0 && (
         <Table.Provider columns={columns} style={{...style.table}}>
