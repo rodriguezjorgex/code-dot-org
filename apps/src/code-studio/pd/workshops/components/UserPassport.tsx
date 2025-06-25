@@ -47,9 +47,7 @@ const UserPassport: React.FunctionComponent<{
           size="xs"
           iconLeft={{iconName: 'pencil', iconStyle: 'solid'}}
           className={style.editButton}
-          href={`/users/edit?user_return_to=${encodeURIComponent(
-            returnToHref
-          )}`}
+          href={`/users/edit?user_return_to=${returnToHref}`}
         />
       </span>
       <div className={style.userInfoContent}>
