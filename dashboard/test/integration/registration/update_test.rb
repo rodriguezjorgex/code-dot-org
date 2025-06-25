@@ -30,30 +30,6 @@ module RegistrationsControllerTests
       assert_equal panda_panda.sanitize_utf8mb4, student.name
     end
 
-    test "update student with utf8mb4 in given_name succeeds" do
-      student = create :student
-
-      sign_in student
-
-      put '/users', params: {format: :js, user: {given_name: panda_panda}}
-      assert_response :no_content
-
-      student.reload
-      assert_equal panda_panda.sanitize_utf8mb4, student.given_name
-    end
-
-    test "update student with utf8mb4 in family_name succeeds" do
-      student = create :student
-
-      sign_in student
-
-      put '/users', params: {format: :js, user: {family_name: panda_panda}}
-      assert_response :no_content
-
-      student.reload
-      assert_equal panda_panda.sanitize_utf8mb4, student.family_name
-    end
-
     test "update student with age" do
       Timecop.travel Time.local(2013, 9, 1, 12, 0, 0) do
         student = create :student, birthday: '1981/03/24'

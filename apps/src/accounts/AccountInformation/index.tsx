@@ -109,8 +109,8 @@ export const AccountInformation: React.FC<AccountInformationProps> = ({
     const userUpdates = {
       name,
       username,
-      givenName,
-      familyName,
+      given_name: givenName,
+      family_name: familyName,
       password,
       password_confirmation: passwordConfirmation,
       current_password: currentPassword,
@@ -259,35 +259,43 @@ export const AccountInformation: React.FC<AccountInformationProps> = ({
             errorMessage={getError('name')}
           />
 
-          {/* given name */}
-          <TextField
-            id="given_name"
-            className={commonStyles.input}
-            label={i18n.firstName()}
-            onChange={e => {
-              setGivenName(e.target.value);
-              clearError('given_name');
-            }}
-            value={givenName}
-            name="user[given_name]"
-            maxLength={255}
-            errorMessage={getError('given_name')}
-          />
+          {!isStudent && (
+            <>
+              {/* given name */}
+              <TextField
+                id="given_name"
+                className={commonStyles.input}
+                label={i18n.firstName()}
+                onChange={e => {
+                  setGivenName(e.target.value);
+                  clearError('given_name');
+                }}
+                value={givenName}
+                name="user[given_name]"
+                maxLength={255}
+                errorMessage={getError('given_name')}
+              />
+            </>
+          )}
 
-          {/* family name */}
-          <TextField
-            id="family_name"
-            className={commonStyles.input}
-            label={i18n.lastName()}
-            onChange={e => {
-              setFamilyName(e.target.value);
-              clearError('family_name');
-            }}
-            value={familyName}
-            name="user[family_name]"
-            maxLength={255}
-            errorMessage={getError('family_name')}
-          />
+          {!isStudent && (
+            <>
+              {/* family name */}
+              <TextField
+                id="family_name"
+                className={commonStyles.input}
+                label={i18n.lastName()}
+                onChange={e => {
+                  setFamilyName(e.target.value);
+                  clearError('family_name');
+                }}
+                value={familyName}
+                name="user[family_name]"
+                maxLength={255}
+                errorMessage={getError('family_name')}
+              />
+            </>
+          )}
 
           {/* username */}
           {userUsername && (

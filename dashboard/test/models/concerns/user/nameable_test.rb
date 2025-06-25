@@ -44,7 +44,7 @@ class NameableTest < ActiveSupport::TestCase
   end
 
   describe 'strip_display_given_family_names callback' do
-    subject(:user) {create :student, name: '  First  ', given_name: '   Given   ', family_name: ' Last '}
+    subject(:user) {create :teacher, name: '  First  ', given_name: '   Given   ', family_name: ' Last '}
     it 'strips whitespace from name, given_name, and family_name if changed' do
       _(user.name).must_equal 'First'
       _(user.given_name).must_equal 'Given'

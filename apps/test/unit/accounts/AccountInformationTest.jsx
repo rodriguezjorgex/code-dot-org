@@ -59,8 +59,8 @@ const defaultProps = {
   ],
   userDisplayName: 'Mr. Doe',
   userUsername: 'johndoe',
-  userGivenName: 'John',
-  userFamilyName: 'Doe',
+  userGivenName: '',
+  userFamilyName: '',
   userEmail: 'john@example.com',
   userType: 'teacher',
   userProperties: {},
@@ -162,7 +162,7 @@ describe('AccountInformation', () => {
     const fetchArgs = mockFetch.mock.calls[0][1];
     expect(JSON.parse(fetchArgs.body)).toEqual({
       user: {
-        name: 'Jane Doe',
+        name: 'Ms. Doe',
         username: 'janedoe',
         given_name: 'Jane',
         family_name: 'Doe',
@@ -200,6 +200,19 @@ describe('AccountInformation', () => {
         screen.getByText('Review errors above and try again.')
       ).toBeInTheDocument();
     });
+  });
+
+  it('does not render given and family name fields when isStudent is true', () => {
+    render(
+      <AccountInformation
+        {...defaultProps}
+        userType={'student'}
+        isStudent={true}
+      />
+    );
+
+    expect(screen.queryByText(/first name/i)).toBe(null);
+    expect(screen.queryByText(/last name/i)).toBe(null);
   });
 
   it('renders student-specific fields when isStudent is true', () => {

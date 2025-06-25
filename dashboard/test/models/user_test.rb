@@ -2014,11 +2014,13 @@ class UserTest < ActiveSupport::TestCase
     assert student.valid_password?(params[:password])
   end
 
-  test 'downgrade_to_student sets user_type to student and clears cleartext emails' do
+  test 'downgrade_to_student sets user_type to student and clears given name, display name, and cleartext emails' do
     user = create :teacher
     assert user.downgrade_to_student
     user = User.find(user.id)
     assert_equal User::TYPE_STUDENT, user.user_type
+    assert_nil user.given_name
+    assert_nil user.family_name
     assert_empty user.email
   end
 
