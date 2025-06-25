@@ -8,7 +8,9 @@ import classNames from 'classnames';
 import React, {useEffect, useMemo, useState} from 'react';
 
 import {hashEmail} from '@cdo/apps/code-studio/hashEmail';
+import {queryParams} from '@cdo/apps/code-studio/utils';
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
+import {navigateToHref} from '@cdo/apps/utils';
 import i18n from '@cdo/locale';
 
 import ChangeEmailModal from '../ChangeEmail/ChangeEmailModal';
@@ -133,7 +135,14 @@ export const AccountInformation: React.FC<AccountInformationProps> = ({
 
     if (response.ok) {
       setShowAccountUpdateSuccess(true);
-      handleReload();
+      const returnToHref = queryParams('user_return_to') as string;
+      // If sent here with a user_return_to param, return the user upon submission,
+      // otherwise handle reload.
+      if (returnToHref) {
+        navigateToHref(returnToHref);
+      } else {
+        handleReload();
+      }
     } else {
       const validationErrors = await response.json();
       setErrors(validationErrors);
