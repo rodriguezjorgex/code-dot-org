@@ -3,20 +3,17 @@ import Link from '@code-dot-org/component-library/link';
 import Papa from 'papaparse';
 import React, {useState} from 'react';
 
-import {
-  evaluationFromOpenAI,
-  HumanEvaluation,
-} from '@cdo/apps/aiEvaluation/aiEvaluationApi';
+import {evaluationFromOpenAI} from '@cdo/apps/aiEvaluation/aiEvaluationApi';
 import {AiEvaluationTypes} from '@cdo/generated-scripts/sharedConstants';
 
-type AIResponse = {
+type AIEvaluation = {
   aiEvaluation?: string;
   aiReasoning?: string;
   evaluationCriteria?: string;
 };
 
 type EvaluatedExample = ExampleAnswer &
-  AIResponse & {
+  AIEvaluation & {
     [key in `skill${string}${
       | 'evaluationCriteria'
       | 'aiEvaluation'
@@ -62,7 +59,6 @@ const AccuracyCheck: React.FC<{levelId: number}> = ({levelId}) => {
     const aiResponse = await evaluationFromOpenAI(
       example.studentWork,
       levelId,
-      569,
       AiEvaluationTypes.SINGLE_STUDENT
     );
     const parsedResponse = JSON.parse(aiResponse?.content || '{}');
@@ -95,7 +91,7 @@ const AccuracyCheck: React.FC<{levelId: number}> = ({levelId}) => {
 
   const importCSV = () => {
     if (csvFile) {
-      Papa.parse<HumanEvaluation>(csvFile, {
+      Papa.parse<ExampleAnswer>(csvFile, {
         complete: updateData,
         header: true,
       });
@@ -163,7 +159,7 @@ const AccuracyCheck: React.FC<{levelId: number}> = ({levelId}) => {
       <br />
       <div>
         <Button
-          text="Upload Student Examples Dataset"
+          text="Upload Examples of Student Answers"
           onClick={importCSV}
           disabled={!csvSelected}
           isPending={evaluationPending}

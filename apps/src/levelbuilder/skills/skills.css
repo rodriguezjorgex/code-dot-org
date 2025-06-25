@@ -48,3 +48,21 @@
   padding-top: 5px;
   padding-bottom: 5px;
 }
+
+/* Styles for ViewSystemPrompt component */
+.view-system-prompt {
+  /* Container styles if needed */
+}
+
+.view-system-prompt__toggle {
+  cursor: pointer;
+  user-select: none;
+}
+
+.view-system-prompt__text {
+  margin-top: 8px;
+  white-space: pre-wrap;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 4px;
+}

@@ -6,14 +6,19 @@ import {tableLayoutStyles as style} from '@cdo/apps/templates/tables/tableConsta
 import AccuracyCheck from './AccuracyCheck';
 import {columns} from './SkillsByConceptTable';
 import {Skill} from './types';
+import ViewSystemPrompt from './ViewSystemPrompt';
 
 interface Props {
   skills: Skill[];
   levelId: number;
+  systemPrompt: string;
 }
 
-const SkillEvaluationSettings: React.FC<Props> = ({skills, levelId}) => {
-  console.log('SkillEvaluationSettings', skills, levelId);
+const SkillEvaluationSettings: React.FC<Props> = ({
+  skills,
+  levelId,
+  systemPrompt,
+}) => {
   return (
     <div className="skill-evaluation-settings">
       <h2>Skills associated with this Level</h2>
@@ -35,6 +40,8 @@ const SkillEvaluationSettings: React.FC<Props> = ({skills, levelId}) => {
         </Table.Provider>
       )}
       <AccuracyCheck levelId={levelId} />
+      <br />
+      <ViewSystemPrompt systemPrompt={systemPrompt} />
       <br />
       <br />
     </div>

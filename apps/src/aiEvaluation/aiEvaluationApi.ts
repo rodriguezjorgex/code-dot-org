@@ -49,7 +49,6 @@ export async function evaluateStudentWork(
   const response = await evaluationFromOpenAI(
     studentWorkSample.studentWork,
     levelId,
-    unitId,
     AiEvaluationTypes.SINGLE_STUDENT
   );
   let parsedResponse;
@@ -81,7 +80,6 @@ export async function summarizeEvaluations(
   const response = await evaluationFromOpenAI(
     formattedStudentWork,
     levelId,
-    unitId,
     AiEvaluationTypes.SECTION_SUMMARY
   );
   let parsedResponse;
@@ -99,13 +97,11 @@ type EvaluationType = ValueOf<typeof AiEvaluationTypes>;
 export async function evaluationFromOpenAI(
   studentWork?: string,
   levelId?: number,
-  unitId?: number,
   evaluationType?: EvaluationType
 ): Promise<OpenaiChatCompletionMessage | null> {
   const payload = {
     studentWork: studentWork,
     levelId: levelId,
-    unitId: unitId,
     evaluationType: evaluationType,
   };
 
