@@ -25,21 +25,10 @@ const SkillEvaluationSettings: React.FC<Props> = ({
     <div className="skill-evaluation-settings">
       <h2>Skills associated with this Level</h2>
       {skills.length === 0 && (
-        <div>
-          <h3>There are no skills associated with this level.</h3>
-          <p>
-            To add skills or associate them with levels, go to the{' '}
-            <Link
-              text="skills page"
-              href={studio('/skills')}
-              openInNewTab={true}
-              size="s"
-            />
-          </p>
-        </div>
+        <h3>There are no skills associated with this level.</h3>
       )}
       {skills.length > 0 && (
-        <Table.Provider columns={columns} style={{...style.table}}>
+        <Table.Provider columns={columns} className="skills-table">
           <Table.Header />
           <Table.Body
             rows={skills.map((skill: Skill) => ({
@@ -52,6 +41,16 @@ const SkillEvaluationSettings: React.FC<Props> = ({
           />
         </Table.Provider>
       )}
+      <br />
+      <p>
+        To add skills or associate them with levels, go to the{' '}
+        <Link
+          text="skills page"
+          href={studio('/skills')}
+          openInNewTab={true}
+          size="s"
+        />
+      </p>
       <AccuracyCheck levelId={levelId} />
       <br />
       <ViewSystemPrompt systemPrompt={systemPrompt} />
