@@ -115,16 +115,12 @@ class Pd::WorkshopEnrollmentController < ApplicationController
   def join
     @workshop = ::Pd::Workshop.find_by_id params[:workshop_id]
 
-    if !current_user
+    if !current_user || current_user.user_type == 'student'
       source_page = ERB::Util.url_encode('workshop join')
       return_to = ERB::Util.url_encode("/pd/workshops/#{@workshop.id}/join")
+      page_type = current_user ? "teacher_account_required" : "logged_out"
 
-      redirect_to "/logged_out?source_page=#{source_page}&return_to=#{return_to}"
-    elsif current_user.user_type == 'student'
-      source_page = ERB::Util.url_encode('workshop join')
-      return_to = ERB::Util.url_encode("/pd/workshops/#{@workshop.id}/join")
-
-      redirect_to "/teacher_account_required?source_page=#{source_page}&return_to=#{return_to}"
+      redirect_to "/#{page_type}?source_page=#{source_page}&return_to=#{return_to}"
     else
       enroll_status =
         if @workshop.nil?
@@ -151,15 +147,15 @@ class Pd::WorkshopEnrollmentController < ApplicationController
             subject: @workshop.try(:subject),
             name: @workshop.try(:name),
             format: @workshop.try(:format),
-            rpName: @workshop.try(:regional_partner).try(:name),
-            sessionInfoForCalendar: @workshop.try(:sessions)&.map(&:session_info_for_calendar)
+            rp_name: @workshop.try(:regional_partner).try(:name),
+            session_info_for_calendar: @workshop.try(:sessions)&.map(&:session_info_for_calendar)
           },
           user_info: {
-            displayName: current_user.name,
-            givenName: current_user.try(:given_name),
-            familyName: current_user.try(:family_name),
+            display_name: current_user.name,
+            given_name: current_user.try(:given_name),
+            family_name: current_user.try(:family_name),
             email: current_user.email,
-            schoolName: current_user.try(:school_info).try(:effective_school_name).try(:titleize)
+            school_name: current_user.try(:school_info).try(:effective_school_name).try(:titleize)
           }
         }.to_json
       }

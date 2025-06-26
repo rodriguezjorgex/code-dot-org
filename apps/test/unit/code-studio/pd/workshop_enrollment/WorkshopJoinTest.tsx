@@ -12,15 +12,15 @@ const DEFAULT_PROPS = {
     course: 'Build Your Own Workshop',
     name: 'My Sick Workshop',
     format: 'Virtual',
-    rpName: 'Reggie Partner',
-    sessionInfoForCalendar: [],
+    rp_name: 'Reggie Partner',
+    session_info_for_calendar: [],
   },
   user_info: {
-    displayName: 'Ms. McEntire',
-    givenName: 'Reba',
-    familyName: 'McEntire',
+    display_name: 'Ms. McEntire',
+    given_name: 'Reba',
+    family_name: 'McEntire',
     email: 'reba@mcentire.com',
-    schoolName: 'Sample School Name',
+    school_name: 'Sample School Name',
   },
 };
 
@@ -68,12 +68,12 @@ describe('WorkshopJoin', () => {
     });
 
     screen.getByText('Review your information');
-    screen.getByText(DEFAULT_PROPS.user_info.displayName);
+    screen.getByText(DEFAULT_PROPS.user_info.display_name);
     screen.getByText(
-      `${DEFAULT_PROPS.user_info.givenName} ${DEFAULT_PROPS.user_info.familyName}`
+      `${DEFAULT_PROPS.user_info.given_name} ${DEFAULT_PROPS.user_info.family_name}`
     );
     screen.getByText(DEFAULT_PROPS.user_info.email);
-    screen.getByText(DEFAULT_PROPS.user_info.schoolName);
+    screen.getByText(DEFAULT_PROPS.user_info.school_name);
   });
 
   it('enroll button is enabled and no errors are shown if all UserPassport fields are present', () => {
@@ -89,8 +89,8 @@ describe('WorkshopJoin', () => {
   it('enroll button is disabled and errors are shown if there are missing UserPassport fields', () => {
     renderDefault({
       user_info: {
-        givenName: '',
-        schoolName: '',
+        given_name: '',
+        school_name: '',
       },
     });
 

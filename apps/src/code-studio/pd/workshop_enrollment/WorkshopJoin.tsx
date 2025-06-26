@@ -36,15 +36,15 @@ const WorkshopJoin: React.FunctionComponent<{
     subject?: string;
     name?: string;
     format: string;
-    rpName?: string;
-    sessionInfoForCalendar?: SessionCalendarEvent[];
+    rp_name?: string;
+    session_info_for_calendar?: SessionCalendarEvent[];
   };
   user_info: {
-    displayName: string;
-    givenName?: string;
-    familyName?: string;
+    display_name: string;
+    given_name?: string;
+    family_name?: string;
     email: string;
-    schoolName?: string;
+    school_name?: string;
   };
 }> = ({workshop_enrollment_status, workshop_info, user_info}) => {
   const [enrollmentStatus, setEnrollmentStatus] = useState(
@@ -52,7 +52,7 @@ const WorkshopJoin: React.FunctionComponent<{
   );
   const [submissionErrorMessage, setSubmissionErrorMessage] = useState('');
   const hasMissingUserInfo =
-    !user_info.givenName || !user_info.familyName || !user_info.schoolName;
+    !user_info.given_name || !user_info.family_name || !user_info.school_name;
 
   const submitEnrollment = async () => {
     // TODO: This is filler behavior that will be actually implemented in followup.
@@ -69,11 +69,11 @@ const WorkshopJoin: React.FunctionComponent<{
     sessionStorage.setItem('workshopSubject', workshop_info.subject || '');
     sessionStorage.setItem('workshopName', workshop_info.name || '');
     sessionStorage.setItem('workshopFormat', workshop_info.format);
-    sessionStorage.setItem('rpName', workshop_info.rpName || '');
+    sessionStorage.setItem('rpName', workshop_info.rp_name || '');
     sessionStorage.setItem(
       'sessionTimeInfo',
-      workshop_info.sessionInfoForCalendar
-        ? JSON.stringify(workshop_info.sessionInfoForCalendar)
+      workshop_info.session_info_for_calendar
+        ? JSON.stringify(workshop_info.session_info_for_calendar)
         : ''
     );
 
@@ -101,11 +101,11 @@ const WorkshopJoin: React.FunctionComponent<{
           />
         </div>
         <UserPassport
-          displayName={user_info.displayName}
-          givenName={user_info.givenName}
-          familyName={user_info.familyName}
+          displayName={user_info.display_name}
+          givenName={user_info.given_name}
+          familyName={user_info.family_name}
           email={user_info.email}
-          schoolName={user_info.schoolName}
+          schoolName={user_info.school_name}
           returnToHref={`/pd/workshops/${workshop_info.id}/join`}
           className={style.userPassport}
         />
