@@ -44,7 +44,7 @@ describe('UserPassport', () => {
     renderDefault();
     expect(screen.getByRole('link', {name: 'Edit'})).toHaveAttribute(
       'href',
-      '/users/edit?user_return_to=%2Ffake-return-url'
+      '/users/edit?user_return_to=/fake-return-url'
     );
   });
 });
