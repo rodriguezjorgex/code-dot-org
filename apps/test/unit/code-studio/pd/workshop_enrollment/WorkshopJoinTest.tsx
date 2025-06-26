@@ -8,7 +8,7 @@ import WorkshopJoin from '@cdo/apps/code-studio/pd/workshop_enrollment/WorkshopJ
 const DEFAULT_PROPS = {
   workshop_enrollment_status: SUBMISSION_STATUSES.UNSUBMITTED,
   workshop_info: {
-    id: '1',
+    id: 1,
     course: 'Build Your Own Workshop',
     name: 'My Sick Workshop',
     format: 'Virtual',
@@ -16,6 +16,7 @@ const DEFAULT_PROPS = {
     session_info_for_calendar: [],
   },
   user_info: {
+    id: 1,
     display_name: 'Ms. McEntire',
     given_name: 'Reba',
     family_name: 'McEntire',
