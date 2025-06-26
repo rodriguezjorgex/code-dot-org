@@ -1351,8 +1351,8 @@ class User < ApplicationRecord
       id: id,
       email: email,
       is_student: user_type == TYPE_STUDENT,
-      first_name: name&.split&.first,
-      last_name: name&.split&.last,
+      given_name: given_name,
+      family_name: family_name,
     }
   end
 

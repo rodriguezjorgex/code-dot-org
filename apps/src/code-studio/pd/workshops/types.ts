@@ -50,13 +50,13 @@ export type UserInfoForWorkshop = {
   id: number;
   email: string;
   is_student?: boolean;
-  first_name?: string;
-  last_name?: string;
+  given_name?: string;
+  family_name?: string;
 };
 
 export type WorkshopEnrollmentParams = Pick<
   UserInfoForWorkshop,
-  'email' | 'first_name' | 'last_name'
+  'email' | 'given_name' | 'family_name'
 > & {
   user_id: number;
 };
