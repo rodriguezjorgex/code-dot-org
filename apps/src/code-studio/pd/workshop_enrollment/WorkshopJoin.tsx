@@ -69,16 +69,16 @@ const WorkshopJoin: React.FunctionComponent<{
       }
     );
 
-    console.log(result);
-    // CASE OF error returned
-    // CASE OF SUBMISSION_STATUSES.UNKNOWN_ERROR
-    // SUCCESS SUBMISSION_STATUSES.SUBMITTED --> just run navigateOnEnrollSuccess
-    // Also reset the submissionErrorMessage at the top of the 'handleSubmitEnrollment' function?? Is it guaranteed to set one by the end??
-
-    // TODO: This is filler behavior that will be actually implemented in followup.
-    setEnrollmentStatus(SUBMISSION_STATUSES.SUCCESS);
-    setSubmissionErrorMessage('');
-    navigateOnEnrollSuccess();
+    if (result?.workshop_enrollment_status === SUBMISSION_STATUSES.SUCCESS) {
+      navigateOnEnrollSuccess();
+    } else {
+      setEnrollmentStatus(SUBMISSION_STATUSES.UNKNOWN_ERROR);
+      setSubmissionErrorMessage(
+        result?.error_message ||
+          error ||
+          'An unknown error occurred while processing your enrollment.'
+      );
+    }
   };
 
   const navigateOnEnrollSuccess = () => {
