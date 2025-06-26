@@ -49,8 +49,8 @@ export function useWorkshopEnrollment({
       userInfo && {
         user_id: userInfo.id,
         email: userInfo.email,
-        given_name: userInfo.given_name,
-        family_name: userInfo.family_name,
+        first_name: userInfo.given_name,
+        last_name: userInfo.family_name,
       }
     );
 

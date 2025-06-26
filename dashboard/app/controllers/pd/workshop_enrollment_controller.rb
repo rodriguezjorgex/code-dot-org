@@ -142,7 +142,7 @@ class Pd::WorkshopEnrollmentController < ApplicationController
         props: {
           workshop_enrollment_status: enroll_status,
           workshop_info: {
-            id: @workshop.try(:id)&.to_s,
+            id: @workshop.try(:id),
             course: @workshop.try(:course),
             subject: @workshop.try(:subject),
             name: @workshop.try(:name),
@@ -151,6 +151,7 @@ class Pd::WorkshopEnrollmentController < ApplicationController
             session_info_for_calendar: @workshop.try(:sessions)&.map(&:session_info_for_calendar)
           },
           user_info: {
+            id: current_user.id,
             display_name: current_user.name,
             given_name: current_user.try(:given_name),
             family_name: current_user.try(:family_name),
