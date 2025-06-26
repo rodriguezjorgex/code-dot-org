@@ -2015,7 +2015,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'downgrade_to_student sets user_type to student and clears given name, display name, and cleartext emails' do
-    user = create :teacher
+    user = create :teacher, given_name: 'Firstname', family_name: 'Lastname'
     assert user.downgrade_to_student
     user = User.find(user.id)
     assert_equal User::TYPE_STUDENT, user.user_type
