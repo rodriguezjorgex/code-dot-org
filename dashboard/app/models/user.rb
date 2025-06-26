@@ -1351,8 +1351,14 @@ class User < ApplicationRecord
       id: id,
       email: email,
       is_student: user_type == TYPE_STUDENT,
-      given_name: given_name,
-      family_name: family_name,
+      first_name: given_name,
+      last_name: family_name,
+      school_info: {
+        school_id: school_info&.id,
+        country: school_info&.country,
+        school_name: school_info&.school_name,
+        school_zip: school_info&.zip,
+      },
     }
   end
 

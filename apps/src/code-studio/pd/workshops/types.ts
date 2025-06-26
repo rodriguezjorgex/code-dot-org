@@ -50,16 +50,19 @@ export type UserInfoForWorkshop = {
   id: number;
   email: string;
   is_student?: boolean;
-  given_name?: string;
-  family_name?: string;
+  first_name?: string;
+  last_name?: string;
+  school_info?: {
+    school_id?: number;
+    country?: string;
+    school_name?: string;
+    school_zip?: string;
+  };
 };
 
-// While UserInfo is using "given_name" and "family_name" for first and last names, we still need to use
-// "first_name" and "last_name" here since that's the naming convention within enrollment.rb. This will
-// be updated soon to unify the naming conventions.
 export type WorkshopEnrollmentParams = Pick<
   UserInfoForWorkshop,
-  'email' | 'first_name' | 'last_name'
+  'email' | 'first_name' | 'last_name' | 'school_info'
 > & {
   user_id: number;
 };

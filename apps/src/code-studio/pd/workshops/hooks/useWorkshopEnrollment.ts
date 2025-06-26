@@ -49,8 +49,14 @@ export function useWorkshopEnrollment({
       userInfo && {
         user_id: userInfo.id,
         email: userInfo.email,
-        first_name: userInfo.given_name,
-        last_name: userInfo.family_name,
+        first_name: userInfo.first_name,
+        last_name: userInfo.last_name,
+        school_info: {
+          school_id: userInfo.school_info?.school_id,
+          country: userInfo.school_info?.country,
+          school_name: userInfo.school_info?.school_name,
+          school_zip: userInfo.school_info?.school_zip,
+        },
       }
     );
 
