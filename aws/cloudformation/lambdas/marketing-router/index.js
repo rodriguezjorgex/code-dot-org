@@ -323,6 +323,12 @@ const marketingPaths = {
   "/districts/program/coaches-network": true,
   // Home Page
   "/": true,
+  // Post Launch 3
+  "/api/health_check": true,
+  "/about/partners": true,
+  "/privacy/cookies": true,
+  "/about/team": true,
+  "/about/leadership": true,
 }
 
 const nextJsAssetsPath = '/_next/static/';
