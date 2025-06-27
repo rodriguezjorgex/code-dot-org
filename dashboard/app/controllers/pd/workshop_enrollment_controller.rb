@@ -138,6 +138,7 @@ class Pd::WorkshopEnrollmentController < ApplicationController
         end
 
       view_options(full_width: true, responsive_content: true, no_padding_container: true)
+      users_school_info = current_user.try(:school_info)
       @script_data = {
         props: {
           workshop_enrollment_status: enroll_status,
@@ -156,7 +157,16 @@ class Pd::WorkshopEnrollmentController < ApplicationController
             given_name: current_user.try(:given_name),
             family_name: current_user.try(:family_name),
             email: current_user.email,
-            school_name: current_user.try(:school_info).try(:effective_school_name).try(:titleize)
+            school_info: {
+              school_type: users_school_info.try(:school_type),
+              school_state: users_school_info.try(:school_state),
+              zip: users_school_info.try(:zip),
+              school_district_name: users_school_info.try(:school_district_name)&.strip_utf8mb4,
+              school_district_other: users_school_info.try(:school_district_other)&.strip_utf8mb4,
+              school_id: users_school_info.try(:school_id),
+              school_name: users_school_info.try(:school_name)&.strip_utf8mb4,
+              country: users_school_info.try(:country)
+            }
           }
         }.to_json
       }

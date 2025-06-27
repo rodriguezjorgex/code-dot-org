@@ -46,7 +46,16 @@ const WorkshopJoin: React.FunctionComponent<{
     given_name?: string;
     family_name?: string;
     email: string;
-    school_name?: string;
+    school_info?: {
+      school_id?: number;
+      country?: string;
+      school_name?: string;
+      zip?: string;
+      school_type?: string;
+      school_state?: string;
+      school_district_name?: string;
+      school_district_other?: string;
+    };
   };
 }> = ({workshop_enrollment_status, workshop_info, user_info}) => {
   const [enrollmentStatus, setEnrollmentStatus] = useState(
@@ -54,7 +63,9 @@ const WorkshopJoin: React.FunctionComponent<{
   );
   const [submissionErrorMessage, setSubmissionErrorMessage] = useState('');
   const hasMissingUserInfo =
-    !user_info.given_name || !user_info.family_name || !user_info.school_name;
+    !user_info.given_name ||
+    !user_info.family_name ||
+    !user_info.school_info?.school_name;
   const {submitEnrollment, isSubmitting, error} = useWorkshopEnrollmentApi(
     workshop_info.id
   );
@@ -66,6 +77,7 @@ const WorkshopJoin: React.FunctionComponent<{
         email: user_info.email,
         first_name: user_info.given_name,
         last_name: user_info.family_name,
+        school_info: user_info.school_info,
       }
     );
 
@@ -126,7 +138,7 @@ const WorkshopJoin: React.FunctionComponent<{
           givenName={user_info.given_name}
           familyName={user_info.family_name}
           email={user_info.email}
-          schoolName={user_info.school_name}
+          schoolName={user_info.school_info?.school_name}
           returnToHref={`/pd/workshops/${workshop_info.id}/join`}
           className={style.userPassport}
         />
