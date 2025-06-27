@@ -17,6 +17,7 @@ import {ZIP_REGEX} from '@cdo/apps/signUpFlow/signUpFlowConstants';
 import CalendarEmptyStateIllustration from '@cdo/apps/templates/teacherNavigation/images/CalendarEmptyStateIllustration.svg';
 import CalendarNotAvailable from '@cdo/apps/templates/teacherNavigation/images/CalendarNotAvailable.svg';
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
+import {navigateToHref} from '@cdo/apps/utils';
 
 import RegionalWorkshopCatalogCard from './RegionalWorkshopCatalogCard';
 
@@ -55,6 +56,12 @@ export default function RegionalWorkshopCatalog({
 
   // Load workshops for the given zip if one is present in the URL or is passed in as a prop
   useEffect(() => {
+    // Clear trailing '/' if present in URL
+    const urlParts = window.location.href.split('?zip=');
+    if (urlParts[0].endsWith('/')) {
+      navigateToHref(`/professional-learning/workshops?zip=${urlParts[1]}`);
+    }
+
     const zipFromUrl = queryParams()['zip'];
     const prepopulatedZip = zipFromUrl ? zipFromUrl : zipFromSchoolInfo;
     if (prepopulatedZip && ZIP_REGEX.test(prepopulatedZip)) {
