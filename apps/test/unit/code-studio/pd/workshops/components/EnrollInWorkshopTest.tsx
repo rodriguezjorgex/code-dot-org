@@ -15,7 +15,7 @@ const baseUserInfo = {
     school_id: 1,
     country: 'United States',
     school_name: 'School Academy',
-    school_zip: '11111',
+    zip: '11111',
   },
 };
 
