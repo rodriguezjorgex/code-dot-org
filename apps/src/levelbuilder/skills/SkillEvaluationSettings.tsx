@@ -3,7 +3,6 @@ import React from 'react';
 import * as Table from 'reactabular-table';
 
 import {studio} from '@cdo/apps/lib/util/urlHelpers';
-import {tableLayoutStyles as style} from '@cdo/apps/templates/tables/tableConstants';
 
 import AccuracyCheck from './AccuracyCheck';
 import {columns} from './SkillsByConceptTable';
