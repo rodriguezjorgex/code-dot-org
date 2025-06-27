@@ -59,7 +59,8 @@ export default function RegionalWorkshopCatalog({
     // Clear trailing '/' if present in URL
     const urlParts = window.location.href.split('?zip=');
     if (urlParts[0].endsWith('/')) {
-      navigateToHref(`/professional-learning/workshops?zip=${urlParts[1]}`);
+      const zipParam = urlParts.length > 1 ? `?zip=${urlParts[1]}` : '';
+      navigateToHref(`/professional-learning/workshops${zipParam}`);
     }
 
     const zipFromUrl = queryParams()['zip'];
