@@ -17,7 +17,6 @@ import {ZIP_REGEX} from '@cdo/apps/signUpFlow/signUpFlowConstants';
 import CalendarEmptyStateIllustration from '@cdo/apps/templates/teacherNavigation/images/CalendarEmptyStateIllustration.svg';
 import CalendarNotAvailable from '@cdo/apps/templates/teacherNavigation/images/CalendarNotAvailable.svg';
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
-import {navigateToHref} from '@cdo/apps/utils';
 
 import RegionalWorkshopCatalogCard from './RegionalWorkshopCatalogCard';
 
@@ -56,13 +55,6 @@ export default function RegionalWorkshopCatalog({
 
   // Load workshops for the given zip if one is present in the URL or is passed in as a prop
   useEffect(() => {
-    // Clear trailing '/' if present in URL
-    const urlParts = window.location.href.split('?zip=');
-    if (urlParts[0].endsWith('/')) {
-      const zipParam = urlParts.length > 1 ? `?zip=${urlParts[1]}` : '';
-      navigateToHref(`/professional-learning/workshops${zipParam}`);
-    }
-
     const zipFromUrl = queryParams()['zip'];
     const prepopulatedZip = zipFromUrl ? zipFromUrl : zipFromSchoolInfo;
     if (prepopulatedZip && ZIP_REGEX.test(prepopulatedZip)) {
@@ -108,13 +100,16 @@ export default function RegionalWorkshopCatalog({
       setIsSubmitting(true);
       try {
         updateQueryParam('zip', submittedZip, true);
-        const response = await fetch(`regional_workshop_data/${submittedZip}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': await getAuthenticityToken(),
-          },
-        });
+        const response = await fetch(
+          `/professional-learning/regional_workshop_data/${submittedZip}`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-Token': await getAuthenticityToken(),
+            },
+          }
+        );
 
         if (response.ok) {
           const jsonData = await response.json();
