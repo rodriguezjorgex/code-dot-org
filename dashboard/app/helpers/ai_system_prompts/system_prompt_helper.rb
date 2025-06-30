@@ -58,21 +58,4 @@ module AiSystemPrompts::SystemPromptHelper
     end
     level
   end
-
-  def self.get_unit(unit_id)
-    unit = nil
-    if unit_id
-      unit = begin Unit.find(unit_id)
-      rescue ActiveRecord::RecordNotFound
-        Honeybadger.notify(exception,
-            error_message: 'Invalid unit_id in system prompt helper',
-            context: {
-              unit_id: unit_id,
-              user_id: current_user.id
-            }
-          )
-      end
-    end
-    unit
-  end
 end
