@@ -21,7 +21,7 @@ class UserLevelInteractionsController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       return render status: :not_found, json: "Level with id #{level_id}"
     end
-    
+
     project_data = get_project_and_version_id(level_id, unit_id)
     channel = get_channel_for(level, unit_id, current_user)
     user_level_interaction_params[:code_version] = project_data[:version_id]
@@ -38,11 +38,11 @@ class UserLevelInteractionsController < ApplicationController
       channel: channel,
     }
 
-     new_uli_params = user_level_interaction_params.merge(
+    new_uli_params = user_level_interaction_params.merge(
       code_version: project_data[:version_id],
       metadata: metadata.to_json,
     )
-   
+
     if should_create_uli?(version_year)
       @user_level_interaction = UserLevelInteraction.new(new_uli_params)
       if @user_level_interaction.save
