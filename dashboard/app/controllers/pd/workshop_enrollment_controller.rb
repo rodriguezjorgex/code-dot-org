@@ -157,13 +157,13 @@ class Pd::WorkshopEnrollmentController < ApplicationController
             given_name: current_user.try(:given_name),
             family_name: current_user.try(:family_name),
             email: current_user.email,
-            school_info: {
+            school_info: users_school_info ? {
               school_type: users_school_info[:school_type],
               zip: users_school_info[:school_zip],
               school_id: users_school_info[:school_id],
               school_name: users_school_info[:school_name]&.strip_utf8mb4,
               country: users_school_info[:country]
-            }
+            } : {}
           }
         }.to_json
       }
