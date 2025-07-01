@@ -7,17 +7,14 @@ import {
 import classNames from 'classnames';
 import React, {useState} from 'react';
 
+import copyToClipboard from '@cdo/apps/util/copyToClipboard';
+
 import WorkshopPanel from './WorkshopPanel';
 
 import style from './workshopLinks.module.scss';
 
 const CopyLinkButton: React.FunctionComponent<{link: string}> = ({link}) => {
   const [icon, setIcon] = useState('copy');
-
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(link);
-    setIcon('fa-check');
-  };
 
   return (
     <Button
@@ -26,7 +23,7 @@ const CopyLinkButton: React.FunctionComponent<{link: string}> = ({link}) => {
       color={buttonColors.white}
       iconLeft={{iconName: icon, iconStyle: 'solid'}}
       className={style.copyLinkButton}
-      onClick={handleCopyLink}
+      onClick={() => copyToClipboard(link, () => setIcon('check'))}
     />
   );
 };
