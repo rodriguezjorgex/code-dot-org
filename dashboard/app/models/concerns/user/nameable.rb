@@ -6,7 +6,7 @@ module User::Nameable
 
   included do
     ## Validation Macros
-    validates :name, presence: true, unless: -> {purged_at}
+    validates :name, presence: true, unless: -> {purged_at || pii_scrubbed_at}
     validates :name, length: {within: 1..70}, allow_blank: true
 
     ## Callback Macros
