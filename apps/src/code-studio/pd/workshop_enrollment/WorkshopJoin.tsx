@@ -52,9 +52,6 @@ const WorkshopJoin: React.FunctionComponent<{
       school_name?: string;
       zip?: string;
       school_type?: string;
-      school_state?: string;
-      school_district_name?: string;
-      school_district_other?: string;
     };
   };
 }> = ({workshop_enrollment_status, workshop_info, user_info}) => {

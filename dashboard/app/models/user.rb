@@ -1304,12 +1304,7 @@ class User < ApplicationRecord
       is_student: user_type == TYPE_STUDENT,
       first_name: given_name,
       last_name: family_name,
-      school_info: {
-        school_id: school_info&.id,
-        country: school_info&.country,
-        school_name: school_info&.school_name,
-        school_zip: school_info&.zip,
-      },
+      school_info: Queries::SchoolInfo.current_school(self),
     }
   end
 
