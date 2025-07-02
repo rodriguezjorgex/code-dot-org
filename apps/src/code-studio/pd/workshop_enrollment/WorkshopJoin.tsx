@@ -121,6 +121,7 @@ const WorkshopJoin: React.FunctionComponent<{
             time in your account settings.
           </BodyThreeText>
           <Button
+            id="joinWorkshop"
             name="joinWorkshop"
             text="Join this workshop"
             color="purple"

@@ -289,13 +289,45 @@ And(/^I am viewing a workshop with fake survey results$/) do
   steps "And I am on \"http://studio.code.org/pd/workshop_dashboard/daily_survey_results/#{workshop.id}\""
 end
 
-Given(/^I am a teacher enrolling in "([^"]*)"$/) do |course|
-  workshop = FactoryBot.create(:workshop, course: course)
+Given(/^I visit the old enroll form page of a workshop$/) do
+  workshop = create :workshop
   @workshop_id = workshop.id
-  random_teacher_name = "Test Teacher" + SecureRandom.hex[0..9]
   steps <<~GHERKIN
-    And I create a teacher named "#{random_teacher_name}"
     And I am on "http://studio.code.org/pd/workshops/#{@workshop_id}/enroll"
+  GHERKIN
+end
+
+Given(/^I am a "([^"]*)" user enrolling in workshop with "([^"]*)" status$/) do |user_type, status|
+  user = case user_type
+         when "student"
+           Retryable.retryable(on: [ActiveRecord::RecordInvalid], tries: 5) do
+             FactoryBot.create :student
+           end
+         when "teacher"
+           Retryable.retryable(on: [ActiveRecord::RecordInvalid], tries: 5) do
+             FactoryBot.create :teacher, given_name: 'Firstname', family_name: 'Lastname', email: 'firstname@lastname.org', school: (create :school)
+           end
+         else
+           nil
+         end
+
+  workshop = case status
+             when "closed"
+               create :workshop, :ended
+             when "full"
+               create :workshop, capacity: 1, num_enrollments: 1
+             when "own"
+               create :workshop, organizer: user
+             else
+               create :workshop
+             end
+  if status == "duplicate"
+    create :pd_enrollment, workshop: workshop, user: user
+  end
+  @workshop_id = workshop.id
+
+  steps <<~GHERKIN
+    And I am on "http://studio.code.org/pd/workshops/#{@workshop_id}/join"
   GHERKIN
 end
 
