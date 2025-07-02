@@ -10,7 +10,7 @@ Scenario: Visiting old workshop enroll form redirects to join page
   And I delete the workshop
 
 Scenario: Attempting to join workshop signed-out prompts user to sign in
-  Given I am a "signed-out" user enrolling in workshop with "unsubmitted" status
+  Given I am a "signed_out" user enrolling in workshop with "unsubmitted" status
   And I wait until element "#new-account-card" is visible
 
   # test clean up
