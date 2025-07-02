@@ -343,6 +343,7 @@ const marketingPaths = {
   "/blockchain": true,
   "/curriculum/music": true,
   "/security": true,
+  "/about/geocode_test": true,
 }
 
 const nextJsAssetsPath = '/_next/static/';
