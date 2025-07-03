@@ -290,7 +290,9 @@ And(/^I am viewing a workshop with fake survey results$/) do
 end
 
 Given(/^I visit the old enroll form page of a workshop$/) do
-  workshop = create :workshop
+  require_rails_env
+
+  workshop = FactoryBot.create :workshop
   @workshop_id = workshop.id
   steps <<~GHERKIN
     And I am on "http://studio.code.org/pd/workshops/#{@workshop_id}/enroll"
@@ -298,14 +300,23 @@ Given(/^I visit the old enroll form page of a workshop$/) do
 end
 
 Given(/^I am a "([^"]*)" user enrolling in workshop with "([^"]*)" status$/) do |user_type, status|
+  require_rails_env
+
   user = case user_type
          when "student"
            Retryable.retryable(on: [ActiveRecord::RecordInvalid], tries: 5) do
              FactoryBot.create :student
            end
          when "teacher"
+           school = FactoryBot.create :school
            Retryable.retryable(on: [ActiveRecord::RecordInvalid], tries: 5) do
-             FactoryBot.create :teacher, given_name: 'Firstname', family_name: 'Lastname', email: 'firstname@lastname.org', school: (create :school)
+             FactoryBot.create(
+               :teacher,
+               given_name: 'Firstname',
+               family_name: 'Lastname',
+               email: 'firstname@lastname.org',
+               school_info_id: school.id
+             )
            end
          else
            nil

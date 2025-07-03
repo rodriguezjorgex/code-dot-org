@@ -11,14 +11,14 @@ Scenario: Visiting old workshop enroll form redirects to join page
 
 Scenario: Attempting to join workshop signed-out prompts user to sign in
   Given I am a "signed_out" user enrolling in workshop with "unsubmitted" status
-  And I wait until element "#new-account-card" is visible
+  And I wait until element "span:contains('Create an account')" is visible
 
   # test clean up
   And I delete the workshop
 
 Scenario: Attempting to join workshop as a student prompts user to upgrade account
   Given I am a "student" user enrolling in workshop with "unsubmitted" status
-  And I wait until element "#keep-student-account-card" is visible
+  And I wait until element "span:contains('Exit and cancel')" is visible
 
   # test clean up
   And I delete the workshop
@@ -59,7 +59,7 @@ Scenario: Attempting to join workshop again as a teacher states you have already
 Scenario: Attempting to join workshop as a teacher allows enrolling and sends teacher to MyPL page
   Given I am a "teacher" user enrolling in workshop with "unsubmitted" status
   And I wait until element "h3:contains('Review your information')" is visible
-  And I click "#joinWorkshop"
+  And I click "span:contains('Join this workshop')"
   And I wait until current URL contains "my-professional-learning"
 
   # test clean up
