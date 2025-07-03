@@ -44,7 +44,7 @@ module SkillsHelper
     return "Not seen" if evaluations.empty?
 
     return "Mastered" if evaluations.include?(SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:ALL_COMPLETE_CORRECT])
-    return "Shown" if evaluations.include?(SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:PARTIAL_COMPLETE_CORRECT_COMPLETE_CORRECT])
+    return "Shown" if evaluations.include?(SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:PARTIAL_COMPLETE_CORRECT])
     return "Needs practice" if evaluations.all?(SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:ALL_INCOMPLETE_INCORRECT])
 
     "Not seen"
