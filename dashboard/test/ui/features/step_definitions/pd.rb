@@ -313,16 +313,16 @@ Given(/^I am a "([^"]*)" user enrolling in workshop with "([^"]*)" status$/) do 
 
   workshop = case status
              when "closed"
-               create :workshop, :ended
+               FactoryBot.create :workshop, :ended
              when "full"
-               create :workshop, capacity: 1, num_enrollments: 1
+               FactoryBot.create :workshop, capacity: 1, num_enrollments: 1
              when "own"
-               create :workshop, organizer: user
+               FactoryBot.create :workshop, organizer: user
              else
-               create :workshop
+               FactoryBot.create :workshop
              end
   if status == "duplicate"
-    create :pd_enrollment, workshop: workshop, user: user
+    FactoryBot.create :pd_enrollment, workshop: workshop, user: user
   end
   @workshop_id = workshop.id
 
