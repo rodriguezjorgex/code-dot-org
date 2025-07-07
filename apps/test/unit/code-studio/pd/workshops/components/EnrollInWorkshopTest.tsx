@@ -17,6 +17,7 @@ const baseUserInfo = {
     country: 'United States',
     school_name: 'School Academy',
     zip: '11111',
+    school_type: undefined,
   },
 };
 
