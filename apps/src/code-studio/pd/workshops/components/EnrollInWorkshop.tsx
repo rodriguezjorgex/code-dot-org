@@ -129,7 +129,8 @@ const EnrollInWorkshop: React.FC<EnrollInWorkshopProps> = ({
       !userInfo.first_name ||
       !userInfo.last_name ||
       !userInfo.email ||
-      !userInfo.school_info?.school_name;
+      (!userInfo.school_info?.school_name &&
+        !userInfo.school_info?.school_type);
     return (
       <div className={moduleStyles.internalEnrollButton}>
         {userInfo && (
