@@ -7,6 +7,8 @@ import {
 import classNames from 'classnames';
 import React from 'react';
 
+import {NonSchoolOptions} from '@cdo/generated-scripts/sharedConstants';
+
 import style from './userPassport.module.scss';
 
 const UserPassport: React.FunctionComponent<{
@@ -15,6 +17,7 @@ const UserPassport: React.FunctionComponent<{
   familyName?: string;
   email: string;
   schoolName?: string;
+  schoolType?: string;
   returnToHref: string;
   className?: string;
 }> = ({
@@ -23,9 +26,15 @@ const UserPassport: React.FunctionComponent<{
   familyName,
   email,
   schoolName,
+  schoolType,
   returnToHref,
   className = '',
 }) => {
+  const listedSchoolName =
+    schoolType === NonSchoolOptions.NO_SCHOOL_SETTING
+      ? 'Non-School Setting'
+      : schoolName;
+
   const RenderErrorMessage = (message: string) => {
     return (
       <span className={style.errorMessage}>
@@ -71,8 +80,8 @@ const UserPassport: React.FunctionComponent<{
           <OverlineThreeText className={style.userInfoLabel}>
             School
           </OverlineThreeText>
-          {schoolName ? (
-            <BodyThreeText>{schoolName}</BodyThreeText>
+          {schoolName || schoolType ? (
+            <BodyThreeText>{listedSchoolName}</BodyThreeText>
           ) : (
             RenderErrorMessage('Add your school')
           )}
