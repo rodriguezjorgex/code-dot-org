@@ -1,4 +1,4 @@
-import {LinkButton} from '@code-dot-org/component-library/button';
+import {Button} from '@code-dot-org/component-library/button';
 import FontAwesomeV6Icon from '@code-dot-org/component-library/fontAwesomeV6Icon';
 import {
   BodyThreeText,
@@ -7,6 +7,7 @@ import {
 import classNames from 'classnames';
 import React from 'react';
 
+import {navigateToHref} from '@cdo/apps/utils';
 import {NonSchoolOptions} from '@cdo/generated-scripts/sharedConstants';
 
 import style from './userPassport.module.scss';
@@ -44,6 +45,23 @@ const UserPassport: React.FunctionComponent<{
     );
   };
 
+  const handleClickEdit = () => {
+    const accountSettingsToUpdate = [];
+    if (!givenName || !familyName) {
+      accountSettingsToUpdate.push('accountInformation');
+    }
+    if (!schoolName && !schoolType) {
+      accountSettingsToUpdate.push('schoolInformation');
+    }
+    if (accountSettingsToUpdate.length > 0) {
+      sessionStorage.setItem(
+        'accountSettingsToUpdate',
+        JSON.stringify(accountSettingsToUpdate)
+      );
+    }
+    navigateToHref(`/users/edit?user_return_to=${returnToHref}`);
+  };
+
   return (
     <div className={classNames(style.userInfoContainer, className)}>
       <span className={style.userInfoHeader}>
@@ -51,12 +69,12 @@ const UserPassport: React.FunctionComponent<{
           <FontAwesomeV6Icon iconName="user-circle" iconStyle="solid" />
           <BodyThreeText>{displayName}</BodyThreeText>
         </div>
-        <LinkButton
+        <Button
           text="Edit"
           size="xs"
           iconLeft={{iconName: 'pencil', iconStyle: 'solid'}}
           className={style.editButton}
-          href={`/users/edit?user_return_to=${returnToHref}`}
+          onClick={handleClickEdit}
         />
       </span>
       <div className={style.userInfoContent}>

@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 
+import {queryParams} from '@cdo/apps/code-studio/utils';
 import {EVENTS, PLATFORMS} from '@cdo/apps/metrics/AnalyticsConstants';
 import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
 import AccountBanner from '@cdo/apps/templates/account/AccountBanner';
@@ -32,11 +33,17 @@ const SOURCE_PAGE_TEXT: {
   },
 };
 
-const LinkAccountPage: React.FunctionComponent<{
-  sourcePage: string;
-  newAccountUrl: string;
-  existingAccountUrl: string;
-}> = ({sourcePage, newAccountUrl, existingAccountUrl}) => {
+const LinkAccountPage: React.FunctionComponent = () => {
+  const sourcePage = queryParams('source_page') as string;
+  const sourcePageTextKey = Object.keys(SOURCE_PAGE_TEXT).includes(sourcePage)
+    ? sourcePage
+    : 'default';
+
+  const returnToUrlParam = queryParams('return_to');
+  const returnTo = returnToUrlParam
+    ? `?user_return_to=${returnToUrlParam}`
+    : '';
+
   useEffect(() => {
     analyticsReporter.sendEvent(
       EVENTS.LINK_ACCOUNT_PAGE_VISITED_EVENT,
@@ -44,10 +51,6 @@ const LinkAccountPage: React.FunctionComponent<{
       PLATFORMS.BOTH
     );
   }, [sourcePage]);
-
-  const sourcePageTextKey = Object.keys(SOURCE_PAGE_TEXT).includes(sourcePage)
-    ? sourcePage
-    : 'default';
 
   return (
     <main>
@@ -65,7 +68,7 @@ const LinkAccountPage: React.FunctionComponent<{
             content={SOURCE_PAGE_TEXT[sourcePageTextKey].newAccountDesc}
             buttonText={i18n.createAccount()}
             buttonType="secondary"
-            href={newAccountUrl}
+            href={`/users/sign_up/account_type${returnTo}`}
           />
           <AccountCard
             id={'existing-account-card'}
@@ -74,7 +77,7 @@ const LinkAccountPage: React.FunctionComponent<{
             content={SOURCE_PAGE_TEXT[sourcePageTextKey].existingAccountDesc}
             buttonText={i18n.ltiLinkAccountExistingAccountCardActionLabel()}
             buttonType="primary"
-            href={existingAccountUrl}
+            href={`/users/sign_in${returnTo}`}
           />
         </div>
       </div>

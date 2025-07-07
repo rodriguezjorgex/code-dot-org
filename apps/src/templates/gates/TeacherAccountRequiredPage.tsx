@@ -1,17 +1,23 @@
 import React, {useEffect} from 'react';
 
+import {queryParams} from '@cdo/apps/code-studio/utils';
 import {EVENTS, PLATFORMS} from '@cdo/apps/metrics/AnalyticsConstants';
 import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
 import AccountBanner from '@cdo/apps/templates/account/AccountBanner';
 import AccountCard from '@cdo/apps/templates/account/AccountCard';
+import {navigateToHref} from '@cdo/apps/utils';
 import i18n from '@cdo/locale';
 
 import styles from './gate-pages.module.scss';
 
-const TeacherAccountRequiredPage: React.FunctionComponent<{
-  sourcePage: string;
-  editAccountLink: string;
-}> = ({sourcePage, editAccountLink}) => {
+const TeacherAccountRequiredPage: React.FunctionComponent = () => {
+  const sourcePage = queryParams('source_page');
+
+  const returnToUrlParam = queryParams('return_to');
+  const returnTo = returnToUrlParam
+    ? `?user_return_to=${returnToUrlParam}`
+    : '';
+
   useEffect(() => {
     analyticsReporter.sendEvent(
       EVENTS.UPGRADE_TO_TEACHER_ACCOUNT_PAGE_VISITED_EVENT,
@@ -19,6 +25,14 @@ const TeacherAccountRequiredPage: React.FunctionComponent<{
       PLATFORMS.BOTH
     );
   }, [sourcePage]);
+
+  const handleUpdateToTeacherAccount = () => {
+    sessionStorage.setItem(
+      'accountSettingsToUpdate',
+      JSON.stringify(['accountInformation'])
+    );
+    navigateToHref(`/users/edit${returnTo}#change-user-type-modal-form`);
+  };
 
   return (
     <main>
@@ -45,7 +59,7 @@ const TeacherAccountRequiredPage: React.FunctionComponent<{
             content={i18n.accountSwitchTeacherAccountCardContentGeneric()}
             buttonText={i18n.accountSwitchTeacherAccountCardButton()}
             buttonType="primary"
-            href={editAccountLink}
+            onClick={handleUpdateToTeacherAccount}
           />
         </div>
       </div>

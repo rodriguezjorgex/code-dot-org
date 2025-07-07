@@ -3,10 +3,12 @@ import {Button} from '@code-dot-org/component-library/button';
 import {Heading2} from '@code-dot-org/component-library/typography';
 import React, {useEffect, useMemo, useState} from 'react';
 
+import {queryParams} from '@cdo/apps/code-studio/utils';
 import {useSchoolInfo} from '@cdo/apps/schoolInfo/hooks/useSchoolInfo';
 import {schoolInfoInvalid} from '@cdo/apps/schoolInfo/utils/schoolInfoInvalid';
 import {updateSchoolInfo} from '@cdo/apps/schoolInfo/utils/updateSchoolInfo';
 import SchoolDataInputs from '@cdo/apps/templates/SchoolDataInputs';
+import {navigateToHref} from '@cdo/apps/utils';
 import i18n from '@cdo/locale';
 
 import commonStyles from '../common/common.styles.module.scss';
@@ -57,6 +59,24 @@ export const SchoolInformation: React.FC<SchoolInformationProps> = ({
         country: schoolDataInfoProps.country,
       });
       setSuccess(true);
+
+      // If sent here with a user_return_to param and there are no
+      // more 'accountSettingsToUpdate' in sessionStorage, then
+      // redirect the user to user_return_to href.
+      const accountSettingsToUpdate = JSON.parse(
+        sessionStorage.getItem('accountSettingsToUpdate') || '[]'
+      ) as string[];
+      const remainingSettingsToUpdate = accountSettingsToUpdate.filter(
+        setting => setting !== 'schoolInformation'
+      );
+      sessionStorage.setItem(
+        'accountSettingsToUpdate',
+        JSON.stringify(remainingSettingsToUpdate)
+      );
+      const returnToHref = queryParams('user_return_to') as string;
+      if (returnToHref && remainingSettingsToUpdate.length === 0) {
+        navigateToHref(returnToHref);
+      }
     } catch (error) {
       setFailure(true);
     }

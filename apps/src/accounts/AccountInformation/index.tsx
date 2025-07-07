@@ -135,10 +135,22 @@ export const AccountInformation: React.FC<AccountInformationProps> = ({
 
     if (response.ok) {
       setShowAccountUpdateSuccess(true);
+
+      const accountSettingsToUpdate = JSON.parse(
+        sessionStorage.getItem('accountSettingsToUpdate') || '[]'
+      ) as string[];
+      const remainingSettingsToUpdate = accountSettingsToUpdate.filter(
+        setting => setting !== 'accountInformation'
+      );
+      sessionStorage.setItem(
+        'accountSettingsToUpdate',
+        JSON.stringify(remainingSettingsToUpdate)
+      );
       const returnToHref = queryParams('user_return_to') as string;
-      // If sent here with a user_return_to param, return the user upon submission,
-      // otherwise handle reload.
-      if (returnToHref) {
+      // If sent here with a user_return_to param and there are no
+      // more 'accountSettingsToUpdate' in sessionStorage, then
+      // redirect the user to user_return_to, otherwise handle reload.
+      if (returnToHref && remainingSettingsToUpdate.length === 0) {
         navigateToHref(returnToHref);
       } else {
         handleReload();
