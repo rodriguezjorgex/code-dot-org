@@ -308,14 +308,14 @@ Given(/^I am a "([^"]*)" user enrolling in workshop with "([^"]*)" status$/) do 
              FactoryBot.create :student
            end
          when "teacher"
-           school = FactoryBot.create :school
+           school_info = FactoryBot.create :school_info
            Retryable.retryable(on: [ActiveRecord::RecordInvalid], tries: 5) do
              FactoryBot.create(
                :teacher,
                given_name: 'Firstname',
                family_name: 'Lastname',
                email: 'firstname@lastname.org',
-               school_info_id: school.id
+               school_info: school_info
              )
            end
          else
@@ -338,7 +338,8 @@ Given(/^I am a "([^"]*)" user enrolling in workshop with "([^"]*)" status$/) do 
   @workshop_id = workshop.id
 
   steps <<~GHERKIN
-    And I am on "http://studio.code.org/pd/workshops/#{@workshop_id}/join"
+    And I sign in as "#{user.name}"
+    Then I am on "http://studio.code.org/pd/workshops/#{@workshop_id}/join"
   GHERKIN
 end
 
