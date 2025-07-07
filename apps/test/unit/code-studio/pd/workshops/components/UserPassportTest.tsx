@@ -1,4 +1,4 @@
-import {render, screen} from '@testing-library/react';
+import {render, screen, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import React from 'react';
 
@@ -53,11 +53,49 @@ describe('UserPassport', () => {
     expect(screen.queryByText('Add your school')).toBe(null);
   });
 
-  it('edit link sends user to account settings page with return_to url', () => {
-    renderDefault();
-    expect(screen.getByRole('link', {name: 'Edit'})).toHaveAttribute(
-      'href',
-      '/users/edit?user_return_to=/fake-return-url'
-    );
+  it('edit button saves what sections user needs to edit in sessionStorage: missing full name', async () => {
+    renderDefault({givenName: ''});
+
+    fireEvent.click(screen.getByRole('button', {name: 'Edit'}));
+
+    await (() => {
+      expect(
+        JSON.parse(sessionStorage.getItem('accountSettingsToUpdate') as string)
+      ).toBe(['accountInformation']);
+    });
+  });
+
+  it('edit button saves what sections user needs to edit in sessionStorage: missing school', async () => {
+    renderDefault({schoolName: '', schoolType: ''});
+
+    fireEvent.click(screen.getByRole('button', {name: 'Edit'}));
+
+    await (() => {
+      expect(
+        JSON.parse(sessionStorage.getItem('accountSettingsToUpdate') as string)
+      ).toBe(['schoolInformation']);
+    });
+  });
+
+  it('edit button saves what sections user needs to edit in sessionStorage: missing full name and school', async () => {
+    renderDefault({familyName: '', schoolName: '', schoolType: ''});
+
+    fireEvent.click(screen.getByRole('button', {name: 'Edit'}));
+
+    await (() => {
+      expect(
+        JSON.parse(sessionStorage.getItem('accountSettingsToUpdate') as string)
+      ).toBe(['accountInformation', 'schoolInformation']);
+    });
+  });
+
+  it('edit button does not use sessionStorage if user has all required fields', async () => {
+    renderDefault({familyName: '', schoolName: '', schoolType: ''});
+
+    fireEvent.click(screen.getByRole('button', {name: 'Edit'}));
+
+    await (() => {
+      expect(sessionStorage.getItem('accountSettingsToUpdate')).toBe(null);
+    });
   });
 });

@@ -44,6 +44,7 @@ describe('SchoolInformation', () => {
   });
 
   afterEach(() => {
+    sessionStorage.removeItem('accountSettingsToUpdate');
     jest.clearAllMocks();
   });
 
@@ -109,6 +110,10 @@ describe('SchoolInformation', () => {
   });
 
   it('shows success alert when update is successful', async () => {
+    sessionStorage.setItem(
+      'accountSettingsToUpdate',
+      JSON.stringify(['accountInformation', 'schoolInformation'])
+    );
     render(<SchoolInformation {...defaultProps} />);
     fireEvent.click(
       screen.getByRole('button', {
@@ -125,9 +130,19 @@ describe('SchoolInformation', () => {
     expect(
       screen.queryByText(i18n.schoolInformation_updateFailure())
     ).not.toBeInTheDocument();
+
+    // Clears 'schoolInformation' from 'accountSettingsToUpdate' upon
+    // successfully updating the school information.
+    expect(sessionStorage.getItem('accountSettingsToUpdate')).toBe(
+      JSON.stringify(['accountInformation'])
+    );
   });
 
   it('shows failure alert when update fails', async () => {
+    sessionStorage.setItem(
+      'accountSettingsToUpdate',
+      JSON.stringify(['accountInformation', 'schoolInformation'])
+    );
     updateSchoolInfo.mockRejectedValue(new Error('Update failed'));
     render(<SchoolInformation {...defaultProps} />);
     fireEvent.click(
@@ -145,6 +160,12 @@ describe('SchoolInformation', () => {
     expect(
       screen.queryByText(i18n.schoolInformation_updateSuccess())
     ).not.toBeInTheDocument();
+
+    // Does not clear 'schoolInformation' from 'accountSettingsToUpdate' if
+    // update fails.
+    expect(sessionStorage.getItem('accountSettingsToUpdate')).toBe(
+      JSON.stringify(['accountInformation', 'schoolInformation'])
+    );
   });
 
   it('closes success alert when the close button is clicked', async () => {
