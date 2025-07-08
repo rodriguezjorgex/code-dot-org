@@ -11,6 +11,11 @@ import SchoolDataInputs from '@cdo/apps/templates/SchoolDataInputs';
 import {navigateToHref} from '@cdo/apps/utils';
 import i18n from '@cdo/locale';
 
+import {
+  AccountSettingsSectionUrlParams,
+  handleUpdateUrlOnSettingsSave,
+} from '../constants';
+
 import commonStyles from '../common/common.styles.module.scss';
 
 interface SchoolInfo {
@@ -61,20 +66,14 @@ export const SchoolInformation: React.FC<SchoolInformationProps> = ({
       setSuccess(true);
 
       // If sent here with a user_return_to param and there are no
-      // more 'accountSettingsToUpdate' in sessionStorage, then
-      // redirect the user to user_return_to href.
-      const accountSettingsToUpdate = JSON.parse(
-        sessionStorage.getItem('accountSettingsToUpdate') || '[]'
-      ) as string[];
-      const remainingSettingsToUpdate = accountSettingsToUpdate.filter(
-        setting => setting !== 'schoolInformation'
-      );
-      sessionStorage.setItem(
-        'accountSettingsToUpdate',
-        JSON.stringify(remainingSettingsToUpdate)
-      );
+      // more Accoutn Settings sections the user is meant to update
+      // (tracked in the URL params), then redirect the user to
+      // user_return_to, otherwise handle reload.
       const returnToHref = queryParams('user_return_to') as string;
-      if (returnToHref && remainingSettingsToUpdate.length === 0) {
+      const hasFinishedAccountUpdates = handleUpdateUrlOnSettingsSave(
+        AccountSettingsSectionUrlParams.AccountInformation
+      );
+      if (returnToHref && hasFinishedAccountUpdates) {
         navigateToHref(returnToHref);
       }
     } catch (error) {

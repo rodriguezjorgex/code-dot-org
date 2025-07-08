@@ -4,7 +4,6 @@ import {EVENTS, PLATFORMS} from '@cdo/apps/metrics/AnalyticsConstants';
 import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
 import AccountBanner from '@cdo/apps/templates/account/AccountBanner';
 import AccountCard from '@cdo/apps/templates/account/AccountCard';
-import {navigateToHref} from '@cdo/apps/utils';
 import i18n from '@cdo/locale';
 
 import {processAccountUrlParams} from './processAccountUrlParams';
@@ -21,16 +20,6 @@ const TeacherAccountRequiredPage: React.FunctionComponent = () => {
       PLATFORMS.BOTH
     );
   }, [sourcePage]);
-
-  const handleUpdateToTeacherAccount = () => {
-    sessionStorage.setItem(
-      'accountSettingsToUpdate',
-      JSON.stringify(['accountInformation'])
-    );
-    navigateToHref(
-      `/users/edit${returnToUrlParam}#change-user-type-modal-form`
-    );
-  };
 
   return (
     <main>
@@ -57,7 +46,7 @@ const TeacherAccountRequiredPage: React.FunctionComponent = () => {
             content={i18n.accountSwitchTeacherAccountCardContentGeneric()}
             buttonText={i18n.accountSwitchTeacherAccountCardButton()}
             buttonType="primary"
-            onClick={handleUpdateToTeacherAccount}
+            href={`/users/edit${returnToUrlParam}#change-user-type-modal-form`}
           />
         </div>
       </div>
