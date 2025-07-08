@@ -49,7 +49,7 @@ export const AccountSettingsSectionUrlParams = {
 export function handleUpdateUrlOnSettingsSave(accountSettingsSection) {
   updateQueryParam(accountSettingsSection, undefined, false);
 
-  return (
+  return !(
     hasQueryParam(AccountSettingsSectionUrlParams.AccountInformation) ||
     hasQueryParam(AccountSettingsSectionUrlParams.SchoolInformation)
   );
