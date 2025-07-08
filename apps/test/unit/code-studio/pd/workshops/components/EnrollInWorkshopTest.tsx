@@ -123,4 +123,25 @@ describe('EnrollInWorkshop', () => {
     });
     expect(link).toHaveAttribute('href', '#data-sharing-notice');
   });
+
+  it('enroll button is disabled if user information is missing', () => {
+    const missingFirstNameUserInfo = {...baseUserInfo, first_name: ''};
+    render(
+      <EnrollInWorkshop {...baseProps} userInfo={missingFirstNameUserInfo} />
+    );
+    const enrollButton = screen.getByRole('button', {
+      name: /Enroll in this workshop/i,
+    });
+    expect(enrollButton).toBeInTheDocument();
+    expect(enrollButton).toBeDisabled();
+  });
+
+  it('enroll button is enabled if all user information is present', () => {
+    render(<EnrollInWorkshop {...baseProps} />);
+    const enrollButton = screen.getByRole('button', {
+      name: /Enroll in this workshop/i,
+    });
+    expect(enrollButton).toBeInTheDocument();
+    expect(enrollButton).toBeEnabled();
+  });
 });

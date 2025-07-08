@@ -8,7 +8,9 @@ import {
 } from '@code-dot-org/component-library/typography';
 import React, {useState} from 'react';
 
-import UserPassport from '@cdo/apps/code-studio/pd/workshops/components/UserPassport';
+import UserPassport, {
+  isMissingUserInfo,
+} from '@cdo/apps/code-studio/pd/workshops/components/UserPassport';
 import {useWorkshopEnrollmentApi} from '@cdo/apps/code-studio/pd/workshops/hooks/useWorkshopEnrollmentApi';
 import {GetUserInfoForWorkshopResponse} from '@cdo/apps/code-studio/pd/workshops/types';
 import AccountBanner from '@cdo/apps/templates/account/AccountBanner';
@@ -47,11 +49,6 @@ const WorkshopJoin: React.FunctionComponent<{
     workshop_enrollment_status
   );
   const [submissionErrorMessage, setSubmissionErrorMessage] = useState('');
-  const hasMissingUserInfo =
-    !user_info?.first_name ||
-    !user_info?.last_name ||
-    (!user_info?.school_info?.school_name &&
-      !user_info?.school_info?.school_type);
   const {submitEnrollment, isSubmitting, error} = useWorkshopEnrollmentApi(
     workshop_info.id
   );
@@ -116,7 +113,7 @@ const WorkshopJoin: React.FunctionComponent<{
             className={style.joinWorkshopButton}
             onClick={handleSubmitEnrollment}
             isPending={isSubmitting}
-            disabled={hasMissingUserInfo || !!error}
+            disabled={isMissingUserInfo(user_info) || !!error}
           />
         </div>
         {user_info && (

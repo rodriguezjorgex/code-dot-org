@@ -7,10 +7,23 @@ import {
 import classNames from 'classnames';
 import React from 'react';
 
+import {GetUserInfoForWorkshopResponse} from '@cdo/apps/code-studio/pd/workshops/types';
 import {navigateToHref} from '@cdo/apps/utils';
 import {NonSchoolOptions} from '@cdo/generated-scripts/sharedConstants';
 
 import style from './userPassport.module.scss';
+
+export const isMissingUserInfo = (
+  userInfo: GetUserInfoForWorkshopResponse['userInfo']
+) => {
+  return (
+    !userInfo ||
+    !userInfo.first_name ||
+    !userInfo.last_name ||
+    !userInfo.email ||
+    (!userInfo.school_info?.school_name && !userInfo.school_info?.school_type)
+  );
+};
 
 const UserPassport: React.FunctionComponent<{
   displayName: string;
