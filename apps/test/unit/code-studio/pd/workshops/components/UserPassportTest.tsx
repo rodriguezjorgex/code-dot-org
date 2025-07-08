@@ -1,4 +1,4 @@
-import {render, screen, fireEvent} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import React from 'react';
 
@@ -53,49 +53,55 @@ describe('UserPassport', () => {
     expect(screen.queryByText('Add your school')).toBe(null);
   });
 
-  it('edit button saves what sections user needs to edit in sessionStorage: missing full name', async () => {
+  it('edit link adds missing info params to url: missing full name', () => {
     renderDefault({givenName: ''});
 
-    fireEvent.click(screen.getByRole('button', {name: 'Edit'}));
-
-    await (() => {
-      expect(
-        JSON.parse(sessionStorage.getItem('accountSettingsToUpdate') as string)
-      ).toBe(['accountInformation']);
-    });
+    expect(
+      screen.getByRole('link', {
+        name: 'Edit',
+      })
+    ).toHaveAttribute(
+      'href',
+      `/users/edit?user_return_to=${DEFAULT_PROPS.returnToHref}&accountInformation=true`
+    );
   });
 
-  it('edit button saves what sections user needs to edit in sessionStorage: missing school', async () => {
+  it('edit link adds missing info params to url: missing school', () => {
     renderDefault({schoolName: '', schoolType: ''});
 
-    fireEvent.click(screen.getByRole('button', {name: 'Edit'}));
-
-    await (() => {
-      expect(
-        JSON.parse(sessionStorage.getItem('accountSettingsToUpdate') as string)
-      ).toBe(['schoolInformation']);
-    });
+    expect(
+      screen.getByRole('link', {
+        name: 'Edit',
+      })
+    ).toHaveAttribute(
+      'href',
+      `/users/edit?user_return_to=${DEFAULT_PROPS.returnToHref}&schoolInformation=true`
+    );
   });
 
-  it('edit button saves what sections user needs to edit in sessionStorage: missing full name and school', async () => {
+  it('edit link adds missing info params to url: missing full name and school', () => {
     renderDefault({familyName: '', schoolName: '', schoolType: ''});
 
-    fireEvent.click(screen.getByRole('button', {name: 'Edit'}));
-
-    await (() => {
-      expect(
-        JSON.parse(sessionStorage.getItem('accountSettingsToUpdate') as string)
-      ).toBe(['accountInformation', 'schoolInformation']);
-    });
+    expect(
+      screen.getByRole('link', {
+        name: 'Edit',
+      })
+    ).toHaveAttribute(
+      'href',
+      `/users/edit?user_return_to=${DEFAULT_PROPS.returnToHref}&accountInformation=true&schoolInformation=true`
+    );
   });
 
-  it('edit button does not use sessionStorage if user has all required fields', async () => {
-    renderDefault({familyName: '', schoolName: '', schoolType: ''});
+  it('edit link just has return_to url param if user has all required fields', () => {
+    renderDefault();
 
-    fireEvent.click(screen.getByRole('button', {name: 'Edit'}));
-
-    await (() => {
-      expect(sessionStorage.getItem('accountSettingsToUpdate')).toBe(null);
-    });
+    expect(
+      screen.getByRole('link', {
+        name: 'Edit',
+      })
+    ).toHaveAttribute(
+      'href',
+      `/users/edit?user_return_to=${DEFAULT_PROPS.returnToHref}`
+    );
   });
 });
