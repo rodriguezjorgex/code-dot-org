@@ -71,7 +71,7 @@ export const SchoolInformation: React.FC<SchoolInformationProps> = ({
       // user_return_to, otherwise handle reload.
       const returnToHref = queryParams('user_return_to') as string;
       const hasFinishedAccountUpdates = handleUpdateUrlOnSettingsSave(
-        AccountSettingsSectionUrlParams.AccountInformation
+        AccountSettingsSectionUrlParams.SchoolInformation
       );
       if (returnToHref && hasFinishedAccountUpdates) {
         navigateToHref(returnToHref);
