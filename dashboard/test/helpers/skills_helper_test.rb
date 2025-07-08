@@ -158,12 +158,6 @@ class SkillsHelperTest < ActiveSupport::TestCase
 
   test "determine_mastery_level_for_student returns 'Needs practice' when all are incomplete_incorrect" do
     evaluations = [SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:INCOMPLETE_INCORRECT], SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:INCOMPLETE_INCORRECT], SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:INCOMPLETE_INCORRECT]]
-    puts
-    puts
-    puts "Evaluations: #{evaluations.inspect}"
-    puts "SharedConstants: #{SharedConstants::STUDENT_WORK_EVALUATION_STATUS.inspect}"
-    puts
-    puts
     result = SkillsHelper.send(:determine_mastery_level_for_student, evaluations)
     assert_equal 'Needs practice', result
   end
