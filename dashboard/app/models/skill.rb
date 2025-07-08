@@ -19,11 +19,11 @@ class Skill < ApplicationRecord
 
   has_and_belongs_to_many :levels, join_table: 'levels_skills', dependent: :delete_all
 
-  # before_destroy do
-  #   levels.each do |level|
-  #     level.skill_keys.delete(key)
-  #   end
-  # end
+  before_destroy do
+    levels.each do |level|
+      level.skill_keys.delete(key)
+    end
+  end
 
   after_destroy :delete_serialized_file
 
