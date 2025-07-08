@@ -1,11 +1,12 @@
 import React, {useEffect} from 'react';
 
-import {queryParams} from '@cdo/apps/code-studio/utils';
 import {EVENTS, PLATFORMS} from '@cdo/apps/metrics/AnalyticsConstants';
 import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
 import AccountBanner from '@cdo/apps/templates/account/AccountBanner';
 import AccountCard from '@cdo/apps/templates/account/AccountCard';
 import i18n from '@cdo/locale';
+
+import {processAccountUrlParams} from './processAccountUrlParams';
 
 import styles from './gate-pages.module.scss';
 
@@ -34,15 +35,10 @@ const SOURCE_PAGE_TEXT: {
 };
 
 const LinkAccountPage: React.FunctionComponent = () => {
-  const sourcePage = queryParams('source_page') as string;
+  const {sourcePage, returnToUrlParam} = processAccountUrlParams();
   const sourcePageTextKey = Object.keys(SOURCE_PAGE_TEXT).includes(sourcePage)
     ? sourcePage
     : 'default';
-
-  const returnToUrlParam = queryParams('return_to');
-  const returnTo = returnToUrlParam
-    ? `?user_return_to=${returnToUrlParam}`
-    : '';
 
   useEffect(() => {
     analyticsReporter.sendEvent(
@@ -68,7 +64,7 @@ const LinkAccountPage: React.FunctionComponent = () => {
             content={SOURCE_PAGE_TEXT[sourcePageTextKey].newAccountDesc}
             buttonText={i18n.createAccount()}
             buttonType="secondary"
-            href={`/users/sign_up/account_type${returnTo}`}
+            href={`/users/sign_up/account_type${returnToUrlParam}`}
           />
           <AccountCard
             id={'existing-account-card'}
@@ -77,7 +73,7 @@ const LinkAccountPage: React.FunctionComponent = () => {
             content={SOURCE_PAGE_TEXT[sourcePageTextKey].existingAccountDesc}
             buttonText={i18n.ltiLinkAccountExistingAccountCardActionLabel()}
             buttonType="primary"
-            href={`/users/sign_in${returnTo}`}
+            href={`/users/sign_in${returnToUrlParam}`}
           />
         </div>
       </div>
