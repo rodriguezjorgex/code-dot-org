@@ -1,5 +1,5 @@
 require 'test_helper'
-
+require 'cdo/shared_constants'
 class SkillsHelperTest < ActiveSupport::TestCase
   setup do
     @section = create(:section)
@@ -28,7 +28,7 @@ class SkillsHelperTest < ActiveSupport::TestCase
       unit_id: @unit.id,
       skill_id: @skill1.id,
       level_id: @level1.id,
-      evaluation: 'Great'
+      evaluation: SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:ALL_COMPLETE_CORRECT]
     )
 
     create(:user_level_skill_evaluation,
@@ -36,7 +36,7 @@ class SkillsHelperTest < ActiveSupport::TestCase
       unit_id: @unit.id,
       skill_id: @skill2.id,
       level_id: @level1.id,
-      evaluation: 'Ok'
+      evaluation: SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:PARTIAL_COMPLETE_CORRECT]
     )
 
     create(:user_level_skill_evaluation,
@@ -44,7 +44,7 @@ class SkillsHelperTest < ActiveSupport::TestCase
       unit_id: @unit.id,
       skill_id: @skill1.id,
       level_id: @level1.id,
-      evaluation: 'Needs revision'
+      evaluation: SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:INCOMPLETE_INCORRECT]
     )
 
     result = SkillsHelper.get_section_skills_data(@section, @unit)
@@ -115,7 +115,7 @@ class SkillsHelperTest < ActiveSupport::TestCase
       unit_id: @unit.id,
       skill_id: @skill1.id,
       level_id: @level1.id,
-      evaluation: 'Needs revision'
+      evaluation: SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:INCOMPLETE_INCORRECT]
     )
 
     create(:user_level_skill_evaluation,
@@ -123,7 +123,7 @@ class SkillsHelperTest < ActiveSupport::TestCase
       unit_id: @unit.id,
       skill_id: @skill1.id,
       level_id: @level2.id,
-      evaluation: 'Ok'
+      evaluation: SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:PARTIAL_COMPLETE_CORRECT]
     )
 
     create(:user_level_skill_evaluation,
@@ -131,7 +131,7 @@ class SkillsHelperTest < ActiveSupport::TestCase
       unit_id: @unit.id,
       skill_id: @skill1.id,
       level_id: @level3.id,
-      evaluation: 'Great'
+      evaluation: SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:ALL_COMPLETE_CORRECT]
     )
 
     result = SkillsHelper.get_section_skills_data(@section, @unit)
@@ -144,20 +144,26 @@ class SkillsHelperTest < ActiveSupport::TestCase
     assert_equal 'Not seen', result
   end
 
-  test "determine_mastery_level_for_student returns 'Mastered' when Great is present" do
-    evaluations = ['Needs revision', 'Ok', 'Great']
+  test "determine_mastery_level_for_student returns 'Mastered' when all_complete_all_correct is present" do
+    evaluations = [SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:INCOMPLETE_INCORRECT], SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:PARTIAL_COMPLETE_CORRECT], SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:ALL_COMPLETE_CORRECT]]
     result = SkillsHelper.send(:determine_mastery_level_for_student, evaluations)
     assert_equal 'Mastered', result
   end
 
-  test "determine_mastery_level_for_student returns 'Shown' when Ok is present but no Great" do
-    evaluations = ['Needs revision', 'Ok', 'Needs revision']
+  test "determine_mastery_level_for_student returns 'Shown' when partial_complete_correct is present but no all_complete_correct" do
+    evaluations = [SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:INCOMPLETE_INCORRECT], SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:PARTIAL_COMPLETE_CORRECT], SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:INCOMPLETE_INCORRECT]]
     result = SkillsHelper.send(:determine_mastery_level_for_student, evaluations)
     assert_equal 'Shown', result
   end
 
-  test "determine_mastery_level_for_student returns 'Needs practice' when all are 'Needs revision'" do
-    evaluations = ['Needs revision', 'Needs revision', 'Needs revision']
+  test "determine_mastery_level_for_student returns 'Needs practice' when all are incomplete_incorrect" do
+    evaluations = [SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:INCOMPLETE_INCORRECT], SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:INCOMPLETE_INCORRECT], SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:INCOMPLETE_INCORRECT]]
+    puts
+    puts
+    puts "Evaluations: #{evaluations.inspect}"
+    puts "SharedConstants: #{SharedConstants::STUDENT_WORK_EVALUATION_STATUS.inspect}"
+    puts
+    puts
     result = SkillsHelper.send(:determine_mastery_level_for_student, evaluations)
     assert_equal 'Needs practice', result
   end
@@ -178,7 +184,7 @@ class SkillsHelperTest < ActiveSupport::TestCase
       unit_id: other_unit.id,
       skill_id: @skill1.id,
       level_id: other_unit_level.id,
-      evaluation: 'Great'
+      evaluation: SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:ALL_COMPLETE_CORRECT]
     )
 
     create(:user_level_skill_evaluation,
@@ -186,7 +192,7 @@ class SkillsHelperTest < ActiveSupport::TestCase
       unit_id: @unit.id,
       skill_id: @skill1.id,
       level_id: @level1.id,
-      evaluation: 'Ok'
+      evaluation: SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:PARTIAL_COMPLETE_CORRECT]
     )
 
     result = SkillsHelper.get_section_skills_data(@section, @unit)
