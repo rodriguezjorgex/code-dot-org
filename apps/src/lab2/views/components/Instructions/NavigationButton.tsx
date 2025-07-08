@@ -1,5 +1,6 @@
 import {Button} from '@code-dot-org/component-library/button';
 import {ComponentSizeXSToL} from '@code-dot-org/component-library/common/types';
+import {FontAwesomeV6IconProps} from '@code-dot-org/component-library/fontAwesomeV6Icon';
 import React from 'react';
 
 import {sendSubmitReport} from '@cdo/apps/code-studio/progressRedux';
@@ -77,8 +78,10 @@ const ContinueButton: React.FC<ContinueButtonProps> = ({
   const hasSubmittedPredictResponse = useAppSelector(
     isPredictResponseSubmitted
   );
-  const {hasConditions, satisfied} = useAppSelector(
-    state => state.lab.validationState
+  const passingValidation = useAppSelector(
+    state =>
+      !state.lab.validationState.hasConditions ||
+      state.lab.validationState.satisfied
   );
   const useSecondaryFinishButton =
     useAppSelector(
@@ -86,8 +89,7 @@ const ContinueButton: React.FC<ContinueButtonProps> = ({
     ) || queryParams('use-secondary-finish-button') === 'true';
 
   const canShow =
-    (!isPredictLevel || hasSubmittedPredictResponse) &&
-    (!hasConditions || satisfied);
+    (!isPredictLevel || hasSubmittedPredictResponse) && passingValidation;
 
   const text = hasNextLevel ? commonI18n.continue() : commonI18n.finish();
 
@@ -95,6 +97,10 @@ const ContinueButton: React.FC<ContinueButtonProps> = ({
     useSecondaryFinishButton && !hasNextLevel
       ? (['secondary', 'black'] as const)
       : (['primary', 'purple'] as const);
+
+  const iconRight: FontAwesomeV6IconProps | undefined = hasNextLevel
+    ? {iconName: 'arrow-right', iconStyle: 'solid'}
+    : undefined;
 
   if (!canShow) {
     return null;
@@ -105,6 +111,7 @@ const ContinueButton: React.FC<ContinueButtonProps> = ({
       id="instructions-continue-button"
       {...{className, size, text, type, color}}
       onClick={() => dispatch(continueOrFinishLesson())}
+      iconRight={iconRight}
     />
   );
 };
