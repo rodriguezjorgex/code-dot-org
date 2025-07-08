@@ -1,4 +1,4 @@
-import {render, screen, fireEvent} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import React from 'react';
 
@@ -30,9 +30,13 @@ describe('TeacherAccountRequiredPage', () => {
         name: i18n.accountKeepStudentAccountCardButton(),
       })
     ).toHaveAttribute('href', '/home');
-
-    fireEvent.click(
-      screen.getByText(i18n.accountSwitchTeacherAccountCardButton())
+    expect(
+      screen.getByRole('link', {
+        name: i18n.accountSwitchTeacherAccountCardButton(),
+      })
+    ).toHaveAttribute(
+      'href',
+      `/users/edit?user_return_to=${TEST_RETURN_TO_HREF}#change-user-type-modal-form`
     );
   });
 });
