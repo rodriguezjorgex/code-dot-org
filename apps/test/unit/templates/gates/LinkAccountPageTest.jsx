@@ -12,11 +12,8 @@ import i18n from '@cdo/locale';
 const TEST_RETURN_TO_HREF = '/test/returnto/href';
 
 describe('LinkAccountPage', () => {
-  let replaceStateOrig = window.history.replaceState;
-
   afterEach(() => {
     resetWindowLocation();
-    window.history.replaceState = replaceStateOrig;
   });
 
   const renderDefault = sourcePage => {

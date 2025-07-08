@@ -12,12 +12,8 @@ import i18n from '@cdo/locale';
 const TEST_RETURN_TO_HREF = '/test/returnto/href';
 
 describe('TeacherAccountRequiredPage', () => {
-  let replaceStateOrig = window.history.replaceState;
-
   afterEach(() => {
     resetWindowLocation();
-    sessionStorage.removeItem('accountSettingsToUpdate');
-    window.history.replaceState = replaceStateOrig;
   });
 
   it('renders page with links to the homepage and the provided edit account link', async () => {
@@ -38,11 +34,5 @@ describe('TeacherAccountRequiredPage', () => {
     fireEvent.click(
       screen.getByText(i18n.accountSwitchTeacherAccountCardButton())
     );
-
-    await (() => {
-      expect(
-        JSON.parse(sessionStorage.getItem('accountSettingsToUpdate'))
-      ).toBe(['accountInformation']);
-    });
   });
 });

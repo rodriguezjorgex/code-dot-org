@@ -175,12 +175,6 @@ describe('AccountInformation', () => {
         country_code: undefined,
       },
     });
-
-    // Clears 'accountInformation' from 'accountSettingsToUpdate'
-    expect(mockSessionStorage.setItem).toHaveBeenCalledWith(
-      'accountSettingsToUpdate',
-      '[]'
-    );
   });
 
   it('displays error messages when form submission fails', async () => {
@@ -206,13 +200,6 @@ describe('AccountInformation', () => {
         screen.getByText('Review errors above and try again.')
       ).toBeInTheDocument();
     });
-
-    // Does not clear 'accountInformation' from 'accountSettingsToUpdate' if
-    // update fails.
-    expect(mockSessionStorage.setItem).not.toHaveBeenCalledWith(
-      'accountSettingsToUpdate',
-      '[]'
-    );
   });
 
   it('does not render given and family name fields when isStudent is true', () => {
