@@ -302,22 +302,22 @@ end
 Given(/^I am a "([^"]*)" user enrolling in workshop with "([^"]*)" status$/) do |user_type, status|
   require_rails_env
 
+  random_name = "TestFacilitator" + SecureRandom.hex[0..9]
   user = case user_type
          when "student"
-           Retryable.retryable(on: [ActiveRecord::RecordInvalid], tries: 5) do
-             FactoryBot.create :student
-           end
+           steps <<~GHERKIN
+             And I create a student named "#{random_name}"
+             And I sign in as "#{random_name}"
+           GHERKIN
          when "teacher"
+           steps <<~GHERKIN
+             And I create a teacher named "#{random_name}"
+             And I sign in as "#{random_name}"
+           GHERKIN
+
            school_info = FactoryBot.create :school_info
-           Retryable.retryable(on: [ActiveRecord::RecordInvalid], tries: 5) do
-             FactoryBot.create(
-               :teacher,
-               given_name: 'Firstname',
-               family_name: 'Lastname',
-               email: 'firstname@lastname.org',
-               school_info: school_info
-             )
-           end
+           teacher = find_test_user_by_name(random_name)
+           teacher.update!(given_name: 'Firstname', family_name: 'Lastname', school_info: school_info)
          else
            nil
          end
@@ -337,10 +337,7 @@ Given(/^I am a "([^"]*)" user enrolling in workshop with "([^"]*)" status$/) do 
   end
   @workshop_id = workshop.id
 
-  steps <<~GHERKIN
-    And I sign in as "#{user.name}"
-    Then I am on "http://studio.code.org/pd/workshops/#{@workshop_id}/join"
-  GHERKIN
+  steps "Then I am on \"http://studio.code.org/pd/workshops/#{@workshop_id}/join\""
 end
 
 Given 'I start a self-paced PL course' do
