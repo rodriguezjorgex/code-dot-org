@@ -11,7 +11,11 @@
         - else
           = session.start_date_with_start_and_end_times_us_format
         %br
-        = session.formatted_location_details
+        - if session.session_format == 'virtual' && session.meeting_link
+          Virtual meeting:
+          = link_to session.meeting_link, session.meeting_link
+        - else
+          = session.formatted_location_details
         %br
         %br
   %tr
