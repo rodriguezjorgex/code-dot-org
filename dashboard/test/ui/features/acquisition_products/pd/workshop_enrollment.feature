@@ -56,10 +56,22 @@ Scenario: Attempting to join workshop again as a teacher states you have already
   # test clean up
   And I delete the workshop
 
-Scenario: Attempting to join workshop as a teacher allows enrolling and sends teacher to MyPL page
+Scenario: Attempting to join workshop as a teacher requires user info then allows enrolling and sends teacher to MyPL page
   Given I am a "teacher" user enrolling in workshop with "unsubmitted" status
-  And I wait until element "h3:contains('Review your information')" is visible
-  And I click "span:contains('Join this workshop')"
+  And I wait until element "p:contains('Add your full name')" is visible
+  And I wait until element "a:contains('Edit')" is visible
+  Then I click selector "a:contains('Edit')"
+
+  # add full name in account settings
+  And I wait until current URL contains "users/edit"
+  And I press keys "Reba" for element "input#given_name"
+  And I press keys "McEntire" for element "input#family_name"
+  And I scroll the "button:contains(Update account information)" element into view
+  Then I click selector "button:contains(Update account information)"
+
+  # join workshop
+  And I wait until current URL contains "pd/workshops"
+  Then I click selector "#joinWorkshop"
   And I wait until current URL contains "my-professional-learning"
 
   # test clean up

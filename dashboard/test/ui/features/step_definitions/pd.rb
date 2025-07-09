@@ -309,6 +309,7 @@ Given(/^I am a "([^"]*)" user enrolling in workshop with "([^"]*)" status$/) do 
              And I create a student named "#{random_name}"
              And I sign in as "#{random_name}"
            GHERKIN
+           find_test_user_by_name(random_name)
          when "teacher"
            steps <<~GHERKIN
              And I create a teacher named "#{random_name}"
@@ -317,7 +318,8 @@ Given(/^I am a "([^"]*)" user enrolling in workshop with "([^"]*)" status$/) do 
 
            school_info = FactoryBot.create :school_info
            teacher = find_test_user_by_name(random_name)
-           teacher.update!(given_name: 'Firstname', family_name: 'Lastname', school_info: school_info)
+           teacher.update!(school_info: school_info)
+           teacher
          else
            nil
          end
