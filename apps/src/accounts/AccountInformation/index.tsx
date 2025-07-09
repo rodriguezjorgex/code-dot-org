@@ -13,11 +13,11 @@ import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
 import {navigateToHref} from '@cdo/apps/utils';
 import i18n from '@cdo/locale';
 
-import ChangeEmailModal from '../ChangeEmail/ChangeEmailModal';
 import {
   AccountSettingsSectionUrlParams,
   handleUpdateUrlOnSettingsSave,
-} from '../constants';
+} from '../accountUpdateConstants';
+import ChangeEmailModal from '../ChangeEmail/ChangeEmailModal';
 
 import {AccountInformationProps} from './types';
 

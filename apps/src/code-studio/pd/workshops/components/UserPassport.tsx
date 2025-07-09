@@ -7,7 +7,7 @@ import {
 import classNames from 'classnames';
 import React from 'react';
 
-import {AccountSettingsSectionUrlParams} from '@cdo/apps/accounts/constants';
+import {AccountSettingsSectionUrlParams} from '@cdo/apps/accounts/accountUpdateConstants';
 import {GetUserInfoForWorkshopResponse} from '@cdo/apps/code-studio/pd/workshops/types';
 import {NonSchoolOptions} from '@cdo/generated-scripts/sharedConstants';
 

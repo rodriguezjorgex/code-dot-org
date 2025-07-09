@@ -14,7 +14,7 @@ import i18n from '@cdo/locale';
 import {
   AccountSettingsSectionUrlParams,
   handleUpdateUrlOnSettingsSave,
-} from '../constants';
+} from '../accountUpdateConstants';
 
 import commonStyles from '../common/common.styles.module.scss';
 
