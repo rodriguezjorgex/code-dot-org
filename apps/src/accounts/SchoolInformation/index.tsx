@@ -69,7 +69,9 @@ export const SchoolInformation: React.FC<SchoolInformationProps> = ({
       // more Accoutn Settings sections the user is meant to update
       // (tracked in the URL params), then redirect the user to
       // user_return_to, otherwise handle reload.
-      const returnToHref = queryParams('user_return_to') as string;
+      const returnToHref = decodeURIComponent(
+        (queryParams('user_return_to') || '') as string
+      );
       const hasFinishedAccountUpdates = handleUpdateUrlOnSettingsSave(
         AccountSettingsSectionUrlParams.SchoolInformation
       );

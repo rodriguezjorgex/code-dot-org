@@ -5,9 +5,11 @@ import {queryParams} from '@cdo/apps/code-studio/utils';
  * and TeacherAccountRequiredPage.
  * */
 export function processAccountUrlParams() {
-  const sourcePage = queryParams('source_page') as string;
-  const returnTo = queryParams('return_to');
-  const returnToUrlParam = returnTo ? `?user_return_to=${returnTo}` : '';
+  const sourcePage = (queryParams('source_page') || '') as string;
+  const returnTo = (queryParams('return_to') || '') as string;
+  const returnToUrlParam = returnTo
+    ? `?user_return_to=${encodeURIComponent(returnTo)}`
+    : '';
 
   return {sourcePage, returnToUrlParam};
 }

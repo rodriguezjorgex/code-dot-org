@@ -18,9 +18,9 @@ describe('LinkAccountPage', () => {
 
   const renderDefault = sourcePage => {
     setWindowLocation({
-      search: `?return_to=${TEST_RETURN_TO_HREF}&source_page=${encodeURIComponent(
-        sourcePage
-      )}`,
+      search: `?return_to=${encodeURIComponent(
+        TEST_RETURN_TO_HREF
+      )}&source_page=${encodeURIComponent(sourcePage)}`,
     });
     render(<LinkAccountPage />);
   };
@@ -56,7 +56,9 @@ describe('LinkAccountPage', () => {
       screen.getByRole('link', {name: i18n.createAccount()})
     ).toHaveAttribute(
       'href',
-      `/users/sign_up/account_type?user_return_to=${TEST_RETURN_TO_HREF}`
+      `/users/sign_up/account_type?user_return_to=${encodeURIComponent(
+        TEST_RETURN_TO_HREF
+      )}`
     );
     expect(
       screen.getByRole('link', {
@@ -64,7 +66,7 @@ describe('LinkAccountPage', () => {
       })
     ).toHaveAttribute(
       'href',
-      `/users/sign_in?user_return_to=${TEST_RETURN_TO_HREF}`
+      `/users/sign_in?user_return_to=${encodeURIComponent(TEST_RETURN_TO_HREF)}`
     );
   });
 });

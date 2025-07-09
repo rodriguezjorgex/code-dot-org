@@ -18,9 +18,9 @@ describe('TeacherAccountRequiredPage', () => {
 
   it('renders page with links to the homepage and the provided edit account link', async () => {
     setWindowLocation({
-      search: `?return_to=${TEST_RETURN_TO_HREF}&source_page=${encodeURIComponent(
-        'workshop enroll'
-      )}`,
+      search: `?return_to=${encodeURIComponent(
+        TEST_RETURN_TO_HREF
+      )}&source_page=${encodeURIComponent('workshop enroll')}`,
     });
     render(<TeacherAccountRequiredPage />);
 
@@ -36,7 +36,9 @@ describe('TeacherAccountRequiredPage', () => {
       })
     ).toHaveAttribute(
       'href',
-      `/users/edit?user_return_to=${TEST_RETURN_TO_HREF}#change-user-type-modal-form`
+      `/users/edit?user_return_to=${encodeURIComponent(
+        TEST_RETURN_TO_HREF
+      )}#change-user-type-modal-form`
     );
   });
 });

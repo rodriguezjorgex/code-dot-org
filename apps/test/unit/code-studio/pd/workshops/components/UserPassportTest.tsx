@@ -62,7 +62,9 @@ describe('UserPassport', () => {
       })
     ).toHaveAttribute(
       'href',
-      `/users/edit?user_return_to=${DEFAULT_PROPS.returnToHref}&accountInformation=true`
+      `/users/edit?user_return_to=${encodeURIComponent(
+        DEFAULT_PROPS.returnToHref
+      )}&accountInformation=true`
     );
   });
 
@@ -75,7 +77,9 @@ describe('UserPassport', () => {
       })
     ).toHaveAttribute(
       'href',
-      `/users/edit?user_return_to=${DEFAULT_PROPS.returnToHref}&schoolInformation=true`
+      `/users/edit?user_return_to=${encodeURIComponent(
+        DEFAULT_PROPS.returnToHref
+      )}&schoolInformation=true`
     );
   });
 
@@ -88,7 +92,9 @@ describe('UserPassport', () => {
       })
     ).toHaveAttribute(
       'href',
-      `/users/edit?user_return_to=${DEFAULT_PROPS.returnToHref}&accountInformation=true&schoolInformation=true`
+      `/users/edit?user_return_to=${encodeURIComponent(
+        DEFAULT_PROPS.returnToHref
+      )}&accountInformation=true&schoolInformation=true`
     );
   });
 
@@ -101,7 +107,9 @@ describe('UserPassport', () => {
       })
     ).toHaveAttribute(
       'href',
-      `/users/edit?user_return_to=${DEFAULT_PROPS.returnToHref}`
+      `/users/edit?user_return_to=${encodeURIComponent(
+        DEFAULT_PROPS.returnToHref
+      )}`
     );
   });
 });

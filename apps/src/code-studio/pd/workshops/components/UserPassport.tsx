@@ -59,7 +59,9 @@ const UserPassport: React.FunctionComponent<{
   };
 
   const buildEditLink = () => {
-    let editLink = `/users/edit?user_return_to=${returnToHref}`;
+    let editLink = `/users/edit?user_return_to=${encodeURIComponent(
+      returnToHref
+    )}`;
 
     if (!givenName || !familyName) {
       editLink += `&${AccountSettingsSectionUrlParams.AccountInformation}=true`;
