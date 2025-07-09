@@ -639,6 +639,7 @@ class LevelsController < ApplicationController
 
     unless @level.skills.include?(@skill)
       @level.skills << @skill
+      @level.add_skill_key_to_level_json(@skill.key)
     end
 
     if @level.save

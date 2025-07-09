@@ -1017,6 +1017,33 @@ class Level < ApplicationRecord
     skills.pluck(:key)
   end
 
+  def remove_skill_key_from_level_json(skill_key)
+    return unless Rails.application.config.levelbuilder_mode
+    file_path = Rails.root.join("config/levels/custom/#{game&.app}/#{name}.json")
+    puts "in remove_skill_key_from_level_json"
+    puts file_path
+    puts  "Does the file exist?"
+    puts File.exist?(file_path)
+    return unless File.exist?(file_path)
+
+    json = JSON.parse(File.read(file_path))
+    json["skill_keys"]&.reject! {|sk| sk == skill_key}
+    File.write(file_path, JSON.pretty_generate(json))
+  end
+
+  def add_skill_key_to_level_json(skill_key)
+    return unless Rails.application.config.levelbuilder_mode
+    file_path = Rails.root.join("config/levels/custom/#{game&.app}/#{name}.json")
+    puts file_path
+    puts  "Does the file exist?"
+    puts File.exist?(file_path)
+    return unless File.exist?(file_path)
+
+    json = JSON.parse(File.read(file_path))
+    json["skill_keys"] << skill_key
+    File.write(file_path, JSON.pretty_generate(json))
+  end
+
   # Returns the level name, removing the name_suffix first (if present), and
   # also removing any additional suffixes of the format "_NNNN" which might
   # represent a version year.
