@@ -338,6 +338,9 @@ const marketingPaths = {
   "/about/team-pets": true,
   "/sitemap.xml": true,
   "/hour-of-ai": true,
+  "/hourofai": true,
+  "/curriculum/blockchain": true,
+  "/blockchain": true,
 }
 
 const nextJsAssetsPath = '/_next/static/';
