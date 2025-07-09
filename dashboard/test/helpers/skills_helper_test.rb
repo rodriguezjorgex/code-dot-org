@@ -196,11 +196,11 @@ class SkillsHelperTest < ActiveSupport::TestCase
 
   test "filter_evaluations keeps most recent evaluation for each unique combination" do
     evaluations_data = [
-      [@student1.id, @skill1.id, 'Ok', @level1.id, 1.day.ago, nil],
-      [@student1.id, @skill1.id, 'Great', @level1.id, Time.current, nil],
-      [@student1.id, @skill1.id, 'Needs revision', @level2.id, 2.days.ago, 'CODE_VERSION_HASH_1'],
-      [@student1.id, @skill1.id, 'Ok', @level2.id, 1.day.ago, 'CODE_VERSION_HASH_1'],
-      [@student1.id, @skill1.id, 'Great', @level2.id, Time.current, 'CODE_VERSION_HASH_2']
+      [@student1.id, @skill1.id, SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:PARTIAL_COMPLETE_CORRECT], @level1.id, 1.day.ago, nil],
+      [@student1.id, @skill1.id, SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:ALL_COMPLETE_CORRECT], @level1.id, Time.current, nil],
+      [@student1.id, @skill1.id, SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:INCOMPLETE_INCORRECT], @level2.id, 2.days.ago, 'CODE_VERSION_HASH_1'],
+      [@student1.id, @skill1.id, SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:PARTIAL_COMPLETE_CORRECT], @level2.id, 1.day.ago, 'CODE_VERSION_HASH_1'],
+      [@student1.id, @skill1.id, SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:ALL_COMPLETE_CORRECT], @level2.id, Time.current, 'CODE_VERSION_HASH_2']
     ]
 
     result = SkillsHelper.send(:filter_evaluations, evaluations_data)
@@ -208,13 +208,13 @@ class SkillsHelperTest < ActiveSupport::TestCase
     assert_equal 3, result.length
 
     most_recent_level1_nil = result.find {|r| r[3] == @level1.id && r[5].nil?}
-    assert_equal 'Great', most_recent_level1_nil[2]
+    assert_equal SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:ALL_COMPLETE_CORRECT], most_recent_level1_nil[2]
 
     most_recent_level2_v1 = result.find {|r| r[3] == @level2.id && r[5] == 'CODE_VERSION_HASH_1'}
-    assert_equal 'Ok', most_recent_level2_v1[2]
+    assert_equal SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:PARTIAL_COMPLETE_CORRECT], most_recent_level2_v1[2]
 
     most_recent_level2_v2 = result.find {|r| r[3] == @level2.id && r[5] == 'CODE_VERSION_HASH_2'}
-    assert_equal 'Great', most_recent_level2_v2[2]
+    assert_equal SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:ALL_COMPLETE_CORRECT], most_recent_level2_v2[2]
   end
 
   test "filter_evaluations handles empty array" do
@@ -224,7 +224,7 @@ class SkillsHelperTest < ActiveSupport::TestCase
 
   test "filter_evaluations handles single evaluation" do
     evaluations_data = [
-      [@student1.id, @skill1.id, 'Great', @level1.id, Time.current, nil]
+      [@student1.id, @skill1.id, SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:ALL_COMPLETE_CORRECT], @level1.id, Time.current, nil]
     ]
 
     result = SkillsHelper.send(:filter_evaluations, evaluations_data)
@@ -235,10 +235,10 @@ class SkillsHelperTest < ActiveSupport::TestCase
 
   test "filter_evaluations handles different students and skills" do
     evaluations_data = [
-      [@student1.id, @skill1.id, 'Ok', @level1.id, 1.day.ago, nil],
-      [@student1.id, @skill1.id, 'Great', @level1.id, Time.current, nil],
-      [@student2.id, @skill1.id, 'Needs revision', @level1.id, 2.days.ago, nil],
-      [@student1.id, @skill2.id, 'Ok', @level1.id, Time.current, nil]
+      [@student1.id, @skill1.id, SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:PARTIAL_COMPLETE_CORRECT], @level1.id, 1.day.ago, nil],
+      [@student1.id, @skill1.id, SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:ALL_COMPLETE_CORRECT], @level1.id, Time.current, nil],
+      [@student2.id, @skill1.id, SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:INCOMPLETE_INCORRECT], @level1.id, 2.days.ago, nil],
+      [@student1.id, @skill2.id, SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:PARTIAL_COMPLETE_CORRECT], @level1.id, Time.current, nil]
     ]
 
     result = SkillsHelper.send(:filter_evaluations, evaluations_data)
@@ -246,12 +246,12 @@ class SkillsHelperTest < ActiveSupport::TestCase
     assert_equal 3, result.length
 
     student1_skill1 = result.find {|r| r[0] == @student1.id && r[1] == @skill1.id}
-    assert_equal 'Great', student1_skill1[2]
+    assert_equal SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:ALL_COMPLETE_CORRECT], student1_skill1[2]
 
     student2_skill1 = result.find {|r| r[0] == @student2.id && r[1] == @skill1.id}
-    assert_equal 'Needs revision', student2_skill1[2]
+    assert_equal SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:INCOMPLETE_INCORRECT], student2_skill1[2]
 
     student1_skill2 = result.find {|r| r[0] == @student1.id && r[1] == @skill2.id}
-    assert_equal 'Ok', student1_skill2[2]
+    assert_equal SharedConstants::STUDENT_WORK_EVALUATION_STATUS[:PARTIAL_COMPLETE_CORRECT], student1_skill2[2]
   end
 end
