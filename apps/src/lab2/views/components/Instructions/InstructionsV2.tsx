@@ -6,18 +6,14 @@ import {useSelector} from 'react-redux';
 import InstructorsOnly from '@cdo/apps/code-studio/components/InstructorsOnly';
 import {nextLevelId} from '@cdo/apps/code-studio/progressReduxSelectors';
 import {queryParams} from '@cdo/apps/code-studio/utils';
-import {
-  isPredictAnswerLocked,
-  isPredictResponseSubmitted,
-  setPredictResponse,
-} from '@cdo/apps/lab2/redux/predictLevelRedux';
+import {isPredictResponseSubmitted} from '@cdo/apps/lab2/redux/predictLevelRedux';
 import {LevelProperties} from '@cdo/apps/lab2/types';
 import MainInstructionsContent from '@cdo/apps/lab2/views/components/Instructions/MainInstructionsContent';
 import ValidationResults from '@cdo/apps/lab2/views/components/Instructions/ValidationResults';
 import TextToSpeech from '@cdo/apps/lab2/views/components/TextToSpeech';
 import EnhancedSafeMarkdown from '@cdo/apps/templates/EnhancedSafeMarkdown';
 import {commonI18n} from '@cdo/apps/types/locale';
-import {useAppDispatch, useAppSelector} from '@cdo/apps/util/reduxHooks';
+import {useAppSelector} from '@cdo/apps/util/reduxHooks';
 
 import NavigationButton from './NavigationButton';
 import PredictQuestion from './PredictQuestion';
@@ -88,13 +84,25 @@ const Instructions: React.FunctionComponent<InstructionsProps> = ({
   requireRun,
 }) => {
   const hasNextLevel = useSelector(state => nextLevelId(state) !== undefined);
-  const validationState = useAppSelector(state => state.lab.validationState);
-  const predictSettings = useAppSelector(
-    state => state.lab.levelProperties?.predictSettings
+  const hasValidationConditions = useAppSelector(
+    state => state.lab.validationState?.hasConditions
   );
-  const predictResponse = useAppSelector(state => state.predictLevel.response);
+  const validationMessage = useAppSelector(
+    state => state.lab.validationState?.message
+  );
+  const validationIndex = useAppSelector(
+    state => state.lab.validationState?.index
+  );
+  const validationSatisfied = useAppSelector(
+    state => state.lab.validationState?.satisfied
+  );
+  const validationResults = useAppSelector(
+    state => state.lab.validationState?.validationResults
+  );
+  const isPredictLevel = useAppSelector(
+    state => state.lab.levelProperties?.predictSettings?.isPredictLevel
+  );
   const predictResponseSubmitted = useAppSelector(isPredictResponseSubmitted);
-  const predictAnswerLocked = useAppSelector(isPredictAnswerLocked);
 
   const offerBrowserTts =
     useAppSelector(state => state.lab.levelProperties?.offerBrowserTts) ||
@@ -105,7 +113,6 @@ const Instructions: React.FunctionComponent<InstructionsProps> = ({
       state => state.lab.levelProperties?.useSecondaryFinishButton
     ) || queryParams('use-secondary-finish-button') === 'true';
 
-  const dispatch = useAppDispatch();
   const defaultTheme = useTheme();
   const theme = overrideTheme || defaultTheme;
 
@@ -116,43 +123,29 @@ const Instructions: React.FunctionComponent<InstructionsProps> = ({
     // This ensures it will be read by screen readers.
     // It's ok to focus after each run switch, as the message will also reappear when the user re-runs
     // the program.
-    if (validationState?.message && !isRunning) {
+    if (validationMessage && !isRunning) {
       feedbackRef.current?.focus();
     }
-  }, [validationState?.message, isRunning]);
-
-  const validationScrollRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Scroll to the validation results when they are updated.
-    if (validationState?.validationResults) {
-      // We must at least set a timeout with a wait of 0 to ensure the scroll happens at all,
-      // because the DOM needs to update before we can scroll to the new element.
-      setTimeout(
-        () => validationScrollRef.current?.scrollIntoView({behavior: 'smooth'}),
-        0
-      );
-    }
-  }, [validationState?.validationResults]);
+  }, [validationMessage, isRunning]);
 
   const canShowNextButton = useMemo(() => {
     if (levelProperties?.submittable) {
       return true;
-    } else if (predictSettings?.isPredictLevel) {
+    } else if (isPredictLevel) {
       return predictResponseSubmitted;
-    } else if (validationState?.hasConditions) {
-      return validationState?.satisfied;
+    } else if (hasValidationConditions) {
+      return validationSatisfied;
     } else {
       return !requireRun || hasRun;
     }
   }, [
-    hasRun,
     levelProperties?.submittable,
+    isPredictLevel,
+    hasValidationConditions,
     predictResponseSubmitted,
-    predictSettings?.isPredictLevel,
-    validationState?.hasConditions,
-    validationState?.satisfied,
+    validationSatisfied,
     requireRun,
+    hasRun,
   ]);
 
   // Don't render anything if we don't have any instructions.
@@ -170,13 +163,13 @@ const Instructions: React.FunctionComponent<InstructionsProps> = ({
     showSecondaryFinishButton &&
     queryParams('show-secondary-finish-button-question') === 'true'
       ? commonI18n.finishMessage()
-      : validationState?.message;
+      : validationMessage;
 
   // The secondary finish button avoids a reappearance animation by not using
   // the unique index.
   const useMessageIndex = useSecondaryFinishButton
     ? undefined
-    : validationState?.index;
+    : validationIndex;
   return (
     <div
       id="instructions"
@@ -225,21 +218,12 @@ const Instructions: React.FunctionComponent<InstructionsProps> = ({
                 instructionsText={levelProperties.longInstructions}
                 handleInstructionsTextClick={handleInstructionsTextClick}
               />
-              <PredictQuestion
-                predictSettings={predictSettings}
-                predictResponse={predictResponse}
-                setPredictResponse={response =>
-                  dispatch(setPredictResponse(response))
-                }
-                predictAnswerLocked={predictAnswerLocked}
-                className={moduleStyles.predictQuestion}
-              />
+              <PredictQuestion className={moduleStyles.predictQuestion} />
             </div>
             {validationSettings && (
               <ValidationButton
                 onValidate={validationSettings.onValidate}
                 onStopValidation={validationSettings.onStopValidation}
-                hasConditions={validationState?.hasConditions}
                 isValidating={validationSettings.isValidating}
                 isValidateDisabled={validationSettings.isValidateDisabled}
               />
@@ -251,20 +235,17 @@ const Instructions: React.FunctionComponent<InstructionsProps> = ({
             )}
           </div>
         </div>
-        {validationState?.validationResults && (
-          <>
-            <div ref={validationScrollRef} />
-            <div className={moduleStyles.bubble}>
-              <div className={moduleStyles.textContent}>
-                <div className={moduleStyles.scrollingContentWithoutTTS}>
-                  <ValidationResults />
-                </div>
+        {validationResults && (
+          <div className={moduleStyles.bubble}>
+            <div className={moduleStyles.textContent}>
+              <div className={moduleStyles.scrollingContentWithoutTTS}>
+                <ValidationResults />
               </div>
             </div>
-          </>
+          </div>
         )}
         {AiTutor2ResponseView && AiTutor2ResponseView}
-        {predictSettings?.isPredictLevel && (
+        {isPredictLevel && (
           <>
             <InstructorsOnly>
               <div
@@ -276,11 +257,7 @@ const Instructions: React.FunctionComponent<InstructionsProps> = ({
                 <PredictSummary />
               </div>
             </InstructorsOnly>
-
-            <PredictQuestionRunPrompt
-              hasSelected={!!predictResponse}
-              hasSubmitted={predictAnswerLocked}
-            />
+            <PredictQuestionRunPrompt />
           </>
         )}
         {(useMessage || canShowNextButton) && (
