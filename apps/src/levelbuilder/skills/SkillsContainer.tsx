@@ -25,7 +25,7 @@ const SkillsContainer: React.FC<SkillsContainerProps> = ({
       )}
       {canEditSkills && <SkillsCreator skills={skills} />}
       <SkillsByConceptTable skills={skills} />
-      <LevelsSkillsCreator />
+      {canEditSkills && <LevelsSkillsCreator />}
       <LevelsSkillsTable levels={levels} />
     </div>
   );
