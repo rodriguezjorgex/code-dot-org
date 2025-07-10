@@ -97,7 +97,7 @@ const EnrollInWorkshop: React.FC<EnrollInWorkshopProps> = ({
       return (
         <>
           <BodyThreeText>
-            This workshop’s registration is managed externally by the regional
+            This workshop's registration is managed externally by the regional
             partner.
           </BodyThreeText>
           <LinkButton
