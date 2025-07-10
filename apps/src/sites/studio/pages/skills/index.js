@@ -6,6 +6,7 @@ import getScriptData from '@cdo/apps/util/getScriptData';
 
 $(document).ready(() => {
   const skillsData = getScriptData('skillsData');
+  console.log('is has_levels in here?: ', skillsData.skills);
   ReactDOM.render(
     <SkillsContainer
       canEditSkills={skillsData.canEditSkills}
