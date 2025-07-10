@@ -2,7 +2,7 @@ import React from 'react';
 
 import LevelsSkillsCreator from './LevelsSkillsCreator';
 import LevelsSkillsTable from './LevelsSkillsTable';
-import SkillsByConceptTable from './SkillsByConceptTable';
+import SkillsByConceptTable from './SkillsByConcept';
 import SkillsCreator from './SkillsCreator';
 import {SkillsByConcept, Levels} from './types';
 
