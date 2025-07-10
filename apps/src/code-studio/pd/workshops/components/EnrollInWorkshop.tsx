@@ -101,7 +101,7 @@ const EnrollInWorkshop: React.FC<EnrollInWorkshopProps> = ({
             partner.
           </BodyThreeText>
           <LinkButton
-            href={buildEnrollButtonLink(custom_registration_link)}
+            href={custom_registration_link}
             className={moduleStyles.fullWidthButton}
             type="primary"
             size="m"
