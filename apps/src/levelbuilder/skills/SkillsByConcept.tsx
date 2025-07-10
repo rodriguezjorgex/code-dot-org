@@ -3,8 +3,8 @@ import React, {useState} from 'react';
 
 import './skills.css';
 
-import {SkillsByConcept} from './types';
 import SkillsTable from './SkillsTable';
+import {SkillsByConcept} from './types';
 
 interface SkillsByConceptTableProps {
   skills: SkillsByConcept;

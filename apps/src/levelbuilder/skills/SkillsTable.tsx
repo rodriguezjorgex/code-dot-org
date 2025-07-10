@@ -1,8 +1,9 @@
-import FontAwesomeV6Icon from '@code-dot-org/component-library/fontAwesomeV6Icon';
 import {Button, buttonColors} from '@code-dot-org/component-library/button';
-import Tooltip from '@cdo/apps/templates/Tooltip';
+import FontAwesomeV6Icon from '@code-dot-org/component-library/fontAwesomeV6Icon';
 import React, {useState} from 'react';
 import * as Table from 'reactabular-table';
+
+import Tooltip from '@cdo/apps/templates/Tooltip';
 
 import './skills.css';
 

@@ -4,9 +4,9 @@ import React from 'react';
 import {studio} from '@cdo/apps/lib/util/urlHelpers';
 
 import AccuracyCheck from './AccuracyCheck';
+import SkillsTable from './SkillsTable';
 import {Skill} from './types';
 import ViewSystemPrompt from './ViewSystemPrompt';
-import SkillsTable from './SkillsTable';
 
 interface Props {
   skills: Skill[];
