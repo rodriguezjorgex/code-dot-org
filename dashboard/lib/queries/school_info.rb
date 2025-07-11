@@ -18,6 +18,7 @@ class Queries::SchoolInfo
         school_id: existing_school_info.school.id,
         school_zip: existing_school_info.school.zip,
         country: 'US',
+        school_info_id: existing_school_info.id,
         user_school_info_id: user_school_info.id,
       }
     else
@@ -28,6 +29,7 @@ class Queries::SchoolInfo
         school_id: existing_school_info.school_id,
         school_zip: existing_school_info.zip&.to_s&.rjust(5, '0'),
         country: existing_school_info.country,
+        school_info_id: existing_school_info.id,
         user_school_info_id: user_school_info.id,
       }
     end
