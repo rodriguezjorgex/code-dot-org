@@ -102,7 +102,7 @@ const WorkshopDetails: React.FC<WorkshopDetailsProps> = ({
         </section>
       )}
 
-      {facilitators && (
+      {facilitators && facilitators.length > 0 && (
         <section className={moduleStyles.workshopDetailsItem}>
           <Heading3 visualAppearance="heading-xs">
             Workshop Facilitators
