@@ -21,6 +21,7 @@ class Queries::SchoolInfoTest < ActiveSupport::TestCase
       school_id: '1',
       school_zip: '12345',
       country: 'US',
+      school_info_id: school_info.id,
       user_school_info_id: user_school_info.id
     }
 
@@ -41,6 +42,7 @@ class Queries::SchoolInfoTest < ActiveSupport::TestCase
       school_id: nil,
       school_zip: '01234', # zip is padded with a leading zero
       country: 'US',
+      school_info_id: school_info.id,
       user_school_info_id: user_school_info.id
     }
 
@@ -61,6 +63,7 @@ class Queries::SchoolInfoTest < ActiveSupport::TestCase
       school_id: nil,
       school_zip: '00012', # zip is padded with leading zeros
       country: 'US',
+      school_info_id: school_info.id,
       user_school_info_id: user_school_info.id
     }
 
@@ -81,6 +84,7 @@ class Queries::SchoolInfoTest < ActiveSupport::TestCase
       school_id: nil,
       school_zip: nil,
       country: 'GB',
+      school_info_id: school_info.id,
       user_school_info_id: user_school_info.id
     }
 
