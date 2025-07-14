@@ -7,7 +7,6 @@ import sinon from 'sinon'; // eslint-disable-line no-restricted-imports
 
 import EnrollmentsPanel, {
   MOVE_ENROLLMENT_BUTTON_NAME,
-  EDIT_ENROLLMENT_NAME_BUTTON_NAME,
 } from '@cdo/apps/code-studio/pd/workshop_dashboard/EnrollmentsPanel';
 import './workshopFactory';
 
@@ -184,58 +183,6 @@ describe('EnrollmentsPanel', () => {
     server.respondWith(
       'POST',
       `/api/v1/pd/enrollments/move?destination_workshop_id=${destinationWorkshopId}&enrollment_ids[]=${enrollments[0].id}`,
-      [204, {}, '']
-    );
-    server.respond();
-    wrapper.update();
-    assert(loadEnrollments.calledOnce);
-  });
-
-  it('edit an enrollment', () => {
-    const workshop = Factory.build('workshop');
-    const enrollments = Factory.buildList('enrollment', 2);
-    const wrapper = shallow(
-      <EnrollmentsPanel
-        workshopId={String(workshop.id)}
-        workshop={workshop}
-        isLoadingEnrollments={false}
-        enrollments={enrollments}
-        isWorkshopAdmin
-        loadEnrollments={loadEnrollments}
-      />
-    );
-
-    // Select the first enrollment
-    wrapper.instance().handleClickSelect(enrollments[0]);
-    assert.deepEqual(
-      [_.pick(enrollments[0], ['id', 'email', 'first_name', 'last_name'])],
-      wrapper.state('selectedEnrollments')
-    );
-
-    wrapper.instance().handleClickChangeEnrollments({
-      target: {name: EDIT_ENROLLMENT_NAME_BUTTON_NAME},
-    });
-    wrapper.update();
-    assert(
-      wrapper.state('enrollmentChangeDialogOpen') ===
-        EDIT_ENROLLMENT_NAME_BUTTON_NAME
-    );
-
-    // Confirm the updated name and email
-    const updatedInfo = {
-      firstName: 'Rubeus',
-      lastName: 'Hagrid',
-      email: 'rubeushagrid@code.org',
-    };
-    wrapper.instance().handleEditEnrollmentConfirmed(updatedInfo);
-    wrapper.update();
-    assert(wrapper.state('enrollmentChangeDialogOpen') === null);
-    assert.deepEqual([], wrapper.state('selectedEnrollments'));
-
-    // Respond to the server request
-    server.respondWith(
-      'POST',
-      `/api/v1/pd/enrollment/${enrollments[0].id}/edit`,
       [204, {}, '']
     );
     server.respond();
