@@ -19,7 +19,7 @@ csa2025,1.3.B,1.3.B.1,A literal is the code representation of a fixed value.
 csa2025,1.3.B,1.3.B.2,A string literal is a sequence of characters enclosed in double quotes.
 csa2025,1.3.B,1.3.B.3,"Escape sequences are special sequences of characters that can be included in a string. They start with a \ and have a special meaning in Java. Escape sequences used in this course include double quote \"", backslash \\, and newline \n."
 csa2025,1.3.C,1.3.C.1,"Arithmetic expressions, which consist of numeric values, variables, and operators, include expressions of type int and double."
-csa2025,1.3.C,1.3.C.2,The arithmetic operators consist of addition +, subtraction -, multiplication *, division /, and remainder %. An arithmetic operation that uses two int values will evaluate to an int value. An arithmetic operation that uses at least one double value will evaluate to a double value.
+csa2025,1.3.C,1.3.C.2,"The arithmetic operators consist of addition +, subtraction -, multiplication *, division /, and remainder %. An arithmetic operation that uses two int values will evaluate to an int value. An arithmetic operation that uses at least one double value will evaluate to a double value.
 EXCLUSION STATEMENT
 Expressions that result in special double values (e.g., infinities and NaN) are outside the scope of the AP Computer Science A course and exam."
 csa2025,1.3.C,1.3.C.3,"When dividing numeric values that are both int values, the result is only the integer portion of the quotient. When dividing numeric values that use at least one double value, the result is the quotient."
@@ -67,12 +67,12 @@ csa2025,1.9.B,1.9.B.5,"A method call interrupts the sequential execution of stat
 csa2025,1.10.A,1.10.A.1,"Class methods are associated with the class, not instances of the class. Class methods include the keyword static in the header before the method name."
 csa2025,1.10.A,1.10.A.2,"Class methods are typically called using the class name along with the dot operator. When the method call occurs in the defining class, the use of the class name is optional in the call."
 csa2025,1.11.A,1.11.A.1,The Math class is part of the java.lang package. Classes in the java.lang package are available by default.
-csa2025,1.11.A,1.11.A.2,The Math class contains only class methods. The following Math class methods—including what they do and when they are used—are part of the AP Java Quick Reference:
+csa2025,1.11.A,1.11.A.2,"The Math class contains only class methods. The following Math class methods—including what they do and when they are used—are part of the AP Java Quick Reference:
 • static int abs(int x) returns the absolute value of an int value.
 • static double abs(double x) returns the absolute value of a double value.
 • static double pow(double base, double exponent) returns the value of the first parameter raised to the power of the second parameter.
 • static double sqrt(double x) returns the nonnegative square root of a double value.
-• static double random() returns a double value greater than or equal to 0.0 and less than 1.0.
+• static double random() returns a double value greater than or equal to 0.0 and less than 1.0."
 csa2025,1.11.A,1.11.A.3,"The values returned from Math.random() can be manipulated using arithmetic and casting operators to produce a random int or double in a defined range based on specified criteria. Each endpoint of the range can be inclusive, meaning the value is included, or exclusive, meaning the value is not included."
 csa2025,1.12.A,1.12.A.1,"An object is a specific instance of a class with defined attributes. A class is the formal implementation, or blueprint, of the attributes and behaviors of an object."
 csa2025,1.12.A,1.12.A.2,"A class hierarchy can be developed by putting common attributes and behaviors of related classes into a single class called a superclass. Classes that extend a superclass, called subclasses, can draw upon the existing attributes and behaviors of the superclass without replacing these in the code. This creates an inheritance relationship from the subclasses to the superclass.
@@ -233,7 +233,7 @@ csa2025,4.6.A,4.6.A.3,"A file can be opened by creating a File object, using the
 • File(String str) is the File constructor that accepts a String file name to open for reading, where str is the pathname for the file."
 csa2025,4.6.A,4.6.A.4,"When using the File class, it is required to indicate what to do if the file with the provided name cannot be opened. One way to accomplish this is to add throws IOException to the header of the method that uses the file. If the file name is invalid, the program will terminate."
 csa2025,4.6.A,4.6.A.5,The File and IOException classes are part of the java.io package. An import statement must be used to make these classes available for use in the program.
-csa2025,4.6.A,4.6.A.6,The following Scanner methods and constructor—including what they do and when they are used—are part of the Java Quick Reference:
+csa2025,4.6.A,4.6.A.6,"The following Scanner methods and constructor—including what they do and when they are used—are part of the Java Quick Reference:
 • Scanner(File f) is the Scanner constructor that accepts a File for reading.
 • int nextInt() returns the next int read from the file or input source if available. If the next int does not exist or is out of range, it will result in an InputMismatchException.
 • double nextDouble() returns the next double read from the file or input source. If the next double does not exist, it will return an InputMismatchException.
@@ -243,7 +243,7 @@ csa2025,4.6.A,4.6.A.6,The following Scanner methods and constructor—including 
 • boolean hasNext() returns true if there is a next item to read in the file or input source; false otherwise.
 • void close() closes this scanner.
 EXCLUSION STATEMENT
-Accepting input from the keyboard is outside the scope of the AP Computuer Science A course and exam.
+Accepting input from the keyboard is outside the scope of the AP Computuer Science A course and exam."
 csa2025,4.7.A,4.7.A.1,"The Integer class and Double class are part of the java.lang package. An Integer object is immutable, meaning once an Integer object is created, its attributes cannot be changed. A Double object is immutable, meaning once a Double object is created, its attributes cannot be changed."
 csa2025,4.7.A,4.7.A.2,"Autoboxing is the automatic conversion that the Java compiler makes between primitive types and their corresponding object wrapper classes. This includes converting an int to an Integer and a double to a Double. The Java compiler applies autoboxing when a primitive value is
 • passed as a parameter to a method that expects an object of the corresponding wrapper class.
@@ -251,10 +251,10 @@ csa2025,4.7.A,4.7.A.2,"Autoboxing is the automatic conversion that the Java comp
 csa2025,4.7.A,4.7.A.3,"Unboxing is the automatic conversion that the Java compiler makes from the wrapper class to the primitive type. This includes converting an Integer to an int and a Double to a double. The Java compiler applies unboxing when a wrapper class object is
 • passed as a parameter to a method that expects a value of the corresponding primitive type.
 • assigned to a variable of the corresponding primitive type."
-csa2025,4.7.A,4.7.A.4,The following class Integer method—including what it does and when it is used—is part of the AP Java Quick Reference:
-• static int parseInt(String s) returns the String argument as an int.
-csa2025,4.7.A,4.7.A.5,The following class Double method—including what it does and when it is used—is part of the AP Java Quick Reference:
-• static double parseDouble(String s) returns the String argument as a double.
+csa2025,4.7.A,4.7.A.4,"The following class Integer method—including what it does and when it is used—is part of the AP Java Quick Reference:
+• static int parseInt(String s) returns the String argument as an int."
+csa2025,4.7.A,4.7.A.5,"The following class Double method—including what it does and when it is used—is part of the AP Java Quick Reference:
+• static double parseDouble(String s) returns the String argument as a double."
 csa2025,4.8.A,4.8.A.1,An ArrayList object is mutable in size and contains object references.
 csa2025,4.8.A,4.8.A.2,The ArrayList constructor ArrayList() constructs an empty list.
 csa2025,4.8.A,4.8.A.3,"Java allows the generic type ArrayList <E>, where the type parameter E specifies the type of the elements. When ArrayList <E> is specified, the types of the reference parameters and return type when using the ArrayList methods are type E. ArrayList <E> is preferred over ArrayList. For example, ArrayList <String> names = new ArrayList <String>(); allows the compiler to find errors that would otherwise be found at run-time."
