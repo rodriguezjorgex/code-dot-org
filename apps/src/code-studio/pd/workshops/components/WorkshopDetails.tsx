@@ -43,11 +43,6 @@ const WorkshopDetails: React.FC<WorkshopDetailsProps> = ({
   course_offerings,
   facilitators,
 }) => {
-  const feeText = () => {
-    if (!fee || fee === '0') return 'Free';
-    return fee.startsWith('$') ? fee : `$${fee}`;
-  };
-
   return (
     <section className={moduleStyles.workshopDetails}>
       <section className={moduleStyles.workshopDetailsItem}>
@@ -65,7 +60,7 @@ const WorkshopDetails: React.FC<WorkshopDetailsProps> = ({
           )}
           <BodyTwoText className={moduleStyles.fee}>
             <FontAwesomeV6Icon iconName="dollar-circle" />
-            <StrongText>Cost:</StrongText> {feeText()}
+            <StrongText>Cost:</StrongText> {!fee || fee === '0' ? 'Free' : fee}
           </BodyTwoText>
         </div>
       </section>

@@ -54,12 +54,6 @@ describe('WorkshopDetails', () => {
     expect(screen.getByText(/free/i)).toBeInTheDocument();
   });
 
-  it('renders fee without extra leading $', () => {
-    render(<WorkshopDetails {...baseProps} fee="$300" />);
-    expect(screen.getByText(/cost:/i)).toBeInTheDocument();
-    expect(screen.getByText(/\$300/i)).toBeInTheDocument();
-  });
-
   it('renders description and notes', () => {
     render(<WorkshopDetails {...baseProps} />);
     expect(
