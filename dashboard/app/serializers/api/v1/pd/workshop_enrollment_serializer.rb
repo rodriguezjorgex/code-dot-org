@@ -12,13 +12,13 @@ class Api::V1::Pd::WorkshopEnrollmentSerializer < ActiveModel::Serializer
 
   def user_info
     user = object.resolve_user
-    school_info = Queries::SchoolInfo.current_school(user)
+    school_info = user.try(:school_info)
     {
       given_name: user.given_name,
       family_name: user.family_name,
       email: user.email,
-      school_name: school_info.present? ? (school_info[:school_name] || "Does not teach in a school setting") : nil,
-      district_name: user.try(:school_info).try(:school_district).try(:name)
+      school_name: school_info.present? ? (school_info.effective_school_name || "Does not teach in a school setting") : nil,
+      district_name: school_info&.try(:school_district).try(:name)
     }
   end
 
