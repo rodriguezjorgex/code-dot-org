@@ -38,13 +38,17 @@ class Api::V1::Pd::WorkshopEnrollmentsController < ApplicationController
     if @workshop.nil?
       return render json: {submission_status: RESPONSE_MESSAGES[:NOT_FOUND]},
         status: :not_found
+    elsif params[:user_id].nil? || !User.exists?(params[:user_id])
+      return render_unsuccessful RESPONSE_MESSAGES[:ERROR], {error_message: 'User cannot be found.'}
     end
 
     user = User.find(params[:user_id])
-
-    # See if a previous enrollment exists for this user
     previous_enrollment = @workshop.enrollments.find_by(user_id: user.id)
-    if previous_enrollment
+
+    if user.user_type == User::TYPE_STUDENT
+      return render_unsuccessful RESPONSE_MESSAGES[:ERROR], {error_message: 'Students cannot enroll in workshops.'}
+    elsif previous_enrollment
+      # See if a previous enrollment exists for this user
       cancel_url = url_for action: :cancel, controller: '/pd/workshop_enrollment', code: previous_enrollment.code
       render_unsuccessful RESPONSE_MESSAGES[:DUPLICATE], {cancel_url: cancel_url}
     elsif workshop_owned_by? user
@@ -56,15 +60,15 @@ class Api::V1::Pd::WorkshopEnrollmentsController < ApplicationController
       render_unsuccessful RESPONSE_MESSAGES[:FULL]
     else
       ActiveRecord::Base.transaction do
-        user_school = Queries::SchoolInfo.current_school(user)
+        school_info = user.school_info
         enrollment = ::Pd::Enrollment.create!(
           workshop: @workshop,
           user_id: user.id,
           first_name: user.given_name,
           last_name: user.family_name,
           email: user.email,
-          school: user_school && user_school['school_id'],
-          school_info_id: user_school && user_school['school_info_id']
+          school: school_info&.school&.id || school_info&.school_id,
+          school_info_id: school_info&.id
         )
 
         Pd::WorkshopMailer.teacher_enrollment_receipt(enrollment).deliver_now

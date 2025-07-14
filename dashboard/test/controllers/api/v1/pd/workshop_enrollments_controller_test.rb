@@ -283,6 +283,34 @@ class Api::V1::Pd::WorkshopEnrollmentsControllerTest < ActionController::TestCas
     assert_response :success
   end
 
+  test 'creating an enrollment with no user_id sends \'error\' workshop enrollment status' do
+    post :create, params: {
+      workshop_id: @workshop.id,
+      user_id: nil
+    }
+    assert_response 400
+    assert_equal RESPONSE_MESSAGES[:ERROR], JSON.parse(@response.body)["workshop_enrollment_status"]
+  end
+
+  test 'creating an enrollment with an invalid user_id sends \'error\' workshop enrollment status' do
+    post :create, params: {
+      workshop_id: @workshop.id,
+      user_id: 'invalid-id'
+    }
+    assert_response 400
+    assert_equal RESPONSE_MESSAGES[:ERROR], JSON.parse(@response.body)["workshop_enrollment_status"]
+  end
+
+  test 'creating an enrollment with a student sends \'error\' workshop enrollment status' do
+    student = create :student
+    post :create, params: {
+      workshop_id: @workshop.id,
+      user_id: student.id
+    }
+    assert_response 400
+    assert_equal RESPONSE_MESSAGES[:ERROR], JSON.parse(@response.body)["workshop_enrollment_status"]
+  end
+
   test 'creating a duplicate enrollment sends \'duplicate\' workshop enrollment status' do
     @teacher = create :teacher, given_name: 'Firstname', family_name: 'Lastname'
     post :create, params: {
