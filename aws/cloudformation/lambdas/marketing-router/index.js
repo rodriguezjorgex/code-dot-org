@@ -58,7 +58,7 @@ const marketingPaths = {
   "/en-US/about/brand-usage": true,
   "/en-US/accessibility": true,
   "/en-US/commitment": true,
-  "/en-US/about/annual-report": true,
+  "/en-US/about/-report": true,
   "/en-US/about/unifying": true,
   "/en-US/about/unifying-approach": true,
   "/en-US/naipi": true,
@@ -356,6 +356,11 @@ const marketingPaths = {
   "/hourofcode/overview": true,
   "/hourofcode/mc": true,
   "/about/InformationSecurityPolicy.pdf": true,
+  "/promote*": true,
+  "/curriculum*": true,
+  "/about/it": true,
+  "/events": true,
+  "/events/conferences": true,
 }
 
 const nextJsAssetsPath = '/_next/static/';
