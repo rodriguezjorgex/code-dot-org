@@ -1,16 +1,24 @@
+import HeroBanner from '@code-dot-org/component-library/heroBanner';
 import {
-  Heading1,
   Heading5,
   BodyTwoText,
 } from '@code-dot-org/component-library/typography';
+import {configureStore} from '@reduxjs/toolkit';
 import React, {useEffect, useState} from 'react';
+import {Provider} from 'react-redux';
 
+// import CurriculumCatalog from '@cdo/apps/templates/curriculumCatalog/CurriculumCatalog';
 import {defaultImageSrc} from '@cdo/apps/templates/curriculumCatalog/curriculumCatalogConstants';
+import teacherSections from '@cdo/apps/templates/teacherDashboard/teacherSectionsRedux';
+import PLCatalogHeroBannerImage from '@cdo/static/professional-learning/courses/selfPacedPLCatalog-HeroBanner-illustration.png';
 
-import SelfPacedPLCatalogCard from './SelfPacedPLCatalogCard';
+import SelfPacedPLCatalogCard from './../SelfPacedPLCatalogCard';
 import SelfPacedPLCatalogFilters from './SelfPacedPLCatalogFilters';
 
+// eslint-disable-next-line import/no-duplicates
 import style from './selfPacedPLCatalog.module.scss';
+// eslint-disable-next-line no-duplicate-imports,import/no-duplicates
+import moduleStyles from './selfPacedPLCatalog.module.scss';
 
 export interface SelfPacedPLCourseInfo {
   key: string;
@@ -22,11 +30,30 @@ export interface SelfPacedPLCourseInfo {
   image?: string;
   video?: string;
   course_version_path: string;
+  self_paced_pl_course_offering_path?: string;
 }
 
 const SelfPacedPLCatalog: React.FunctionComponent<{
-  selfPacedPLCourseOfferings: Array<SelfPacedPLCourseInfo>;
-}> = ({selfPacedPLCourseOfferings}) => {
+  selfPacedPLCourseOfferings: SelfPacedPLCourseInfo[];
+}> = ({selfPacedPLCourseOfferings, ...rest}) => {
+  // console.log('SelfPacedPLCatalog props:', selfPacedPLCourseOfferings, rest);
+  // const availableCourses = selfPacedPLCourseOfferings.filter(
+  //   course => course.self_paced_pl_course_offering_path
+  // );
+  // console.log(
+  //   'Courses without image',
+  //   availableCourses.filter(course => !course.image)
+  // );
+  // console.log(
+  //   'Courses without cs_topic',
+  //   availableCourses.filter(course => course.cs_topic)
+  // );
+  // console.log(
+  //   'Courses without grade_levels',
+  //   availableCourses.filter(course => !course.grade_levels)
+  // );
+
+  console.log(selfPacedPLCourseOfferings);
   const [
     filteredSelfPacedCourseOfferings,
     setFilteredSelfPacedCourseOfferings,
@@ -92,21 +119,33 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
 
   return (
     <div className={style.selfPacedPLCatalog}>
-      <section className={style.headerContainer}>
-        <div className={style.headerContent}>
-          <Heading1>Self-Paced Professional Learning Catalog</Heading1>
-        </div>
-      </section>
-      <section className={style.bodyContainer}>
-        <SelfPacedPLCatalogFilters
-          selfPacedPLCourseOfferings={selfPacedPLCourseOfferings}
-          filteredSelfPacedCourseOfferings={filteredSelfPacedCourseOfferings}
-          setFilteredSelfPacedCourseOfferings={
-            setFilteredSelfPacedCourseOfferings
-          }
+      <Provider store={configureStore({reducer: {teacherSections}})}>
+        <HeroBanner
+          className={moduleStyles.plCatalogHeroBanner}
+          data-theme="Dark"
+          heading="Explore self-paced professional learning"
+          subHeading="Professional learning offerings to support teachers in every stage of their computer science teaching journey."
+          imageProps={{src: PLCatalogHeroBannerImage}}
+          withWideText
+          hideImageOnSmallScreen
         />
-        <div>{renderSearchResults()}</div>
-      </section>
+        <section className={style.bodyContainer}>
+          <SelfPacedPLCatalogFilters
+            selfPacedPLCourseOfferings={selfPacedPLCourseOfferings}
+            filteredSelfPacedCourseOfferings={filteredSelfPacedCourseOfferings}
+            setFilteredSelfPacedCourseOfferings={
+              setFilteredSelfPacedCourseOfferings
+            }
+          />
+          <div>{renderSearchResults()}</div>
+        </section>
+
+        {/*<CurriculumCatalog*/}
+        {/*  curriculaData={selfPacedPLCourseOfferings}*/}
+        {/*  isInUS*/}
+        {/*  languageNativeName={'adsa'}*/}
+        {/*/>*/}
+      </Provider>
     </div>
   );
 };

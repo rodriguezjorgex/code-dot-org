@@ -1,33 +1,22 @@
-@import '@code-dot-org/component-library-styles/colors';
-@import '@code-dot-org/component-library-styles/primitiveColors';
-@import '@code-dot-org/component-library-styles/variables.scss';
+@import '../../../../../node_modules/@code-dot-org/component-library-styles/colors';
+@import '../../../../../node_modules/@code-dot-org/component-library-styles/primitiveColors';
+@import '../../../../../node_modules/@code-dot-org/component-library-styles/variables';
 @import 'breakpoints';
 
 $card-width: 309px;
 
+//.selfPacedPLCatalog {
+//  .plCatalogHeroBanner {
+//    background-color: var(--background-neutral-primary);
+//  }
+//}
+
 .selfPacedPLCatalog {
   background-color: var(--background-neutral-secondary);
 
-  h1, h2, p {
-    margin: 0;
-  }
-
-  section {
-    padding-block: 4rem;
-  }
-
-  .headerContainer {
-    background-color: var(--brand-teal-5);
-
-    .headerContent {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      gap: 30px;
-      max-width: 60em;
-      margin: 0 auto;
-    }
-  }
+  .plCatalogHeroBanner {
+        background-color: var(--background-neutral-primary);
+      }
 
   .bodyContainer {
     background-color: var(--neutral-base-white);
