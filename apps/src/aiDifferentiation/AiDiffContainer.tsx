@@ -1,4 +1,3 @@
-import Box from '@mui/material/Box';
 import React, {useEffect, useState} from 'react';
 import Draggable, {DraggableEventHandler} from 'react-draggable';
 import FocusLock from 'react-focus-lock';
@@ -6,9 +5,8 @@ import FocusLock from 'react-focus-lock';
 import {useAppSelector} from '../util/reduxHooks';
 import {tryGetSessionStorage, trySetSessionStorage} from '../utils';
 
-import AiDiffChat from './AiDiffChat';
 import AiDiffHeader from './AiDiffHeader';
-import AiDiffSidebar from './AiDiffSidebar';
+import AiDiffWorkSpace from './AiDiffWorkspace';
 import {Context} from './types';
 import AiDiffWelcome from './welcome/AiDiffWelcome';
 
@@ -106,7 +104,7 @@ const AiDiffContainer: React.FC<AiDiffContainerProps> = ({
                   />
                 )
               : curriculumCourses && (
-                  <AiDiffChat
+                  <AiDiffWorkSpace
                     context={context}
                     scriptName={scriptName}
                     unitDisplayName={unitDisplayName}

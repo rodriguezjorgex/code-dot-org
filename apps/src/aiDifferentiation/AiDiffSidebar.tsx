@@ -1,55 +1,31 @@
-import {
-  Box,
-  Divider,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Toolbar,
-} from '@mui/material';
+import {Box, List, ListItem, ListItemButton, ListItemText} from '@mui/material';
 import React from 'react';
 
+import styles from '@cdo/apps/templates/teacherNavigation/teacher-navigation.module.scss';
 interface AiDiffSidebarProps {
-  // Define your props here if needed
+  // Props will go here :)
 }
 
 const drawerWidth = 240;
 
 const AiDiffSidebar: React.FC<AiDiffSidebarProps> = props => {
   return (
-    <aside className="ai-diff-sidebar">
-      <div>
+    <aside className={styles.sidebarContainer}>
+      <div className={styles.sidebarContent}>
         <Box
           component="nav"
           sx={{width: {sm: drawerWidth}, flexShrink: {sm: 0}}}
-          aria-label="mailbox folders"
+          aria-label="AI differentiation chat threads"
         >
-          <Drawer
-            variant="permanent"
-            sx={{
-              display: {xs: 'none', sm: 'block'},
-              '& .MuiDrawer-paper': {
-                boxSizing: 'border-box',
-                width: drawerWidth,
-              },
-            }}
-            open
-          >
-            <Toolbar />
-            <Divider />
-            <List>
-              {['Inbox', 'Starred', 'Send email', 'Drafts'].map(
-                (text, index) => (
-                  <ListItem key={text} disablePadding>
-                    <ListItemButton>
-                      <ListItemText primary={text} />
-                    </ListItemButton>
-                  </ListItem>
-                )
-              )}
-            </List>
-          </Drawer>
+          <List>
+            {['This is one chat', 'This is another chat'].map((text, index) => (
+              <ListItem key={text} disablePadding>
+                <ListItemButton>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
         </Box>
       </div>
     </aside>
