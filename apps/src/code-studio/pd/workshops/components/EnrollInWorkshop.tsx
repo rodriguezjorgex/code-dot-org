@@ -50,8 +50,8 @@ const EnrollInWorkshop: React.FC<EnrollInWorkshopProps> = ({
 }) => {
   const {handleClick, isSubmitting, alertState, setAlertState} =
     useWorkshopEnrollment({
-      workshopId: id,
-      userInfo,
+      workshop_id: id,
+      user_id: userInfo?.id,
       regional_partner_name,
       course,
       format,
@@ -102,6 +102,7 @@ const EnrollInWorkshop: React.FC<EnrollInWorkshopProps> = ({
           </BodyThreeText>
           <LinkButton
             href={custom_registration_link}
+            target="_blank"
             className={moduleStyles.fullWidthButton}
             type="primary"
             size="m"
