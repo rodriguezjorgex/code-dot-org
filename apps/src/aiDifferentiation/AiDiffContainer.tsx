@@ -1,17 +1,14 @@
-import Button from '@code-dot-org/component-library/button';
-import Tags from '@code-dot-org/component-library/tags';
-import classNames from 'classnames';
+import Box from '@mui/material/Box';
 import React, {useEffect, useState} from 'react';
 import Draggable, {DraggableEventHandler} from 'react-draggable';
 import FocusLock from 'react-focus-lock';
-
-import i18n from '@cdo/locale';
-import aiBotOutlineIcon from '@cdo/static/ai-bot-outline.png';
 
 import {useAppSelector} from '../util/reduxHooks';
 import {tryGetSessionStorage, trySetSessionStorage} from '../utils';
 
 import AiDiffChat from './AiDiffChat';
+import AiDiffHeader from './AiDiffHeader';
+import AiDiffSidebar from './AiDiffSidebar';
 import {Context} from './types';
 import AiDiffWelcome from './welcome/AiDiffWelcome';
 
@@ -19,10 +16,6 @@ import style from './ai-differentiation.module.scss';
 
 const AI_DIFF_POSITION_X = 'aiDiffPositionX';
 const AI_DIFF_POSITION_Y = 'aiDiffPositionY';
-
-// TODO: Update to support i18n
-const AI_DIFF_HEADER_TEXT = 'AI Teaching Assistant';
-
 interface AiDiffContainerProps {
   closeTutor?: () => void;
   context: Context;
@@ -100,41 +93,7 @@ const AiDiffContainer: React.FC<AiDiffContainerProps> = ({
         style={open ? undefined : {display: 'none'}}
       >
         <FocusLock>
-          <div className={classNames(style.aiDiffHeader, 'ai_diff_handle')}>
-            <div className={style.aiDiffHeaderLeftSide}>
-              <div className={style.aiBotHeader}>
-                <img
-                  src={aiBotOutlineIcon}
-                  className={style.aiBotOutlineIcon}
-                  alt={AI_DIFF_HEADER_TEXT}
-                />
-                <div className={style.taOverlayHeader}>
-                  <span>{'TA'}</span>
-                </div>
-              </div>
-              <span className={style.aiDiffHeaderText}>
-                {AI_DIFF_HEADER_TEXT}
-              </span>
-              <span>
-                <Tags
-                  tagsList={[{label: i18n.experiment()}]}
-                  size="s"
-                  className={style.headerTag}
-                />
-              </span>
-            </div>
-            <div className={style.aiDiffHeaderRightSide}>
-              <Button
-                color="white"
-                icon={{iconName: 'times', iconStyle: 'solid'}}
-                type="tertiary"
-                isIconOnly={true}
-                onClick={closeTutor}
-                size="s"
-              />
-            </div>
-          </div>
-
+          <AiDiffHeader closeTutor={closeTutor} />
           <div className={style.fabBackground}>
             {!hasCompletedAiDifferentiationWelcome && showWelcomeExperience
               ? curriculumCourses && (
