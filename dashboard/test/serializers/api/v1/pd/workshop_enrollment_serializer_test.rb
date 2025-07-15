@@ -21,7 +21,8 @@ class Api::V1::Pd::WorkshopEnrollmentSerializerTest < ActionController::TestCase
 
   test 'attendances' do
     workshop = create :workshop, num_sessions: 5
-    enrollment = create :pd_enrollment, workshop: workshop
+    user = create :teacher, given_name: 'Firstname', family_name: 'Lastname', school_info: (create :school_info)
+    enrollment = create :pd_enrollment, workshop: workshop, user: user
     create :pd_attendance, session: workshop.sessions.first, enrollment: enrollment
 
     serialized = ::Api::V1::Pd::WorkshopEnrollmentSerializer.new(workshop.enrollments.first).attributes
