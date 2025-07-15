@@ -116,43 +116,6 @@ export default class EnrollmentsPanel extends React.Component {
       });
   };
 
-  handleEditEnrollmentConfirmed = (updatedName, updatedEmail) => {
-    this.handleEditEnrollment(
-      updatedName,
-      updatedEmail,
-      this.state.selectedEnrollments[0]
-    );
-    this.setState({
-      enrollmentChangeDialogOpen: false,
-      selectedEnrollments: [],
-    });
-  };
-
-  handleEditEnrollment = (updatedName, updatedEmail, selectedEnrollment) => {
-    let updatedInfoSnakeCase = {
-      first_name: updatedName.firstName,
-      last_name: updatedName.lastName,
-      email: updatedEmail,
-    };
-
-    this.editEnrollmentRequest = $.ajax({
-      method: 'POST',
-      url: `/api/v1/pd/enrollment/${selectedEnrollment.id}/edit`,
-      contentType: 'application/json',
-      data: JSON.stringify(updatedInfoSnakeCase),
-    })
-      .done(() => {
-        // reload
-        this.handleEnrollmentRefresh();
-        this.editEnrollmentRequest = null;
-      })
-      .fail(() => {
-        this.setState({error: 'Error: unable to update attendee information'});
-        this.handleEnrollmentRefresh();
-        this.editEnrollmentRequest = null;
-      });
-  };
-
   handleClickSelect = enrollment => {
     if (
       this.state.selectedEnrollments.findIndex(e => e.id === enrollment.id) >= 0
