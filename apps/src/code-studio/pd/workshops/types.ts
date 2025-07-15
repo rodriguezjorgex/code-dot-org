@@ -22,6 +22,8 @@ export interface SessionInfo {
   location_address?: string;
   meeting_link?: string;
   session_format: SessionFormat;
+  description?: string;
+  notes?: string;
 }
 
 export interface GetWorkshopInfoScriptDataResponse {
@@ -46,22 +48,111 @@ export interface GetWorkshopInfoScriptDataResponse {
   facilitators?: FacilitatorInfo[];
 }
 
-export type UserInfoForWorkshop = {
+export interface WorkshopInfo {
   id: number;
-  email: string;
-  display_name: string;
-  is_student?: boolean;
-  first_name?: string;
-  last_name?: string;
-  school_info?: {
-    school_id?: number;
-    country?: string;
-    school_name?: string;
-    school_zip?: string;
-    school_type?: string;
-  };
+  course: string;
+  subject?: string;
+  courseOfferings?: string[];
+  name?: string;
+  capacity: number;
+  numEnrollments: number;
+  gradeLevels?: string[];
+  sessions: SessionInfo[];
+  format: keyof typeof WorkshopFormats;
+  locationName?: string;
+  fee?: string;
+  prereq?: string;
+  description?: string;
+  notes?: string;
+  customRegistrationLink?: string;
+  regionalPartnerName?: string;
+  organizer: OrganizerInfo;
+  facilitators?: FacilitatorInfo[];
+}
+
+export const workshopInfoDataResponseToParams = (
+  response: GetWorkshopInfoScriptDataResponse
+) => {
+  return {
+    id: response.id,
+    course: response.course,
+    subject: response.subject,
+    courseOfferings: response.course_offerings,
+    name: response.name,
+    capacity: response.capacity,
+    numEnrollments: response.num_enrollments,
+    gradeLevels: response.grade_levels,
+    sessions: response.sessions,
+    format: response.format,
+    locationName: response.location_name,
+    fee: response.fee,
+    prereq: response.prereq,
+    description: response.description,
+    notes: response.notes,
+    customRegistrationLink: response.custom_registration_link,
+    regionalPartnerName: response.regional_partner_name,
+    organizer: response.organizer,
+    facilitators: response.facilitators,
+  } as WorkshopInfo;
 };
 
 export interface GetUserInfoForWorkshopResponse {
-  userInfo: UserInfoForWorkshop | null;
+  userInfo: {
+    id: number;
+    email: string;
+    display_name: string;
+    is_student?: boolean;
+    given_name?: string;
+    family_name?: string;
+    school_info?: {
+      school_id?: number;
+      country?: string;
+      school_name?: string;
+      school_zip?: string;
+      school_type?: string;
+    };
+  } | null;
 }
+
+export type UserInfoForWorkshop = {
+  userInfo: {
+    id: number;
+    email: string;
+    displayName: string;
+    isStudent?: boolean;
+    givenName?: string;
+    familyName?: string;
+    schoolInfo?: {
+      schoolId?: number;
+      country?: string;
+      schoolName?: string;
+      schoolZip?: string;
+      schoolType?: string;
+    };
+  } | null;
+};
+
+export const userInfoDataResponseToParams = (
+  response: GetUserInfoForWorkshopResponse
+) => {
+  if (!response) return null;
+
+  const userInfo = response.userInfo;
+  return {
+    userInfo: {
+      id: userInfo?.id,
+      email: userInfo?.email,
+      displayName: userInfo?.display_name,
+      isStudent: userInfo?.is_student,
+      givenName: userInfo?.given_name,
+      familyName: userInfo?.family_name,
+      schoolInfo: {
+        schoolId: userInfo?.school_info?.school_id,
+        country: userInfo?.school_info?.country,
+        schoolName: userInfo?.school_info?.school_name,
+        schoolZip: userInfo?.school_info?.school_zip,
+        schoolType: userInfo?.school_info?.school_type,
+      },
+    },
+  } as UserInfoForWorkshop;
+};
