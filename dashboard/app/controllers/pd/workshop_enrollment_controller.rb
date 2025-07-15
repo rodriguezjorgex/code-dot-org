@@ -135,7 +135,7 @@ class Pd::WorkshopEnrollmentController < ApplicationController
       @script_data = {
         props: {
           workshop_enrollment_status: enroll_status,
-          workshop_info: @workshop.summarize_for_marketing_page,
+          workshop_info: @workshop&.summarize_for_marketing_page,
           user_info: current_user&.summarize_for_workshop
         }.to_json
       }
