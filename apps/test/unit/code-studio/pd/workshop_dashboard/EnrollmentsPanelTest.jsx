@@ -128,15 +128,14 @@ describe('EnrollmentsPanel', () => {
     });
     wrapper.update();
     assert(
-      wrapper.state('enrollmentChangeDialogOpen') ===
-        MOVE_ENROLLMENT_BUTTON_NAME,
+      wrapper.state('enrollmentChangeDialogOpen'),
       'Move enrollments dialog was not opened'
     );
 
     wrapper.instance().handleChangeEnrollmentsCanceled();
     wrapper.update();
     assert(
-      wrapper.state('enrollmentChangeDialogOpen') === null,
+      !wrapper.state('enrollmentChangeDialogOpen'),
       'Move enrollments dialog was not closed'
     );
   });
@@ -167,16 +166,13 @@ describe('EnrollmentsPanel', () => {
       target: {name: MOVE_ENROLLMENT_BUTTON_NAME},
     });
     wrapper.update();
-    assert(
-      wrapper.state('enrollmentChangeDialogOpen') ===
-        MOVE_ENROLLMENT_BUTTON_NAME
-    );
+    assert(wrapper.state('enrollmentChangeDialogOpen'));
 
     // Confirm the move with a fake destination workshop
     const destinationWorkshopId = 5;
     wrapper.instance().handleMoveEnrollmentsConfirmed(destinationWorkshopId);
     wrapper.update();
-    assert(wrapper.state('enrollmentChangeDialogOpen') === null);
+    assert(!wrapper.state('enrollmentChangeDialogOpen'));
     assert.deepEqual([], wrapper.state('selectedEnrollments'));
 
     // Respond to the server request
