@@ -72,7 +72,7 @@ export interface WorkshopInfo {
 
 export const workshopInfoDataResponseToParams = (
   response: GetWorkshopInfoScriptDataResponse | null
-) => {
+): WorkshopInfo | null => {
   if (!response) return null;
 
   return {
@@ -95,7 +95,7 @@ export const workshopInfoDataResponseToParams = (
     regionalPartnerName: response.regional_partner_name,
     organizer: response.organizer,
     facilitators: response.facilitators,
-  } as WorkshopInfo;
+  };
 };
 
 export interface GetUserInfoForWorkshopResponse {
@@ -134,7 +134,7 @@ export type UserInfoForWorkshop = {
 
 export const userInfoDataResponseToParams = (
   response: GetUserInfoForWorkshopResponse | null
-) => {
+): UserInfoForWorkshop | null => {
   if (!response) return null;
 
   return {
@@ -153,5 +153,5 @@ export const userInfoDataResponseToParams = (
         schoolType: response.school_info?.school_type,
       },
     },
-  } as UserInfoForWorkshop;
+  };
 };
