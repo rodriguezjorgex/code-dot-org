@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <WorkshopJoin
       workshopEnrollmentStatus={joinInfo.workshop_enrollment_status}
       workshopInfo={workshopInfoParams}
-      userInfo={userInfoParams}
+      userInfo={userInfoParams.userInfo}
     />,
     document.getElementById('join-workshop-container')
   );

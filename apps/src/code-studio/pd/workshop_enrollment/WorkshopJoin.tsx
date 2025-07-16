@@ -23,29 +23,23 @@ import {SUBMISSION_STATUSES} from './constants';
 
 import style from './workshop_join.module.scss';
 
-interface WorkshopJoinProps
-  extends Pick<
-      WorkshopInfo,
-      | 'id'
-      | 'course'
-      | 'subject'
-      | 'name'
-      | 'format'
-      | 'regionalPartnerName'
-      | 'sessions'
-    >,
-    UserInfoForWorkshop {
+type WorkshopJoinProps = {
+  workshopInfo: Pick<
+    WorkshopInfo,
+    | 'id'
+    | 'course'
+    | 'subject'
+    | 'name'
+    | 'format'
+    | 'regionalPartnerName'
+    | 'sessions'
+  >;
+  userInfo: UserInfoForWorkshop['userInfo'];
   workshopEnrollmentStatus: string;
-}
+};
 
 const WorkshopJoin: React.FunctionComponent<WorkshopJoinProps> = ({
-  id,
-  course,
-  subject,
-  name,
-  format,
-  regionalPartnerName,
-  sessions,
+  workshopInfo,
   userInfo,
   workshopEnrollmentStatus,
 }) => {
@@ -53,7 +47,9 @@ const WorkshopJoin: React.FunctionComponent<WorkshopJoinProps> = ({
     workshopEnrollmentStatus
   );
   const [submissionErrorMessage, setSubmissionErrorMessage] = useState('');
-  const {submitEnrollment, isSubmitting, error} = useWorkshopEnrollmentApi(id);
+  const {submitEnrollment, isSubmitting, error} = useWorkshopEnrollmentApi(
+    workshopInfo?.id
+  );
 
   const handleSubmitEnrollment = async () => {
     const result = await submitEnrollment(userInfo?.id);
@@ -73,15 +69,15 @@ const WorkshopJoin: React.FunctionComponent<WorkshopJoinProps> = ({
   const navigateOnEnrollSuccess = () => {
     // Redirect to My PL landing page. The WORKSHOP_ENROLLMENT_COMPLETED_EVENT event will be logged
     // on that page since event logs immediately followed by redirects sometimes do not fire.
-    sessionStorage.setItem('workshopId', `${id}`);
-    sessionStorage.setItem('workshopCourse', course);
-    sessionStorage.setItem('workshopSubject', subject || '');
-    sessionStorage.setItem('workshopName', name || '');
-    sessionStorage.setItem('workshopFormat', format);
-    sessionStorage.setItem('rpName', regionalPartnerName || '');
+    sessionStorage.setItem('workshopId', `${workshopInfo.id}`);
+    sessionStorage.setItem('workshopCourse', workshopInfo.course);
+    sessionStorage.setItem('workshopSubject', workshopInfo.subject || '');
+    sessionStorage.setItem('workshopName', workshopInfo.name || '');
+    sessionStorage.setItem('workshopFormat', workshopInfo.format);
+    sessionStorage.setItem('rpName', workshopInfo.regionalPartnerName || '');
     sessionStorage.setItem(
       'sessionTimeInfo',
-      sessions ? JSON.stringify(sessions) : ''
+      workshopInfo.sessions ? JSON.stringify(workshopInfo.sessions) : ''
     );
 
     navigateToHref('/my-professional-learning');
@@ -117,7 +113,7 @@ const WorkshopJoin: React.FunctionComponent<WorkshopJoinProps> = ({
             email={userInfo.email}
             schoolName={userInfo.schoolInfo?.schoolName}
             schoolType={userInfo.schoolInfo?.schoolType}
-            returnToHref={`/pd/workshops/${id}/join`}
+            returnToHref={`/pd/workshops/${workshopInfo.id}/join`}
             className={style.userPassport}
           />
         )}

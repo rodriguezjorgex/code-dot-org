@@ -71,8 +71,10 @@ export interface WorkshopInfo {
 }
 
 export const workshopInfoDataResponseToParams = (
-  response: GetWorkshopInfoScriptDataResponse
+  response: GetWorkshopInfoScriptDataResponse | null
 ) => {
+  if (!response) return null;
+
   return {
     id: response.id,
     course: response.course,
@@ -97,21 +99,19 @@ export const workshopInfoDataResponseToParams = (
 };
 
 export interface GetUserInfoForWorkshopResponse {
-  userInfo: {
-    id: number;
-    email: string;
-    display_name: string;
-    is_student?: boolean;
-    given_name?: string;
-    family_name?: string;
-    school_info?: {
-      school_id?: number;
-      country?: string;
-      school_name?: string;
-      school_zip?: string;
-      school_type?: string;
-    };
-  } | null;
+  id: number;
+  email: string;
+  display_name: string;
+  is_student?: boolean;
+  given_name?: string;
+  family_name?: string;
+  school_info?: {
+    school_id?: number;
+    country?: string;
+    school_name?: string;
+    school_zip?: string;
+    school_type?: string;
+  };
 }
 
 export type UserInfoForWorkshop = {
@@ -133,25 +133,24 @@ export type UserInfoForWorkshop = {
 };
 
 export const userInfoDataResponseToParams = (
-  response: GetUserInfoForWorkshopResponse
+  response: GetUserInfoForWorkshopResponse | null
 ) => {
   if (!response) return null;
 
-  const userInfo = response.userInfo;
   return {
     userInfo: {
-      id: userInfo?.id,
-      email: userInfo?.email,
-      displayName: userInfo?.display_name,
-      isStudent: userInfo?.is_student,
-      givenName: userInfo?.given_name,
-      familyName: userInfo?.family_name,
+      id: response.id,
+      email: response.email,
+      displayName: response.display_name,
+      isStudent: response.is_student,
+      givenName: response.given_name,
+      familyName: response.family_name,
       schoolInfo: {
-        schoolId: userInfo?.school_info?.school_id,
-        country: userInfo?.school_info?.country,
-        schoolName: userInfo?.school_info?.school_name,
-        schoolZip: userInfo?.school_info?.school_zip,
-        schoolType: userInfo?.school_info?.school_type,
+        schoolId: response.school_info?.school_id,
+        country: response.school_info?.country,
+        schoolName: response.school_info?.school_name,
+        schoolZip: response.school_info?.school_zip,
+        schoolType: response.school_info?.school_type,
       },
     },
   } as UserInfoForWorkshop;
