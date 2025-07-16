@@ -12,7 +12,7 @@ class Api::V1::Pd::WorkshopEnrollmentSerializer < ActiveModel::Serializer
 
   def user_info
     user = object.resolve_user
-    school_info = user.try(:school_info)
+    school_info = user&.try(:school_info)
     {
       given_name: user&.given_name,
       family_name: user&.family_name,
