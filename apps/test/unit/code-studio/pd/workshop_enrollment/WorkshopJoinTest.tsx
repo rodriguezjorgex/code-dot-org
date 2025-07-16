@@ -12,12 +12,14 @@ jest.mock('@cdo/apps/util/AuthenticityTokenStore', () => ({
 }));
 
 const DEFAULT_PROPS = {
-  id: 1,
-  course: 'Build Your Own Workshop',
-  name: 'My Sick Workshop',
-  format: 'virtual' as const,
-  regionalPartnerName: 'Reggie Partner',
-  sessions: [],
+  workshopInfo: {
+    id: 1,
+    course: 'Build Your Own Workshop',
+    name: 'My Sick Workshop',
+    format: 'virtual' as const,
+    regionalPartnerName: 'Reggie Partner',
+    sessions: [],
+  },
   userInfo: {
     id: 1,
     displayName: 'Ms. McEntire',
@@ -142,7 +144,7 @@ describe('WorkshopJoin', () => {
       screen.getByText('Error submitting');
 
       expect(fetchStub).toHaveBeenCalledWith(
-        `/api/v1/pd/workshops/${DEFAULT_PROPS.id}/enrollments`,
+        `/api/v1/pd/workshops/${DEFAULT_PROPS.workshopInfo.id}/enrollments`,
         {
           method: 'POST',
           headers: {
@@ -179,7 +181,7 @@ describe('WorkshopJoin', () => {
 
     await waitFor(() => {
       expect(fetchStub).toHaveBeenCalledWith(
-        `/api/v1/pd/workshops/${DEFAULT_PROPS.id}/enrollments`,
+        `/api/v1/pd/workshops/${DEFAULT_PROPS.workshopInfo.id}/enrollments`,
         {
           method: 'POST',
           headers: {
