@@ -639,7 +639,7 @@ class LevelsController < ApplicationController
 
     unless @level.skills.include?(@skill)
       @level.skills << @skill
-      @level.add_skill_key_to_level_json(@skill.key)
+      @level.add_skill_key(@skill.key)
     end
 
     if @level.save
@@ -666,6 +666,7 @@ class LevelsController < ApplicationController
     end
 
     @level.skills.delete(@skill)
+    @level.remove_skill_key(@skill.key)
 
     if @level.save
       render json: {status: 'success', message: "Skill #{@skill.id} successfully removed from #{@level.id}"}, status: :ok
