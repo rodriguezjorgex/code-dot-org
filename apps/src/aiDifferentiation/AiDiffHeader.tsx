@@ -3,12 +3,13 @@ import Tags from '@code-dot-org/component-library/tags';
 import classNames from 'classnames';
 import React from 'react';
 
+import {commonI18n} from '@cdo/apps/types/locale';
 import i18n from '@cdo/locale';
 import aiBotOutlineIcon from '@cdo/static/ai-bot-outline.png';
 
 import style from './ai-differentiation.module.scss';
-// TODO: Update to support i18n
-const AI_DIFF_HEADER_TEXT = 'AI Teaching Assistant';
+
+const AI_DIFF_HEADER_TEXT = commonI18n.aiDifferentiation_header();
 
 interface AiDiffHeaderProps {
   closeTutor?: () => void;
