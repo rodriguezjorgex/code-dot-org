@@ -21,7 +21,7 @@ class Skill < ApplicationRecord
 
   before_destroy do
     levels.each do |level|
-      level.remove_skill_key_from_level_json(key)
+      level.remove_skill_key(key)
     end
   end
 
