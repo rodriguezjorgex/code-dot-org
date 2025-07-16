@@ -1320,6 +1320,7 @@ class LevelsControllerTest < ActionController::TestCase
     assert_response :success
     level.reload
     assert_equal [skill], level.skills
+    assert level.skill_keys.include?(skill.key)
   end
 
   test "remove_skill removes a skill" do
@@ -1327,10 +1328,13 @@ class LevelsControllerTest < ActionController::TestCase
     skill = create :skill
     create :levels_skill, level: level, skill: skill
     assert_equal [skill], level.skills
+    level.add_skill_key(skill.key)
+    assert level.skill_keys.include?(skill.key)
     post :remove_skill, params: {id: level.id, levelId: level.id, skillId: skill.id}
     assert_response :success
     level.reload
     assert level.skills.empty?
+    refute level.skill_keys
   end
 
   # Assert that the url is a real S3 url, and not a placeholder.

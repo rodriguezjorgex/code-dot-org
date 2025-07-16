@@ -1015,7 +1015,11 @@ class Level < ApplicationRecord
 
   def remove_skill_key(skill_key)
     return unless Rails.application.config.levelbuilder_mode
-    skill_keys = JSON.parse(properties['skill_keys'])&.reject! {|sk| sk == skill_key}
+    skill_keys = JSON.parse(properties['skill_keys'])&.reject! {|sk| sk == skill_key} if properties['skill_keys']
+    # If the skill_keys array is empty, remove the property entirely.
+    if properties['skill_keys'].blank?
+      properties.delete('skill_keys')
+    end
     properties['skill_keys'] = skill_keys.to_json if skill_keys
   end
 
