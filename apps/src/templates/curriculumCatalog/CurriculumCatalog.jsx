@@ -9,15 +9,13 @@ import HeaderBanner from '../HeaderBanner';
 import CurriculumCatalogCard from '@cdo/apps/templates/curriculumCatalog/CurriculumCatalogCard';
 /* eslint-enable import/order */
 
-import {
-  Heading5,
-  BodyTwoText,
-} from '@code-dot-org/component-library/typography';
+import {BodyTwoText} from '@code-dot-org/component-library/typography';
 import PropTypes from 'prop-types';
 import React, {useState, useEffect} from 'react';
 
 import {EVENTS, PLATFORMS} from '@cdo/apps/metrics/AnalyticsConstants';
 import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
+import NoMatchingSearchResultsFound from '@cdo/apps/templates/courseOfferings/noMatchingSearchResultsFound/NoMathcingSearchResultsFound';
 import GlobalEditionWrapper from '@cdo/apps/templates/GlobalEditionWrapper';
 import {
   getSimilarRecommendations,
@@ -278,11 +276,14 @@ const CurriculumCatalog = ({
       );
     } else {
       return (
-        <div className={style.catalogContentNoResults}>
-          <img src={CourseCatalogNoSearchResultPenguin} alt="" />
-          <Heading5>{i18n.noCurriculumSearchResultsHeader()}</Heading5>
-          <BodyTwoText>{i18n.noCurriculumSearchResultsBody()}</BodyTwoText>
-        </div>
+        <NoMatchingSearchResultsFound
+          illustrationImageProps={{
+            src: CourseCatalogNoSearchResultPenguin,
+            style: {width: '5em'},
+          }}
+          noResultsHeadingText={i18n.noCurriculumSearchResultsHeader()}
+          noResultsSubHeadingText={i18n.noCurriculumSearchResultsBody()}
+        />
       );
     }
   };
