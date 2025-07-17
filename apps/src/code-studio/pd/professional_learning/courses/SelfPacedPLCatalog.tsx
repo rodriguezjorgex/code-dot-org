@@ -1,18 +1,28 @@
 import HeroBanner from '@code-dot-org/component-library/heroBanner';
-import {
-  Heading5,
-  BodyTwoText,
-} from '@code-dot-org/component-library/typography';
 import {configureStore} from '@reduxjs/toolkit';
 import React, {useEffect, useState} from 'react';
 import {Provider} from 'react-redux';
 
+import {updateQueryParam} from '@cdo/apps/code-studio/utils';
+import {
+  filterByDuration,
+  filterByGradeLevel,
+  filterByTopic,
+} from '@cdo/apps/templates/courseOfferings/filters/helpers';
+import NoMatchingSearchResultsFound from '@cdo/apps/templates/courseOfferings/noMatchingSearchResultsFound/NoMathcingSearchResultsFound';
+import {CourseOffering} from '@cdo/apps/templates/courseOfferings/types';
 // import CurriculumCatalog from '@cdo/apps/templates/curriculumCatalog/CurriculumCatalog';
 import {defaultImageSrc} from '@cdo/apps/templates/curriculumCatalog/curriculumCatalogConstants';
 import teacherSections from '@cdo/apps/templates/teacherDashboard/teacherSectionsRedux';
+import NoMatchingCoursesImage from '@cdo/static/professional-learning/courses/no-curriculum-assigned-empty-state-illustration.png';
 import PLCatalogHeroBannerImage from '@cdo/static/professional-learning/courses/selfPacedPLCatalog-HeroBanner-illustration.png';
 
 import SelfPacedPLCatalogCard from './../SelfPacedPLCatalogCard';
+import {
+  getEmptyFilters,
+  getInitialFilterStates,
+  SELF_PACED_PL_CATALOG_FILTERS,
+} from './helpers';
 import SelfPacedPLCatalogFilters from './SelfPacedPLCatalogFilters';
 
 // eslint-disable-next-line import/no-duplicates
@@ -20,41 +30,34 @@ import style from './selfPacedPLCatalog.module.scss';
 // eslint-disable-next-line no-duplicate-imports,import/no-duplicates
 import moduleStyles from './selfPacedPLCatalog.module.scss';
 
-export interface SelfPacedPLCourseInfo {
-  key: string;
-  display_name: string;
-  grade_levels: string;
-  duration_in_hours: number;
-  cs_topic: string;
-  description: string;
-  image?: string;
-  video?: string;
-  course_version_path: string;
-  self_paced_pl_course_offering_path?: string;
-}
-
 const SelfPacedPLCatalog: React.FunctionComponent<{
-  selfPacedPLCourseOfferings: SelfPacedPLCourseInfo[];
-}> = ({selfPacedPLCourseOfferings, ...rest}) => {
+  selfPacedPLCourseOfferings: CourseOffering[];
+}> = ({selfPacedPLCourseOfferings}) => {
   const [filteredCourses, setFilteredCourses] = useState(
     selfPacedPLCourseOfferings
   );
-  // console.log('SelfPacedPLCatalog props:', selfPacedPLCourseOfferings, rest);
-  // const availableCourses = selfPacedPLCourseOfferings.filter(
-  //   course => course.self_paced_pl_course_offering_path
-  // );
-  // console.log(
-  //   'Courses without image',
-  //   availableCourses.filter(course => !course.image)
-  // );
-  // console.log(
-  //   'Courses without cs_topic',
-  //   availableCourses.filter(course => course.cs_topic)
-  // );
-  // console.log(
-  //   'Courses without grade_levels',
-  //   availableCourses.filter(course => !course.grade_levels)
-  // );
+
+  const [appliedFilters, setAppliedFilters] = useState(
+    getInitialFilterStates()
+  );
+
+  // Updates the filtered courses based on the applied filters.
+  useEffect(() => {
+    const newlyFilteredCourses = selfPacedPLCourseOfferings.filter(
+      course =>
+        filterByGradeLevel(course, appliedFilters.grade) &&
+        filterByTopic(course, appliedFilters.topic) &&
+        filterByDuration(course, appliedFilters.duration)
+    );
+
+    setFilteredCourses(newlyFilteredCourses);
+  }, [
+    selfPacedPLCourseOfferings,
+    appliedFilters.duration,
+    appliedFilters.grade,
+    appliedFilters.topic,
+    setFilteredCourses,
+  ]);
 
   console.log(selfPacedPLCourseOfferings);
   const [expandedCardKey, setExpandedCardKey] = useState('');
@@ -73,6 +76,14 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
     // If updateExpandedCardKey receives the same key as it currently is, then that indicates it's open and
     // we want to close it so we set it to ''. Otherwise, we expand the card of the provided key.
     setExpandedCardKey(expandedCardKey === key ? '' : key);
+  };
+
+  // Clears all filter selections.
+  const handleClearAllFilters = () => {
+    setAppliedFilters(getEmptyFilters());
+    SELF_PACED_PL_CATALOG_FILTERS.forEach(filter =>
+      updateQueryParam(filter.name, undefined, false)
+    );
   };
 
   // Renders search results based on the applied filters (or shows the No matching course offerings
@@ -103,15 +114,12 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
       );
     } else {
       return (
-        <div className={style.catalogContentNoResults}>
-          <Heading5>
-            No matching Self-Paced Professional Learning Course Offerings
-          </Heading5>
-          <BodyTwoText>
-            None of our self-paced course offerings match your exact criteria.
-            Try broadening your search.
-          </BodyTwoText>
-        </div>
+        <NoMatchingSearchResultsFound
+          illustrationImageProps={{src: NoMatchingCoursesImage}}
+          noResultsHeadingText="No matching courses"
+          noResultsSubHeadingText="None of our self-paced courses match your exact criteria, try broadening your search."
+          onClearAllFilters={handleClearAllFilters}
+        />
       );
     }
   };
@@ -130,8 +138,9 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
         />
         <section className={style.bodyContainer}>
           <SelfPacedPLCatalogFilters
-            allCourses={selfPacedPLCourseOfferings}
-            setFilteredCourses={setFilteredCourses}
+            appliedFilters={appliedFilters}
+            setAppliedFilters={setAppliedFilters}
+            handleClearAllFilters={handleClearAllFilters}
           />
           <div>{renderSearchResults()}</div>
         </section>
