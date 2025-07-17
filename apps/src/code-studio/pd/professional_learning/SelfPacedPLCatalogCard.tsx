@@ -11,18 +11,18 @@ import i18n from '@cdo/locale';
 
 import SelfPacedPLCatalogExpandedCard from './SelfPacedPLCatalogExpandedCard';
 
-import style from './selfPacedPLCatalog.module.scss';
+import style from './courses/selfPacedPLCatalog.module.scss';
 
 interface SelfPacedPLCard {
   courseKey: string;
   displayName: string;
-  gradeLevels: string;
-  duration: number;
-  csTopics: string;
-  description: string;
+  gradeLevels?: string;
+  duration?: number;
+  csTopics?: string;
+  description?: string;
   image?: string;
   video?: string;
-  pathToCourse: string;
+  pathToCourse?: string;
   isExpanded: boolean;
   updateExpandedCardKey: () => void;
 }
