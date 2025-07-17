@@ -1,17 +1,4 @@
 import moment from 'moment-timezone';
-import PropTypes from 'prop-types';
-
-export const sessionCalendarShape = PropTypes.shape({
-  id: PropTypes.number.isRequired,
-  start: PropTypes.string.isRequired,
-  end: PropTypes.string.isRequired,
-  is_local: PropTypes.bool.isRequired,
-  session_format: PropTypes.string.isRequired,
-  location_address: PropTypes.string,
-  meeting_link: PropTypes.string,
-  description: PropTypes.string,
-  notes: PropTypes.string,
-});
 
 export const getSessionDate = ({session, format, isLocal = false}) =>
   isLocal
