@@ -36,6 +36,9 @@ export interface SelfPacedPLCourseInfo {
 const SelfPacedPLCatalog: React.FunctionComponent<{
   selfPacedPLCourseOfferings: SelfPacedPLCourseInfo[];
 }> = ({selfPacedPLCourseOfferings, ...rest}) => {
+  const [filteredCourses, setFilteredCourses] = useState(
+    selfPacedPLCourseOfferings
+  );
   // console.log('SelfPacedPLCatalog props:', selfPacedPLCourseOfferings, rest);
   // const availableCourses = selfPacedPLCourseOfferings.filter(
   //   course => course.self_paced_pl_course_offering_path
@@ -54,21 +57,17 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
   // );
 
   console.log(selfPacedPLCourseOfferings);
-  const [
-    filteredSelfPacedCourseOfferings,
-    setFilteredSelfPacedCourseOfferings,
-  ] = useState(selfPacedPLCourseOfferings);
   const [expandedCardKey, setExpandedCardKey] = useState('');
 
   useEffect(() => {
-    const expandedCardFound = filteredSelfPacedCourseOfferings.some(
+    const expandedCardFound = filteredCourses.some(
       co => expandedCardKey === co['key']
     );
 
     if (!expandedCardFound) {
       setExpandedCardKey('');
     }
-  }, [expandedCardKey, filteredSelfPacedCourseOfferings]);
+  }, [expandedCardKey, filteredCourses]);
 
   const updateExpandedCardKey = (key: string) => {
     // If updateExpandedCardKey receives the same key as it currently is, then that indicates it's open and
@@ -79,10 +78,10 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
   // Renders search results based on the applied filters (or shows the No matching course offerings
   // message if no results).
   const renderSearchResults = () => {
-    if (filteredSelfPacedCourseOfferings.length > 0) {
+    if (filteredCourses.length > 0) {
       return (
         <div className={style.catalogContentCards}>
-          {filteredSelfPacedCourseOfferings.map(courseOffering => (
+          {filteredCourses.map(courseOffering => (
             <SelfPacedPLCatalogCard
               key={courseOffering.key}
               courseKey={courseOffering.key}
@@ -131,11 +130,8 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
         />
         <section className={style.bodyContainer}>
           <SelfPacedPLCatalogFilters
-            selfPacedPLCourseOfferings={selfPacedPLCourseOfferings}
-            filteredSelfPacedCourseOfferings={filteredSelfPacedCourseOfferings}
-            setFilteredSelfPacedCourseOfferings={
-              setFilteredSelfPacedCourseOfferings
-            }
+            allCourses={selfPacedPLCourseOfferings}
+            setFilteredCourses={setFilteredCourses}
           />
           <div>{renderSearchResults()}</div>
         </section>

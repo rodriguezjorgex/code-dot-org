@@ -1,9 +1,12 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 
 import {queryParams, updateQueryParam} from '@cdo/apps/code-studio/utils';
 import CourseOfferingFilters from '@cdo/apps/templates/courseOfferings/filters/CourseOfferingsFilters';
 import {
   commonFilterTypes,
+  filterByDuration,
+  filterByGradeLevel,
+  filterByTopic,
   FilterTypeConfig,
 } from '@cdo/apps/templates/courseOfferings/filters/helpers';
 
@@ -64,20 +67,35 @@ const getInitialFilterStates = () => {
   return initialFilters;
 };
 
-const SelfPacedPLCatalogFilters: React.FunctionComponent<{
-  selfPacedPLCourseOfferings: Array<SelfPacedPLCourseInfo>;
-  filteredSelfPacedCourseOfferings: Array<SelfPacedPLCourseInfo>;
-  setFilteredSelfPacedCourseOfferings: Dispatch<
-    SetStateAction<SelfPacedPLCourseInfo[]>
-  >;
-}> = ({
-  selfPacedPLCourseOfferings,
-  filteredSelfPacedCourseOfferings,
-  setFilteredSelfPacedCourseOfferings,
-}) => {
+type SelfPacedPLCatalogFiltersProps = {
+  allCourses: SelfPacedPLCourseInfo[];
+  setFilteredCourses: Dispatch<SetStateAction<SelfPacedPLCourseInfo[]>>;
+};
+
+const SelfPacedPLCatalogFilters: React.FunctionComponent<
+  SelfPacedPLCatalogFiltersProps
+> = ({allCourses, setFilteredCourses}) => {
   const [appliedFilters, setAppliedFilters] = useState(
     getInitialFilterStates()
   );
+
+  // Updates the filtered courses based on the applied filters.
+  useEffect(() => {
+    const newlyFilteredCourses = allCourses.filter(
+      course =>
+        filterByGradeLevel(course, appliedFilters.grade) &&
+        filterByTopic(course, appliedFilters.topic) &&
+        filterByDuration(course, appliedFilters.duration)
+    );
+
+    setFilteredCourses(newlyFilteredCourses);
+  }, [
+    allCourses,
+    appliedFilters.duration,
+    appliedFilters.grade,
+    appliedFilters.topic,
+    setFilteredCourses,
+  ]);
 
   // Handles updating the given filter and the URL parameters.
   const handleUpdateFilter = (filterKey: string, values: string[]) => {
