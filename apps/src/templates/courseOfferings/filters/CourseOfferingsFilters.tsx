@@ -8,16 +8,16 @@ import i18n from '@cdo/locale';
 
 import style from './courseOfferingsFilters.module.scss';
 
-interface CourseOfferingsFiltersProps {
+interface CourseOfferingsFiltersProps<TFilterKey extends string = string> {
   filtersConfigArray: FilterTypeConfig[];
-  appliedFilters: Record<string, string[]>;
+  appliedFilters: Record<TFilterKey, string[]>;
   updateAppliedFilter: (
-    filterKey: string,
+    filterKey: TFilterKey,
     filterValues: string[],
     selectedValue?: string
   ) => void;
-  onSelectAllOfOneFilter: (filterKey: string) => void;
-  onClearAllOfOneFilter: (filterKey: string) => void;
+  onSelectAllOfOneFilter: (filterKey: TFilterKey) => void;
+  onClearAllOfOneFilter: (filterKey: TFilterKey) => void;
   onClearAllFilters: () => void;
   children?: React.ReactNode;
 }
@@ -25,7 +25,7 @@ interface CourseOfferingsFiltersProps {
 /** Course offerings filters and their options, for additional filters
  * use children prop for rendering and parent component for logic handling.
  */
-const CourseOfferingsFilters: React.FC<CourseOfferingsFiltersProps> = ({
+const CourseOfferingsFilters = <TFilterKey extends string = string>({
   filtersConfigArray,
   appliedFilters,
   updateAppliedFilter,
@@ -33,9 +33,9 @@ const CourseOfferingsFilters: React.FC<CourseOfferingsFiltersProps> = ({
   onClearAllOfOneFilter,
   onClearAllFilters,
   children,
-}) => {
+}: CourseOfferingsFiltersProps<TFilterKey>) => {
   const handleSelect = useCallback(
-    (event: ChangeEvent<HTMLInputElement>, filterKey: string) => {
+    (event: ChangeEvent<HTMLInputElement>, filterKey: TFilterKey) => {
       const value = event.target.value;
       const isChecked = event.target.checked;
 
@@ -70,24 +70,28 @@ const CourseOfferingsFilters: React.FC<CourseOfferingsFiltersProps> = ({
         />
       </div>
       <div className={style.catalogDropdownFilters}>
-        {filtersConfigArray.map(({name, label, options}) => (
-          <CheckboxDropdown
-            key={name}
-            name={name}
-            labelText={label}
-            allOptions={Object.entries(options).map(([key, value]) => ({
-              value: key,
-              label: value,
-            }))}
-            checkedOptions={appliedFilters[name]}
-            onChange={e => handleSelect(e, name)}
-            onSelectAll={() => onSelectAllOfOneFilter(name)}
-            onClearAll={() => onClearAllOfOneFilter(name)}
-            selectAllText={i18n.selectAll()}
-            clearAllText={i18n.clearAll()}
-            size="s"
-          />
-        ))}
+        {filtersConfigArray.map(({name, label, options}) => {
+          const typedName = name as TFilterKey;
+
+          return (
+            <CheckboxDropdown
+              key={name}
+              name={name}
+              labelText={label}
+              allOptions={Object.entries(options).map(([key, value]) => ({
+                value: key,
+                label: value,
+              }))}
+              checkedOptions={appliedFilters[typedName]}
+              onChange={e => handleSelect(e, typedName)}
+              onSelectAll={() => onSelectAllOfOneFilter(typedName)}
+              onClearAll={() => onClearAllOfOneFilter(typedName)}
+              selectAllText={i18n.selectAll()}
+              clearAllText={i18n.clearAll()}
+              size="s"
+            />
+          );
+        })}
       </div>
       {children && children}
     </div>
