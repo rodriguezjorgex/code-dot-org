@@ -1019,11 +1019,11 @@ class Level < ApplicationRecord
   end
 
   def add_skill_key(skill_key)
-    if skill_keys.is_a?(Array)
-      skill_keys << skill_key unless skill_keys.include?(skill_key)
-    else
-      properties['skill_keys'] = [skill_key].to_json
-    end
+    properties['skill_keys'] = if skill_keys && JSON.parse(skill_keys).is_a?(Array)
+                                 JSON.parse(skill_keys).push(skill_key).uniq.to_json
+                               else
+                                 [skill_key].to_json
+                               end
     save!
   end
 
