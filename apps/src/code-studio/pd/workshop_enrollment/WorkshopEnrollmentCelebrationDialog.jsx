@@ -14,9 +14,11 @@ import analyticsReporter from '@cdo/apps/metrics/AnalyticsReporter';
 import AccessibleDialog from '@cdo/apps/sharedComponents/AccessibleDialog';
 import i18n from '@cdo/locale';
 
-import {getSessionDate, getSessionTimes} from '../sessionDateUtils';
-
-import {sessionCalendarShape} from './workshop_enroll';
+import {
+  sessionCalendarShape,
+  getSessionDate,
+  getSessionTimes,
+} from '../sessionDateUtils';
 
 import style from '@cdo/apps/code-studio/pd/professional_learning/landingPage.module.scss';
 
