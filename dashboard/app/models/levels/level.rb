@@ -1014,22 +1014,17 @@ class Level < ApplicationRecord
   end
 
   def remove_skill_key(skill_key)
-    return unless Rails.application.config.levelbuilder_mode
-    skill_keys = JSON.parse(properties['skill_keys'])&.reject! {|sk| sk == skill_key} if properties['skill_keys']
-    # If the skill_keys array is empty, remove the property entirely.
-    if properties['skill_keys'].blank?
-      properties.delete('skill_keys')
-    end
-    properties['skill_keys'] = skill_keys.to_json if skill_keys
+    properties["skill_keys"] = JSON.parse(skill_keys)&.reject! {|sk| sk == skill_key} if skill_keys
+    save!
   end
 
   def add_skill_key(skill_key)
-    return unless Rails.application.config.levelbuilder_mode
-    if properties['skill_keys']
-      JSON.parse(properties['skill_keys']) << skill_key unless JSON.parse(properties['skill_keys']).include?(skill_key)
+    if skill_keys.is_a?(Array)
+      skill_keys << skill_key unless skill_keys.include?(skill_key)
     else
       properties['skill_keys'] = [skill_key].to_json
     end
+    save!
   end
 
   # Returns the level name, removing the name_suffix first (if present), and
