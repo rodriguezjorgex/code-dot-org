@@ -1,11 +1,11 @@
 // The following styles are imported in a very specific order to preserve UI consistency.
-// `HeaderBanner` imports `typography.scss`
 // `CurriculumCatalogCard` imports `2022-rebrand-update.scss`
 // `typography.scss` has conflicting styles with `2022-rebrand-update.scss` (specifically for `h4` and `p` elements)
 // We are importing them in the specific order they were imported before adding import/order in order to preserve the UI.
 // These are very small changes so this can likely be removed with no issues.
 /* eslint-disable import/order */
-import HeaderBanner from '../HeaderBanner';
+import HeroBanner from '@code-dot-org/component-library/heroBanner';
+
 import CurriculumCatalogCard from '@cdo/apps/templates/curriculumCatalog/CurriculumCatalogCard';
 /* eslint-enable import/order */
 
@@ -290,11 +290,14 @@ const CurriculumCatalog = ({
 
   return (
     <>
-      <HeaderBanner
-        headingText={i18n.curriculumCatalogHeaderTitle()}
-        subHeadingText={i18n.curriculumCatalogHeaderSubtitle()}
-        backgroundUrl={CourseCatalogBannerBackground}
-        imageUrl={CourseCatalogIllustration01}
+      <HeroBanner
+        data-theme="Dark"
+        withWideText
+        hideImageOnSmallScreen
+        heading={i18n.curriculumCatalogHeaderTitle()}
+        subHeading={i18n.curriculumCatalogHeaderSubtitle()}
+        backgroundImageUrl={CourseCatalogBannerBackground}
+        imageProps={{src: CourseCatalogIllustration01}}
       />
       {showAssignSuccessMessage && (
         <div className={style.assignSuccessMessageCenter}>
