@@ -44,11 +44,11 @@ export const clearSignUpSessionStorage = (isTeacher: boolean) => {
 // user type cookie
 export const SIGN_UP_USER_TYPE = 'sign_up_user_type';
 
-export enum NameType {
-  GivenName = locale.first_name(),
-  FamilyName = locale.last_name(),
-  DisplayName = locale.display_name(),
-}
+export const NAME_TYPES = {
+  GivenName: locale.first_name(),
+  FamilyName: locale.last_name(),
+  DisplayName: locale.display_name(),
+};
 
 // school association
 export const US_COUNTRY_CODE = 'US';

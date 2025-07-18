@@ -36,7 +36,7 @@ import {
   clearSignUpSessionStorage,
   SIGN_UP_USER_TYPE,
   MAX_DISPLAY_NAME_LENGTH,
-  NameType,
+  NAME_TYPES,
 } from './signUpFlowConstants';
 
 import style from './signUpFlowStyles.module.scss';
@@ -151,29 +151,29 @@ const FinishTeacherAccount: React.FunctionComponent<{
     [gdprValid, givenName, familyName, displayName, schoolInfo, educatorRole]
   );
 
-  const setName = (nameType: NameType, newName: string) => {
+  const setName = (nameType: string, newName: string) => {
     switch (nameType) {
-      case NameType.GivenName:
+      case NAME_TYPES.GivenName:
         setGivenName(newName);
         break;
-      case NameType.FamilyName:
+      case NAME_TYPES.FamilyName:
         setFamilyName(newName);
         break;
-      case NameType.DisplayName:
+      default:
         setDisplayName(newName);
         break;
     }
   };
 
-  const setNameError = (nameType: NameType, errorMessage: string) => {
+  const setNameError = (nameType: string, errorMessage: string) => {
     switch (nameType) {
-      case NameType.GivenName:
+      case NAME_TYPES.GivenName:
         setGivenNameErrorMessage(errorMessage);
         break;
-      case NameType.FamilyName:
+      case NAME_TYPES.FamilyName:
         setFamilyNameErrorMessage(errorMessage);
         break;
-      case NameType.DisplayName:
+      default:
         setDisplayNameErrorMessage(errorMessage);
         break;
     }
@@ -181,7 +181,7 @@ const FinishTeacherAccount: React.FunctionComponent<{
 
   const onNameChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    nameType: NameType
+    nameType: string
   ): void => {
     const newName = e.target.value;
     setName(nameType, newName);
@@ -189,13 +189,13 @@ const FinishTeacherAccount: React.FunctionComponent<{
     if (newName.trim() === '') {
       setNameError(
         nameType,
-        locale.name_error_message({nameType: `${nameType}`.toLowerCase()})
+        locale.name_error_message({nameType: nameType.toLowerCase()})
       );
     } else if (newName.length > MAX_DISPLAY_NAME_LENGTH) {
       setNameError(
         nameType,
         locale.name_too_long_error_message({
-          nameType,
+          nameType: nameType,
           maxLength: MAX_DISPLAY_NAME_LENGTH,
         })
       );
@@ -323,7 +323,7 @@ const FinishTeacherAccount: React.FunctionComponent<{
                 id="uitest-given-name"
                 label={locale.first_name()}
                 value={givenName}
-                onChange={e => onNameChange(e, NameType.GivenName)}
+                onChange={e => onNameChange(e, NAME_TYPES.GivenName)}
               />
               {givenNameErrorMessage && (
                 <BodyThreeText className={style.errorMessage}>
@@ -337,7 +337,7 @@ const FinishTeacherAccount: React.FunctionComponent<{
                 id="uitest-family-name"
                 label={locale.last_name()}
                 value={familyName}
-                onChange={e => onNameChange(e, NameType.FamilyName)}
+                onChange={e => onNameChange(e, NAME_TYPES.FamilyName)}
               />
               {familyNameErrorMessage && (
                 <BodyThreeText className={style.errorMessage}>
@@ -353,7 +353,7 @@ const FinishTeacherAccount: React.FunctionComponent<{
               label={locale.what_do_you_want_to_be_called()}
               value={displayName}
               placeholder={locale.msCoder()}
-              onChange={e => onNameChange(e, NameType.DisplayName)}
+              onChange={e => onNameChange(e, NAME_TYPES.DisplayName)}
             />
             <BodyThreeText className={style.displayNameSubtext}>
               {locale.this_is_what_your_students_will_see()}

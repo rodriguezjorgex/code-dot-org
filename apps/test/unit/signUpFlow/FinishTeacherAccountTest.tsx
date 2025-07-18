@@ -13,7 +13,7 @@ import {
   SCHOOL_NAME_SESSION_KEY,
   SCHOOL_ZIP_SESSION_KEY,
   USER_RETURN_TO_SESSION_KEY,
-  NameType,
+  NAME_TYPES,
 } from '@cdo/apps/signUpFlow/signUpFlowConstants';
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
 import {navigateToHref} from '@cdo/apps/utils';
@@ -88,27 +88,36 @@ describe('FinishTeacherAccount', () => {
     render(<FinishTeacherAccount usIp={usIp} countryCode={'US'} />);
   }
 
-  function fillInFormFields(skipRoleField: boolean = false) {
-    fireEvent.change(screen.getByLabelText(locale.first_name()), {
-      target: {value: 'FirstName'},
-    });
-    fireEvent.change(screen.getByLabelText(locale.last_name()), {
-      target: {value: 'LastName'},
-    });
-    fireEvent.change(
-      screen.getByLabelText(locale.what_do_you_want_to_be_called()),
-      {target: {value: 'Ms. DisplayName'}}
-    );
-    if (!skipRoleField) {
+  function fillInFormFields(
+    fillInNameFields: boolean = true,
+    fillInRoleField: boolean = true
+  ) {
+    if (fillInNameFields) {
+      fireEvent.change(screen.getByLabelText(locale.first_name()), {
+        target: {value: FINISH_SIGN_UP_PARAMS.user.given_name},
+      });
+      fireEvent.change(screen.getByLabelText(locale.last_name()), {
+        target: {value: FINISH_SIGN_UP_PARAMS.user.family_name},
+      });
+      fireEvent.change(
+        screen.getByLabelText(locale.what_do_you_want_to_be_called()),
+        {target: {value: FINISH_SIGN_UP_PARAMS.user.name}}
+      );
+    }
+    if (fillInRoleField) {
       fireEvent.change(screen.getByLabelText(locale.what_is_your_role()), {
-        target: {value: 'classroom_teacher'},
+        target: {value: FINISH_SIGN_UP_PARAMS.user.educator_role},
       });
     }
     fireEvent.change(screen.getByLabelText(i18n.whatCountry()), {
-      target: {value: 'AU'},
+      target: {
+        value: FINISH_SIGN_UP_PARAMS.user.school_info_attributes.country,
+      },
     });
     fireEvent.change(screen.getByLabelText(i18n.schoolOrganizationQuestion()), {
-      target: {value: 'Test School'},
+      target: {
+        value: FINISH_SIGN_UP_PARAMS.user.school_info_attributes.school_name,
+      },
     });
     fireEvent.click(
       screen.getByRole('checkbox', {name: locale.get_informational_emails()})
@@ -238,28 +247,25 @@ describe('FinishTeacherAccount', () => {
     });
 
     // Errors don't show and button is disabled by default
-    Object.values(NameType).forEach(nameType =>
+    Object.values(NAME_TYPES).forEach(nameType =>
       expect(
         screen.queryByText(
           locale.name_error_message({
-            nameType,
+            nameType: `${nameType}`.toLowerCase(),
           })
         )
       ).toBe(null)
     );
     expect(finishSignUpButton).toBeDisabled();
 
-    // Enter names
-    fireEvent.change(givenNameInput, {target: {value: 'FirstName'}});
-    fireEvent.change(familyNameInput, {target: {value: 'LastName'}});
-    fireEvent.change(displayNameInput, {target: {value: 'Ms. DisplayName'}});
+    fillInFormFields();
 
     // Errors don't show and button is enabled when names are entered
-    Object.values(NameType).forEach(nameType =>
+    Object.values(NAME_TYPES).forEach(nameType =>
       expect(
         screen.queryByText(
           locale.name_error_message({
-            nameType,
+            nameType: `${nameType}`.toLowerCase(),
           })
         )
       ).toBe(null)
@@ -272,11 +278,10 @@ describe('FinishTeacherAccount', () => {
     fireEvent.change(displayNameInput, {target: {value: ''}});
 
     // Errors show for each name field and button is disabled
-    screen.getByText(locale.display_name_error_message());
-    Object.values(NameType).forEach(nameType =>
+    Object.values(NAME_TYPES).forEach(nameType =>
       screen.getByText(
         locale.name_error_message({
-          nameType,
+          nameType: `${nameType}`.toLowerCase(),
         })
       )
     );
@@ -295,11 +300,11 @@ describe('FinishTeacherAccount', () => {
     });
 
     // Errors don't show and button is disabled by default
-    Object.values(NameType).forEach(nameType =>
+    Object.values(NAME_TYPES).forEach(nameType =>
       expect(
         screen.queryByText(
           locale.name_error_message({
-            nameType,
+            nameType: `${nameType}`.toLowerCase(),
           })
         )
       ).toBe(null)
@@ -307,19 +312,18 @@ describe('FinishTeacherAccount', () => {
     expect(finishSignUpButton).toBeDisabled();
 
     // Enter whitespace names
+    fillInFormFields(false, true);
     fireEvent.change(givenNameInput, {target: {value: '     '}});
     fireEvent.change(familyNameInput, {target: {value: '   '}});
     fireEvent.change(displayNameInput, {target: {value: ' '}});
 
     // Errors show for each name field and button is disabled
-    Object.values(NameType).forEach(nameType =>
-      expect(
-        screen.queryByText(
-          locale.name_error_message({
-            nameType,
-          })
-        )
-      ).toBe(null)
+    Object.values(NAME_TYPES).forEach(nameType =>
+      screen.getByText(
+        locale.name_error_message({
+          nameType: `${nameType}`.toLowerCase(),
+        })
+      )
     );
     expect(finishSignUpButton).toBeDisabled();
   });
@@ -336,11 +340,11 @@ describe('FinishTeacherAccount', () => {
     });
 
     // Errors don't show and button is disabled by default
-    Object.values(NameType).forEach(nameType =>
+    Object.values(NAME_TYPES).forEach(nameType =>
       expect(
         screen.queryByText(
           locale.name_error_message({
-            nameType,
+            nameType: `${nameType}`.toLowerCase(),
           })
         )
       ).toBe(null)
@@ -348,6 +352,7 @@ describe('FinishTeacherAccount', () => {
     expect(finishSignUpButton).toBeDisabled();
 
     // Enter long names
+    fillInFormFields(false, true);
     fireEvent.change(givenNameInput, {
       target: {value: 'a'.repeat(MAX_DISPLAY_NAME_LENGTH + 1)},
     });
@@ -359,11 +364,10 @@ describe('FinishTeacherAccount', () => {
     });
 
     // Errors show for each name field and button is disabled
-    screen.getByText(locale.display_name_error_message());
-    Object.values(NameType).forEach(nameType =>
+    Object.values(NAME_TYPES).forEach(nameType =>
       screen.getByText(
         locale.name_too_long_error_message({
-          nameType,
+          nameType: nameType,
           maxLength: MAX_DISPLAY_NAME_LENGTH,
         })
       )
@@ -377,7 +381,7 @@ describe('FinishTeacherAccount', () => {
     const roleDropdown = screen.getByLabelText(locale.what_is_your_role());
     expect(roleDropdown).toBeInTheDocument();
 
-    fillInFormFields(true);
+    fillInFormFields(true, false);
 
     const finishSignUpButton = screen.getByRole('button', {
       name: locale.go_to_my_account(),

@@ -32,7 +32,7 @@ import {
   clearSignUpSessionStorage,
   SIGN_UP_USER_TYPE,
   MAX_DISPLAY_NAME_LENGTH,
-  NameType,
+  NAME_TYPES,
 } from './signUpFlowConstants';
 
 import style from './signUpFlowStyles.module.scss';
@@ -164,13 +164,13 @@ const FinishStudentAccount: React.FunctionComponent<{
     if (newName.trim() === '') {
       setNameErrorMessage(
         locale.name_error_message({
-          nameType: `${NameType.DisplayName}`.toLowerCase(),
+          nameType: NAME_TYPES.DisplayName.toLowerCase(),
         })
       );
     } else if (newName.length > MAX_DISPLAY_NAME_LENGTH) {
       setNameErrorMessage(
         locale.name_too_long_error_message({
-          nameType: NameType.DisplayName,
+          nameType: NAME_TYPES.DisplayName,
           maxLength: MAX_DISPLAY_NAME_LENGTH,
         })
       );

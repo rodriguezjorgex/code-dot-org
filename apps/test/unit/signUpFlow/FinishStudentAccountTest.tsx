@@ -10,7 +10,7 @@ import {
   EMAIL_SESSION_KEY,
   MAX_DISPLAY_NAME_LENGTH,
   USER_RETURN_TO_SESSION_KEY,
-  NameType,
+  NAME_TYPES,
 } from '@cdo/apps/signUpFlow/signUpFlowConstants';
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
 import {navigateToHref} from '@cdo/apps/utils';
@@ -45,7 +45,7 @@ describe('FinishStudentAccount', () => {
   ];
 
   const displayNameErrorMessage = locale.name_error_message({
-    nameType: `${NameType.DisplayName}`.toLowerCase(),
+    nameType: NAME_TYPES.DisplayName.toLowerCase(),
   });
 
   beforeEach(() => {
@@ -244,7 +244,7 @@ describe('FinishStudentAccount', () => {
     // Error shows with long display name
     screen.getByText(
       locale.name_too_long_error_message({
-        nameType: NameType.DisplayName,
+        nameType: NAME_TYPES.DisplayName,
         maxLength: MAX_DISPLAY_NAME_LENGTH,
       })
     );
