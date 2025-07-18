@@ -305,6 +305,22 @@ class RegistrationsControllerTest < ActionController::TestCase
     end
   end
 
+  test "create as teacher allows pandas in given name" do
+    params_with_panda_name = set_up_partial_registration(@default_params.update(user_type: 'teacher', given_name: panda_panda))
+
+    assert_creates(User) do
+      post :create, params: {user: params_with_panda_name}
+    end
+  end
+
+  test "create as teacher allows pandas in family name" do
+    params_with_panda_name = set_up_partial_registration(@default_params.update(user_type: 'teacher', family_name: panda_panda))
+
+    assert_creates(User) do
+      post :create, params: {user: params_with_panda_name}
+    end
+  end
+
   test "create does not allow pandas in email" do
     params_with_panda_email = set_up_partial_registration(@default_params.update(email: "#{panda_panda}@panda.com"))
 
@@ -319,6 +335,22 @@ class RegistrationsControllerTest < ActionController::TestCase
 
   test "create allows chinese in name" do
     params_with_chinese_name = set_up_partial_registration(@default_params.update(name: '樊瑞'))
+
+    assert_creates(User) do
+      post :create, params: {user: params_with_chinese_name}
+    end
+  end
+
+  test "create as teacher allows chinese in given name" do
+    params_with_chinese_name = set_up_partial_registration(@default_params.update(user_type: 'teacher', given_name: '樊瑞'))
+
+    assert_creates(User) do
+      post :create, params: {user: params_with_chinese_name}
+    end
+  end
+
+  test "create as teacher allows chinese in family name" do
+    params_with_chinese_name = set_up_partial_registration(@default_params.update(user_type: 'teacher', family_name: '樊瑞'))
 
     assert_creates(User) do
       post :create, params: {user: params_with_chinese_name}

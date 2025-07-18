@@ -10,6 +10,7 @@ import {
   EMAIL_SESSION_KEY,
   MAX_DISPLAY_NAME_LENGTH,
   USER_RETURN_TO_SESSION_KEY,
+  NameType,
 } from '@cdo/apps/signUpFlow/signUpFlowConstants';
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
 import {navigateToHref} from '@cdo/apps/utils';
@@ -42,6 +43,10 @@ describe('FinishStudentAccount', () => {
     {value: 'NY', text: 'New York'},
     {value: 'WA', text: 'Washington'},
   ];
+
+  const displayNameErrorMessage = locale.name_error_message({
+    nameType: `${NameType.DisplayName}`.toLowerCase(),
+  });
 
   beforeEach(() => {
     fetchStub = sinon.stub(window, 'fetch').resolves({
@@ -187,21 +192,21 @@ describe('FinishStudentAccount', () => {
     fireEvent.change(stateInput, {target: {value: 'WA'}});
 
     // Error message doesn't show and button is disabled by default
-    expect(screen.queryByText(locale.display_name_error_message())).toBe(null);
+    expect(screen.queryByText(displayNameErrorMessage)).toBe(null);
     expect(finishSignUpButton).toBeDisabled();
 
     // Enter display name
     fireEvent.change(displayNameInput, {target: {value: 'FirstName'}});
 
     // Error does not show and button is enabled when display name is entered
-    expect(screen.queryByText(locale.display_name_error_message())).toBe(null);
+    expect(screen.queryByText(displayNameErrorMessage)).toBe(null);
     expect(finishSignUpButton).not.toBeDisabled();
 
     // Clear display name
     fireEvent.change(displayNameInput, {target: {value: ''}});
 
     // Error shows and button is disabled with empty display name
-    screen.getByText(locale.display_name_error_message());
+    screen.getByText(displayNameErrorMessage);
     expect(finishSignUpButton).toBeDisabled();
   });
 
@@ -210,13 +215,13 @@ describe('FinishStudentAccount', () => {
     const displayNameInput = screen.getAllByDisplayValue('')[1];
 
     // Error message doesn't show and button is disabled by default
-    expect(screen.queryByText(locale.display_name_error_message())).toBe(null);
+    expect(screen.queryByText(displayNameErrorMessage)).toBe(null);
 
     // Enter display name
     fireEvent.change(displayNameInput, {target: {value: ' '}});
 
     // Error shows with whitespace display name
-    screen.getByText(locale.display_name_error_message());
+    screen.getByText(displayNameErrorMessage);
 
     const finishSignUpButton = screen.getByRole('button', {
       name: locale.go_to_my_account(),
@@ -229,7 +234,7 @@ describe('FinishStudentAccount', () => {
     const displayNameInput = screen.getAllByDisplayValue('')[1];
 
     // Error message doesn't show and button is disabled by default
-    expect(screen.queryByText(locale.display_name_error_message())).toBe(null);
+    expect(screen.queryByText(displayNameErrorMessage)).toBe(null);
 
     // Enter display name
     fireEvent.change(displayNameInput, {
@@ -238,7 +243,8 @@ describe('FinishStudentAccount', () => {
 
     // Error shows with long display name
     screen.getByText(
-      locale.display_name_too_long_error_message({
+      locale.name_too_long_error_message({
+        nameType: NameType.DisplayName,
         maxLength: MAX_DISPLAY_NAME_LENGTH,
       })
     );
