@@ -32,6 +32,7 @@ import {
   clearSignUpSessionStorage,
   SIGN_UP_USER_TYPE,
   MAX_DISPLAY_NAME_LENGTH,
+  NameType,
 } from './signUpFlowConstants';
 
 import style from './signUpFlowStyles.module.scss';
@@ -52,7 +53,7 @@ const FinishStudentAccount: React.FunctionComponent<{
   const [gender, setGender] = useState('');
 
   // Field errors
-  const [nameErrorMessage, setNameErrorMessage] = useState<string | null>(null);
+  const [nameErrorMessage, setNameErrorMessage] = useState('');
   const [showParentEmailError, setShowParentEmailError] = useState(false);
   const [showAgeError, setShowAgeError] = useState(false);
   const [showStateError, setShowStateError] = useState(false);
@@ -161,15 +162,18 @@ const FinishStudentAccount: React.FunctionComponent<{
     setName(newName);
 
     if (newName.trim() === '') {
-      setNameErrorMessage(locale.display_name_error_message());
+      setNameErrorMessage(
+        locale.name_error_message({nameType: NameType.DisplayName})
+      );
     } else if (newName.length > MAX_DISPLAY_NAME_LENGTH) {
       setNameErrorMessage(
-        locale.display_name_too_long_error_message({
+        locale.name_too_long_error_message({
+          nameType: NameType.DisplayName,
           maxLength: MAX_DISPLAY_NAME_LENGTH,
         })
       );
     } else {
-      setNameErrorMessage(null);
+      setNameErrorMessage('');
     }
   };
 

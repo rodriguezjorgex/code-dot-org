@@ -36,6 +36,7 @@ import {
   clearSignUpSessionStorage,
   SIGN_UP_USER_TYPE,
   MAX_DISPLAY_NAME_LENGTH,
+  NameType,
 } from './signUpFlowConstants';
 
 import style from './signUpFlowStyles.module.scss';
@@ -62,8 +63,12 @@ const FinishTeacherAccount: React.FunctionComponent<{
   redirectUrl?: string;
 }> = ({usIp, countryCode, redirectUrl}) => {
   const schoolInfo = useSchoolInfo({usIp});
-  const [name, setName] = useState('');
-  const [nameErrorMessage, setNameErrorMessage] = useState(null);
+  const [givenName, setGivenName] = useState('');
+  const [familyName, setFamilyName] = useState('');
+  const [displayName, setDisplayName] = useState('');
+  const [givenNameErrorMessage, setGivenNameErrorMessage] = useState('');
+  const [familyNameErrorMessage, setFamilyNameErrorMessage] = useState('');
+  const [displayNameErrorMessage, setDisplayNameErrorMessage] = useState('');
   const [educatorRole, setEducatorRole] = useState('');
   const [emailOptInChecked, setEmailOptInChecked] = useState(false);
   const [gdprChecked, setGdprChecked] = useState(false);
@@ -134,28 +139,65 @@ const FinishTeacherAccount: React.FunctionComponent<{
 
   const formDisabled = useMemo(
     () =>
-      name?.trim() === '' ||
-      name?.length > MAX_DISPLAY_NAME_LENGTH ||
+      givenName?.trim() === '' ||
+      givenName?.length > MAX_DISPLAY_NAME_LENGTH ||
+      familyName?.trim() === '' ||
+      familyName?.length > MAX_DISPLAY_NAME_LENGTH ||
+      displayName?.trim() === '' ||
+      displayName?.length > MAX_DISPLAY_NAME_LENGTH ||
       !gdprValid ||
       schoolInfoInvalid(schoolInfo) ||
       !educatorRole,
-    [gdprValid, name, schoolInfo, educatorRole]
+    [gdprValid, givenName, familyName, displayName, schoolInfo, educatorRole]
   );
 
-  const onNameChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const setName = (nameType: NameType, newName: string) => {
+    switch (nameType) {
+      case NameType.GivenName:
+        setGivenName(newName);
+        break;
+      case NameType.FamilyName:
+        setFamilyName(newName);
+        break;
+      case NameType.DisplayName:
+        setDisplayName(newName);
+        break;
+    }
+  };
+
+  const setNameError = (nameType: NameType, errorMessage: string) => {
+    switch (nameType) {
+      case NameType.GivenName:
+        setGivenNameErrorMessage(errorMessage);
+        break;
+      case NameType.FamilyName:
+        setFamilyNameErrorMessage(errorMessage);
+        break;
+      case NameType.DisplayName:
+        setDisplayNameErrorMessage(errorMessage);
+        break;
+    }
+  };
+
+  const onNameChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    nameType: NameType
+  ): void => {
     const newName = e.target.value;
-    setName(newName);
+    setName(nameType, newName);
 
     if (newName.trim() === '') {
-      setNameErrorMessage(locale.display_name_error_message());
+      setNameError(nameType, locale.name_error_message({nameType}));
     } else if (newName.length > MAX_DISPLAY_NAME_LENGTH) {
-      setNameErrorMessage(
-        locale.display_name_too_long_error_message({
+      setNameError(
+        nameType,
+        locale.name_too_long_error_message({
+          nameType,
           maxLength: MAX_DISPLAY_NAME_LENGTH,
         })
       );
     } else {
-      setNameErrorMessage(null);
+      setNameError(nameType, '');
     }
   };
 
@@ -171,7 +213,9 @@ const FinishTeacherAccount: React.FunctionComponent<{
       user: {
         user_type: UserTypes.TEACHER,
         email: sessionStorage.getItem(EMAIL_SESSION_KEY),
-        name: name,
+        given_name: givenName,
+        family_name: familyName,
+        name: displayName,
         email_preference_opt_in: emailOptInChecked,
         school_info_attributes: buildSchoolData({
           schoolId: schoolInfo.schoolId,
@@ -230,7 +274,7 @@ const FinishTeacherAccount: React.FunctionComponent<{
         'user type': 'teacher',
         'has school': hasSchool,
         'has marketing value selected': true,
-        'has display name': !nameErrorMessage,
+        'has display name': !displayNameErrorMessage,
         'educator role': educatorRole,
         country: countryCode,
       },
@@ -271,19 +315,47 @@ const FinishTeacherAccount: React.FunctionComponent<{
         <fieldset className={style.inputContainer}>
           <div>
             <TextField
+              name="givenName"
+              id="uitest-given-name"
+              label={locale.what_is_your_first_name()}
+              value={givenName}
+              onChange={e => onNameChange(e, NameType.GivenName)}
+            />
+            {givenNameErrorMessage && (
+              <BodyThreeText className={style.errorMessage}>
+                {givenNameErrorMessage}
+              </BodyThreeText>
+            )}
+          </div>
+          <div>
+            <TextField
+              name="familyName"
+              id="uitest-family-name"
+              label={locale.what_is_your_last_name()}
+              value={familyName}
+              onChange={e => onNameChange(e, NameType.FamilyName)}
+            />
+            {familyNameErrorMessage && (
+              <BodyThreeText className={style.errorMessage}>
+                {familyNameErrorMessage}
+              </BodyThreeText>
+            )}
+          </div>
+          <div>
+            <TextField
               name="displayName"
               id="uitest-display-name"
               label={locale.what_do_you_want_to_be_called()}
-              value={name}
+              value={displayName}
               placeholder={locale.msCoder()}
-              onChange={onNameChange}
+              onChange={e => onNameChange(e, NameType.DisplayName)}
             />
             <BodyThreeText className={style.displayNameSubtext}>
               {locale.this_is_what_your_students_will_see()}
             </BodyThreeText>
-            {nameErrorMessage && (
+            {displayNameErrorMessage && (
               <BodyThreeText className={style.errorMessage}>
-                {nameErrorMessage}
+                {displayNameErrorMessage}
               </BodyThreeText>
             )}
           </div>
