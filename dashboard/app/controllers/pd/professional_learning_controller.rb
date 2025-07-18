@@ -43,6 +43,10 @@ class Pd::ProfessionalLearningController < ApplicationController
     @zip_from_school_info = current_user&.school_info&.school&.zip&.to_s&.rjust(5, '0') || current_user&.school_info&.zip&.to_s&.rjust(5, '0')
 
     view_options(full_width: true, no_padding_container: true)
+
+    @page_title = I18n.t("pd.workshops.title")
+    @page_description = I18n.t("pd.workshops.description")
+    @canonical_url = CDO.studio_url("/professional-learning/workshops")
     render :regional_workshop_catalog
   end
 
