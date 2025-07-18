@@ -313,33 +313,35 @@ const FinishTeacherAccount: React.FunctionComponent<{
           </div>
         )}
         <fieldset className={style.inputContainer}>
-          <div>
-            <TextField
-              name="givenName"
-              id="uitest-given-name"
-              label={locale.what_is_your_first_name()}
-              value={givenName}
-              onChange={e => onNameChange(e, NameType.GivenName)}
-            />
-            {givenNameErrorMessage && (
-              <BodyThreeText className={style.errorMessage}>
-                {givenNameErrorMessage}
-              </BodyThreeText>
-            )}
-          </div>
-          <div>
-            <TextField
-              name="familyName"
-              id="uitest-family-name"
-              label={locale.what_is_your_last_name()}
-              value={familyName}
-              onChange={e => onNameChange(e, NameType.FamilyName)}
-            />
-            {familyNameErrorMessage && (
-              <BodyThreeText className={style.errorMessage}>
-                {familyNameErrorMessage}
-              </BodyThreeText>
-            )}
+          <div className={style.firstAndLastNameContainer}>
+            <div>
+              <TextField
+                name="givenName"
+                id="uitest-given-name"
+                label={locale.first_name()}
+                value={givenName}
+                onChange={e => onNameChange(e, NameType.GivenName)}
+              />
+              {givenNameErrorMessage && (
+                <BodyThreeText className={style.errorMessage}>
+                  {givenNameErrorMessage}
+                </BodyThreeText>
+              )}
+            </div>
+            <div>
+              <TextField
+                name="familyName"
+                id="uitest-family-name"
+                label={locale.last_name()}
+                value={familyName}
+                onChange={e => onNameChange(e, NameType.FamilyName)}
+              />
+              {familyNameErrorMessage && (
+                <BodyThreeText className={style.errorMessage}>
+                  {familyNameErrorMessage}
+                </BodyThreeText>
+              )}
+            </div>
           </div>
           <div>
             <TextField
