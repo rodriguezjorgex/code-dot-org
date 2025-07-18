@@ -163,7 +163,9 @@ const FinishStudentAccount: React.FunctionComponent<{
 
     if (newName.trim() === '') {
       setNameErrorMessage(
-        locale.name_error_message({nameType: NameType.DisplayName})
+        locale.name_error_message({
+          nameType: `${NameType.DisplayName}`.toLowerCase(),
+        })
       );
     } else if (newName.length > MAX_DISPLAY_NAME_LENGTH) {
       setNameErrorMessage(
