@@ -44,8 +44,8 @@ class Pd::ProfessionalLearningController < ApplicationController
 
     view_options(full_width: true, no_padding_container: true)
 
-    @page_title = I18n.t("pd.workshops.title")
-    @page_description = I18n.t("pd.workshops.description")
+    @page_title = "Computer Science and AI Professional Development Workshops"
+    @page_description = "Explore Code.org's catalog of K–12 professional development workshops, offered nationwide by expert facilitators and regional partners. Choose from in-person or virtual workshops on computer science and AI—designed to support all types of educators."
     @canonical_url = CDO.studio_url("/professional-learning/workshops")
     render :regional_workshop_catalog
   end
