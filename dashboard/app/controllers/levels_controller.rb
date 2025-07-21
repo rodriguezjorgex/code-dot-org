@@ -622,7 +622,7 @@ class LevelsController < ApplicationController
   end
 
   def add_skill
-    level_id = params[:levelId].to_i
+    level_id = params[:id].to_i
     skill_id  = params[:skillId].to_i
 
     begin
@@ -650,7 +650,7 @@ class LevelsController < ApplicationController
   end
 
   def remove_skill
-    level_id = params[:levelId].to_i
+    level_id = params[:id].to_i
     skill_id  = params[:skillId].to_i
 
     begin

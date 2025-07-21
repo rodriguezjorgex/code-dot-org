@@ -1014,7 +1014,8 @@ class Level < ApplicationRecord
   end
 
   def remove_skill_key(skill_key)
-    properties["skill_keys"] = JSON.parse(skill_keys)&.reject! {|sk| sk == skill_key} if skill_keys
+    leftover_skill_keys = JSON.parse(skill_keys)&.delete_if {|sk| sk == skill_key} if skill_keys
+    properties['skill_keys'] = leftover_skill_keys.empty? ? nil : leftover_skill_keys.to_json
     save!
   end
 
