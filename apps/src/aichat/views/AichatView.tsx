@@ -9,6 +9,9 @@ import React, {useCallback, useEffect, useMemo} from 'react';
 
 import TeacherOnboardingModal from '@cdo/apps/aichat/views/TeacherOnboardingModal';
 import ChatWarningModal from '@cdo/apps/aiComponentLibrary/warningModal/ChatWarningModal';
+import {queryParams} from '@cdo/apps/code-studio/utils';
+import FlowLab from '@cdo/apps/flowlab/views/flow/FlowLab';
+import {PERMISSIONS} from '@cdo/apps/lab2/constants';
 import Lab2Registry from '@cdo/apps/lab2/Lab2Registry';
 import {isProjectTemplateLevel} from '@cdo/apps/lab2/redux/lab2ReduxSelectors';
 import {LabProps} from '@cdo/apps/lab2/types';
@@ -87,6 +90,10 @@ const AichatView: React.FunctionComponent<LabProps<AichatLevelProperties>> = ({
   );
 
   const channelId = useAppSelector(state => state.lab.channel?.id);
+
+  const isLevelbuilder = useAppSelector(state =>
+    state.lab.permissions?.includes(PERMISSIONS.LEVELBUILDER)
+  );
 
   const projectManager = Lab2Registry.getInstance().getProjectManager();
   // Attach save listeners whenever the project manager updates
@@ -281,6 +288,10 @@ const AichatView: React.FunctionComponent<LabProps<AichatLevelProperties>> = ({
     savedAiCustomizations.retrievalContexts,
     savedAiCustomizations.systemPrompt,
   ]);
+
+  if (queryParams('show-flow-lab') === 'true' && isLevelbuilder) {
+    return <FlowLab />;
+  }
 
   return (
     <LevelPropertiesContext.Provider value={levelProperties}>
