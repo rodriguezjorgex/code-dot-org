@@ -317,7 +317,7 @@ const FinishTeacherAccount: React.FunctionComponent<{
         )}
         <fieldset className={style.inputContainer}>
           <div className={style.firstAndLastNameContainer}>
-            <div>
+            <div className={style.firstAndLastNameField}>
               <TextField
                 name="givenName"
                 id="uitest-given-name"
@@ -331,7 +331,7 @@ const FinishTeacherAccount: React.FunctionComponent<{
                 </BodyThreeText>
               )}
             </div>
-            <div>
+            <div className={style.firstAndLastNameField}>
               <TextField
                 name="familyName"
                 id="uitest-family-name"
