@@ -1374,7 +1374,7 @@ en:
       body_markdown: 'Your account doesn’t have an email address. Please [visit your account settings](%{user_registration}) to add your email address before completing this form.'
     workshops:
         title: 'Computer Science and AI Professional Development Workshops'
-        description: 'Explore Code.org’s catalog of K–12 professional development workshops, offered nationwide by expert facilitators and regional partners. Choose from in-person or virtual workshops on computer science and AI—designed to support all types of educators.'
+        description: "Explore Code.org's catalog of K–12 professional development workshops, offered nationwide by expert facilitators and regional partners. Choose from in-person or virtual workshops on computer science and AI—designed to support all types of educators."
   courses_category: 'Full Courses'
   course_offering:
     headers:
