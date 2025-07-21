@@ -5,9 +5,7 @@ import React from 'react';
 import {Factory} from 'rosie';
 import sinon from 'sinon'; // eslint-disable-line no-restricted-imports
 
-import EnrollmentsPanel, {
-  MOVE_ENROLLMENT_BUTTON_NAME,
-} from '@cdo/apps/code-studio/pd/workshop_dashboard/EnrollmentsPanel';
+import EnrollmentsPanel from '@cdo/apps/code-studio/pd/workshop_dashboard/EnrollmentsPanel';
 import './workshopFactory';
 
 describe('EnrollmentsPanel', () => {
@@ -123,21 +121,13 @@ describe('EnrollmentsPanel', () => {
       />
     );
 
-    wrapper.instance().handleClickChangeEnrollments({
-      target: {name: MOVE_ENROLLMENT_BUTTON_NAME},
-    });
+    wrapper.instance().handleClickChangeEnrollments();
     wrapper.update();
-    assert(
-      wrapper.state('enrollmentChangeDialogOpen'),
-      'Move enrollments dialog was not opened'
-    );
+    assert(wrapper.state('enrollmentChangeDialogOpen'));
 
     wrapper.instance().handleChangeEnrollmentsCanceled();
     wrapper.update();
-    assert(
-      !wrapper.state('enrollmentChangeDialogOpen'),
-      'Move enrollments dialog was not closed'
-    );
+    assert(!wrapper.state('enrollmentChangeDialogOpen'));
   });
 
   it('move some enrollments', () => {
@@ -162,9 +152,7 @@ describe('EnrollmentsPanel', () => {
     );
 
     // Open the move enrollments dialog
-    wrapper.instance().handleClickChangeEnrollments({
-      target: {name: MOVE_ENROLLMENT_BUTTON_NAME},
-    });
+    wrapper.instance().handleClickChangeEnrollments();
     wrapper.update();
     assert(wrapper.state('enrollmentChangeDialogOpen'));
 

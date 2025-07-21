@@ -19,8 +19,6 @@ import {
 } from './workshop_summary_utils';
 import WorkshopPanel from './WorkshopPanel';
 
-export const MOVE_ENROLLMENT_BUTTON_NAME = 'moveEnrollment';
-
 /**
  * View and manage the list of teachers enrolled in a workshop.
  */
@@ -202,7 +200,7 @@ export default class EnrollmentsPanel extends React.Component {
             bsSize="xsmall"
             disabled={this.state.selectedEnrollments.length === 0}
             onClick={this.handleClickChangeEnrollments}
-            name={MOVE_ENROLLMENT_BUTTON_NAME}
+            name="moveEnrollment"
           >
             Move (admin)
             <MoveEnrollmentsDialog
