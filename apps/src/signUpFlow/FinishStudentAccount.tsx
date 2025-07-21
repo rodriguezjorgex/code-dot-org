@@ -32,10 +32,11 @@ import {
   clearSignUpSessionStorage,
   SIGN_UP_USER_TYPE,
   MAX_DISPLAY_NAME_LENGTH,
-  NAME_TYPES,
 } from './signUpFlowConstants';
 
 import style from './signUpFlowStyles.module.scss';
+
+export const DISPLAY_NAME = locale.display_name();
 
 const FinishStudentAccount: React.FunctionComponent<{
   ageOptions: {value: string; text: string}[];
@@ -164,13 +165,13 @@ const FinishStudentAccount: React.FunctionComponent<{
     if (newName.trim() === '') {
       setNameErrorMessage(
         locale.name_error_message({
-          nameType: NAME_TYPES.DisplayName.toLowerCase(),
+          nameType: DISPLAY_NAME.toLowerCase(),
         })
       );
     } else if (newName.length > MAX_DISPLAY_NAME_LENGTH) {
       setNameErrorMessage(
         locale.name_too_long_error_message({
-          nameType: NAME_TYPES.DisplayName,
+          nameType: DISPLAY_NAME,
           maxLength: MAX_DISPLAY_NAME_LENGTH,
         })
       );

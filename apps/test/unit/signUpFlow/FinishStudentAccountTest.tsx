@@ -3,14 +3,15 @@ import '@testing-library/jest-dom';
 import React from 'react';
 import sinon from 'sinon'; // eslint-disable-line no-restricted-imports
 
-import FinishStudentAccount from '@cdo/apps/signUpFlow/FinishStudentAccount';
+import FinishStudentAccount, {
+  DISPLAY_NAME,
+} from '@cdo/apps/signUpFlow/FinishStudentAccount';
 import locale from '@cdo/apps/signUpFlow/locale';
 import {
   ACCOUNT_TYPE_SESSION_KEY,
   EMAIL_SESSION_KEY,
   MAX_DISPLAY_NAME_LENGTH,
   USER_RETURN_TO_SESSION_KEY,
-  NAME_TYPES,
 } from '@cdo/apps/signUpFlow/signUpFlowConstants';
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
 import {navigateToHref} from '@cdo/apps/utils';
@@ -45,7 +46,7 @@ describe('FinishStudentAccount', () => {
   ];
 
   const displayNameErrorMessage = locale.name_error_message({
-    nameType: NAME_TYPES.DisplayName.toLowerCase(),
+    nameType: DISPLAY_NAME.toLowerCase(),
   });
 
   beforeEach(() => {
@@ -244,7 +245,7 @@ describe('FinishStudentAccount', () => {
     // Error shows with long display name
     screen.getByText(
       locale.name_too_long_error_message({
-        nameType: NAME_TYPES.DisplayName,
+        nameType: DISPLAY_NAME,
         maxLength: MAX_DISPLAY_NAME_LENGTH,
       })
     );

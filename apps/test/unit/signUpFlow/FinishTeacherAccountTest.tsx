@@ -3,7 +3,9 @@ import '@testing-library/jest-dom';
 import React from 'react';
 import sinon from 'sinon'; // eslint-disable-line no-restricted-imports
 
-import FinishTeacherAccount from '@cdo/apps/signUpFlow/FinishTeacherAccount';
+import FinishTeacherAccount, {
+  NAME_TYPES,
+} from '@cdo/apps/signUpFlow/FinishTeacherAccount';
 import locale from '@cdo/apps/signUpFlow/locale';
 import {
   ACCOUNT_TYPE_SESSION_KEY,
@@ -13,7 +15,6 @@ import {
   SCHOOL_NAME_SESSION_KEY,
   SCHOOL_ZIP_SESSION_KEY,
   USER_RETURN_TO_SESSION_KEY,
-  NAME_TYPES,
 } from '@cdo/apps/signUpFlow/signUpFlowConstants';
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
 import {navigateToHref} from '@cdo/apps/utils';

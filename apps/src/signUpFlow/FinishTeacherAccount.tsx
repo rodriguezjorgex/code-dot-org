@@ -36,10 +36,15 @@ import {
   clearSignUpSessionStorage,
   SIGN_UP_USER_TYPE,
   MAX_DISPLAY_NAME_LENGTH,
-  NAME_TYPES,
 } from './signUpFlowConstants';
 
 import style from './signUpFlowStyles.module.scss';
+
+export const NAME_TYPES = {
+  GivenName: locale.first_name(),
+  FamilyName: locale.last_name(),
+  DisplayName: locale.display_name(),
+};
 
 export const roleItemGroups = [
   {

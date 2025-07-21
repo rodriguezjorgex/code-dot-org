@@ -1,7 +1,5 @@
 import {queryParams} from '@cdo/apps/code-studio/utils';
 
-import locale from './locale';
-
 // session storage keys
 export const ACCOUNT_TYPE_SESSION_KEY = 'accountType';
 export const SCHOOL_ID_SESSION_KEY = 'schoolId';
@@ -43,12 +41,6 @@ export const clearSignUpSessionStorage = (isTeacher: boolean) => {
 
 // user type cookie
 export const SIGN_UP_USER_TYPE = 'sign_up_user_type';
-
-export const NAME_TYPES = {
-  GivenName: locale.first_name(),
-  FamilyName: locale.last_name(),
-  DisplayName: locale.display_name(),
-};
 
 // school association
 export const US_COUNTRY_CODE = 'US';
