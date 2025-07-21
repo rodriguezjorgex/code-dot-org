@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import Draggable, {DraggableEventHandler} from 'react-draggable';
 import FocusLock from 'react-focus-lock';
 
+import experiments from '@cdo/apps/util/experiments';
+
 import {useAppSelector} from '../util/reduxHooks';
 import {tryGetSessionStorage, trySetSessionStorage} from '../utils';
 
@@ -77,6 +79,8 @@ const AiDiffContainer: React.FC<AiDiffContainerProps> = ({
     setPositionY(data.y);
   };
 
+  const showSidebar = experiments.isEnabled(experiments.AI_DIFF_SIDEBAR);
+
   return (
     <Draggable
       handle=".ai_diff_handle"
@@ -87,7 +91,9 @@ const AiDiffContainer: React.FC<AiDiffContainerProps> = ({
         // eslint-disable-next-line react/forbid-dom-props
         data-testid="draggable-test-id"
         id="draggable-id"
-        className={style.aiDiffContainer}
+        className={
+          showSidebar ? style.aiDiffContainerWide : style.aiDiffContainer
+        }
         style={open ? undefined : {display: 'none'}}
       >
         <FocusLock>
@@ -109,6 +115,7 @@ const AiDiffContainer: React.FC<AiDiffContainerProps> = ({
                     scriptName={scriptName}
                     unitDisplayName={unitDisplayName}
                     curriculumCourses={curriculumCourses}
+                    showSidebar={showSidebar}
                   />
                 )}
           </div>

@@ -11,6 +11,7 @@ interface AiDiffWorkSpaceProps {
   scriptName?: string;
   unitDisplayName?: string;
   curriculumCourses?: string[];
+  showSidebar?: boolean;
 }
 
 const AiDiffWorkSpace: React.FC<AiDiffWorkSpaceProps> = ({
@@ -18,10 +19,11 @@ const AiDiffWorkSpace: React.FC<AiDiffWorkSpaceProps> = ({
   scriptName,
   unitDisplayName,
   curriculumCourses,
+  showSidebar,
 }) => {
   return (
     <div className={style.aiDiffWorkspace}>
-      <AiDiffSidebar />
+      {showSidebar && <AiDiffSidebar />}
       <AiDiffChat
         context={context}
         scriptName={scriptName}
