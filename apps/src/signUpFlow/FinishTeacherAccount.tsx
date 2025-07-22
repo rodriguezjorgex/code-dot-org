@@ -144,12 +144,12 @@ const FinishTeacherAccount: React.FunctionComponent<{
 
   const formDisabled = useMemo(
     () =>
-      givenName?.trim() === '' ||
-      givenName?.length > MAX_DISPLAY_NAME_LENGTH ||
-      familyName?.trim() === '' ||
-      familyName?.length > MAX_DISPLAY_NAME_LENGTH ||
-      displayName?.trim() === '' ||
-      displayName?.length > MAX_DISPLAY_NAME_LENGTH ||
+      givenName.trim() === '' ||
+      givenName.length > MAX_DISPLAY_NAME_LENGTH ||
+      familyName.trim() === '' ||
+      familyName.length > MAX_DISPLAY_NAME_LENGTH ||
+      displayName.trim() === '' ||
+      displayName.length > MAX_DISPLAY_NAME_LENGTH ||
       !gdprValid ||
       schoolInfoInvalid(schoolInfo) ||
       !educatorRole,
