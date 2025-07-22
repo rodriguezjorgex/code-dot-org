@@ -1857,6 +1857,9 @@ class User < ApplicationRecord
   def self.from_omniauth(auth, params, request = nil)
     omniauth_user = find_by_credential(type: auth.provider, id: auth.uid)
 
+    puts 'CREATE FROM OMNIAUTH'
+    puts params.to_json
+
     unless omniauth_user
       omniauth_user = create
       initialize_new_oauth_user(omniauth_user, auth, params)
@@ -1888,6 +1891,9 @@ class User < ApplicationRecord
   end
 
   def self.initialize_new_oauth_user(user, auth, params)
+    puts 'INITIALIZE NEW OAUTH'
+    puts auth.to_json
+
     user.provider = auth.provider
     user.uid = auth.uid
     user.name = name_from_omniauth auth.info.name
@@ -1930,6 +1936,7 @@ class User < ApplicationRecord
   def self.name_from_omniauth(raw_name)
     return raw_name if raw_name.blank? || raw_name.is_a?(String) # some services just give us a string
     # clever returns a hash instead of a string for name
+    puts 'CAN GET FIRST AND LAST NAME HERE FOR CLEVER (and maybe others?)'
     "#{raw_name['first']} #{raw_name['last']}".squish
   end
 

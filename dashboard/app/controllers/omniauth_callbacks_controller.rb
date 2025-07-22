@@ -311,6 +311,9 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   private def extract_microsoft_data(auth)
+    puts 'MICROSOFT DATA'
+    puts auth[:extra][:raw_info].to_json
+
     microsoft_data = OmniAuth::AuthHash.new(
       email: auth[:extra][:raw_info][:userPrincipalName],
       name: auth[:extra][:raw_info][:displayName]
@@ -324,6 +327,10 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # expect it to be in the AuthHash. Example attributes: gender, date of birth.
   private def inject_clever_data(auth)
     return if auth.nil?
+
+    puts 'CLEVER DATA'
+    puts auth.to_json
+
     dob = auth[:dob] || auth.dig(:extra, :raw_info, :canonical, :data, :dob)
     gender = auth[:gender] || auth.dig(:extra, :raw_info, :canonical, :data, :gender)
     clever_data = OmniAuth::AuthHash.new(dob: dob, gender: gender)
