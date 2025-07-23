@@ -35,7 +35,7 @@ const NoMatchingSearchResultsFound: React.FunctionComponent<
       {onClearAllFilters && (
         <Button
           onClick={onClearAllFilters}
-          text={i18n.resetAllFilters()}
+          text={i18n.clearFilters()}
           color="purple"
           type="primary"
         />

@@ -2513,7 +2513,6 @@
   "resetTeacherPasswordTooltip": "You cannot reset passwords for teacher accounts in your section.",
   "secretLoginTooltip": "Disabled for teacher accounts in your section",
   "reported": "Reported",
-  "resetAllFilters": "Reset all filters",
   "resources": "Resources",
   "response": "Response",
   "responsesForClassSection": "Responses shown for class section:",
