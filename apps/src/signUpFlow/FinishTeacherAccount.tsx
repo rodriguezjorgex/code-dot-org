@@ -329,12 +329,8 @@ const FinishTeacherAccount: React.FunctionComponent<{
                 label={locale.first_name()}
                 value={givenName}
                 onChange={e => onNameChange(e, NAME_TYPES.GivenName)}
+                errorMessage={givenNameErrorMessage}
               />
-              {givenNameErrorMessage && (
-                <BodyThreeText className={style.errorMessage}>
-                  {givenNameErrorMessage}
-                </BodyThreeText>
-              )}
             </div>
             <div className={style.firstAndLastNameField}>
               <TextField
@@ -343,12 +339,8 @@ const FinishTeacherAccount: React.FunctionComponent<{
                 label={locale.last_name()}
                 value={familyName}
                 onChange={e => onNameChange(e, NAME_TYPES.FamilyName)}
+                errorMessage={familyNameErrorMessage}
               />
-              {familyNameErrorMessage && (
-                <BodyThreeText className={style.errorMessage}>
-                  {familyNameErrorMessage}
-                </BodyThreeText>
-              )}
             </div>
           </div>
           <div>
@@ -359,15 +351,11 @@ const FinishTeacherAccount: React.FunctionComponent<{
               value={displayName}
               placeholder={locale.msCoder()}
               onChange={e => onNameChange(e, NAME_TYPES.DisplayName)}
+              errorMessage={displayNameErrorMessage}
             />
             <BodyThreeText className={style.displayNameSubtext}>
               {locale.this_is_what_your_students_will_see()}
             </BodyThreeText>
-            {displayNameErrorMessage && (
-              <BodyThreeText className={style.errorMessage}>
-                {displayNameErrorMessage}
-              </BodyThreeText>
-            )}
           </div>
           <SimpleDropdown
             id="uitest-educator-role"
