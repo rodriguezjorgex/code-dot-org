@@ -36,7 +36,7 @@ import {
 
 import style from './signUpFlowStyles.module.scss';
 
-export const DISPLAY_NAME = locale.display_name();
+const DISPLAY_NAME = locale.display_name();
 
 const FinishStudentAccount: React.FunctionComponent<{
   ageOptions: {value: string; text: string}[];

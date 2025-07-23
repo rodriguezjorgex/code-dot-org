@@ -3,9 +3,7 @@ import '@testing-library/jest-dom';
 import React from 'react';
 import sinon from 'sinon'; // eslint-disable-line no-restricted-imports
 
-import FinishStudentAccount, {
-  DISPLAY_NAME,
-} from '@cdo/apps/signUpFlow/FinishStudentAccount';
+import FinishStudentAccount from '@cdo/apps/signUpFlow/FinishStudentAccount';
 import locale from '@cdo/apps/signUpFlow/locale';
 import {
   ACCOUNT_TYPE_SESSION_KEY,
@@ -46,7 +44,7 @@ describe('FinishStudentAccount', () => {
   ];
 
   const displayNameErrorMessage = locale.name_error_message({
-    nameType: DISPLAY_NAME.toLowerCase(),
+    nameType: 'display name',
   });
 
   beforeEach(() => {
@@ -245,7 +243,7 @@ describe('FinishStudentAccount', () => {
     // Error shows with long display name
     screen.getByText(
       locale.name_too_long_error_message({
-        nameType: DISPLAY_NAME,
+        nameType: 'Display name',
         maxLength: MAX_DISPLAY_NAME_LENGTH,
       })
     );
