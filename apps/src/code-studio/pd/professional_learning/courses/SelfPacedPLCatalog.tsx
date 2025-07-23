@@ -8,6 +8,7 @@ import {updateQueryParam} from '@cdo/apps/code-studio/utils';
 import {
   filterByDuration,
   filterByGradeLevel,
+  filterByMarketingInitiative,
   filterByTopic,
 } from '@cdo/apps/templates/courseOfferings/filters/helpers';
 import NoMatchingSearchResultsFound from '@cdo/apps/templates/courseOfferings/noMatchingSearchResultsFound/NoMathcingSearchResultsFound';
@@ -46,15 +47,20 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
       course =>
         filterByGradeLevel(course, appliedFilters.grade) &&
         filterByTopic(course, appliedFilters.topic) &&
+        filterByMarketingInitiative(
+          course,
+          appliedFilters.marketingInitiative
+        ) &&
         filterByDuration(course, appliedFilters.duration)
     );
 
     setFilteredCourses(newlyFilteredCourses);
   }, [
     selfPacedPLCourseOfferings,
-    appliedFilters.duration,
     appliedFilters.grade,
     appliedFilters.topic,
+    appliedFilters.marketingInitiative,
+    appliedFilters.duration,
     setFilteredCourses,
   ]);
 
