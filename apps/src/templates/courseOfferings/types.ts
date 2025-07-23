@@ -4,7 +4,7 @@ export interface CourseOffering {
   display_name: string;
   marketing_initiative?: string;
   grade_levels?: string; // comma-separated
-  image: string;
+  image?: string;
   cs_topic?: string; // comma-separated
   school_subject?: string;
   device_compatibility?: string; // JSON string

@@ -22,6 +22,7 @@ interface CourseOfferingCardProps extends CourseOffering {
   isThisCourseForTeachers?: boolean;
   courseDurationLabel: string;
   actionRowContent?: React.ReactNode;
+  defaultImageSrc: string;
 }
 
 const CourseOfferingCard: React.FC<CourseOfferingCardProps> = ({
@@ -34,6 +35,7 @@ const CourseOfferingCard: React.FC<CourseOfferingCardProps> = ({
   isThisCourseForTeachers,
   courseDurationLabel,
   actionRowContent,
+  defaultImageSrc,
 }) => {
   const translatedSubjectsAndTopicsTitlesArray = useMemo(() => {
     const keys = intersection(
@@ -96,7 +98,10 @@ const CourseOfferingCard: React.FC<CourseOfferingCardProps> = ({
 
   return (
     <div className={moduleStyles.courseOfferingCardContainer}>
-      <Image className={moduleStyles.courseOfferingCardImage} src={image} />
+      <Image
+        className={moduleStyles.courseOfferingCardImage}
+        src={image || defaultImageSrc}
+      />
       <div className={moduleStyles.mainContent}>
         <div className={moduleStyles.textContent}>
           <div className={moduleStyles.header}>
