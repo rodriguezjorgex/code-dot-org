@@ -3,6 +3,7 @@ import {configureStore} from '@reduxjs/toolkit';
 import React, {useEffect, useState} from 'react';
 import {Provider} from 'react-redux';
 
+import SelfPacedPLCatalogCard from '@cdo/apps/code-studio/pd/professional_learning/courses/SelfPacedPLCatalogCard';
 import {updateQueryParam} from '@cdo/apps/code-studio/utils';
 import {
   filterByDuration,
@@ -12,12 +13,10 @@ import {
 import NoMatchingSearchResultsFound from '@cdo/apps/templates/courseOfferings/noMatchingSearchResultsFound/NoMathcingSearchResultsFound';
 import {CourseOffering} from '@cdo/apps/templates/courseOfferings/types';
 // import CurriculumCatalog from '@cdo/apps/templates/curriculumCatalog/CurriculumCatalog';
-import {defaultImageSrc} from '@cdo/apps/templates/curriculumCatalog/curriculumCatalogConstants';
 import teacherSections from '@cdo/apps/templates/teacherDashboard/teacherSectionsRedux';
 import NoMatchingCoursesImage from '@cdo/static/professional-learning/courses/no-curriculum-assigned-empty-state-illustration.png';
 import PLCatalogHeroBannerImage from '@cdo/static/professional-learning/courses/selfPacedPLCatalog-HeroBanner-illustration.png';
 
-import SelfPacedPLCatalogCard from './../SelfPacedPLCatalogCard';
 import {
   getEmptyFilters,
   getInitialFilterStates,
@@ -72,11 +71,11 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
     }
   }, [expandedCardKey, filteredCourses]);
 
-  const updateExpandedCardKey = (key: string) => {
-    // If updateExpandedCardKey receives the same key as it currently is, then that indicates it's open and
-    // we want to close it so we set it to ''. Otherwise, we expand the card of the provided key.
-    setExpandedCardKey(expandedCardKey === key ? '' : key);
-  };
+  // const updateExpandedCardKey = (key: string) => {
+  //   // If updateExpandedCardKey receives the same key as it currently is, then that indicates it's open and
+  //   // we want to close it so we set it to ''. Otherwise, we expand the card of the provided key.
+  //   setExpandedCardKey(expandedCardKey === key ? '' : key);
+  // };
 
   // Clears all filter selections.
   const handleClearAllFilters = () => {
@@ -93,22 +92,7 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
       return (
         <div className={style.catalogContentCards}>
           {filteredCourses.map(courseOffering => (
-            <SelfPacedPLCatalogCard
-              key={courseOffering.key}
-              courseKey={courseOffering.key}
-              displayName={courseOffering.display_name}
-              gradeLevels={courseOffering.grade_levels}
-              duration={courseOffering.duration_in_hours}
-              csTopics={courseOffering.cs_topic}
-              description={courseOffering.description}
-              image={courseOffering.image || defaultImageSrc}
-              video={courseOffering.video}
-              pathToCourse={courseOffering.course_version_path}
-              isExpanded={expandedCardKey === courseOffering.key}
-              updateExpandedCardKey={() =>
-                updateExpandedCardKey(courseOffering.key)
-              }
-            />
+            <SelfPacedPLCatalogCard {...courseOffering} />
           ))}
         </div>
       );

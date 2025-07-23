@@ -5,13 +5,11 @@
 
 $card-width: 309px;
 
-//.selfPacedPLCatalog {
-//  .plCatalogHeroBanner {
-//    background-color: var(--background-neutral-primary);
-//  }
-//}
-
 .selfPacedPLCatalog {
+  .plCatalogHeroBanner {
+    background-color: var(--background-neutral-primary);
+  }
+
   background-color: var(--background-neutral-secondary);
 
   .bodyContainer {
