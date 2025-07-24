@@ -294,6 +294,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     @form_data = {
       email: user.email,
+      given_name: user.given_name,
+      family_name: user.family_name,
       provider: provider
     }
     sign_up_url = determine_sign_up_url(user)
