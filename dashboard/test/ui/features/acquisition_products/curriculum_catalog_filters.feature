@@ -17,7 +17,7 @@ Feature: Curriculum Catalog Filters
     Then I click selector "#grade-dropdown-button"
     And I wait until element "span:contains(Grade 12)" is visible
     Then I click selector "span:contains(Grade 12)"
-    And I wait until element "h5:contains(No matching curricula)" is visible
+    And I wait until element "h2:contains(No matching curricula)" is visible
     And I see no difference for "Curriculum Catalog: No Offerings"
     And I close my eyes
 
@@ -40,7 +40,7 @@ Feature: Curriculum Catalog Filters
     Then I click selector "#grade-dropdown-button"
     And I wait until element "span:contains(Grado 12)" is visible
     Then I click selector "span:contains(Grado 12)"
-    And I wait until element "img ~ h5" is visible
+    And I wait until element "figure ~ h2" is visible
     And I see no difference for "Curriculum Catalog: No Offerings in Spanish"
     And I close my eyes
 
