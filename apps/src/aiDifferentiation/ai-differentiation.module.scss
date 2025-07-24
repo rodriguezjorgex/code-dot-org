@@ -297,6 +297,19 @@
   padding-bottom: 16px;
 }
 
+.sidebarSectionTitle {
+  margin: 0;
+  padding: 8px 16px;
+  color: $neutral_dark80;
+}
+
+.sidebarChatItem {
+  color: $neutral_dark90;
+  font-family: Figtree, sans-serif;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
 .sidebarButton {
   width: 224px; /* drawerWidth - 16 */
   margin-top: 15px !important;
