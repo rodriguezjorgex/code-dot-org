@@ -44,19 +44,14 @@ export const getValidParamValues = (
 // Returns initial filter states based on URL parameters (returns empty filters if
 // no relevant parameters in the URL).
 export const getInitialFilterStates = () => {
-  const urlParams = queryParams();
+  const urlParams = queryParams() as Record<string, string | undefined>;
   const filterKeys = SELF_PACED_PL_CATALOG_FILTERS.map(filter => filter.name);
 
   const initialFilters = getEmptyFilters();
-  Object.keys(urlParams).forEach(paramKey => {
-    const paramArray: string =
-      urlParams[paramKey as keyof typeof urlParams] || '';
-    if (
-      paramArray &&
-      filterKeys.includes(paramKey as SelfPacedCatalogFilterKey)
-    ) {
-      initialFilters[paramKey as SelfPacedCatalogFilterKey] =
-        getValidParamValues(paramKey, paramArray.split(','));
+  filterKeys.forEach(key => {
+    const paramValue = urlParams[key];
+    if (paramValue) {
+      initialFilters[key] = getValidParamValues(key, paramValue.split(','));
     }
   });
   return initialFilters as Record<SelfPacedCatalogFilterKey, string[]>;

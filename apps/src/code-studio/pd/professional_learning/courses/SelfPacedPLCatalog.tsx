@@ -1,7 +1,7 @@
 import HeroBanner from '@code-dot-org/component-library/heroBanner';
-import {configureStore} from '@reduxjs/toolkit';
+// import {configureStore} from '@reduxjs/toolkit';
 import React, {useEffect, useState} from 'react';
-import {Provider} from 'react-redux';
+// import {Provider} from 'react-redux';
 
 import SelfPacedPLCatalogCard from '@cdo/apps/code-studio/pd/professional_learning/courses/SelfPacedPLCatalogCard';
 import {updateQueryParam} from '@cdo/apps/code-studio/utils';
@@ -14,7 +14,7 @@ import {
 import NoMatchingSearchResultsFound from '@cdo/apps/templates/courseOfferings/noMatchingSearchResultsFound/NoMathcingSearchResultsFound';
 import {CourseOffering} from '@cdo/apps/templates/courseOfferings/types';
 // import CurriculumCatalog from '@cdo/apps/templates/curriculumCatalog/CurriculumCatalog';
-import teacherSections from '@cdo/apps/templates/teacherDashboard/teacherSectionsRedux';
+// import teacherSections from '@cdo/apps/templates/teacherDashboard/teacherSectionsRedux';
 import NoMatchingCoursesImage from '@cdo/static/professional-learning/courses/no-curriculum-assigned-empty-state-illustration.png';
 import PLCatalogHeroBannerImage from '@cdo/static/professional-learning/courses/selfPacedPLCatalog-HeroBanner-illustration.png';
 
@@ -64,7 +64,7 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
     setFilteredCourses,
   ]);
 
-  console.log(selfPacedPLCourseOfferings);
+  // console.log(selfPacedPLCourseOfferings);
   const [expandedCardKey, setExpandedCardKey] = useState('');
 
   useEffect(() => {
@@ -116,31 +116,31 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
 
   return (
     <div className={style.selfPacedPLCatalog}>
-      <Provider store={configureStore({reducer: {teacherSections}})}>
-        <HeroBanner
-          className={moduleStyles.plCatalogHeroBanner}
-          data-theme="Dark"
-          heading="Explore self-paced professional learning"
-          subHeading="Professional learning offerings to support teachers in every stage of their computer science teaching journey."
-          imageProps={{src: PLCatalogHeroBannerImage}}
-          withWideText
-          hideImageOnSmallScreen
+      {/*<Provider store={configureStore({reducer: {teacherSections}})}>*/}
+      <HeroBanner
+        className={moduleStyles.plCatalogHeroBanner}
+        data-theme="Dark"
+        heading="Explore self-paced professional learning"
+        subHeading="Professional learning offerings to support teachers in every stage of their computer science teaching journey."
+        imageProps={{src: PLCatalogHeroBannerImage}}
+        withWideText
+        hideImageOnSmallScreen
+      />
+      <section className={style.bodyContainer}>
+        <SelfPacedPLCatalogFilters
+          appliedFilters={appliedFilters}
+          setAppliedFilters={setAppliedFilters}
+          handleClearAllFilters={handleClearAllFilters}
         />
-        <section className={style.bodyContainer}>
-          <SelfPacedPLCatalogFilters
-            appliedFilters={appliedFilters}
-            setAppliedFilters={setAppliedFilters}
-            handleClearAllFilters={handleClearAllFilters}
-          />
-          <div>{renderSearchResults()}</div>
-        </section>
+        <div>{renderSearchResults()}</div>
+      </section>
 
-        {/*<CurriculumCatalog*/}
-        {/*  curriculaData={selfPacedPLCourseOfferings}*/}
-        {/*  isInUS*/}
-        {/*  languageNativeName={'adsa'}*/}
-        {/*/>*/}
-      </Provider>
+      {/*<CurriculumCatalog*/}
+      {/*  curriculaData={selfPacedPLCourseOfferings}*/}
+      {/*  isInUS*/}
+      {/*  languageNativeName={'adsa'}*/}
+      {/*/>*/}
+      {/*</Provider>*/}
     </div>
   );
 };
