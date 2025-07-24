@@ -31,6 +31,8 @@ import locale from './locale';
 import {
   ACCOUNT_TYPE_SESSION_KEY,
   EMAIL_SESSION_KEY,
+  GIVEN_NAME_SESSION_KEY,
+  FAMILY_NAME_SESSION_KEY,
   OAUTH_LOGIN_TYPE_SESSION_KEY,
   USER_RETURN_TO_SESSION_KEY,
   clearSignUpSessionStorage,
@@ -101,6 +103,16 @@ const FinishTeacherAccount: React.FunctionComponent<{
         `/users/sign_up/login_type?user_type=${UserTypes.TEACHER}`
       );
     }
+
+    // If their first and last names are known from their 3rd-party provider login choice, prepopulate their values.
+    const prepopulatedGivenName = sessionStorage.getItem(
+      GIVEN_NAME_SESSION_KEY
+    );
+    const prepopulatedFamilyName = sessionStorage.getItem(
+      FAMILY_NAME_SESSION_KEY
+    );
+    if (prepopulatedGivenName) setGivenName(prepopulatedGivenName);
+    if (prepopulatedFamilyName) setGivenName(prepopulatedFamilyName);
 
     analyticsReporter.sendEvent(
       EVENTS.FINISH_ACCOUNT_PAGE_LOADED,
