@@ -19,7 +19,7 @@ describe('WorkshopLinks', () => {
 
     screen.getByText('Your Workshop Links');
     screen.getByText('Marketing Page');
-    screen.getByText('https://studio.code.org/professional-learni...');
+    screen.getByText(`${window.location.origin}/profession...`);
     expect(screen.getAllByText('Copy link').length).toBe(1);
   });
 
@@ -29,8 +29,8 @@ describe('WorkshopLinks', () => {
     screen.getByText('Your Workshop Links');
     screen.getByText('Marketing Page');
     screen.getByText('Join Workshop Page');
-    screen.getByText('https://studio.code.org/professional-learni...');
-    screen.getByText('https://studio.code.org/pd/workshops/1/join');
+    screen.getByText(`${window.location.origin}/profession...`);
+    screen.getByText(`${window.location.origin}/pd/worksho...`);
     expect(screen.getAllByText('Copy link').length).toBe(2);
   });
 });
