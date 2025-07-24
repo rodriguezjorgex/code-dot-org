@@ -260,10 +260,9 @@ class FilesApi < Sinatra::Base
     #
     # Use Sinatra's attachment helper to set Content-Disposition header
     #  NOTE: this protects against header injection attacks by escaping the filename
-    #  the safe_filename below is just an extra precaution, as the attachment helper
-    #  would have escaped the filename as well.  See Jira task: BC-72
+    #  See Jira task: BC-72
     unless code_projects_domain_root_route || safely_viewable_file_type?(type)
-      attachment(safe_filename)
+      attachment(filename)
     end
 
     result = buckets.get(encrypted_channel_id, filename, env['HTTP_IF_MODIFIED_SINCE'], request.GET['version'])
