@@ -124,7 +124,7 @@ blocklyTags.forEach(tag => {
 const localizationComponentWrappers = {
   a: function (props) {
     // eslint-disable-next-line jsx-a11y/anchor-has-content
-    return <a {...props} data-lz-url data-localize="markdown-url" />;
+    return <a {...props} data-lz-url="true" data-localize="markdown-url" />;
   },
   p: function (props) {
     return <p {...props} data-isolate="true" />;
