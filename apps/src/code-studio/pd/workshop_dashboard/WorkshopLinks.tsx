@@ -13,16 +13,6 @@ import WorkshopPanel from './WorkshopPanel';
 
 import style from './workshopLinks.module.scss';
 
-const MAX_URL_TEXT_LENGTH = 46;
-
-const shortenUrlText = (link: string): string => {
-  if (link.length > MAX_URL_TEXT_LENGTH) {
-    return `${link.slice(0, MAX_URL_TEXT_LENGTH - 3)}...`;
-  } else {
-    return link;
-  }
-};
-
 const CopyLinkButton: React.FunctionComponent<{link: string}> = ({link}) => {
   const [icon, setIcon] = useState('copy');
 
@@ -75,9 +65,7 @@ const WorkshopLinks: React.FunctionComponent<{
             rel="noopener noreferrer"
             className={style.workshopLink}
           >
-            {shortenUrlText(
-              `${window.location.origin}/professional-learning/workshops/${workshopId}`
-            )}
+            {`https://studio.code.org/professional-learning/workshops/${workshopId}`}
           </a>
           <CopyLinkButton
             link={`${window.location.origin}/professional-learning/workshops/${workshopId}`}
@@ -99,9 +87,7 @@ const WorkshopLinks: React.FunctionComponent<{
               rel="noopener noreferrer"
               className={style.workshopLink}
             >
-              {shortenUrlText(
-                `${window.location.origin}/pd/workshops/${workshopId}/join`
-              )}
+              {`https://studio.code.org/pd/workshops/${workshopId}/join`}
             </a>
             <CopyLinkButton
               link={`${window.location.origin}/pd/workshops/${workshopId}/join`}
