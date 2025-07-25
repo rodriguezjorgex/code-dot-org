@@ -37,10 +37,7 @@ const SelfPacedPLCatalogCardInitial: React.FunctionComponent<
       actionRowContent={
         <>
           <Button
-            onClick={() => {
-              updateExpandedCardKey(courseOffering.key);
-              console.log('quick view', courseOffering);
-            }}
+            onClick={() => updateExpandedCardKey(courseOffering.key)}
             text={i18n.quickView()}
             size="m"
             type="secondary"
