@@ -112,7 +112,7 @@ const FinishTeacherAccount: React.FunctionComponent<{
       FAMILY_NAME_SESSION_KEY
     );
     if (prepopulatedGivenName) setGivenName(prepopulatedGivenName);
-    if (prepopulatedFamilyName) setGivenName(prepopulatedFamilyName);
+    if (prepopulatedFamilyName) setFamilyName(prepopulatedFamilyName);
 
     analyticsReporter.sendEvent(
       EVENTS.FINISH_ACCOUNT_PAGE_LOADED,
