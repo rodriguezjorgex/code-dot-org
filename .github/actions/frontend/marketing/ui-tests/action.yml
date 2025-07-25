@@ -48,13 +48,14 @@ runs:
 
     - name: UI Tests
       shell: bash
+      # If updating playwright, also update the version in package.json
       run: |
         docker run --network host \
           --env-file ./apps/marketing/.env \
           -v $PWD:/workspace \
           -w /workspace/frontend \
-          mcr.microsoft.com/playwright:v1.49.1-noble \ # If updating playwright, also update the version in package.json
-          bash -c "corepack enable && yarn build --filter @code-dot-org/marketing && HOME=/root yarn workspace @code-dot-org/marketing test:ui:ci --shard ${{ matrix.shardIndex }}/${{ matrix.shardTotal }}"
+          mcr.microsoft.com/playwright:v1.49.1-noble \
+          bash -c "corepack enable && yarn build --filter @code-dot-org/marketing && HOME=/root yarn workspace @code-dot-org/marketing test:ui:ci"
       working-directory: ./frontend
 
     - name: Upload Playwright reports
