@@ -1,43 +1,63 @@
+$left-card-arrow-center-left-value: 17.5%;
+$center-card-arrow-center-left-value: 51.5%;
+$right-card-arrow-center-left-value: 85.5%;
+
+
+div > div:nth-child(3n + 1) {
+  .courseOfferingExpandedCardContainer {
+    justify-self: flex-start;
+
+    .arrowContainer:before {
+      inset-inline-start: $left-card-arrow-center-left-value;
+    }
+  }
+}
+
+
+div > div:nth-child(3n + 2) {
+  .courseOfferingExpandedCardContainer {
+    justify-self: center;
+
+    .arrowContainer:before {
+      inset-inline-start: $center-card-arrow-center-left-value;
+    }
+  }
+}
+
+div > div:nth-child(3n + 3) {
+  .courseOfferingExpandedCardContainer {
+    justify-self: flex-end;
+
+    .arrowContainer:before {
+      inset-inline-start: $right-card-arrow-center-left-value;
+      background-color: var(--background-neutral-secondary);
+    }
+  }
+}
 .courseOfferingExpandedCardContainer {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
 }
 
 .arrowContainer {
   display: flex;
-  width: 60rem;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.625rem;
-
   position: relative;
-  max-width: 600px;
-  height: auto;
-  border: 1px solid #fff;
-  padding-top: 16px;
+  padding-top: 1.5rem;
   box-sizing: border-box;
 }
 
 .arrowContainer::before {
-  //width: 1.67519rem;
-  //height: 0.85013rem;
-  fill: var(--background-neutral-secondary, #F0F2F5);
-  stroke-width: 1px;
-  stroke: var(--borders-neutral-primary, #D4DAE1);
-
   position: absolute;
   width: 20px;
   height: 20px;
-  border-top: 1px solid #292f36;
-  border-left: 1px solid #292f36;
+  border-top: 1px solid var(--borders-neutral-primary);
+  border-left: 1px solid var(--borders-neutral-primary);
+  background: var(--background-neutral-primary);
   top: 100%;
-  left: 54.5%;
   margin-left: -25px;
   content: "";
   transform: rotate(45deg);
-  margin-top: -9px;
-  background: #fff;
+  margin-top: -10px;
   z-index: 1;
 }
 
@@ -46,8 +66,9 @@
   width: 60rem;
   align-items: flex-start;
   border-radius: 0.25rem;
-  border: 1px solid var(--borders-neutral-primary, #D4DAE1);
-  background: var(--background-neutral-primary, #FFF);
+  border: 1px solid var(--borders-neutral-primary);
+  background: var(--background-neutral-primary);
+  box-sizing: border-box;
 
   .curriculumDetails {
     display: flex;
@@ -104,8 +125,8 @@
       align-items: flex-start;
       gap: 0.75rem;
       align-self: stretch;
-      border-bottom: 1px solid var(--borders-neutral-primary, #D4DAE1);
-      background: var(--background-neutral-primary, #FFF);
+      border-bottom: 1px solid var(--borders-neutral-primary);
+      background: var(--background-neutral-primary);
 
       figure {
         height: 100%;
@@ -120,7 +141,7 @@
       gap: 0.625rem;
       align-self: stretch;
 
-      border-bottom: 1px solid var(--borders-neutral-primary, #D4DAE1);
+      border-bottom: 1px solid var(--borders-neutral-primary);
     }
 
     .actionRowContent {
@@ -142,8 +163,8 @@
     position: relative;
 
     border-radius: 0 0.25rem 0.25rem 0;
-    border-left: 1px solid var(--borders-neutral-primary, #D4DAE1);
-    background: var(--background-neutral-secondary, #F0F2F5);
+    border-left: 1px solid var(--borders-neutral-primary);
+    background: var(--background-neutral-secondary);
 
     .top {
       display: flex;
@@ -154,8 +175,8 @@
       align-items: flex-start;
       gap: 0.5rem;
       align-self: stretch;
-      border-bottom: 1px solid var(--borders-neutral-primary, #D4DAE1);
-      background: var(--background-neutral-secondary, #F0F2F5);
+      border-bottom: 1px solid var(--borders-neutral-primary);
+      background: var(--background-neutral-secondary);
     }
 
     .related {

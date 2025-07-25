@@ -17,6 +17,7 @@ import moduleStyles from './courseOfferingExpandedCard.module.scss';
 
 interface CourseOfferingExpandedCardProps {
   courseOffering: CourseOffering;
+  onClose: () => void;
   actionRowContent?: React.ReactNode;
   translatedGradeRange: [string, string];
   courseDurationLabel: string;
@@ -29,6 +30,7 @@ const CourseOfferingExpandedCard: React.FunctionComponent<
   CourseOfferingExpandedCardProps
 > = ({
   courseOffering,
+  onClose,
   actionRowContent,
   isThisCourseForTeachers,
   courseDurationLabel,
@@ -140,7 +142,7 @@ const CourseOfferingExpandedCard: React.FunctionComponent<
 
           <CloseButton
             aria-label="Close expanded card"
-            onClick={() => courseOffering.key}
+            onClick={onClose}
             size="l"
             className={moduleStyles.closeExpandedCardButton}
           />
