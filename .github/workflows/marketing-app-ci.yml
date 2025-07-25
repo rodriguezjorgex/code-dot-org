@@ -104,7 +104,7 @@ jobs:
 
       - name: Run Docker Container
         run: |
-          docker run -d --env-file .env --rm --name marketing \ 
+          docker run -d --env-file .env --rm --name marketing \
             --network=host \
             -e PORT=3001 \
             marketing:test
