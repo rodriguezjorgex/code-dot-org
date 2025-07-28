@@ -75,7 +75,7 @@ runs:
     - name: Run Google Lighthouse Audits
       uses: treosh/lighthouse-ci-action@9917efea514615fb2ff2890f5b8be2d51e703b6e
       # Only run lighthouse audits once
-      if: inputs.SHARD_INDEX == 1
+      if: inputs.SHARD_INDEX == '1'
       env:
         HTTP_PROTOCOL: ${{ inputs.APPLICATION_BASE_ADDRESS == 'code.marketing-sites.localhost:3001' && 'http' || 'https' }}
       with:
