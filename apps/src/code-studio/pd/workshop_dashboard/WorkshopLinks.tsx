@@ -81,9 +81,7 @@ const WorkshopLinks: React.FunctionComponent<{
             target="_blank"
             rel="noopener noreferrer"
             className={style.workshopLink}
-          >
-            {`${window.location.origin}/pd/workshops/${workshopId}/join`}
-          </a>
+          >{`${window.location.origin}/pd/workshops/${workshopId}/join`}</a>
           <CopyLinkButton
             link={`${window.location.origin}/pd/workshops/${workshopId}/join`}
           />
