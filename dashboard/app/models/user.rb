@@ -1826,8 +1826,8 @@ class User < ApplicationRecord
     user.user_type = 'teacher' if user.user_type == 'staff' # Powerschool sends through 'staff' instead of 'teacher'
 
     if user.user_type == User::TYPE_TEACHER
-      user.given_name = auth.info.first_name || auth.info.given_name
-      user.family_name = auth.info.last_name || auth.info.family_name
+      user.given_name = auth.info.first_name.presence || auth.info.given_name
+      user.family_name = auth.info.last_name.presence || auth.info.family_name
     else
       user.family_name = auth.info.family_name if auth.info.family_name.present?
     end
