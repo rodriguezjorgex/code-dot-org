@@ -2940,6 +2940,115 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
+  test 'from_omniauth: creates new student user without saving provided given_name' do
+    auth = OmniAuth::AuthHash.new(
+      provider: 'google_oauth2',
+      uid: '123456',
+      credentials: {
+        token: 'fake oauth token',
+        expires_at: Time.now.to_i + 3600,
+        refresh_token: 'fake refresh token',
+      },
+      info: {
+        given_name: 'GivenName',
+        family_name: 'FamilyName',
+        name: 'TestName',
+        user_type: 'student'
+      },
+    )
+    params = {}
+
+    assert_creates(User) do
+      user = User.from_omniauth(auth, params)
+      assert_nil user.given_name
+      assert_equal 'FamilyName', user.family_name
+      assert_equal 'TestName', user.name
+      assert_equal User::TYPE_STUDENT, user.user_type
+    end
+  end
+
+  test 'from_omniauth: creates new teacher user which saves provided given_name and family_name' do
+    auth = OmniAuth::AuthHash.new(
+      provider: 'google_oauth2',
+      uid: '123456',
+      credentials: {
+        token: 'fake oauth token',
+        expires_at: Time.now.to_i + 3600,
+        refresh_token: 'fake refresh token',
+      },
+      info: {
+        given_name: 'GivenName',
+        family_name: 'FamilyName',
+        name: 'TestName',
+        email: 'test-123456@code.org',
+        user_type: 'teacher'
+      },
+    )
+    params = {}
+
+    assert_creates(User) do
+      user = User.from_omniauth(auth, params)
+      assert_equal 'GivenName', user.given_name
+      assert_equal 'FamilyName', user.family_name
+      assert_equal 'TestName', user.name
+      assert_equal User::TYPE_TEACHER, user.user_type
+    end
+  end
+
+  test 'from_omniauth: creates new teacher user which saves provided first_name and last_name' do
+    auth = OmniAuth::AuthHash.new(
+      provider: 'google_oauth2',
+      uid: '123456',
+      credentials: {
+        token: 'fake oauth token',
+        expires_at: Time.now.to_i + 3600,
+        refresh_token: 'fake refresh token',
+      },
+      info: {
+        first_name: 'FirstName',
+        last_name: 'LastName',
+        name: 'TestName',
+        email: 'test-123456@code.org',
+        user_type: 'teacher'
+      },
+    )
+    params = {}
+
+    assert_creates(User) do
+      user = User.from_omniauth(auth, params)
+      assert_equal 'FirstName', user.given_name
+      assert_equal 'LastName', user.family_name
+      assert_equal 'TestName', user.name
+      assert_equal User::TYPE_TEACHER, user.user_type
+    end
+  end
+
+  test 'from_omniauth: creates new teacher user which saves provided hash of given_name and family_name' do
+    auth = OmniAuth::AuthHash.new(
+      provider: 'google_oauth2',
+      uid: '123456',
+      credentials: {
+        token: 'fake oauth token',
+        expires_at: Time.now.to_i + 3600,
+        refresh_token: 'fake refresh token',
+      },
+      info: {
+        name: {first: 'GivenName', last: 'FamilyName'},
+        email: 'test-123456@code.org',
+        user_type: 'teacher'
+      },
+    )
+    params = {}
+
+    assert_creates(User) do
+      user = User.from_omniauth(auth, params)
+      assert_equal 'GivenName', user.given_name
+      assert_equal 'FamilyName', user.family_name
+      assert_equal 'GivenName FamilyName', user.name
+      assert_equal User::TYPE_TEACHER, user.user_type
+    end
+  end
+
   test 'from_omniauth: updates user oauth tokens if user with matching credentials exists' do
     uid = '123456'
     provider = 'google_oauth2'
