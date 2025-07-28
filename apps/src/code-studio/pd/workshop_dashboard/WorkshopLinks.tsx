@@ -58,19 +58,15 @@ const WorkshopLinks: React.FunctionComponent<{
           Share this page with teachers to promote your workshop. It includes
           key details and will guide them to the correct registration process.
         </BodyFourText>
-        <div className={style.buttonContainer}>
-          <a
-            href={`${window.location.origin}/professional-learning/workshops/${workshopId}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={style.workshopLink}
-          >
-            {`https://studio.code.org/professional-learning/workshops/${workshopId}`}
-          </a>
-          <CopyLinkButton
-            link={`${window.location.origin}/professional-learning/workshops/${workshopId}`}
-          />
-        </div>
+        <a
+          href={`${window.location.origin}/professional-learning/workshops/${workshopId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={style.workshopLink}
+        >{`${window.location.origin}/professional-learning/workshops/${workshopId}`}</a>
+        <CopyLinkButton
+          link={`${window.location.origin}/professional-learning/workshops/${workshopId}`}
+        />
       </div>
       {hasCustomRegistrationLink && (
         <div className={classNames(style.linkColumn, style.secondLinkColumn)}>
@@ -80,19 +76,17 @@ const WorkshopLinks: React.FunctionComponent<{
             Code.org after registering through your system. This ensures they're
             counted for attendance, surveys, and certificates.
           </BodyFourText>
-          <div className={style.buttonContainer}>
-            <a
-              href={`${window.location.origin}/pd/workshops/${workshopId}/join`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={style.workshopLink}
-            >
-              {`https://studio.code.org/pd/workshops/${workshopId}/join`}
-            </a>
-            <CopyLinkButton
-              link={`${window.location.origin}/pd/workshops/${workshopId}/join`}
-            />
-          </div>
+          <a
+            href={`${window.location.origin}/pd/workshops/${workshopId}/join`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={style.workshopLink}
+          >
+            {`${window.location.origin}/pd/workshops/${workshopId}/join`}
+          </a>
+          <CopyLinkButton
+            link={`${window.location.origin}/pd/workshops/${workshopId}/join`}
+          />
         </div>
       )}
     </div>
