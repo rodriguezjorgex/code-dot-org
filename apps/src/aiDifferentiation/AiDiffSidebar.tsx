@@ -1,5 +1,4 @@
 import Button, {buttonColors} from '@code-dot-org/component-library/button';
-import Link from '@code-dot-org/component-library/link';
 import {Box, List, ListItem, ListItemButton, ListItemText} from '@mui/material';
 import React from 'react';
 
@@ -70,11 +69,7 @@ const chats = [
 
 const todayChats = chats.filter(chat => {
   const chatDate = new Date(chat.timestamp);
-  return (
-    chatDate.getDate() === now.getDate() &&
-    chatDate.getMonth() === now.getMonth() &&
-    chatDate.getFullYear() === now.getFullYear()
-  );
+  return chatDate > yesterday;
 });
 
 const past7DaysChats = chats.filter(chat => {
@@ -95,9 +90,13 @@ const oldChats = chats.filter(chat => {
 
 const drawerWidth = 240;
 
-const ChatItem: React.FC<{chat: (typeof chats)[0]}> = ({chat}) => (
+const ChatItem: React.FC<{
+  chat: (typeof chats)[0];
+  selected: boolean;
+  onClick: () => void;
+}> = ({chat, selected, onClick}) => (
   <ListItem key={chat.id} disablePadding>
-    <ListItemButton href={chat.link}>
+    <ListItemButton onClick={() => onClick()} selected={selected}>
       <ListItemText
         primary={chat.displayName}
         className={styles.sidebarChatItem}
@@ -106,7 +105,12 @@ const ChatItem: React.FC<{chat: (typeof chats)[0]}> = ({chat}) => (
   </ListItem>
 );
 
-const AiDiffSidebar: React.FC<AiDiffSidebarProps> = props => {
+const AiDiffSidebar: React.FC<AiDiffSidebarProps> = () => {
+  const [selectedChat, setSelectedChat] = React.useState<number>(0);
+  const handleListItemClick = (chatId: number) => {
+    setSelectedChat(chatId);
+  };
+
   return (
     <aside className={styles.sidebarContainer}>
       <div className={styles.sidebarContent}>
@@ -129,7 +133,12 @@ const AiDiffSidebar: React.FC<AiDiffSidebarProps> = props => {
               <>
                 <p className={styles.sidebarSectionTitle}>TODAY</p>
                 {todayChats.map(chat => (
-                  <ChatItem key={chat.id} chat={chat} />
+                  <ChatItem
+                    key={chat.id}
+                    chat={chat}
+                    selected={chat.id === selectedChat}
+                    onClick={() => handleListItemClick(chat.id)}
+                  />
                 ))}
               </>
             )}
@@ -137,7 +146,12 @@ const AiDiffSidebar: React.FC<AiDiffSidebarProps> = props => {
               <>
                 <p className={styles.sidebarSectionTitle}>PREVIOUS 7 DAYS</p>
                 {past7DaysChats.map(chat => (
-                  <ChatItem key={chat.id} chat={chat} />
+                  <ChatItem
+                    key={chat.id}
+                    chat={chat}
+                    selected={chat.id === selectedChat}
+                    onClick={() => handleListItemClick(chat.id)}
+                  />
                 ))}
               </>
             )}
@@ -145,7 +159,12 @@ const AiDiffSidebar: React.FC<AiDiffSidebarProps> = props => {
               <>
                 <p className={styles.sidebarSectionTitle}>PREVIOUS 30 DAYS</p>
                 {past30DaysChats.map(chat => (
-                  <ChatItem key={chat.id} chat={chat} />
+                  <ChatItem
+                    key={chat.id}
+                    chat={chat}
+                    selected={chat.id === selectedChat}
+                    onClick={() => handleListItemClick(chat.id)}
+                  />
                 ))}
               </>
             )}
@@ -153,7 +172,12 @@ const AiDiffSidebar: React.FC<AiDiffSidebarProps> = props => {
               <>
                 <p className={styles.sidebarSectionTitle}>OLDER CHATS</p>
                 {oldChats.map(chat => (
-                  <ChatItem key={chat.id} chat={chat} />
+                  <ChatItem
+                    key={chat.id}
+                    chat={chat}
+                    selected={chat.id === selectedChat}
+                    onClick={() => handleListItemClick(chat.id)}
+                  />
                 ))}
               </>
             )}

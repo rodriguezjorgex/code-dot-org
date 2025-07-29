@@ -31,7 +31,7 @@
 
 // Used to accomodate the sidebar in the AI Differentiation workspace.
 .aiDiffContainerWide {
-  @extend .aiDiffContainer;
+  @extend %aiDiffContainer;
   width: 712px;
 }
 
@@ -306,15 +306,15 @@
 .sidebarChatItem {
   color: $neutral_dark90;
   font-family: Figtree, sans-serif;
-  margin-top: 0px !important;
-  margin-bottom: 0px !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 .sidebarButton {
   width: 224px; /* drawerWidth - 16 */
   margin-top: 15px !important;
   margin-left: 8px !important;
-  border: 1px solid black;
+  border: 1px solid black !important;
   border-radius: 4px;
 }
 
