@@ -19,8 +19,9 @@ const CopyLinkButton: React.FunctionComponent<{link: string}> = ({link}) => {
   return (
     <Button
       text="Copy link"
+      type="secondary"
       size="xs"
-      color={buttonColors.white}
+      color={buttonColors.gray}
       iconLeft={{iconName: icon, iconStyle: 'solid'}}
       className={style.copyLinkButton}
       onClick={() => copyToClipboard(link, () => setIcon('check'))}
