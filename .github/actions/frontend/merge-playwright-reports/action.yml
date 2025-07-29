@@ -2,14 +2,10 @@ name: "Merge Playwright Test Reports"
 description: "Merges playwright test reports from multiple shards into one single report"
 
 inputs:
-    ENVIRONMENT_TYPE:
-        description: "The environment type for the reports, e.g., pr, test, production"
-        default: "pr"
-        required: false
-    SITE_TYPE:
-        description: "The site type for the reports, e.g., corporate, marketing"
-        default: "corporate"
-        required: false
+  GITHUB_ENVIRONMENT_NAME:
+    description: "The name of the GitHub environment to use for this action"
+    default: "pr"
+    required: false
 
 runs:
   using: composite
@@ -21,7 +17,7 @@ runs:
       uses: actions/download-artifact@v4
       with:
         path: all-blob-reports
-        pattern: blob-report-*
+        pattern: blob-report-${{ inputs.GITHUB_ENVIRONMENT_NAME }}-*
         merge-multiple: true
 
     - name: Merge into HTML Report
@@ -31,6 +27,6 @@ runs:
     - name: Upload HTML report
       uses: actions/upload-artifact@v4
       with:
-        name: html-report--attempt-${{ inputs.ENVIRONMENT_TYPE }}-${{ inputs.SITE_TYPE }}-${{ github.run_attempt }}
+        name: html-report--attempt-${{ inputs.GITHUB_ENVIRONMENT_NAME }}-${{ github.run_attempt }}
         path: playwright-report
         retention-days: 1
