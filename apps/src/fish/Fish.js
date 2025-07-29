@@ -131,12 +131,10 @@ Fish.prototype.initMLActivities = function () {
   const {initAll} = require('@code-dot-org/ml-activities');
 
   // Localize
-const msg = Object.entries(fishMsg).reduce(
-  (acc, [key, msgFunction]) => {
+const msg = Object.entries(fishMsg).reduce((acc, [key, msgFunction]) => {
     acc[key] = (...args) => localization.translate(msgFunction(...args));
     return acc;
-  },
-  {}
+  }, {}
 );
 
   // Set initial state for UI elements.
