@@ -155,7 +155,7 @@ export const AccountInformation: React.FC<AccountInformationProps> = ({
     }
     if (isStudent) {
       userUpdates['country_code'] = countryCode;
-      if (gender) {
+      if (showGenderInput) {
         userUpdates['gender_student_input'] = gender;
       }
       if (isUSA) {
