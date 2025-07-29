@@ -25,9 +25,7 @@ interface TeacherHomepageProps {
   studioUrlPrefix: string;
 }
 
-export const TeacherHomepage: React.FC<TeacherHomepageProps> = ({
-  studioUrlPrefix,
-}) => {
+const TeacherHomepage: React.FC<TeacherHomepageProps> = ({studioUrlPrefix}) => {
   const teacherName = useAppSelector(state => state.currentUser.displayName);
 
   const dispatch = useAppDispatch();
