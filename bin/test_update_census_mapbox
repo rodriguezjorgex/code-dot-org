@@ -5,10 +5,11 @@
 # creates maptiles with Mapbox's command line tool, Tippecanoe, and uploading them to Mapbox's
 # server.
 #
-# This can be used to test the new data on production before having it go live to everyone by
-# updating this script's data file and access report year (and tileset name if a new name is
-# desired), running it on production-daemon, and navigating to:
-# code.org/yourschool?tileset=censustiles-dev
+# This can be used to test the new data on production before having it go live to everyone by:
+# 1) Run this script on production-daemon and pass in the access report year and data file:
+#     - ./bin/test_update_census_mapbox [ACCESS_REPORT_YEAR] [ACCESS_REPORT_DATA_FILE]
+#     - Example: ./bin/test_update_census_mapbox 2024 access-report-data-files-2024/final-csv/final_csv_2024_09_30.csv
+# 2) Navigate to https://code.org/en-US/your-school?tileset=censustiles-dev to view results
 #
 # If this looks good on production, then you can publish that data (i.e. you won't need a URL
 # param, and it will be the default map data):
@@ -28,10 +29,7 @@ require_relative './cron/upload_to_mapbox'
 
 raise "CDO.mapbox_upload_token is not defined" unless CDO.mapbox_upload_token
 
-# Constants to update for the given year
 TEST_CENSUS_TILESET = 'censustiles-dev'
-AWS_ACCESS_REPORT_DATA_FILE = "access-report-data-files-2024/final-csv/final_csv_2024_09_30.csv"
-ACCESS_REPORT_YEAR = "2024"
 
 CSV_IMPORT_OPTIONS = {col_sep: ",", headers: true, encoding: 'bom|utf-8'}.freeze
 
@@ -42,8 +40,12 @@ def make_location(lat, long)
 end
 
 def main
+  raise ArgumentError.new("Wrong number of arguments: Expected access report year and access report data file.") unless ARGV.length == 2
+  access_report_year = ARGV[0]
+  aws_access_report_data_file = ARGV[1]
+
   CDO.log.info "Loading census summary data."
-  AWS::S3.seed_from_file('cdo-census', AWS_ACCESS_REPORT_DATA_FILE) do |filename|
+  AWS::S3.seed_from_file('cdo-census', aws_access_report_data_file) do |filename|
     geojson = JSON.parse('{ "type": "FeatureCollection", "features": [] }')
     entries_skipped = 0
 
@@ -68,7 +70,7 @@ def main
           },
           properties: {
             school_id: school.id,
-            year: ACCESS_REPORT_YEAR,
+            year: access_report_year,
             school_name: school.name.titleize,
             school_city: school.city.titleize,
             school_state: school.state,
