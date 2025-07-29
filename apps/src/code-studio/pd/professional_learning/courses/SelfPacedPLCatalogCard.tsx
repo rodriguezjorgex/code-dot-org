@@ -51,6 +51,7 @@ const SelfPacedPLCatalogCardInitial: React.FunctionComponent<
         </>
       }
       relatedProposalsHeader="Facilitated workshops"
+      // TODO: Should be updated in scope of [ACQ-3455](https://codedotorg.atlassian.net/browse/ACQ-3435)
       relatedProposalsContent="[HARDCODED]"
       onCloseExpandedCard={() => updateExpandedCardKey(courseOffering.key)}
       expandedCardActionRowContent={

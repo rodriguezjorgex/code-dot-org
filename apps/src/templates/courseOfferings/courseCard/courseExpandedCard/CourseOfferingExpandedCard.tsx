@@ -85,10 +85,6 @@ const CourseOfferingExpandedCard: React.FunctionComponent<
                 {courseOffering.description}
               </BodyThreeText>
             )}
-            <BodyThreeText noMargin>
-              <StrongText>Prerequisites:</StrongText> [HARDCODED]Some prereqs
-              here
-            </BodyThreeText>
             {courseOffering.image && <Image src={courseOffering.image} />}
           </div>
           {courseOffering.available_resources &&
