@@ -10,6 +10,7 @@ import RailsAuthenticityToken from '@cdo/apps/lib/util/RailsAuthenticityToken';
 import {studio} from '@cdo/apps/lib/util/urlHelpers';
 import SafeMarkdown from '@cdo/apps/templates/SafeMarkdown';
 import i18n from '@cdo/locale';
+import aiCurriculumHowItWorksImg from '@cdo/static/ai/ai-curriculum-how-ai-works.png';
 import teachPageTopImg from '@cdo/static/teach-page-top.png';
 
 import style from './certificate_batch.module.scss';
@@ -47,7 +48,7 @@ const curriculaData = [
       oldestGrade: '12',
     }),
     title: i18n.howAiWorks(),
-    image: 'https://code.org/images/ai/ai-curriculum-how-ai-works.png',
+    image: aiCurriculumHowItWorksImg,
     buttonText: i18n.exploreLessons(),
     description: i18n.howAiWorksDescription(),
     link: 'http://code.org/ai/how-ai-works',
