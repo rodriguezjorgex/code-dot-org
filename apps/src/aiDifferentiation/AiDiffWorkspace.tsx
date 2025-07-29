@@ -9,7 +9,6 @@ import style from './ai-differentiation.module.scss';
 interface AiDiffWorkSpaceProps {
   context: Context;
   scriptName?: string;
-  unitDisplayName?: string;
   curriculumCourses?: string[];
   showSidebar?: boolean;
 }
@@ -17,7 +16,6 @@ interface AiDiffWorkSpaceProps {
 const AiDiffWorkSpace: React.FC<AiDiffWorkSpaceProps> = ({
   context,
   scriptName,
-  unitDisplayName,
   curriculumCourses,
   showSidebar,
 }) => {
@@ -27,7 +25,6 @@ const AiDiffWorkSpace: React.FC<AiDiffWorkSpaceProps> = ({
       <AiDiffChat
         context={context}
         scriptName={scriptName}
-        unitDisplayName={unitDisplayName}
         curriculumCourses={curriculumCourses}
       />
     </div>

@@ -81,7 +81,7 @@ interface AiDiffChatProps {
   disableEndButtons?: boolean;
   curriculumCourses?: string[];
 }
-console.log('AiDiffChatProps', AiDiffChatProps);
+
 const AiDiffChat: React.FC<AiDiffChatProps> = ({
   context,
   scriptName,
