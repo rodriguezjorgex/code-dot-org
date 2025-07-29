@@ -8,12 +8,12 @@
 # This can be used to test the new data on production before having it go live to everyone by
 # updating this script's data file and access report year (and tileset name if a new name is
 # desired), running it on production-daemon, and navigating to:
-# code.org/yourschool?tileset=[value-of-TEST_CENSUS_TILESET]
+# code.org/yourschool?tileset=censustiles-dev
 #
 # If this looks good on production, then you can publish that data (i.e. you won't need a URL
 # param, and it will be the default map data):
 # 1) Update the seeding file name to the new file in census_summary.rb
-# 2) Update the CURRENT_CENSUS_SCHOOL_YEAR constant to the new school year
+# 2) Update the CURRENT_CENSUS_SCHOOL_YEAR constant to the new school year in census_summary.rb
 # 3) Wait for those changes to hit production and for CensusSummaries to be seeded by the
 #    new file
 # 4) Run ./bin/update_census_mapbox on production-daemon
