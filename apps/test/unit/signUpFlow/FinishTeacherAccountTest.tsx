@@ -406,7 +406,7 @@ describe('FinishTeacherAccount', () => {
     await waitFor(renderDefault);
 
     const sourcesDropdown = screen.getByLabelText(
-      locale.what_brought_you_to_sign_up()
+      locale.select_all_that_apply()
     );
     expect(sourcesDropdown).toBeInTheDocument();
 
@@ -452,7 +452,7 @@ describe('FinishTeacherAccount', () => {
     fillInFormFields();
 
     const sourcesDropdown = screen.getByLabelText(
-      locale.what_brought_you_to_sign_up()
+      locale.select_all_that_apply()
     );
 
     // Check 3 new options in non-alphabetical order
