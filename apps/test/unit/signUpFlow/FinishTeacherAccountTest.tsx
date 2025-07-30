@@ -53,6 +53,7 @@ const FINISH_SIGN_UP_PARAMS = {
     },
     country_code: 'US',
     educator_role: 'classroom_teacher',
+    signup_sources_tracking: 'found_on_search',
   },
 };
 
@@ -91,7 +92,8 @@ describe('FinishTeacherAccount', () => {
 
   function fillInFormFields(
     fillInNameFields: boolean = true,
-    fillInRoleField: boolean = true
+    fillInRoleField: boolean = true,
+    fillInSourceField: boolean = true
   ) {
     if (fillInNameFields) {
       fireEvent.change(screen.getByLabelText(locale.first_name()), {
@@ -108,6 +110,12 @@ describe('FinishTeacherAccount', () => {
     if (fillInRoleField) {
       fireEvent.change(screen.getByLabelText(locale.what_is_your_role()), {
         target: {value: FINISH_SIGN_UP_PARAMS.user.educator_role},
+      });
+    }
+    if (fillInSourceField) {
+      fireEvent.change(screen.getByLabelText(locale.signupSources()), {
+        target: {value: FINISH_SIGN_UP_PARAMS.user.signup_sources_tracking},
+        checked: true,
       });
     }
     fireEvent.change(screen.getByLabelText(i18n.whatCountry()), {
@@ -392,6 +400,94 @@ describe('FinishTeacherAccount', () => {
     fireEvent.change(roleDropdown, {target: {value: 'classroom_teacher'}});
 
     expect(finishSignUpButton).toBeEnabled();
+  });
+
+  it('requires signup sources', async () => {
+    await waitFor(renderDefault);
+
+    const sourcesDropdown = screen.getByLabelText(
+      locale.what_brought_you_to_sign_up()
+    );
+    expect(sourcesDropdown).toBeInTheDocument();
+
+    fillInFormFields(true, true, false);
+
+    const finishSignUpButton = screen.getByRole('button', {
+      name: locale.go_to_my_account(),
+    });
+    expect(finishSignUpButton).toBeDisabled();
+
+    fireEvent.change(sourcesDropdown, {
+      target: {value: 'classroom_teacher', checked: true},
+    });
+    fireEvent.change(sourcesDropdown, {
+      target: {value: 'heard_at_conference', checked: true},
+    });
+    fireEvent.change(sourcesDropdown, {
+      target: {value: 'other', checked: true},
+    });
+
+    expect(finishSignUpButton).toBeEnabled();
+  });
+
+  it('alphabetizes signup sources', async () => {
+    fetchStub.callsFake(url => {
+      if (typeof url === 'string' && url.includes('/users/gdpr_check')) {
+        return Promise.resolve({
+          ok: true,
+          status: 200,
+          json: () => Promise.resolve({gdpr: false, force_in_eu: false}),
+        } as Response);
+      } else {
+        return Promise.resolve({
+          ok: true,
+          status: 200,
+          json: () => Promise.resolve({success: true}),
+        } as Response);
+      }
+    });
+
+    await waitFor(renderDefault);
+
+    fillInFormFields();
+
+    const sourcesDropdown = screen.getByLabelText(
+      locale.what_brought_you_to_sign_up()
+    );
+
+    // Check 3 new options in non-alphabetical order
+    fireEvent.change(sourcesDropdown, {
+      target: {value: 'other', checked: true},
+    });
+    fireEvent.change(sourcesDropdown, {
+      target: {value: 'heard_at_conference', checked: true},
+    });
+    fireEvent.change(sourcesDropdown, {
+      target: {value: 'classroom_teacher', checked: true},
+    });
+
+    // Uncheck selected option
+    fireEvent.change(sourcesDropdown, {
+      target: {value: 'found_on_search', checked: true},
+    });
+
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: locale.go_to_my_account(),
+      })
+    );
+
+    const expectedSelectedSources =
+      'classroom_teacher,heard_at_conference,other';
+    const expectedParams = {
+      ...FINISH_SIGN_UP_PARAMS,
+      signup_sources_tracking: expectedSelectedSources,
+    };
+    await waitFor(() => {
+      expect(fetchStub.getCall(1).args[1]?.body).toEqual(
+        JSON.stringify(expectedParams)
+      );
+    });
   });
 
   it('GDPR has expected behavior if api call returns true', async () => {
