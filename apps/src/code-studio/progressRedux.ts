@@ -63,6 +63,7 @@ export interface ProgressState {
   unitTitle: string | null;
   courseId: number | null;
   isLessonExtras: boolean;
+  initTime: number | null;
   unitProgress: {
     [key: number]: UnitProgress;
   };
@@ -71,6 +72,7 @@ export interface ProgressState {
   focusAreaLessonIds: number[];
   peerReviewLessonInfo: PeerReviewLessonInfo | null;
   peerReviewsPerformed: PeerReviewSummary[];
+  milestoneStartTime: number | null;
   postMilestoneDisabled: boolean;
   isAge13Required: boolean;
   studentDefaultsSummaryView: boolean;
@@ -93,6 +95,7 @@ export interface MilestoneReport extends OptionalMilestoneData {
   app: string;
   result: boolean;
   testResult: number;
+  timeSinceLastMilestone?: number;
 }
 
 interface OptionalMilestoneData {
@@ -119,6 +122,7 @@ const initialState: ProgressState = {
   unitTitle: null,
   courseId: null,
   isLessonExtras: false,
+  initTime: null,
 
   // The remaining fields do change after initialization.
 
@@ -131,6 +135,7 @@ const initialState: ProgressState = {
   focusAreaLessonIds: [],
   peerReviewLessonInfo: null,
   peerReviewsPerformed: [],
+  milestoneStartTime: null,
   postMilestoneDisabled: false,
   isAge13Required: false,
   // Do students see summary view by default?
@@ -259,6 +264,12 @@ const progressSlice = createSlice({
         };
       },
     },
+    recordMilestoneStartTime(state, action: PayloadAction<number>) {
+      state.milestoneStartTime = action.payload;
+    },
+    resetMilestoneStartTime(state) {
+      state.milestoneStartTime = Date.now();
+    },
     disablePostMilestone(state) {
       state.postMilestoneDisabled = true;
     },
@@ -344,6 +355,7 @@ export function navigateToLevelId(levelId: string): ProgressThunkAction {
       // Notify the Lab2 system that the level is changing.
       notifyLevelChange(currentLevel.id, levelId);
       dispatch(setCurrentLevelId(levelId));
+      dispatch(recordMilestoneStartTime(Date.now()));
     } else {
       if (currentLevel?.usesLab2) {
         // If we are switching from a lab2 level but can't change the level without reloading,
@@ -459,11 +471,16 @@ function sendReportHelper(
   const userId = 0;
   extraData = extraData || {};
 
+  const startTime = state.milestoneStartTime;
+  const endTime = Date.now();
+  const timeSinceLastMilestone = startTime ? endTime - startTime : undefined;
+
   const data: MilestoneReport = {
     app: appType,
     result: true,
     testResult: result,
     ...extraData,
+    ...(timeSinceLastMilestone !== undefined && {timeSinceLastMilestone}),
   };
 
   return fetch(`/milestone/${userId}/${scriptLevelId}/${levelId}`, {
@@ -483,6 +500,10 @@ function sendReportHelper(
       if (currentLevel.parentLevelId) {
         dispatch(mergeResults({[currentLevel.parentLevelId]: result}));
       }
+
+      // After we log the reported time we should update the start time of the milestone
+      // otherwise if we don't leave the page we are compounding the total time
+      dispatch(resetMilestoneStartTime());
     }
   });
 }
@@ -601,6 +622,8 @@ export const {
   overwriteResults,
   mergePeerReviewProgress,
   updateFocusArea,
+  recordMilestoneStartTime,
+  resetMilestoneStartTime,
   disablePostMilestone,
   setIsAge13Required,
   setIsSummaryView,
