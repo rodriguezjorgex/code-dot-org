@@ -1,9 +1,8 @@
 #!/usr/bin/env ruby
 
-# The map on code.org/yourschool is run off of Mapbox. This script updates the data on the
-# Mapbox tileset under the CENSUS_TILESET name. It reads from the given AWS file and
-# creates maptiles with Mapbox's command line tool, Tippecanoe, and uploading them to Mapbox's
-# server.
+# The map on code.org/yourschool is run off of Mapbox. This script updates the data on the Mapbox tileset
+# under the name censustiles-[ACCESS_REPORT_YEAR]. It reads from the given AWS file and creates maptiles
+# with Mapbox's command line tool, Tippecanoe, and uploading them to Mapbox's server.
 #
 # This script is used to upload the new census data to a new tileset that can be tested before making it the
 # default tileset for all users to see:
