@@ -63,7 +63,7 @@ export interface ProgressState {
   unitTitle: string | null;
   courseId: number | null;
   isLessonExtras: boolean;
-  initTime: number | null;
+  initTime?: number | null;
   unitProgress: {
     [key: number]: UnitProgress;
   };
@@ -72,7 +72,7 @@ export interface ProgressState {
   focusAreaLessonIds: number[];
   peerReviewLessonInfo: PeerReviewLessonInfo | null;
   peerReviewsPerformed: PeerReviewSummary[];
-  milestoneStartTime: number | null;
+  milestoneStartTime?: number | null;
   postMilestoneDisabled: boolean;
   isAge13Required: boolean;
   studentDefaultsSummaryView: boolean;
@@ -187,6 +187,8 @@ const progressSlice = createSlice({
       state.unitStudentDescription = action.payload.unitStudentDescription;
       state.unitHasUnnumberedLessons = action.payload.unitHasUnnumberedLessons;
       state.courseId = action.payload.courseId;
+      state.initTime = action.payload.initTime ?? Date.now();
+      state.milestoneStartTime = action.payload.milestoneStartTime ?? null;
       state.courseVersionId = action.payload.courseVersionId;
       state.currentLessonId = currentLessonId;
       state.hasFullProgress = action.payload.isFullProgress;
