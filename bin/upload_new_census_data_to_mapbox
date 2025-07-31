@@ -7,8 +7,8 @@
 # This script is used to upload the new census data to a new tileset that can be tested before making it the
 # default tileset for all users to see:
 # 1) Run this script on production-daemon and pass in the access report year and data file:
-#     - ./bin/update_census_mapbox [ACCESS_REPORT_YEAR] [ACCESS_REPORT_DATA_FILE]
-#     - Example: ./bin/test_update_census_mapbox 2024 access-report-data-files-2024/final-csv/final_csv_2024_09_30.csv
+#     - ./bin/upload_new_census_data_to_mapbox [ACCESS_REPORT_YEAR] [ACCESS_REPORT_DATA_FILE]
+#     - Example: ./bin/upload_new_census_data_to_mapbox 2024 access-report-data-files-2024/final-csv/final_csv_2024_09_30.csv
 # 2) Navigate to https://code.org/en-US/your-school?tileset=censustiles-[ACCESS_REPORT_YEAR] to view results
 #
 # If this looks good on production, then the data is okay to import into our CensusSummaries table and you
