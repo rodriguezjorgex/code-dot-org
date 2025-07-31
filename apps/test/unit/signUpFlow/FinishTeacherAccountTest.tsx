@@ -53,7 +53,7 @@ const FINISH_SIGN_UP_PARAMS = {
     },
     country_code: 'US',
     educator_role: 'classroom_teacher',
-    signup_sources_tracking: 'found_on_search',
+    signup_sources_tracking: 'search',
   },
 };
 
@@ -113,10 +113,8 @@ describe('FinishTeacherAccount', () => {
       });
     }
     if (fillInSourceField) {
-      fireEvent.change(screen.getByLabelText(locale.signupSources()), {
-        target: {value: FINISH_SIGN_UP_PARAMS.user.signup_sources_tracking},
-        checked: true,
-      });
+      fireEvent.click(screen.getByText(locale.select_all_that_apply()));
+      fireEvent.click(screen.getByText(locale.found_on_search()));
     }
     fireEvent.change(screen.getByLabelText(i18n.whatCountry()), {
       target: {
@@ -405,11 +403,6 @@ describe('FinishTeacherAccount', () => {
   it('requires signup sources', async () => {
     await waitFor(renderDefault);
 
-    const sourcesDropdown = screen.getByLabelText(
-      locale.select_all_that_apply()
-    );
-    expect(sourcesDropdown).toBeInTheDocument();
-
     fillInFormFields(true, true, false);
 
     const finishSignUpButton = screen.getByRole('button', {
@@ -417,15 +410,13 @@ describe('FinishTeacherAccount', () => {
     });
     expect(finishSignUpButton).toBeDisabled();
 
-    fireEvent.change(sourcesDropdown, {
-      target: {value: 'classroom_teacher', checked: true},
-    });
-    fireEvent.change(sourcesDropdown, {
-      target: {value: 'heard_at_conference', checked: true},
-    });
-    fireEvent.change(sourcesDropdown, {
-      target: {value: 'other', checked: true},
-    });
+    fireEvent.click(screen.getByText(locale.select_all_that_apply()));
+    fireEvent.click(
+      screen.getByText(locale.recommended_by_colleague_or_school())
+    );
+    fireEvent.click(
+      screen.getByText(locale.learned_via_state_district_curriculum())
+    );
 
     expect(finishSignUpButton).toBeEnabled();
   });
@@ -451,25 +442,16 @@ describe('FinishTeacherAccount', () => {
 
     fillInFormFields();
 
-    const sourcesDropdown = screen.getByLabelText(
-      locale.select_all_that_apply()
-    );
-
     // Check 3 new options in non-alphabetical order
-    fireEvent.change(sourcesDropdown, {
-      target: {value: 'other', checked: true},
-    });
-    fireEvent.change(sourcesDropdown, {
-      target: {value: 'heard_at_conference', checked: true},
-    });
-    fireEvent.change(sourcesDropdown, {
-      target: {value: 'classroom_teacher', checked: true},
-    });
+    fireEvent.click(screen.getByText(locale.select_all_that_apply()));
+    fireEvent.click(
+      screen.getByText(locale.learned_via_state_district_curriculum())
+    );
+    fireEvent.click(screen.getByText(locale.heard_at_conference()));
+    fireEvent.click(screen.getByText(locale.attended_pl()));
 
     // Uncheck selected option
-    fireEvent.change(sourcesDropdown, {
-      target: {value: 'found_on_search', checked: true},
-    });
+    fireEvent.click(screen.getByText(locale.found_on_search()));
 
     fireEvent.click(
       screen.getByRole('button', {
@@ -478,10 +460,12 @@ describe('FinishTeacherAccount', () => {
     );
 
     const expectedSelectedSources =
-      'classroom_teacher,heard_at_conference,other';
+      'attended_pl,conference,via_state_district_curriculum';
     const expectedParams = {
-      ...FINISH_SIGN_UP_PARAMS,
-      signup_sources_tracking: expectedSelectedSources,
+      user: {
+        ...FINISH_SIGN_UP_PARAMS.user,
+        signup_sources_tracking: expectedSelectedSources,
+      },
     };
     await waitFor(() => {
       expect(fetchStub.getCall(1).args[1]?.body).toEqual(
