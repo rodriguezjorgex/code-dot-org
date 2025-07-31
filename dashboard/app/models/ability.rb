@@ -288,6 +288,8 @@ class Ability
         can :create, AidiffThread
         can [:index, :show, :chat_completion, :curriculum_courses], AidiffThread, user_id: user.id
       end
+
+      can :show, Rubric
     end
 
     # Override UnitGroup, Unit, Lesson and ScriptLevel.
