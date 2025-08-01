@@ -642,7 +642,7 @@ const marketingPaths = {
   "/weblab": true,
   "/widgets": true,
   "/yourschool/accessreport": true,
-  "/main": true,
+  "/global": true,
 }
 
 const pathPatterns = [
