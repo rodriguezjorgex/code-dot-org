@@ -716,7 +716,7 @@ const marketingPaths = {
   "/curriculum/course4/11/Teacher": true,
   "/curriculum/course4/12/Teacher": true,
   "/curriculum/course4/13/Teacher": true,
-  "/curriculum/course4/15/Teacher": true,
+  "/curriculum/course4/14/Teacher": true,
   "/curriculum/course4/15/Teacher": true,
   "/curriculum/course4/16/Teacher": true,
   "/curriculum/course4/17/Teacher": true,
