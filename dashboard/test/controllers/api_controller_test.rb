@@ -1697,7 +1697,7 @@ class ApiControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
-  test 'import_google_classroom upgrades elibible teacher to verified' do
+  test 'import_google_classroom upgrades eligible teacher to verified' do
     mock_service = mock('Google::Apis::ClassroomV1::ClassroomService')
     mock_students = Google::Apis::ClassroomV1::ListStudentsResponse.from_json(
       {

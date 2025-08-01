@@ -1823,7 +1823,7 @@ class User < ApplicationRecord
     user.uid = auth.uid
     name_from_auth = auth.info.name
     user.name = process_name_from_omniauth name_from_auth
-    user.user_type = params[:user_type] || auth.info.user_type
+    user.user_type = params['user_type'] || params[:user_type] || auth.info.user_type
     user.user_type = 'teacher' if user.user_type == 'staff' # Powerschool sends through 'staff' instead of 'teacher'
 
     if user.user_type == User::TYPE_TEACHER
