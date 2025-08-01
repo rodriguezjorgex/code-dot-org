@@ -642,9 +642,14 @@ const marketingPaths = {
   "/weblab": true,
   "/widgets": true,
   "/yourschool/accessreport": true,
+  "/global": true,
 }
 
-const nextJsAssetsPath = '/_next/static/';
+const pathPatterns = [
+  /^\/_next\/static\//, // Next.js static assets
+  /^\/forms\//,         // /forms/*
+  /^\/schools\//,       // /schools/*
+];
 
 const SUPPORTED_LOCALES = new Set([
   'en-US',
@@ -696,7 +701,7 @@ module.exports.handler = (event, context, callback) => {
     const normalizedURI = extractPaths(uri);
 
     // Set CMS origin if the requested path matches
-    if (marketingPaths[normalizedURI] || (uri && uri.startsWith(nextJsAssetsPath))) {
+    if (marketingPaths[normalizedURI] || (uri && pathPatterns.some(pattern => pattern.test(uri)))) {
       request.origin = {
         custom: {
           domainName: marketingDomain,
