@@ -150,7 +150,7 @@ class User < ApplicationRecord
   #   roster_synced: Indicates if the user was created during a roster sync operation from an LMS. Implies that the user
   #     is a school-managed account.
   #   educator_role: Indicates the role of the educator, e.g. 'teacher', 'school_admin', 'district_admin', etc.
-  #   signup_sources_tracking: Comma-separated list of user selections for what brought them to sign up for Code.org.
+  #   signup_sources_tracking: Array of user selections for what brought them to sign up for Code.org.
 
   CLEVER_ADMIN_USER_TYPES = ['district_admin', 'school_admin'].freeze
 

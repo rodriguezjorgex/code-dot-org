@@ -53,7 +53,7 @@ const FINISH_SIGN_UP_PARAMS = {
     },
     country_code: 'US',
     educator_role: 'classroom_teacher',
-    signup_sources_tracking: 'search',
+    signup_sources_tracking: ['search'],
   },
 };
 
@@ -459,8 +459,11 @@ describe('FinishTeacherAccount', () => {
       })
     );
 
-    const expectedSelectedSources =
-      'attended_pl,conference,via_state_district_curriculum';
+    const expectedSelectedSources = [
+      'attended_pl',
+      'conference',
+      'via_state_district_curriculum',
+    ];
     const expectedParams = {
       user: {
         ...FINISH_SIGN_UP_PARAMS.user,

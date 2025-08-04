@@ -280,7 +280,7 @@ const FinishTeacherAccount: React.FunctionComponent<{
         }),
         country_code: countryCode,
         educator_role: educatorRole || null,
-        signup_sources_tracking: signupSources.join(','),
+        signup_sources_tracking: signupSources,
       },
     };
     const authToken = await getAuthenticityToken();
