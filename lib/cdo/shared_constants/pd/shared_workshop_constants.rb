@@ -21,9 +21,7 @@ module Pd
 
     COURSES = ACTIVE_COURSES + ARCHIVED_COURSES
 
-    ACTIVE_PERMISSION_COURSES = ACTIVE_COURSES + [
-      COURSE_CSF = 'CS Fundamentals'.freeze
-    ].freeze
+    ACTIVE_PERMISSION_COURSES = [*ACTIVE_COURSES, COURSE_CSF].freeze
 
     STATES = [
       STATE_NOT_STARTED = 'Not Started'.freeze,
