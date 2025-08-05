@@ -1821,22 +1821,12 @@ class User < ApplicationRecord
   def self.initialize_new_oauth_user(user, auth, params)
     user.provider = auth.provider
     user.uid = auth.uid
-    name_from_auth = auth.info.name
-    user.name = process_name_from_omniauth name_from_auth
+    user.name = name_from_omniauth auth.info.name
     user.user_type = params['user_type'] || params[:user_type] || auth.info.user_type
     user.user_type = 'teacher' if user.user_type == 'staff' # Powerschool sends through 'staff' instead of 'teacher'
 
     if user.user_type == User::TYPE_TEACHER
-      user.given_name = if name_from_auth.is_a?(Hash) && name_from_auth['first'].present?
-                          name_from_auth['first']
-                        else
-                          auth.info.first_name.presence || auth.info.given_name
-                        end
-      user.family_name = if name_from_auth.is_a?(Hash) && name_from_auth['last'].present?
-                           name_from_auth['last']
-                         else
-                           auth.info.last_name.presence || auth.info.family_name
-                         end
+      Teacher.set_teacher_names_from_auth(user, auth)
     else
       user.family_name = auth.info.family_name if auth.info.family_name.present?
     end
@@ -1873,7 +1863,7 @@ class User < ApplicationRecord
     %w(locale account_age_in_years grades curriculums has_attended_pd within_us school_percent_frl_40_plus school_title_i school_state)
   end
 
-  def self.process_name_from_omniauth(raw_name)
+  def self.name_from_omniauth(raw_name)
     return raw_name if raw_name.blank? || raw_name.is_a?(String) # some services just give us a string
     # clever returns a hash instead of a string for name
     "#{raw_name['first']} #{raw_name['last']}".squish
