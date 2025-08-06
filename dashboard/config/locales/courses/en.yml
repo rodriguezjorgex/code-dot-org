@@ -6235,9 +6235,9 @@ en:
           version_title: ''
         facilitator-training-2025:
           title: 'Facilitator Training '
-          description_short: ''
-          description_student: ''
-          description_teacher: ''
+          description_short: A placeholder for the PL topic drop-down for all facilitator training events except onboarding.
+          description_student: This placeholder course represents facilitator training sessions outside of onboarding and enables selection in the PL Topics drop-down. It does not contain content; details about specific workshops will be shared separately.
+          description_teacher: This placeholder course represents facilitator training sessions outside of onboarding and enables selection in the PL Topics drop-down. It does not contain content; details about specific workshops will be shared separately.
           version_title: ''
         teaching-intro-java-2025:
           title: 'Introduction to Java for Teachers '
