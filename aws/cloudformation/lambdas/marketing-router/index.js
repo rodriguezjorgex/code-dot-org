@@ -777,7 +777,7 @@ const marketingPaths = {
   "/promote/wi": true,
   "/promote/wy": true,
   "/back-to-school-kit": true,
-  "/global/partner": true,
+  "/global/partners": true,
   "/global/india": true,
 }
 
