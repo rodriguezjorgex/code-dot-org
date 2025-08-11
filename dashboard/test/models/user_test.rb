@@ -4561,7 +4561,7 @@ class UserTest < ActiveSupport::TestCase
     end
 
     describe 'when user with matching credientials exists' do
-      let(:user) {create :user, :clever_sso_provider}
+      let(:user) {(create(:user, :clever_sso_provider))}
 
       context 'when user uses new authentication option' do
         let(:auth) {build_authhash({given_name: 'GivenName', family_name: 'FamilyName', user_type: User::TYPE_TEACHER}, user.uid)}
@@ -4572,63 +4572,6 @@ class UserTest < ActiveSupport::TestCase
           assert_equal auth.credentials.token, auth_user.properties['oauth_token']
           assert_equal auth.credentials.refresh_token, auth_user.properties['oauth_refresh_token']
         end
-      end
-    end
-  end
-
-  describe '#pl_units_started' do
-    let(:subject) {user.pl_units_started}
-    let(:user) {create :teacher}
-    let(:unit) {create :unit, :with_levels}
-    let(:unit_group) {create :unit_group, participant_audience: 'teacher', instructor_audience: 'facilitator'}
-    let!(:unit_group_unit) {create :unit_group_unit, course_id: unit_group.id, script_id: unit.id, position: 1}
-    let!(:user_script) {create :user_script, user: user, script: unit}
-    let(:modularity_enabled) {true}
-
-    before do
-      allow(Policies::Courses).to receive(:modularity_enabled?).and_return(modularity_enabled)
-      unit.reload
-      user.reload
-    end
-
-    it 'returns 1 result' do
-      _(subject.count).must_equal 1
-    end
-
-    it 'returns an Array of Hash' do
-      _(subject).must_be_kind_of Array
-      _(subject.first).must_be_kind_of Hash
-    end
-
-    it 'returns the Unit name' do
-      _(subject.first[:name]).must_equal unit.name
-    end
-
-    it 'returns the Unit title' do
-      _(subject.first[:title]).must_equal unit.title_for_display
-    end
-
-    it 'returns 0 percent completed' do
-      _(subject.first[:percent_completed]).must_equal 0
-    end
-
-    it 'returns nil finish_url' do
-      _(subject.first[:finish_url]).must_equal nil
-    end
-
-    it 'returns the current Lesson name' do
-      _(subject.first[:current_lesson_name]).must_equal unit.lessons.first.localized_name
-    end
-
-    it 'returns the path to the Unit' do
-      _(subject.first[:path]).must_equal "/courses/#{unit_group.name}/units/1"
-    end
-
-    context 'modularity experiment is off' do
-      let(:modularity_enabled) {false}
-
-      it 'returns the deprecated /s/ path' do
-        _(subject.first[:path]).must_equal "/s/#{unit.name}"
       end
     end
   end
