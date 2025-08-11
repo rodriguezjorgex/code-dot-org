@@ -108,6 +108,8 @@ const AiDiffChat: React.FC<AiDiffChatProps> = ({
 
   const [threadId, setThreadId] = useState(null);
 
+  const userMessageEditorRef = useRef<HTMLTextAreaElement>(null);
+
   const viewAsUserId = useAppSelector(
     state => state.progress?.viewAsUserId || undefined
   );
@@ -249,6 +251,7 @@ const AiDiffChat: React.FC<AiDiffChatProps> = ({
         .finally(() => {
           setIsWaitingForResponse(false);
           chatResponseCallback();
+          userMessageEditorRef.current?.focus();
         });
     },
     [
@@ -311,6 +314,7 @@ const AiDiffChat: React.FC<AiDiffChatProps> = ({
         messages={messageHistory}
         waiting={isWaitingForResponse}
         disableEndButtons={disableEndButtons}
+        userMessageEditorRef={userMessageEditorRef}
       />
     </div>
   );
