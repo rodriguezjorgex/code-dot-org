@@ -15,9 +15,12 @@ CERTIFICATE_TEMPLATE_FILE = 'cloudfront-certificate.yml.erb'
 # Default options
 options = {
   environment_type: 'development',
+  site_type: 'corporate',
   region: 'us-east-1',
   base_domain_name: 'marketing-sites.dev-code.org',
   subdomain_name: 'code',
+  production_domain_name: nil,
+  production_hosted_zone_id: nil,
   # TODO: populate Account ID dynamically.
   # role_arn: "arn:aws:iam::${account_id}:role/admin/CloudFormationMarketingSitesDevelopmentRole"
   role_arn: nil,
@@ -28,12 +31,20 @@ opt_parser = OptionParser.new do |opts|
   opts.banner = "Usage: ./deploy.rb [options]"
 
   opts.on(
-    '--environment_type TYPE',
+    '--environment_type ENVIRONMENT_TYPE',
     %w[development test production],
     "Environment type (development, test, or production)",
     "Default: development"
-  ) do |env_type|
-    options[:environment_type] = env_type
+  ) do |environment_type|
+    options[:environment_type] = environment_type
+  end
+
+  opts.on(
+    '--site_type SITE_TYPE',
+    %w[corporate csforall],
+    "Code identifying the site type (corporate csforall)",
+    ) do |site_type|
+    options[:site_type] = site_type
   end
 
   opts.on(
@@ -72,6 +83,31 @@ opt_parser = OptionParser.new do |opts|
     "Default: code"
   ) do |subdomain|
     options[:subdomain_name] = subdomain
+  end
+
+  opts.on(
+    '--production_domain_name DOMAIN',
+    "Fully qualified production domain name for this site",
+    "(e.g. 'hourofcode.org' for production deployments)",
+    "Only used when environment_type is 'production'"
+  ) do |domain|
+    # To simplify the bash logic, GitHub Actions always attempts to send this argument, even when the GitHub Environment
+    # `PRODUCTION_DOMAIN_NAME` does not exist or is empty. OptionsParser with String type interprets an empty string
+    # value as an invalid argument, so we remove the String type constraint and set this to `nil` when the supplied
+    # argument was an empty string.
+    options[:production_domain_name] = (domain.nil? || domain.empty?) ? nil : domain
+  end
+
+  opts.on(
+    '--production_hosted_zone_id ID',
+    "AWS Route 53 Hosted Zone ID for the production domain",
+    "Required when production_domain_name is specified"
+  ) do |id|
+    # To simplify the bash logic, GitHub Actions always attempts to send this argument, even when the GitHub Environment
+    # Secret `PRODUCTION_HOSTED_ZONE_ID` does not exist or is empty. OptionsParser with String type interprets an empty
+    # string value as an invalid argument, so we remove the String type constraint and set this to `nil` when the
+    # supplied argument was an empty string.
+    options[:production_hosted_zone_id] = (id.nil? || id.empty?) ? nil : id
   end
 
   opts.on(
@@ -173,31 +209,50 @@ def process_template(template_file, output_file, binding_object)
   end
 end
 
-def deploy_stack(stack_name, template_file, parameters, region, role_arn, environment_type)
+def deploy_stack(stack_name:, template_file:, parameters: {}, region:, role_arn: nil, tags: {}, capabilities: [])
   temp_dir = File.join(Dir.pwd, 'tmp')
   FileUtils.mkdir_p(temp_dir)
+  parameter_path = nil
 
-  param_file = "parameters_#{stack_name}_#{Time.now.to_i}.json"
-  parameter_path = File.join(temp_dir, param_file)
-  parameter_content = parameters.map {|k, v| {"ParameterKey" => k, "ParameterValue" => v.to_s}}
-  File.write(parameter_path, JSON.pretty_generate(parameter_content))
+  # Build the AWS CLI command
+  command_parts = [
+    "aws cloudformation deploy",
+    "--stack-name #{stack_name}",
+    "--template-file #{template_file}",
+    "--region #{region}"
+  ]
+
+  # Add capabilities if any are specified
+  unless capabilities.empty?
+    command_parts << "--capabilities #{capabilities.join(' ')}"
+  end
+
+  command_parts << "--role-arn #{role_arn}" if role_arn
+
+  # Add parameters if any
+  unless parameters.empty?
+    param_file = "parameters_#{stack_name}_#{Time.now.to_i}.json"
+    parameter_path = File.join(temp_dir, param_file)
+    parameter_content = parameters.map {|k, v| {"ParameterKey" => k, "ParameterValue" => v.to_s}}
+    File.write(parameter_path, JSON.pretty_generate(parameter_content))
+    command_parts << "--parameter-overrides file://#{parameter_path}"
+  end
+
+  # Add tags only if there are any
+  unless tags.empty?
+    tag_string = tags.map {|k, v| "#{k}=#{v}"}.join(" ")
+    command_parts << "--tags #{tag_string}"
+  end
+
+  command = command_parts.join(" \\\n    ")
 
   begin
-    command = <<~CMD
-      aws cloudformation deploy \\
-          --stack-name #{stack_name} \\
-          --template-file #{template_file} \\
-          --parameter-overrides file://#{parameter_path} \\
-          --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \\
-          --region #{region} \\
-          --role-arn #{role_arn} \\
-          --tags environment-type=#{environment_type}
-    CMD
-
     execute_command(command, "Deploying stack '#{stack_name}' in region '#{region}'")
   ensure
-    # Clean up the parameter file regardless of success or failure.
-    FileUtils.rm_f(parameter_path)
+    # Clean up the parameter file if the parameter_path was set and the file exists
+    if parameter_path && File.exist?(parameter_path)
+      FileUtils.rm_f(parameter_path)
+    end
   end
 end
 
@@ -211,6 +266,30 @@ def get_stack_output(stack_name, output_key, region)
   CMD
 
   execute_command(command, "Getting '#{output_key}' from stack '#{stack_name}'").strip
+end
+
+def validate_production_domain_options(options)
+  is_production = options[:environment_type] == 'production'
+  has_production_domain = options[:production_domain_name] && !options[:production_domain_name].empty?
+  has_production_hosted_zone = options[:production_hosted_zone_id] && !options[:production_hosted_zone_id].empty?
+
+  # If production domain is specified, hosted zone must be specified too
+  if has_production_domain && !has_production_hosted_zone
+    puts "Error: production_hosted_zone_id is required when production_domain_name is specified"
+    exit 1
+  end
+
+  # If production hosted zone is specified, domain must be specified too
+  if has_production_hosted_zone && !has_production_domain
+    puts "Error: production_domain_name is required when production_hosted_zone_id is specified"
+    exit 1
+  end
+
+  # Warn if production domain options are specified but environment is not production
+  if !is_production && (has_production_domain || has_production_hosted_zone)
+    puts "Warning: Production domain options are specified but environment_type is '#{options[:environment_type]}'"
+    puts "Production domain will only be configured when environment_type is 'production'"
+  end
 end
 
 begin
@@ -229,6 +308,9 @@ begin
     exit 1
   end
 
+  # Validate production domain options
+  validate_production_domain_options(options)
+
   if options[:stack_name].nil?
     # Create fully qualified domain name
     fully_qualified_domain_name = "#{options[:subdomain_name]}.#{options[:base_domain_name]}"
@@ -241,8 +323,17 @@ begin
   puts "  Marketing Site Template: #{MARKETING_SITE_TEMPLATE_FILE}"
   puts "  Certificate Template: #{CERTIFICATE_TEMPLATE_FILE}"
   options.each do |key, value|
+    # Only show production domain options if they have values
+    production_domain_options = [:production_domain_name, :production_hosted_zone_id]
+    next if production_domain_options.include?(key) && value.nil?
     puts "  #{key}: #{value}"
   end
+
+  # Show production domain configuration status
+  is_production = options[:environment_type] == 'production'
+  has_production_domain = options[:production_domain_name] && !options[:production_domain_name].empty?
+  has_production_hosted_zone = options[:production_hosted_zone_id] && !options[:production_hosted_zone_id].empty?
+  enable_production_domain = is_production && has_production_domain && has_production_hosted_zone
 
   if ENV['CI'] == 'true'
     puts "Running in CI mode. Skipping confirmation..."
@@ -271,15 +362,23 @@ begin
       "HostedZoneId" => options[:hosted_zone_id],
       "BaseDomainName" => options[:base_domain_name],
       "SubdomainName" => options[:subdomain_name]
-    }
+    }.tap do |params|
+      if enable_production_domain
+        params["ProductionDomainName"] = options[:production_domain_name]
+        params["ProductionHostedZoneId"] = options[:production_hosted_zone_id]
+      end
+    end
 
     deploy_stack(
-      cert_stack_name,
-      cert_template_path,
-      cert_parameters,
-      "us-east-1",
-      options[:role_arn],
-      options[:environment_type]
+      stack_name: cert_stack_name,
+      template_file: cert_template_path,
+      parameters: cert_parameters,
+      region: 'us-east-1',
+      role_arn: options[:role_arn],
+      tags: {
+        'environment-type' => options[:environment_type],
+        'site-type' => options[:site_type]
+      }
     )
 
     # Step 3: Get certificate ARN from stack output.
@@ -301,19 +400,29 @@ begin
       "BaseDomainName" => options[:base_domain_name],
       "SubdomainName" => options[:subdomain_name],
       "EnvironmentType" => options[:environment_type],
+      "SiteType" => options[:site_type],
       "ContainerImageHashDigest" => options[:container_image_hash],
       "CloudFrontTLSCertificateArn" => certificate_arn,
       "WebApplicationServerSecretsARN" => options[:web_application_server_secrets_arn],
       "RoleBoundary" => options[:cloudformation_role_boundary]
-    }
+    }.tap do |params|
+      if enable_production_domain
+        params["ProductionDomainName"] = options[:production_domain_name]
+        params["ProductionHostedZoneId"] = options[:production_hosted_zone_id]
+      end
+    end
 
     deploy_stack(
-      options[:stack_name],
-      marketing_site_template_path,
-      marketing_site_stack_parameters,
-      options[:region],
-      options[:role_arn],
-      options[:environment_type]
+      stack_name: options[:stack_name],
+      template_file: marketing_site_template_path,
+      parameters: marketing_site_stack_parameters,
+      region: options[:region],
+      role_arn: options[:role_arn],
+      tags: {
+        'environment-type' => options[:environment_type],
+        'site-type' => options[:site_type]
+      },
+      capabilities: %w(CAPABILITY_IAM CAPABILITY_NAMED_IAM) # Marketing Sites templates creates ECS Task / Task Exec Roles.
     )
 
     puts "\nDeployment process completed successfully!"
