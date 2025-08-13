@@ -104,13 +104,19 @@ const CourseOfferingCard: React.FC<CourseOfferingCardProps> = ({
 
     const translatedGradesString = i18n.gradeRange({
       numGrades: gradesArray.length,
-      youngestGrade: gradesArray[0],
-      oldestGrade: gradesArray[gradesArray.length - 1],
+      youngestGrade: gradesArray[0] || '',
+      oldestGrade: gradesArray[gradesArray.length - 1] || '',
     });
 
     const splitTranslatedStringArray = translatedGradesString.split(' ');
 
-    return [splitTranslatedStringArray[0], splitTranslatedStringArray[1]];
+    return [
+      splitTranslatedStringArray[0],
+      // Pass nothing if range is empty
+      splitTranslatedStringArray[1] === '-'
+        ? null
+        : splitTranslatedStringArray[1],
+    ];
   }, [grade_levels]);
 
   return (
@@ -141,7 +147,7 @@ const CourseOfferingCard: React.FC<CourseOfferingCardProps> = ({
                 <FontAwesomeV6Icon iconName="user" iconStyle="solid" />
                 <BodyThreeText noMargin>
                   <StrongText noMargin>{translatedGradeRange[0]}</StrongText>{' '}
-                  {translatedGradeRange[1]}
+                  {translatedGradeRange[1] || 'All'}
                   {isThisCourseForTeachers && '  Teachers'}
                 </BodyThreeText>
               </div>
