@@ -4505,7 +4505,7 @@ class UserTest < ActiveSupport::TestCase
 
   describe 'from_omniauth' do
     subject(:from_omniauth) do
-      described_class.from_omniauth(auth, params)
+      User.from_omniauth(auth, params)
     end
 
     let(:auth) {build_authhash({name: {first: 'HashFirstName', last: 'HashLastName'}, given_name: 'GivenName', family_name: 'FamilyName', user_type: User::TYPE_STUDENT})}
@@ -4515,11 +4515,11 @@ class UserTest < ActiveSupport::TestCase
       context 'when user is student with given_name, family_name, and name hash' do
         it 'sets provided fields except for given_name' do
           user = _from_omniauth.target
-          assert_equal User::TYPE_STUDENT, user.user_type
-          assert_nil user.given_name
-          assert_equal 'FamilyName', user.family_name
-          assert_equal 'HashFirstName HashLastName', user.name
-          assert_equal 'migrated', user.provider
+          _(user.user_type).must_equal User::TYPE_STUDENT
+          _(user.given_name).must_be_nil
+          _(user.family_name).must_equal 'FamilyName'
+          _(user.name).must_equal 'HashFirstName HashLastName'
+          _(user.provider).must_equal 'migrated'
         end
       end
 
@@ -4528,10 +4528,10 @@ class UserTest < ActiveSupport::TestCase
 
         it 'sets provided fields' do
           user = _from_omniauth.target
-          assert_equal User::TYPE_TEACHER, user.user_type
-          assert_equal 'GivenName', user.given_name
-          assert_equal 'FamilyName', user.family_name
-          assert_equal AuthenticationOption::GOOGLE, user.provider
+          _(user.user_type).must_equal User::TYPE_TEACHER
+          _(user.given_name).must_equal 'GivenName'
+          _(user.family_name).must_equal 'FamilyName'
+          _(user.provider).must_equal AuthenticationOption::GOOGLE
         end
       end
 
@@ -4540,10 +4540,10 @@ class UserTest < ActiveSupport::TestCase
 
         it 'sets provided fields' do
           user = _from_omniauth.target
-          assert_equal User::TYPE_TEACHER, user.user_type
-          assert_equal 'GivenName', user.given_name
-          assert_equal 'FamilyName', user.family_name
-          assert_equal AuthenticationOption::GOOGLE, user.provider
+          _(user.user_type).must_equal User::TYPE_TEACHER
+          _(user.given_name).must_equal 'GivenName'
+          _(user.family_name).must_equal 'FamilyName'
+          _(user.provider).must_equal AuthenticationOption::GOOGLE
         end
       end
 
@@ -4552,10 +4552,10 @@ class UserTest < ActiveSupport::TestCase
 
         it 'sets provided fields' do
           user = _from_omniauth.target
-          assert_equal User::TYPE_TEACHER, user.user_type
-          assert_equal 'HashFirstName', user.given_name
-          assert_equal 'HashLastName', user.family_name
-          assert_equal AuthenticationOption::GOOGLE, user.provider
+          _(user.user_type).must_equal User::TYPE_TEACHER
+          _(user.given_name).must_equal 'HashFirstName'
+          _(user.family_name).must_equal 'HashLastName'
+          _(user.provider).must_equal AuthenticationOption::GOOGLE
         end
       end
     end
@@ -4568,9 +4568,9 @@ class UserTest < ActiveSupport::TestCase
 
         it 'updates oauth tokens' do
           auth_user = _from_omniauth.target
-          assert_equal AuthenticationOption::GOOGLE, auth_user.provider
-          assert_equal auth.credentials.token, auth_user.properties['oauth_token']
-          assert_equal auth.credentials.refresh_token, auth_user.properties['oauth_refresh_token']
+          _(auth_user.provider).must_equal AuthenticationOption::GOOGLE
+          _(auth_user.properties['oauth_token']).must_equal auth.credentials.token
+          _(auth_user.properties['oauth_refresh_token']).must_equal auth.credentials.refresh_token
         end
       end
     end
