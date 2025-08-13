@@ -4502,4 +4502,90 @@ class UserTest < ActiveSupport::TestCase
       end
     end
   end
+
+  describe 'from_omniauth' do
+    subject(:from_omniauth) do
+      User.from_omniauth(auth, params)
+    end
+
+    let(:auth) {build_authhash({name: {first: 'HashFirstName', last: 'HashLastName'}, given_name: 'GivenName', family_name: 'FamilyName', user_type: User::TYPE_STUDENT})}
+    let(:params) {{}}
+
+    describe 'when user with matching credientials does not exist' do
+      context 'when user is student with given_name, family_name, and name hash' do
+        it 'sets provided fields except for given_name' do
+          user = _from_omniauth.target
+          _(user.user_type).must_equal User::TYPE_STUDENT
+          _(user.given_name).must_be_nil
+          _(user.family_name).must_equal 'FamilyName'
+          _(user.name).must_equal 'HashFirstName HashLastName'
+          _(user.provider).must_equal 'migrated'
+        end
+      end
+
+      context 'when user is teacher with given_name and family_name' do
+        let(:auth) {build_authhash({given_name: 'GivenName', family_name: 'FamilyName', user_type: User::TYPE_TEACHER})}
+
+        it 'sets provided fields' do
+          user = _from_omniauth.target
+          _(user.user_type).must_equal User::TYPE_TEACHER
+          _(user.given_name).must_equal 'GivenName'
+          _(user.family_name).must_equal 'FamilyName'
+          _(user.provider).must_equal AuthenticationOption::GOOGLE
+        end
+      end
+
+      context 'when user is teacher with first_name and last_name' do
+        let(:auth) {build_authhash({first_name: 'GivenName', last_name: 'FamilyName', user_type: User::TYPE_TEACHER})}
+
+        it 'sets provided fields' do
+          user = _from_omniauth.target
+          _(user.user_type).must_equal User::TYPE_TEACHER
+          _(user.given_name).must_equal 'GivenName'
+          _(user.family_name).must_equal 'FamilyName'
+          _(user.provider).must_equal AuthenticationOption::GOOGLE
+        end
+      end
+
+      context 'when user is teacher with name hash' do
+        let(:auth) {build_authhash({name: {first: 'HashFirstName', last: 'HashLastName'}, user_type: User::TYPE_TEACHER})}
+
+        it 'sets provided fields' do
+          user = _from_omniauth.target
+          _(user.user_type).must_equal User::TYPE_TEACHER
+          _(user.given_name).must_equal 'HashFirstName'
+          _(user.family_name).must_equal 'HashLastName'
+          _(user.provider).must_equal AuthenticationOption::GOOGLE
+        end
+      end
+    end
+
+    describe 'when user with matching credientials exists' do
+      let(:user) {(create(:user, :clever_sso_provider))}
+
+      context 'when user uses new authentication option' do
+        let(:auth) {build_authhash({given_name: 'GivenName', family_name: 'FamilyName', user_type: User::TYPE_TEACHER}, user.uid)}
+
+        it 'updates oauth tokens' do
+          auth_user = _from_omniauth.target
+          _(auth_user.provider).must_equal AuthenticationOption::GOOGLE
+          _(auth_user.properties['oauth_token']).must_equal auth.credentials.token
+          _(auth_user.properties['oauth_refresh_token']).must_equal auth.credentials.refresh_token
+        end
+      end
+    end
+  end
+
+  private def build_authhash(info_params = {}, uid = '123456')
+    OmniAuth::AuthHash.new(
+      provider: AuthenticationOption::GOOGLE,
+      uid: uid,
+      credentials: {
+        token: 'fake oauth token',
+        expires_at: Time.now.to_i + 3600,
+        refresh_token: 'fake refresh token',
+      },
+      info: info_params,
+    )
+  end
 end
