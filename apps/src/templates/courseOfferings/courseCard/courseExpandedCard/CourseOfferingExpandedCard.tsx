@@ -34,8 +34,8 @@ const CourseOfferingExpandedCard: React.FunctionComponent<
   courseDurationLabel,
   translatedGradeRange,
   translatedSubjectsAndTopicsTitlesArray,
-  relatedProposalsContent,
-  relatedProposalsHeader,
+  // relatedProposalsContent,
+  // relatedProposalsHeader,
 }) => {
   return (
     <div className={moduleStyles.courseOfferingExpandedCardContainer}>
