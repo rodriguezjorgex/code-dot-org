@@ -69,6 +69,8 @@ div > div:nth-child(3n + 3) {
   border: 1px solid var(--borders-neutral-primary);
   background: var(--background-neutral-primary);
   box-sizing: border-box;
+  // Added to ensure the expanded card is above the arrow and other elements
+  z-index: 2;
 
   .curriculumDetails {
     display: flex;
