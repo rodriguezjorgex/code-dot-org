@@ -64,6 +64,9 @@ export interface ProgressState {
   courseId: number | null;
   isLessonExtras: boolean;
   initTime?: number | null;
+  idleStartTime: number | null;
+  idleTimeSinceLastReport: number;
+  isIdle: boolean;
   unitProgress: {
     [key: number]: UnitProgress;
   };
@@ -95,6 +98,7 @@ export interface MilestoneReport extends OptionalMilestoneData {
   app: string;
   result: boolean;
   testResult: number;
+  timeToMilestoneMs?: number;
   timeSinceLastMilestone?: number;
 }
 
@@ -128,6 +132,9 @@ const initialState: ProgressState = {
 
   // unitProgress is of type unitProgressType (a map of levelId ->
   // studentLevelProgressType)
+  idleStartTime: null,
+  idleTimeSinceLastReport: 0,
+  isIdle: false,
   unitProgress: {},
   unitProgressHasLoaded: false,
   // note: eventually, we expect usage of this field to be replaced with unitProgress
@@ -304,6 +311,18 @@ const progressSlice = createSlice({
     setViewAsUserId(state, action: PayloadAction<number | null>) {
       state.viewAsUserId = action.payload;
     },
+    setStartIdle(state) {
+      state.isIdle = true;
+      state.idleStartTime = Date.now();
+    },
+    setEndIdle(state) {
+      state.isIdle = false;
+      state.idleStartTime = null;
+    },
+    resetIdleTime(state) {
+      state.idleTimeSinceLastReport = 0;
+      state.idleStartTime = state.isIdle ? Date.now() : null;
+    },
   },
   extraReducers: {
     // TODO: When we convert viewAsRedux to redux-toolkit, we will need to use
@@ -473,16 +492,21 @@ function sendReportHelper(
   const userId = 0;
   extraData = extraData || {};
 
-  const startTime = state.milestoneStartTime;
+  const initTime = state.initTime ?? Date.now();
+  const startTime = state.milestoneStartTime ?? Date.now();
   const endTime = Date.now();
-  const timeSinceLastMilestone = startTime ? endTime - startTime : undefined;
+
+  const idleTimeSinceLastReport = getIdleTimeSinceLastReport(getState());
+  const timeToMilestoneMs = endTime - initTime;
+  const timeSinceLastMilestone = endTime - startTime - idleTimeSinceLastReport;
 
   const data: MilestoneReport = {
     app: appType,
     result: true,
     testResult: result,
     ...extraData,
-    ...(timeSinceLastMilestone !== undefined && {timeSinceLastMilestone}),
+    timeToMilestoneMs,
+    timeSinceLastMilestone,
   };
 
   return fetch(`/milestone/${userId}/${scriptLevelId}/${levelId}`, {
@@ -508,6 +532,9 @@ function sendReportHelper(
       dispatch(resetMilestoneStartTime());
     }
   });
+
+  dispatch(resetIdleTime());
+  dispatch(recordMilestoneStartTime(Date.now()));
 }
 
 /**
@@ -635,9 +662,22 @@ export const {
   setScriptCompleted,
   setLessonExtrasEnabled,
   setViewAsUserId,
+  setStartIdle,
+  setEndIdle,
+  resetIdleTime,
 } = progressSlice.actions;
 
 export default progressSlice.reducer;
+
+export const getIdleTimeSinceLastReport = (state: RootState): number => {
+  const {idleTimeSinceLastReport, idleStartTime, isIdle} = state.progress;
+
+  if (isIdle && idleStartTime) {
+    return idleTimeSinceLastReport + (Date.now() - idleStartTime);
+  } else {
+    return idleTimeSinceLastReport;
+  }
+};
 
 // export private function(s) to expose to unit testing
 export const __testonly__ = IN_UNIT_TEST

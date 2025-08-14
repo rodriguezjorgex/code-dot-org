@@ -11,6 +11,7 @@ import {getStandaloneProjectId} from '@cdo/apps/lab2/projects/utils';
 import {getStore} from '@cdo/apps/redux';
 import BrowserTextToSpeechWrapper from '@cdo/apps/sharedComponents/BrowserTextToSpeechWrapper';
 
+import Lab2IdleTimer from '../Lab2IdleTimer';
 import ProjectContainer from '../projects/ProjectContainer';
 
 import RubricFABContainer from './components/rubrics/RubricFABContainer';
@@ -29,6 +30,7 @@ const Lab2: React.FunctionComponent = () => {
             <Lab2Wrapper>
               <DialogManager>
                 <MetricsAdapter />
+                <Lab2IdleTimer />
                 <ProjectContainer channelId={getStandaloneProjectId()}>
                   <LabViewsRenderer />
                 </ProjectContainer>
