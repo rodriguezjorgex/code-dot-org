@@ -195,7 +195,8 @@ const progressSlice = createSlice({
       state.unitHasUnnumberedLessons = action.payload.unitHasUnnumberedLessons;
       state.courseId = action.payload.courseId;
       state.initTime = action.payload.initTime ?? Date.now();
-      state.milestoneStartTime = action.payload.milestoneStartTime ?? null;
+      state.milestoneStartTime =
+        action.payload.milestoneStartTime ?? Date.now();
       state.courseVersionId = action.payload.courseVersionId;
       state.currentLessonId = currentLessonId;
       state.hasFullProgress = action.payload.isFullProgress;
