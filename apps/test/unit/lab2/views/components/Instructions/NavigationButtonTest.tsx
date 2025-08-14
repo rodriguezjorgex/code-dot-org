@@ -137,6 +137,8 @@ describe('NavigationButton', () => {
     isFullProgress: false,
     currentPageNumber: 0,
     courseName: null,
+    initTime: null,
+    milestoneStartTime: null,
   };
 
   beforeEach(() => {
