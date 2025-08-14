@@ -108,8 +108,8 @@ const CourseOfferingCard: React.FC<CourseOfferingCardProps> = ({
 
     const translatedGradesString = i18n.gradeRange({
       numGrades: gradesArray.length,
-      youngestGrade: gradesArray[0] || '',
-      oldestGrade: gradesArray[gradesArray.length - 1] || '',
+      youngestGrade: gradesArray[0],
+      oldestGrade: gradesArray[gradesArray.length - 1],
     });
 
     const splitTranslatedStringArray = translatedGradesString.split(' ');
