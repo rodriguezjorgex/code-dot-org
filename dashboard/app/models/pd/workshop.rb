@@ -42,7 +42,6 @@
 #
 
 require_relative '../../../../lib/cdo/mailjet'
-require_relative '../../../../lib/cdo/shared_constants/mailjet_constants'
 
 class Pd::Workshop < ApplicationRecord
   include Pd::WorkshopConstants
@@ -1007,7 +1006,7 @@ class Pd::Workshop < ApplicationRecord
 
     Retryable.retryable(
       on: RestClient::TooManyRequests,
-      tries: MAILJET_RETRY_LIMIT,
+      tries: MailJet::MAILJET_RETRY_LIMIT,
       sleep: ->(n) {2 ** n}
     ) do
       MailJet.send_email(
