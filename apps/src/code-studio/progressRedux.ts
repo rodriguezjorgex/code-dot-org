@@ -530,11 +530,9 @@ function sendReportHelper(
       // After we log the reported time we should update the start time of the milestone
       // otherwise if we don't leave the page we are compounding the total time
       dispatch(resetMilestoneStartTime());
+      dispatch(resetIdleTime());
     }
   });
-
-  dispatch(resetIdleTime());
-  dispatch(recordMilestoneStartTime(Date.now()));
 }
 
 /**
