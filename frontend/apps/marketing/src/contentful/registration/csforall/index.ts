@@ -7,6 +7,9 @@ import FullWidthActionBlock, {
 import Button, {
   ButtonMuiContentfulComponentDefinition,
 } from '@/components/contentful/button';
+import Card, {
+  CardContentfulComponentDefinition,
+} from '@/components/contentful/card';
 import ActionBlockCarousel, {
   ActionBlockCarouselContentfulComponentDefinition,
 } from '@/components/contentful/carousels/actionBlockCarousel';
@@ -40,9 +43,6 @@ import FAQAccordion, {
 import Heading, {
   HeadingContentfulComponentDefinition,
 } from '@/components/contentful/heading';
-import HeroBanner, {
-  HeroBannerContentfulComponentDefinition,
-} from '@/components/contentful/heroBanner';
 import IconHighlight, {
   IconHighlightContentfulComponentDefinition,
 } from '@/components/contentful/iconHighlight';
@@ -114,6 +114,13 @@ const contentfulRegistration = {
       definition: PeopleCollectionContentfulComponentDefinition,
     },
     {
+      component: Card,
+      definition: CardContentfulComponentDefinition,
+      options: {
+        wrapContainerWidth: '100%',
+      },
+    },
+    {
       component: Divider,
       definition: DividerContentfulComponentDefinition,
       options: {
@@ -138,13 +145,6 @@ const contentfulRegistration = {
     {
       component: Heading,
       definition: HeadingContentfulComponentDefinition,
-    },
-    {
-      component: HeroBanner,
-      definition: HeroBannerContentfulComponentDefinition,
-      options: {
-        wrapContainerWidth: '100%',
-      },
     },
     {
       component: IconHighlight,
