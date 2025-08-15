@@ -25,9 +25,9 @@ class WorkshopMailerTest < ActionMailer::TestCase
     facilitator = create(:facilitator)
     workshop = create(:workshop, facilitators: [facilitator])
     create(:pd_enrollment, workshop: workshop)
-    Pd::Workshop.any_instance.expects(:suppress_reminders?).returns(false).times(3)
+    Pd::Workshop.any_instance.expects(:suppress_reminders?).returns(false).times(2)
 
-    assert_emails 3 do
+    assert_emails 2 do
       Pd::WorkshopMailer.facilitator_enrollment_reminder(facilitator, workshop).deliver_now
       Pd::WorkshopMailer.organizer_enrollment_reminder(workshop).deliver_now
     end
@@ -37,7 +37,7 @@ class WorkshopMailerTest < ActionMailer::TestCase
     facilitator = create(:facilitator)
     workshop = create(:workshop, facilitators: [facilitator])
     create(:pd_enrollment, workshop: workshop)
-    Pd::Workshop.any_instance.expects(:suppress_reminders?).returns(true).times(3)
+    Pd::Workshop.any_instance.expects(:suppress_reminders?).returns(true).times(2)
 
     assert_emails 0 do
       Pd::WorkshopMailer.facilitator_enrollment_reminder(facilitator, workshop).deliver_now
