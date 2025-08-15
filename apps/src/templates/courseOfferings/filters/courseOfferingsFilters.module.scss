@@ -1,9 +1,11 @@
+$catalog-filters-z-index: 3;
+
 .catalogFiltersContainer {
   position: sticky;
   top: 0;
   padding-inline: 2rem;
   background-color: white;
-  z-index: 2;
+  z-index: $catalog-filters-z-index;
 }
 
 .catalogDropdownFiltersTopRow {
