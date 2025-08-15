@@ -51,7 +51,7 @@ const CourseOfferingCard: React.FC<CourseOfferingCardProps> = ({
     school_subject,
     cs_topic,
     image,
-    is_translated,
+    // is_translated,
   } = courseOffering;
 
   const translatedSubjectsAndTopicsTitlesArray = useMemo(() => {
@@ -132,9 +132,10 @@ const CourseOfferingCard: React.FC<CourseOfferingCardProps> = ({
                   <Tags size="s" tagsList={courseSubjectsAndTopicsTagsList} />
                 )}
 
-                {is_translated && (
-                  <FontAwesomeV6Icon iconName="language" iconStyle="solid" />
-                )}
+                {/* TODO: [ACQ-3475] Make this work correctly */}
+                {/*{is_translated && (*/}
+                {/*  <FontAwesomeV6Icon iconName="language" iconStyle="solid" />*/}
+                {/*)}*/}
               </div>
               <Heading4 noMargin className={moduleStyles.courseTitle}>
                 {display_name}
