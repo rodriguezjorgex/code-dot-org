@@ -88,6 +88,17 @@ export const commonFilterTypes: FilterTypesMap = {
   },
 };
 
+export const durationInHoursFilterTypes: FilterTypeConfig = {
+  name: 'duration',
+  label: i18n.duration(),
+  options: {
+    0: 'Less than 1 hour',
+    1: '1-2 hours',
+    3: '3-4 hours',
+    5: '5+ hours',
+  },
+};
+
 // Returns whether the given curriculum matches the checked grade level filters.
 export const filterByGradeLevel = (
   curriculum: CourseOffering,
@@ -122,6 +133,47 @@ export const filterByDuration = (
     durationFilters.length === 0 ||
     (curriculum.duration && durationFilters.includes(curriculum.duration))
   );
+};
+
+export const filterByDurationInHours = (
+  curriculum: CourseOffering,
+  durationInHoursFilters: string[]
+) => {
+  if (durationInHoursFilters.length > 0) {
+    if (!curriculum.duration_in_hours) {
+      return false;
+    } else {
+      const curriculumDurationInHours = curriculum.duration_in_hours;
+      const supportsFilteredDurationInHours = durationInHoursFilters.some(
+        duration => {
+          const durationInHours = parseInt(duration, 10);
+          if (isNaN(durationInHours)) {
+            return false;
+          }
+          // Check if the curriculum's duration falls within the range specified by the filter
+          if (durationInHours === 0) {
+            return curriculumDurationInHours < 1; // Less than 1 hour
+          } else if (durationInHours === 1) {
+            return (
+              curriculumDurationInHours >= 1 && curriculumDurationInHours <= 2
+            ); // 1-2 hours
+          } else if (durationInHours === 3) {
+            return (
+              curriculumDurationInHours >= 3 && curriculumDurationInHours <= 4
+            ); // 3-4 hours
+          } else if (durationInHours === 5) {
+            return curriculumDurationInHours >= 5; // 5+ hours
+          }
+          return false;
+        }
+      );
+
+      if (!supportsFilteredDurationInHours) {
+        return false;
+      }
+    }
+  }
+  return true;
 };
 
 // Returns whether the given curriculum matches the checked topic filters.
