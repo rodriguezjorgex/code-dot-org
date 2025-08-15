@@ -713,9 +713,6 @@ module SharedConstants
       SHAPE: 100,
     },
   }.freeze
-  CENSUS_CONSTANTS = OpenStruct.new(
-    {CURRENT_CENSUS_SCHOOL_YEAR: 2024}
-  )
 
   CAP_LINKS = OpenStruct.new(
     PARENTAL_CONSENT_GUIDE_URL: 'https://support.code.org/hc/en-us/articles/15465423491085-How-do-I-obtain-parent-or-guardian-permission-for-student-accounts',
@@ -864,15 +861,15 @@ module SharedConstants
   }
 
   EDUCATOR_ROLES = [
-    {value: "classroom_teacher", category: 'educator'},
-    {value: "stem_tech_teacher", category: 'educator'},
-    {value: "subject_area_teacher", category: 'educator'},
-    {value: "librarian_media_specialist", category: 'educator'},
-    {value: "homeschool_teacher", category: 'educator'},
-    {value: "school_admin", category: "admin"},
-    {value: "district_admin", category: "admin"},
-    {value: "parent", category: 'other'},
-    {value: "other", category: 'other'}
+    {value: "classroom_teacher", label: "Classroom Teacher", category: 'educator'},
+    {value: "stem_tech_teacher", label: "STEM/Technology Teacher", category: 'educator'},
+    {value: "subject_area_teacher", label: "Subject Area Teacher", category: 'educator'},
+    {value: "librarian_media_specialist", label: "Librarian/Media Specialist", category: 'educator'},
+    {value: "homeschool_teacher", label: "Homeschool Teacher", category: 'educator'},
+    {value: "school_admin", label: "School Administrator", category: "admin"},
+    {value: "district_admin", label: "District Administrator", category: "admin"},
+    {value: "parent", label: "Parent", category: 'other'},
+    {value: "other", label: "Other", category: 'other'}
   ].freeze
 
   AI_DIFF_CONTEXT = {
