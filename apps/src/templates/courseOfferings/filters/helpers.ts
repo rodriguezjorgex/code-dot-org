@@ -88,15 +88,22 @@ export const commonFilterTypes: FilterTypesMap = {
   },
 };
 
+const DURATION_IN_HOURS_LESS_THAN_ONE_HOUR = 'lessThanOneHour';
+const DURATION_IN_HOURS_ONE_TO_TWO_HOURS = 'oneToTwoHours';
+const DURATION_IN_HOURS_THREE_TO_FOUR_HOURS = 'threeToFourHours';
+const DURATION_IN_HOURS_FIVE_PLUS_HOURS = 'fivePlusHours';
+
+const durationInHoursMap = {
+  [DURATION_IN_HOURS_LESS_THAN_ONE_HOUR]: 'Less than 1 hour',
+  [DURATION_IN_HOURS_ONE_TO_TWO_HOURS]: '1-2 hours',
+  [DURATION_IN_HOURS_THREE_TO_FOUR_HOURS]: '3-4 hours',
+  [DURATION_IN_HOURS_FIVE_PLUS_HOURS]: '5+ hours',
+};
+
 export const durationInHoursFilterTypes: FilterTypeConfig = {
   name: 'duration',
   label: i18n.duration(),
-  options: {
-    0: 'Less than 1 hour',
-    1: '1-2 hours',
-    3: '3-4 hours',
-    5: '5+ hours',
-  },
+  options: durationInHoursMap,
 };
 
 // Returns whether the given curriculum matches the checked grade level filters.
@@ -146,22 +153,18 @@ export const filterByDurationInHours = (
       const curriculumDurationInHours = curriculum.duration_in_hours;
       const supportsFilteredDurationInHours = durationInHoursFilters.some(
         duration => {
-          const durationInHours = parseInt(duration, 10);
-          if (isNaN(durationInHours)) {
-            return false;
-          }
           // Check if the curriculum's duration falls within the range specified by the filter
-          if (durationInHours === 0) {
+          if (duration === DURATION_IN_HOURS_LESS_THAN_ONE_HOUR) {
             return curriculumDurationInHours < 1; // Less than 1 hour
-          } else if (durationInHours === 1) {
+          } else if (duration === DURATION_IN_HOURS_ONE_TO_TWO_HOURS) {
             return (
               curriculumDurationInHours >= 1 && curriculumDurationInHours <= 2
             ); // 1-2 hours
-          } else if (durationInHours === 3) {
+          } else if (duration === DURATION_IN_HOURS_THREE_TO_FOUR_HOURS) {
             return (
               curriculumDurationInHours >= 3 && curriculumDurationInHours <= 4
             ); // 3-4 hours
-          } else if (durationInHours === 5) {
+          } else if (duration === DURATION_IN_HOURS_FIVE_PLUS_HOURS) {
             return curriculumDurationInHours >= 5; // 5+ hours
           }
           return false;
