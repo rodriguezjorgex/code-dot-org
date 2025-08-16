@@ -24,7 +24,7 @@ gem 'drb' # needed for activesupport in Ruby >= 3.4, drop explicit after we upgr
 gem 'observer' # needed for activesupport in Ruby >= 3.4, drop explicit after we upgrade to activesupport >= 7.2
 gem 'syslog' # needed for activesupport in Ruby >= 3.4, drop explicit after we upgrade to activesupport >= 7.2
 
-gem 'rails', '~> 6.1'
+gem 'rails', '~> 7.1', '>= 7.1.5.2'
 gem 'rails-controller-testing', '~> 1.0.5'
 
 # Compile Sprockets assets concurrently in `assets:precompile`.
@@ -71,7 +71,7 @@ gem 'memory_profiler'
 gem 'rack-mini-profiler'
 
 group :development do
-  gem 'annotate', '~> 3.1.1'
+  gem 'annotate', '~> 3.2.0'
   gem 'aws-google', '~> 0.2.3'
   gem 'web-console', '~> 4.2.0'
   # Bootsnap pre-caches Ruby require paths + bytecode and speeds up boot time significantly.
@@ -93,7 +93,7 @@ group :development, :test do
   gem 'benchmark-ips'
   gem 'better_errors', '>= 2.7.0'
   gem 'brakeman'
-  gem 'database_cleaner-active_record', '~> 2.1.0'
+  gem 'database_cleaner-active_record', '~> 2.2.0'
   gem 'haml-rails' # haml (instead of erb) generators
   gem 'ruby-prof', '>= 1.7.0'
   gem 'vcr', require: false
@@ -198,7 +198,7 @@ gem 'geocoder'
 gem 'mini_magick', ">=4.10.0"
 gem 'rmagick', '~> 4.2.5'
 
-gem 'acts_as_list'
+gem 'acts_as_list', '>= 1.2.0'
 
 gem 'kaminari' # pagination
 
@@ -227,7 +227,7 @@ gem 'twitter_cldr', '~> 6.12.1'
 gem 'sequel', '~> 5.29'
 gem 'user_agent_parser'
 
-gem 'paranoia', '~> 2.5.0'
+gem 'paranoia', '~> 2.6.3'
 
 # JSON model serializer for REST APIs.
 gem 'active_model_serializers', '~> 0.10.13'
@@ -312,12 +312,12 @@ gem 'rambling-trie', '>= 2.1.1'
 gem 'image_optim', github: 'code-dot-org/image_optim', ref: 'cdo'
 # Image-optimization tools and binaries.
 gem 'image_optim_pack', '~> 0.5.0', github: 'code-dot-org/image_optim_pack', ref: 'guetzli'
-gem 'image_optim_rails', '~> 0.4.0'
+gem 'image_optim_rails', '~> 0.5.0'
 
 gem 'image_size', require: false
 
 # Auto strip model attributes before validation (opt in)
-gem 'auto_strip_attributes', '~> 2.1'
+gem 'auto_strip_attributes', '~> 2.2', '>= 2.2.0'
 
 # Used to sort UTF8 strings properly
 gem 'sort_alphabetical', github: 'grosser/sort_alphabetical'
@@ -336,10 +336,10 @@ install_if require_pg do
   gem 'pg', require: false
 end
 
-gem 'activerecord-import', '~> 1.0.3'
+gem 'activerecord-import', '~> 1.1.0'
 gem 'active_record_union'
-gem 'scenic'
-gem 'scenic-mysql_adapter'
+gem 'scenic', '>= 1.5.2'
+gem 'scenic-mysql_adapter', '>= 1.0.2'
 
 gem 'colorize'
 
@@ -358,7 +358,7 @@ gem 'crowdin-api', '~> 1.10.0'
 
 gem "pycall", ">= 1.5.2"
 
-gem "delayed_job_active_record", "~> 4.1"
+gem "delayed_job_active_record", "~> 4.1", ">= 4.1.8"
 
 gem 'rack-cors', '~> 2.0.1'
 
