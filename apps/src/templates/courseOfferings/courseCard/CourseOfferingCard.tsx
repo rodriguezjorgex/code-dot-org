@@ -51,6 +51,7 @@ const CourseOfferingCard: React.FC<CourseOfferingCardProps> = ({
     school_subject,
     cs_topic,
     image,
+    // TODO: [ACQ-3475]: uncomment this
     // is_translated,
   } = courseOffering;
 
