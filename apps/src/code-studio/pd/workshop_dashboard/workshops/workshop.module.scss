@@ -85,6 +85,7 @@ div.card {
 
   div.cardContent {
     padding: 0.75rem 1rem 1rem;
+    flex: 1;
   }
 
   .divider {
@@ -159,6 +160,15 @@ div.card {
     &.status {
       > div {
         background-color: var(--background-brand-teal-primary);
+
+        span {
+          color: var(--text-neutral-white-fixed);
+        }
+      }
+    }
+    &.questionTag {
+      > div {
+        background-color: var(--background-neutral-septenary);
 
         span {
           color: var(--text-neutral-white-fixed);
@@ -288,8 +298,12 @@ div.card {
 .cardRow {
   display: flex;
   flex: 1;
-  flex-direction: row;
   gap: 1.5rem;
+  flex-direction: column;
+
+  @media (min-width: 900px) {
+    flex-direction: row;
+  }
 
   .questionCard {
     flex: 1;
@@ -413,5 +427,64 @@ div.card {
         margin-right: 0.375rem;
       }
     }
+  }
+
+  .freeResponse {
+    .cardHeaderRow {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .cardContent {
+      padding: 1.25rem;
+    }
+
+    .textCardContainer {
+      width: 100%;
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 1fr;
+
+      .textCard {
+        background: var(--background-neutral-secondary);
+        border-radius: 0.5rem;
+        padding: 1rem;
+      }
+    }
+
+    // Medium Screens: Switch to 2 columns
+    @media (min-width: 600px) {
+      .textCardContainer {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    // Large Screens: Switch to 3 columns
+    @media (min-width: 900px) {
+      .textCardContainer {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  }
+}
+
+.emptyStateContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+  width: 100%;
+
+  &.large {
+    padding: 5rem 0;
+  }
+
+  .emptyStateImage {
+    width: auto;
+    height: 8.75rem;
+    margin-bottom: 1rem;
   }
 }

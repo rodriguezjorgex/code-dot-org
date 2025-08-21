@@ -7,6 +7,8 @@ import {
   SurveyQuestions,
 } from '../../../../WorkshopFormTemplate/types';
 import {useWorkshopContext} from '../../../WorkshopLayout';
+import {FollowUpRequestedCard} from '../../components/FollowUpRequestedCard';
+import {FreeResponseCard} from '../../components/FreeResponseCard';
 import {MultiSelectCard} from '../../components/MultiSelectCard';
 import {ScoreCard} from '../../components/ScoreCard';
 
@@ -36,6 +38,11 @@ export const Implementation = () => {
     [questions]
   );
 
+  const otherQuestionsImplementation = useMemo(
+    () => (questions ? questions.other_questions_implementation : undefined),
+    [questions]
+  );
+
   // remove "none" option from barriers items since we only care about barriers, not that there weren't any
   const barriersItems = useMemo(() => {
     if (!isQuestionType(barriersToImplementation, 'multiSelect')) {
@@ -54,9 +61,12 @@ export const Implementation = () => {
       isQuestionType(question, 'multiSelect') &&
       question.question_name === 'barriers_implementation_curriculum'
     ) {
+      if (question.results.total_respondents === 0) {
+        return '';
+      }
       const numWithBarriers =
-        (question.results.total_respondents ?? 0) -
-        (question.results.breakdown?.none?.count ?? 0);
+        question.results.total_respondents -
+        (question.results.breakdown.none?.count ?? 0);
       return `${numWithBarriers} teachers reported at least 1 or more barriers to implementation`;
     }
     return '';
@@ -85,7 +95,6 @@ export const Implementation = () => {
       <Box className={styles.cardRow}>
         {isQuestionType(barriersToImplementation, 'multiSelect') && (
           <MultiSelectCard
-            key={barriersToImplementation.question_name}
             title={
               barriersToImplementation.question_short_text ??
               barriersToImplementation.question_text
@@ -93,6 +102,24 @@ export const Implementation = () => {
             description={getDescription(barriersToImplementation)}
             items={barriersItems}
             barLabel="Teachers"
+          />
+        )}
+        <FollowUpRequestedCard
+          items={[]}
+          title="Follow-up requested"
+          description=""
+        />
+      </Box>
+
+      <Box className={styles.cardRow}>
+        {isQuestionType(otherQuestionsImplementation, 'text') && (
+          <FreeResponseCard
+            title={
+              otherQuestionsImplementation.question_short_text ??
+              otherQuestionsImplementation.question_text
+            }
+            items={otherQuestionsImplementation.results.responses}
+            tagText={`${otherQuestionsImplementation.results.total_responses} Submitted`}
           />
         )}
       </Box>
