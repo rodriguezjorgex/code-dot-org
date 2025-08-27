@@ -509,11 +509,6 @@ class User < ApplicationRecord
     end
   end
 
-  def friendly_name(ltr = true)
-    return name unless given_name && family_name
-    ltr ? "#{given_name} #{family_name}" : "#{family_name} #{given_name}"
-  end
-
   def email
     return read_attribute(:email) unless migrated?
     primary_contact_info.try(:email) || ''
@@ -1008,6 +1003,7 @@ class User < ApplicationRecord
       display_name: name,
       given_name: given_name,
       family_name: family_name,
+      educator_role: educator_role ? SharedConstants::EDUCATOR_ROLES.find {|role| role[:value] == educator_role}&.dig(:label) : nil,
       school_info: Queries::SchoolInfo.current_school(self),
     }
   end
