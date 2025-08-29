@@ -460,6 +460,21 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  #
+  # Get /users/test_mailjet_page
+  #
+  def test_mailjet_page
+  end
+
+  #
+  # Get /users/send_test_mailjet/:email
+  def send_test_mailjet
+    email = params[:email]
+    name = email.split("@")[0]
+
+    
+  end
+
   private def update_user_email
     return false if forbidden_change?(current_user, params)
 
