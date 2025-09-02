@@ -209,7 +209,7 @@ class Pd::Enrollment < ApplicationRecord
     begin
       test_pd_mailjet_email = DCDO.get('test_pd_mailjet_email', false)
       if test_pd_mailjet_email && test_pd_mailjet_email == user.email
-        Pd::WorkshopMailjetMailer.send_teacher_post_workshop_survey(enrollment, user, false)
+        Pd::WorkshopMailjetMailer.send_teacher_post_workshop_survey(self, user, false)
       end
     rescue => exception
       CDO.log.warn "PD MailJet Error: #{exception.message}"
