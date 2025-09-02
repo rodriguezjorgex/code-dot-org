@@ -822,6 +822,8 @@ const SUPPORTED_LOCALES = new Set([
   'sq',
   'tl',
   'he',
+  'zh-Hans',
+  'zh-Hant',
 ]);
 
 // Remove the localized portion of paths, if there is a localized portion.
