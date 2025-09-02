@@ -5,6 +5,7 @@ import React, {useState} from 'react';
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
 
 const TestMailJetPage: React.FunctionComponent = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [isSending, setIsSending] = useState(false);
 
@@ -16,12 +17,16 @@ const TestMailJetPage: React.FunctionComponent = () => {
 
     try {
       const authToken = await getAuthenticityToken();
-      const response = await fetch(`/users/send_test_mailjet/${email}`, {
-        method: 'GET',
+      const response = await fetch('/users/send_test_mailjet', {
+        method: 'POST',
         headers: {
-          Accept: 'application/json',
+          'Content-Type': 'application/json',
           'X-CSRF-Token': authToken,
         },
+        body: JSON.stringify({
+          email: email,
+          name: name,
+        }),
       });
 
       if (response.ok) {
@@ -40,9 +45,12 @@ const TestMailJetPage: React.FunctionComponent = () => {
   return (
     <main>
       <div>
-        <h3>
-          {'Enter email (name will be set as the prefix of email before the @)'}
-        </h3>
+        <TextField
+          name="name"
+          label="Name (contact firstname and displayname)"
+          value={name}
+          onChange={e => setName(e.target.value)}
+        />
         <TextField
           name="email"
           label="Email"

@@ -461,16 +461,17 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   #
-  # Get /users/test_mailjet_page
+  # GET /users/test_mailjet_page
   #
   def test_mailjet_page
   end
 
   #
-  # Get /users/send_test_mailjet/:email
+  # POST /users/send_test_mailjet
+  #
   def send_test_mailjet
     email = params[:email]
-    name = email.split("@")[0]
+    name = params[:name]
 
     MailJet.send_email(:teacher_post_workshop_survey, email, name, vars:
       {
