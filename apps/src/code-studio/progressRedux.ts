@@ -63,7 +63,6 @@ export interface ProgressState {
   unitTitle: string | null;
   courseId: number | null;
   isLessonExtras: boolean;
-  initTime?: number | null;
   idleStartTime: number | null;
   idleTimeSinceLastReport: number;
   isIdle: boolean;
@@ -126,15 +125,14 @@ const initialState: ProgressState = {
   unitTitle: null,
   courseId: null,
   isLessonExtras: false,
-  initTime: null,
 
   // The remaining fields do change after initialization.
 
-  // unitProgress is of type unitProgressType (a map of levelId ->
-  // studentLevelProgressType)
   idleStartTime: null,
   idleTimeSinceLastReport: 0,
   isIdle: false,
+  // unitProgress is of type unitProgressType (a map of levelId ->
+  // studentLevelProgressType)
   unitProgress: {},
   unitProgressHasLoaded: false,
   // note: eventually, we expect usage of this field to be replaced with unitProgress
@@ -194,7 +192,6 @@ const progressSlice = createSlice({
       state.unitStudentDescription = action.payload.unitStudentDescription;
       state.unitHasUnnumberedLessons = action.payload.unitHasUnnumberedLessons;
       state.courseId = action.payload.courseId;
-      state.initTime = action.payload.initTime ?? Date.now();
       state.milestoneStartTime =
         action.payload.milestoneStartTime ?? Date.now();
       state.courseVersionId = action.payload.courseVersionId;
@@ -273,9 +270,6 @@ const progressSlice = createSlice({
           },
         };
       },
-    },
-    recordMilestoneStartTime(state, action: PayloadAction<number>) {
-      state.milestoneStartTime = action.payload;
     },
     resetMilestoneStartTime(state) {
       state.milestoneStartTime = Date.now();
@@ -377,7 +371,7 @@ export function navigateToLevelId(levelId: string): ProgressThunkAction {
       // Notify the Lab2 system that the level is changing.
       notifyLevelChange(currentLevel.id, levelId);
       dispatch(setCurrentLevelId(levelId));
-      dispatch(recordMilestoneStartTime(Date.now()));
+      dispatch(resetMilestoneStartTime());
     } else {
       if (currentLevel?.usesLab2) {
         // If we are switching from a lab2 level but can't change the level without reloading,
@@ -493,12 +487,9 @@ function sendReportHelper(
   const userId = 0;
   extraData = extraData || {};
 
-  const initTime = state.initTime ?? Date.now();
   const startTime = state.milestoneStartTime ?? Date.now();
   const endTime = Date.now();
-
   const idleTimeSinceLastReport = getIdleTimeSinceLastReport(getState());
-  const timeToMilestoneMs = endTime - initTime;
   const timeSinceLastMilestone = endTime - startTime - idleTimeSinceLastReport;
 
   const data: MilestoneReport = {
@@ -506,7 +497,6 @@ function sendReportHelper(
     result: true,
     testResult: result,
     ...extraData,
-    timeToMilestoneMs,
     timeSinceLastMilestone,
   };
 
@@ -650,7 +640,6 @@ export const {
   overwriteResults,
   mergePeerReviewProgress,
   updateFocusArea,
-  recordMilestoneStartTime,
   resetMilestoneStartTime,
   disablePostMilestone,
   setIsAge13Required,
