@@ -54,17 +54,6 @@ const overlineThreeTextStyle = {
   letterSpacing: '0.4px',
 };
 
-const sample_data = [
-  {label: '0–2', value: 9},
-  {label: '3–7', value: 12},
-  {label: '8–15', value: 1},
-  {label: '8–15', value: 1},
-  {label: '16+', value: 2},
-  {label: '20', value: 2},
-  {label: '30+', value: 2},
-  {label: '16+', value: 0},
-];
-
 // value labels that still render for zero-height bars, colored per-bar
 const ValueLabel = (props: LabelProps) => {
   const {x = 0, y = 0, width = 0, value} = props;
@@ -183,7 +172,7 @@ const BarChartGroup: React.FC<BarChartGroupProps> = ({
   chartWidth = 374,
   chartHeight = 180,
   title = 'Years Teaching',
-  data = sample_data,
+  data = [],
 }) => (
   <Box className={moduleStyles.barChartGroupContainer}>
     <Box className={moduleStyles.barChartGroupHeaderContainer}>
