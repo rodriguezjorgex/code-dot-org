@@ -9,8 +9,8 @@ ENV YARN_VERSION=4.6.0
 # If changing Node.js versions, also update the version in frontend/.nvmrc
 ENV NODE_VERSION=20
 
-# Install curl and Node.js 20 LTS
-# For Yarn upgrades, refer to frontend/package.json to the locked yarn version
+# If performing a Yarn upgrades, refer to frontend/package.json to the locked yarn version
+# The apt-get clean and removal of /var/lib/apt/lists is to reduce image size.
 RUN apt-get update && \
     apt-get install -y curl && \
     curl -fsSL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - && \
