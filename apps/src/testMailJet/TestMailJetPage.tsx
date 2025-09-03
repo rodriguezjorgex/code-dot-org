@@ -33,10 +33,10 @@ const TestMailJetPage: React.FunctionComponent = () => {
         console.log('RESPONSE OK');
       } else {
         const validationErrors = await response.json();
-        console.log(`RESPONSE ERROR: ${validationErrors}`);
+        console.log(`RESPONSE ERROR: ${JSON.stringify(validationErrors)}`);
       }
     } catch (error) {
-      console.log(`FETCH ERROR: ${error}`);
+      console.log(`FETCH ERROR: ${JSON.stringify(error)}`);
     } finally {
       setIsSending(false);
     }
