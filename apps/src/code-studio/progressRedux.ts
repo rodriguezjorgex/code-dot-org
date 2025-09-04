@@ -12,6 +12,7 @@ import _ from 'lodash';
 import {setVerified} from '@cdo/apps/code-studio/verifiedInstructorRedux';
 import {TestResults} from '@cdo/apps/constants';
 import Lab2Registry from '@cdo/apps/lab2/Lab2Registry';
+import Lab2ProgressTimer from '@cdo/apps/lab2/utils/Lab2ProgressTimer';
 import notifyLevelChange from '@cdo/apps/lab2/utils/notifyLevelChange';
 import {
   processServerStudentProgress,
@@ -63,18 +64,12 @@ export interface ProgressState {
   unitTitle: string | null;
   courseId: number | null;
   isLessonExtras: boolean;
-  idleStartTime: number | null;
-  idleTimeSinceLastReport: number;
-  isIdle: boolean;
-  unitProgress: {
-    [key: number]: UnitProgress;
-  };
+  unitProgress: {[key: number]: UnitProgress};
   unitProgressHasLoaded: boolean;
   levelResults: LevelResults;
   focusAreaLessonIds: number[];
   peerReviewLessonInfo: PeerReviewLessonInfo | null;
   peerReviewsPerformed: PeerReviewSummary[];
-  milestoneStartTime?: number | null;
   postMilestoneDisabled: boolean;
   isAge13Required: boolean;
   studentDefaultsSummaryView: boolean;
@@ -97,7 +92,6 @@ export interface MilestoneReport extends OptionalMilestoneData {
   app: string;
   result: boolean;
   testResult: number;
-  timeToMilestoneMs?: number;
   timeSinceLastMilestone?: number;
 }
 
@@ -128,9 +122,6 @@ const initialState: ProgressState = {
 
   // The remaining fields do change after initialization.
 
-  idleStartTime: null,
-  idleTimeSinceLastReport: 0,
-  isIdle: false,
   // unitProgress is of type unitProgressType (a map of levelId ->
   // studentLevelProgressType)
   unitProgress: {},
@@ -140,7 +131,6 @@ const initialState: ProgressState = {
   focusAreaLessonIds: [],
   peerReviewLessonInfo: null,
   peerReviewsPerformed: [],
-  milestoneStartTime: null,
   postMilestoneDisabled: false,
   isAge13Required: false,
   // Do students see summary view by default?
@@ -192,8 +182,7 @@ const progressSlice = createSlice({
       state.unitStudentDescription = action.payload.unitStudentDescription;
       state.unitHasUnnumberedLessons = action.payload.unitHasUnnumberedLessons;
       state.courseId = action.payload.courseId;
-      state.milestoneStartTime =
-        action.payload.milestoneStartTime ?? Date.now();
+      Lab2ProgressTimer.getInstance().resetMilestoneTimer();
       state.courseVersionId = action.payload.courseVersionId;
       state.currentLessonId = currentLessonId;
       state.hasFullProgress = action.payload.isFullProgress;
@@ -271,9 +260,6 @@ const progressSlice = createSlice({
         };
       },
     },
-    resetMilestoneStartTime(state) {
-      state.milestoneStartTime = Date.now();
-    },
     disablePostMilestone(state) {
       state.postMilestoneDisabled = true;
     },
@@ -305,18 +291,6 @@ const progressSlice = createSlice({
     },
     setViewAsUserId(state, action: PayloadAction<number | null>) {
       state.viewAsUserId = action.payload;
-    },
-    setStartIdle(state) {
-      state.isIdle = true;
-      state.idleStartTime = Date.now();
-    },
-    setEndIdle(state) {
-      state.isIdle = false;
-      state.idleStartTime = null;
-    },
-    resetIdleTime(state) {
-      state.idleTimeSinceLastReport = 0;
-      state.idleStartTime = state.isIdle ? Date.now() : null;
     },
   },
   extraReducers: {
@@ -371,7 +345,7 @@ export function navigateToLevelId(levelId: string): ProgressThunkAction {
       // Notify the Lab2 system that the level is changing.
       notifyLevelChange(currentLevel.id, levelId);
       dispatch(setCurrentLevelId(levelId));
-      dispatch(resetMilestoneStartTime());
+      Lab2ProgressTimer.getInstance().resetMilestoneTimer();
     } else {
       if (currentLevel?.usesLab2) {
         // If we are switching from a lab2 level but can't change the level without reloading,
@@ -487,17 +461,13 @@ function sendReportHelper(
   const userId = 0;
   extraData = extraData || {};
 
-  const startTime = state.milestoneStartTime ?? Date.now();
-  const endTime = Date.now();
-  const idleTimeSinceLastReport = getIdleTimeSinceLastReport(getState());
-  const timeSinceLastMilestone = endTime - startTime - idleTimeSinceLastReport;
-
   const data: MilestoneReport = {
     app: appType,
     result: true,
     testResult: result,
     ...extraData,
-    timeSinceLastMilestone,
+    timeSinceLastMilestone:
+      Lab2ProgressTimer.getInstance().getTimeSinceLastMilestone(),
   };
 
   return fetch(`/milestone/${userId}/${scriptLevelId}/${levelId}`, {
@@ -520,8 +490,7 @@ function sendReportHelper(
 
       // After we log the reported time we should update the start time of the milestone
       // otherwise if we don't leave the page we are compounding the total time
-      dispatch(resetMilestoneStartTime());
-      dispatch(resetIdleTime());
+      Lab2ProgressTimer.getInstance().resetMilestoneTimer();
     }
   });
 }
@@ -640,7 +609,6 @@ export const {
   overwriteResults,
   mergePeerReviewProgress,
   updateFocusArea,
-  resetMilestoneStartTime,
   disablePostMilestone,
   setIsAge13Required,
   setIsSummaryView,
@@ -650,22 +618,9 @@ export const {
   setScriptCompleted,
   setLessonExtrasEnabled,
   setViewAsUserId,
-  setStartIdle,
-  setEndIdle,
-  resetIdleTime,
 } = progressSlice.actions;
 
 export default progressSlice.reducer;
-
-export const getIdleTimeSinceLastReport = (state: RootState): number => {
-  const {idleTimeSinceLastReport, idleStartTime, isIdle} = state.progress;
-
-  if (isIdle && idleStartTime) {
-    return idleTimeSinceLastReport + (Date.now() - idleStartTime);
-  } else {
-    return idleTimeSinceLastReport;
-  }
-};
 
 // export private function(s) to expose to unit testing
 export const __testonly__ = IN_UNIT_TEST

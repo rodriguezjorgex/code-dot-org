@@ -8,10 +8,10 @@ import React from 'react';
 import {Provider} from 'react-redux';
 
 import {getStandaloneProjectId} from '@cdo/apps/lab2/projects/utils';
+import Lab2ProgressTimer from '@cdo/apps/lab2/utils/Lab2ProgressTimer';
 import {getStore} from '@cdo/apps/redux';
 import BrowserTextToSpeechWrapper from '@cdo/apps/sharedComponents/BrowserTextToSpeechWrapper';
 
-import Lab2IdleTimer from '../Lab2IdleTimer';
 import ProjectContainer from '../projects/ProjectContainer';
 
 import RubricFABContainer from './components/rubrics/RubricFABContainer';
@@ -30,7 +30,7 @@ const Lab2: React.FunctionComponent = () => {
             <Lab2Wrapper>
               <DialogManager>
                 <MetricsAdapter />
-                <Lab2IdleTimer />
+                <Lab2ProgressTimer.Mount />
                 <ProjectContainer channelId={getStandaloneProjectId()}>
                   <LabViewsRenderer />
                 </ProjectContainer>
