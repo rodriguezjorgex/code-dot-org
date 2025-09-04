@@ -40,7 +40,13 @@ describe('BarChartGroup', () => {
     props: Partial<React.ComponentProps<typeof BarChartGroup>> = {}
   ) =>
     render(
-      <BarChartGroup title="Years Teaching" data={sampleData} {...props} />
+      <BarChartGroup
+        title="Years Teaching"
+        data={sampleData}
+        {...props}
+        xAxisLabel="YEARS TAUGHT"
+        yAxisLabel="RESPONSES"
+      />
     );
 
   it('shows axis titles', () => {

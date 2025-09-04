@@ -81,12 +81,16 @@ type SimpleBarChartProps = {
   width?: number;
   height?: number;
   data: SimpleBarChartData[];
+  yAxisLabel?: string;
+  xAxisLabel?: string;
 };
 
 const SimpleBarChart: React.FC<SimpleBarChartProps> = ({
   width = 374,
   height = 180,
   data,
+  yAxisLabel,
+  xAxisLabel,
 }) => {
   const yMax = Math.max(...data.map(d => d.value), 10);
   const niceMax = Math.min(12, Math.ceil(yMax / 2) * 2);
@@ -116,12 +120,14 @@ const SimpleBarChart: React.FC<SimpleBarChartProps> = ({
           tick={{...bodyFourTextStyle}}
           tickMargin={10}
         >
-          <Label
-            value="YEARS TAUGHT"
-            position="bottom"
-            offset={14}
-            style={{...overlineThreeTextStyle}}
-          />
+          {xAxisLabel && (
+            <Label
+              value={xAxisLabel}
+              position="bottom"
+              offset={14}
+              style={{...overlineThreeTextStyle}}
+            />
+          )}
         </XAxis>
 
         <YAxis
@@ -133,16 +139,18 @@ const SimpleBarChart: React.FC<SimpleBarChartProps> = ({
           tick={{...bodyFourTextStyle}}
           width={30}
         >
-          <Label
-            value="RESPONSES"
-            angle={-90}
-            position="insideLeft"
-            offset={-4}
-            style={{
-              textAnchor: 'middle',
-              ...overlineThreeTextStyle,
-            }}
-          />
+          {yAxisLabel && (
+            <Label
+              value={yAxisLabel}
+              angle={-90}
+              position="insideLeft"
+              offset={-4}
+              style={{
+                textAnchor: 'middle',
+                ...overlineThreeTextStyle,
+              }}
+            />
+          )}
         </YAxis>
 
         <Bar
@@ -151,9 +159,10 @@ const SimpleBarChart: React.FC<SimpleBarChartProps> = ({
           shape={<Rectangle radius={[8, 8, 0, 0]} />} // ensures rounding everywhere in v2.8
           isAnimationActive={false}
         >
-          {data.map((d, i) => (
-            <Cell key={i} fill={barColors[i % barColors.length]} />
-          ))}
+          {!!data.length &&
+            data.map((d, i) => (
+              <Cell key={i} fill={barColors[i % barColors.length]} />
+            ))}
           <LabelList dataKey="value" content={<ValueLabel />} />
         </Bar>
       </BarChart>
@@ -166,6 +175,8 @@ type BarChartGroupProps = {
   chartHeight?: number;
   title?: string;
   data: SimpleBarChartData[];
+  xAxisLabel?: string;
+  yAxisLabel?: string;
 };
 
 const BarChartGroup: React.FC<BarChartGroupProps> = ({
@@ -173,6 +184,8 @@ const BarChartGroup: React.FC<BarChartGroupProps> = ({
   chartHeight = 180,
   title = 'Years Teaching',
   data = [],
+  xAxisLabel,
+  yAxisLabel,
 }) => (
   <Box className={moduleStyles.barChartGroupContainer}>
     <Box className={moduleStyles.barChartGroupHeaderContainer}>
@@ -180,7 +193,13 @@ const BarChartGroup: React.FC<BarChartGroupProps> = ({
         <StrongText>{title}</StrongText>
       </BodyTwoText>
     </Box>
-    <SimpleBarChart width={chartWidth} height={chartHeight} data={data} />
+    <SimpleBarChart
+      width={chartWidth}
+      height={chartHeight}
+      data={data}
+      xAxisLabel={xAxisLabel}
+      yAxisLabel={yAxisLabel}
+    />
   </Box>
 );
 
