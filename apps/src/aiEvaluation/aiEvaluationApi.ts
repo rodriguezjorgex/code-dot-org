@@ -9,9 +9,7 @@ import {
   logUserLevelEvaluation,
   logUserLevelSkillEvaluations,
 } from './studentWorkEvaluationsApi';
-
 import {UserLevelSkillEvaluation} from './types';
-import {logStudentWorkEvaluations} from './studentWorkEvaluationsApi';
 
 export interface StudentAnswer {
   studentId: number;
