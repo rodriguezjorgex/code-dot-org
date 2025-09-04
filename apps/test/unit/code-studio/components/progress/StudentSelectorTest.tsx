@@ -65,7 +65,6 @@ const PROGRESS: InitProgressPayload = {
   isFullProgress: false,
   currentPageNumber: 1,
   courseName: 'csd',
-  initTime: null,
   milestoneStartTime: null,
 };
 

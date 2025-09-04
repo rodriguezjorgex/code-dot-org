@@ -141,7 +141,6 @@ export interface InitProgressPayload {
   isFullProgress: boolean;
   currentPageNumber: number;
   courseName: string | null;
-  initTime: number | null;
   milestoneStartTime: number | null;
 }
 
