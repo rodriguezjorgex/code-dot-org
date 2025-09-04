@@ -1,21 +1,5 @@
 @use '@code-dot-org/component-library-styles/colors';
 
-// Style overrides
-:global(#workshop-container),
-:global(#application-container),
-:global(#application-header) {
-    .barChartGroupContainer > .barChartGroupHeaderContainer > p {
-  //override styles:
-  //#workshop-container .legacy-bs p,
-  //#application-container p,
-  //#application-header p {
-  //  margin: 0 0 10px;
-  //}
-    margin: 0;
-  }
-}
-
-// General styles
 .barChartGroupContainer {
   display: flex;
   height: 16.5rem;
