@@ -94,7 +94,13 @@ describe('SimpleBarChart', () => {
     ];
 
     const {container} = render(
-      <SimpleBarChart width={500} height={220} data={customData} />
+      <SimpleBarChart
+        width={500}
+        height={220}
+        data={customData}
+        xAxisLabel="YEARS TAUGHT"
+        yAxisLabel="RESPONSES"
+      />
     );
 
     // const svg = container.querySelector('svg');
