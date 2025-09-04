@@ -868,6 +868,15 @@ Dashboard::Application.routes.draw do
 
         post 'foorm/workshop_survey_submission', action: :create, controller: 'workshop_survey_foorm_submissions'
 
+        resources :applications, controller: 'applications', only: [:index, :show, :update, :destroy] do
+          collection do
+            get :quick_view
+            get :cohort_view
+            get :search
+            get :fit_cohort
+          end
+        end
+
         namespace :foorm do
           namespace :forms do
             post 'form_with_library_items', action: :fill_in_library_items
