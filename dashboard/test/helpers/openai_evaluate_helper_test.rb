@@ -49,13 +49,13 @@ class OpenaiEvaluateHelperTest < ActionView::TestCase
     fr_user_level = create(:user_level, user: @student1, level: @free_response_level, script: @unit, level_source: fr_level_source)
 
      mock_response = {
-    status: :ok,
+       status: :ok,
       json: {"content" => {
         aiEvaluation: "Meets",
         evaluationCriteria: "Did student answer the question?",
         aiReasoning: "Student provided a complete answer",
       }.to_json}
-    }
+     }
 
     OpenaiEvaluateHelper.expects(:evaluate).with(
       @fr_user_level.level,
@@ -71,7 +71,7 @@ class OpenaiEvaluateHelperTest < ActionView::TestCase
     OpenaiEvaluateHelper.evaluate_free_response(fr_user_level, @unit)
   end
 
- test "evaluate_code_level with skills gets student code, calls evaluate and creates student work evaluation" do
+  test "evaluate_code_level with skills gets student code, calls evaluate and creates student work evaluation" do
     code_user_level = create(:user_level, user: @student1, level: @code_level1, script: @unit)
 
     helper = mock('helper')
@@ -118,7 +118,7 @@ class OpenaiEvaluateHelperTest < ActionView::TestCase
       student_work_evaluation_summary_id: 1
     ).returns(mock('summary'))
 
-     OpenaiEvaluateHelper.evaluate_code_level(code_user_level, @unit, true)
+    OpenaiEvaluateHelper.evaluate_code_level(code_user_level, @unit, true)
   end
 
   test "evaluate_section skips levels with no level_source data" do
