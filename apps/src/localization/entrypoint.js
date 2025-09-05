@@ -53,7 +53,7 @@ const live = [
 
 const experiments = JSON.parse(window.localStorage.experimentsList || '[]');
 const inExperiment =
-  experiments.some(experiment =>
+  experiments?.some(experiment =>
     experiment ? experiment.key === 'localizejs' : false
   ) || window.location.search.includes('localizejs=');
 const projectKeys = Object.entries(prefixes).filter(([projectId, prefixes]) =>
