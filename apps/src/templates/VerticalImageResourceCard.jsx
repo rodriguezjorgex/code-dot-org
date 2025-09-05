@@ -81,7 +81,7 @@ class VerticalImageResourceCard extends Component {
       courseC: studio('/shared/images/courses/logo_tall_coursec.png'),
       courseD: studio('/shared/images/courses/logo_tall_coursed.png'),
       courseE: studio('/shared/images/courses/logo_tall_coursee.png'),
-      courseF: pegasus('/shared/images/courses/logo_tall_coursef.png'),
+      courseF: studio('/shared/images/courses/logo_tall_coursef.png'),
     };
     const imgSrc = filenameToImgUrl[image];
 
