@@ -31,6 +31,7 @@ import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
 import i18n from '@cdo/locale';
 import plAdminsPageImg from '@cdo/static/professional-learning/admins-page-pl-448x280.png';
 import plPageEducatorSupportImg from '@cdo/static/professional-learning/pl-page-educator-support.png';
+import plSuperheroGirlCropImg from '@cdo/static/professional-learning/pl-superhero-girl-crop-540x300.png';
 
 import {
   COURSE_CSF,
@@ -358,9 +359,7 @@ function LandingPage({
     if (showGettingStartedBanner) {
       return (
         <TwoColumnActionBlock
-          imageUrl={pegasus(
-            '/images/fill-540x300/professional-learning/pl-superhero-girl-crop.png'
-          )}
+          imageUrl={plSuperheroGirlCropImg}
           heading={i18n.plLandingGettingStartedHeading()}
           subHeading={i18n.plLandingGettingStartedSubHeading()}
           description={i18n.plLandingGettingStartedDescription()}
