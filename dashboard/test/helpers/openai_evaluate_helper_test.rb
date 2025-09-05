@@ -48,14 +48,14 @@ class OpenaiEvaluateHelperTest < ActionView::TestCase
     fr_level_source = create(:level_source, data: "This is my free response answer")
     fr_user_level = create(:user_level, user: @student1, level: @free_response_level, script: @unit, level_source: fr_level_source)
 
-     mock_response = {
-       status: :ok,
+    mock_response = {
+      status: :ok,
       json: {"content" => {
         aiEvaluation: "Meets",
         evaluationCriteria: "Did student answer the question?",
         aiReasoning: "Student provided a complete answer",
       }.to_json}
-     }
+    }
 
     OpenaiEvaluateHelper.expects(:evaluate).with(
       @fr_user_level.level,
