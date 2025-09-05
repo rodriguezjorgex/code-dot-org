@@ -13,6 +13,7 @@ import InlineMarkdown from '@cdo/apps/templates/InlineMarkdown';
 import i18n from '@cdo/locale';
 import facilitatorLedPlBanner from '@cdo/static/facilitatorLedPlBanner.png';
 import selfPacedPlBanner from '@cdo/static/selfPacedPlBanner.png';
+import teachPageTopImg from '@cdo/static/teach-page-top.png';
 
 import Certificate from './Certificate';
 import SuggestedAssignableCourses from './SuggestedAssignableCourses';
@@ -237,7 +238,7 @@ export default function Congrats(props) {
       title: i18n.teachWithCodeOrg(),
       description: i18n.teachWithCodeOrgDescription(),
       buttonText: i18n.teachWithCodeOrg(),
-      image: 'https://code.org/images/teach-page-top.png',
+      image: teachPageTopImg,
       link: 'https://code.org/teach',
     },
     {

@@ -9,6 +9,7 @@ import React, {useState} from 'react';
 import RailsAuthenticityToken from '@cdo/apps/lib/util/RailsAuthenticityToken';
 import SafeMarkdown from '@cdo/apps/templates/SafeMarkdown';
 import i18n from '@cdo/locale';
+import teachPageTopImg from '@cdo/static/teach-page-top.png';
 
 import style from './certificate_batch.module.scss';
 
@@ -65,7 +66,7 @@ const professionalLearning = [
     title: i18n.teachWithCodeOrg(),
     description: i18n.teachWithCodeOrgDescription(),
     buttonText: i18n.teachWithCodeOrg(),
-    image: 'https://code.org/images/teach-page-top.png',
+    image: teachPageTopImg,
     link: 'https://code.org/teach',
   },
   {
