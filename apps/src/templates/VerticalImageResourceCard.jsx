@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 
 import fontConstants from '@cdo/apps/fontConstants';
 import Button from '@cdo/apps/legacySharedComponents/Button';
-import {pegasus, studio} from '@cdo/apps/lib/util/urlHelpers';
+import {studio} from '@cdo/apps/lib/util/urlHelpers';
 
 import color from '../util/color';
 
@@ -76,7 +76,7 @@ class VerticalImageResourceCard extends Component {
       'dance-party-sloth-2019': require('@cdo/static/resource_cards/danceparty-sloth-2019.png'),
       course2: studio('/shared/images/courses/logo_tall_course2.jpg'),
       course3: studio('/shared/images/courses/logo_tall_course3.jpg'),
-      course4: pegasus('/shared/images/courses/logo_tall_course4.jpg'),
+      course4: studio('/shared/images/courses/logo_tall_course4.jpg'),
       courseB: studio('/shared/images/courses/logo_tall_courseb.png'),
       courseC: studio('/shared/images/courses/logo_tall_coursec.png'),
       courseD: studio('/shared/images/courses/logo_tall_coursed.png'),
