@@ -29,6 +29,7 @@ import {
 import {hiddenPlSectionIds} from '@cdo/apps/templates/teacherDashboard/teacherSectionsReduxSelectors';
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
 import i18n from '@cdo/locale';
+import plPageEducatorSupportImg from '@cdo/static/professional-learning/pl-page-educator-support.png';
 
 import {
   COURSE_CSF,
@@ -408,7 +409,7 @@ function LandingPage({
     if (!hideMyPLStaticRecommendedPLMidHighBlock) {
       actionBlocks.push({
         overline: i18n.plLandingStaticPLMidHighOverline(),
-        imageUrl: pegasus('/images/pl-page-educator-support.png'),
+        imageUrl: plPageEducatorSupportImg,
         heading: i18n.plLandingStaticPLMidHighHeading(),
         description: i18n.plLandingStaticPLMidHighDesc(),
         buttons: [
