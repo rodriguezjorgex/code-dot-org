@@ -75,7 +75,7 @@ class VerticalImageResourceCard extends Component {
       'dance-party-2-2019': require('@cdo/static/resource_cards/danceparty2-2019.png'),
       'dance-party-sloth-2019': require('@cdo/static/resource_cards/danceparty-sloth-2019.png'),
       course2: studio('/shared/images/courses/logo_tall_course2.jpg'),
-      course3: pegasus('/shared/images/courses/logo_tall_course3.jpg'),
+      course3: studio('/shared/images/courses/logo_tall_course3.jpg'),
       course4: pegasus('/shared/images/courses/logo_tall_course4.jpg'),
       courseB: studio('/shared/images/courses/logo_tall_courseb.png'),
       courseC: studio('/shared/images/courses/logo_tall_coursec.png'),
