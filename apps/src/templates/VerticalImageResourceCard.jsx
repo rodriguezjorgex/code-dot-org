@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 
 import fontConstants from '@cdo/apps/fontConstants';
 import Button from '@cdo/apps/legacySharedComponents/Button';
-import {pegasus} from '@cdo/apps/lib/util/urlHelpers';
+import {pegasus, studio} from '@cdo/apps/lib/util/urlHelpers';
 
 import color from '../util/color';
 
@@ -78,7 +78,7 @@ class VerticalImageResourceCard extends Component {
       course3: pegasus('/shared/images/courses/logo_tall_course3.jpg'),
       course4: pegasus('/shared/images/courses/logo_tall_course4.jpg'),
       courseB: pegasus('/shared/images/courses/logo_tall_courseb.png'),
-      courseC: pegasus('/shared/images/courses/logo_tall_coursec.png'),
+      courseC: studio('/shared/images/courses/logo_tall_coursec.png'),
       courseD: pegasus('/shared/images/courses/logo_tall_coursed.png'),
       courseE: pegasus('/shared/images/courses/logo_tall_coursee.png'),
       courseF: pegasus('/shared/images/courses/logo_tall_coursef.png'),
