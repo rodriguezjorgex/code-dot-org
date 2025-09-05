@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
 import RailsAuthenticityToken from '@cdo/apps/lib/util/RailsAuthenticityToken';
+import {studio} from '@cdo/apps/lib/util/urlHelpers';
 import SafeMarkdown from '@cdo/apps/templates/SafeMarkdown';
 import i18n from '@cdo/locale';
 import teachPageTopImg from '@cdo/static/teach-page-top.png';
@@ -73,7 +74,7 @@ const professionalLearning = [
     title: i18n.courseOfferingSelfPacedPl(),
     description: i18n.selfPacedPlDescription(),
     buttonText: i18n.exploreProfessionalLearning(),
-    image: 'https://code.org/shared/images/banners/self-paced-pl-hero.png',
+    image: studio('/shared/images/banners/self-paced-pl-hero.png'),
     link: 'https://code.org/educate/professional-development-online',
   },
 ];

@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import {hasQueryParam, queryParams} from '@cdo/apps/code-studio/utils';
-import {pegasus} from '@cdo/apps/lib/util/urlHelpers';
+import {pegasus, studio} from '@cdo/apps/lib/util/urlHelpers';
 import GraduateToNextLevel from '@cdo/apps/templates/certificates/GraduateToNextLevel';
 import InlineMarkdown from '@cdo/apps/templates/InlineMarkdown';
 import i18n from '@cdo/locale';
@@ -245,7 +245,7 @@ export default function Congrats(props) {
       title: i18n.courseOfferingSelfPacedPl(),
       description: i18n.selfPacedPlDescription(),
       buttonText: i18n.exploreProfessionalLearning(),
-      image: 'https://code.org/shared/images/banners/self-paced-pl-hero.png',
+      image: studio('/shared/images/banners/self-paced-pl-hero.png'),
       link: 'https://code.org/educate/professional-development-online',
     },
   ];
