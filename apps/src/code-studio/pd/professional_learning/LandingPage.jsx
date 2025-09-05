@@ -29,6 +29,7 @@ import {
 import {hiddenPlSectionIds} from '@cdo/apps/templates/teacherDashboard/teacherSectionsReduxSelectors';
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
 import i18n from '@cdo/locale';
+import plAdminsPageImg from '@cdo/static/professional-learning/admins-page-pl-448x280.png';
 import plPageEducatorSupportImg from '@cdo/static/professional-learning/pl-page-educator-support.png';
 
 import {
@@ -425,7 +426,7 @@ function LandingPage({
     if (!hideMyPLStaticRecommendedPLSelfPacedBlock) {
       actionBlocks.push({
         overline: i18n.plLandingStaticPLSelfPacedOverline(),
-        imageUrl: pegasus('/images/fill-448x280/admins-page-pl.png'),
+        imageUrl: plAdminsPageImg,
         heading: i18n.plLandingStaticPLSelfPacedHeading(),
         description: i18n.plLandingStaticPLSelfPacedDesc(),
         buttons: [
