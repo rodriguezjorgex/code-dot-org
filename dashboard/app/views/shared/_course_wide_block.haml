@@ -33,7 +33,7 @@
   .courseblock-span6.courseblock-wide-large
     = link_to script_url(Unit::TWENTY_HOUR_NAME) do
       .courseblock-span2.imgspan
-        %img{src: CDO.code_org_url('/images/fit-150x100/code20hr.jpg')}
+        %img{src: image_url('code20hr-150x100.jpg')}
       .courseblock-span4.heading
         %h3= t('upsell.20-hour.title')
         %h4= data_t_suffix('script.name', '20-hour', 'description_audience')
@@ -45,7 +45,7 @@
   .courseblock-span6.courseblock-wide-small
     = link_to script_url(Unit::TWENTY_HOUR_NAME) do
       .courseblock-span2.imgspan
-        %img{src: CDO.code_org_url('/images/fit-150x100/code20hr.jpg')}
+        %img{src: image_url('code20hr-150x100.jpg')}
       .courseblock-span4.heading
         %h3= t('upsell.20-hour.title')
         %h4= data_t_suffix('script.name', id, 'description_audience')
