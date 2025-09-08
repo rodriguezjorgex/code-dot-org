@@ -37,7 +37,7 @@ You'll need to get the angry bird to the pig, and you'll need to get the zombie 
 #### Artist
 <br/>
 
-<img style="float:left; margin:0 20px" src="//code.org/images/artist.png" height="200" width="300">
+<img style="float:left; margin:0 20px" src="//studio.code.org/blockly/media/artist.png" height="200" width="300">
 
 You have to make the artist draw over the grey lines by moving him around the canvas. He'll draw a line behind him wherever he goes.
 <br/>
