@@ -1609,7 +1609,7 @@
       "key": "944a8cbb-4600-40a3-83b0-3e8042daf571",
       "position": 3,
       "properties": {
-        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display**: Show “Graph Paper Programming - Puzzle #1” slide\n\nDisplay both the image that you are going to have the students walk you through, and a blank grid that you will fill-in with your ARM. Make sure that the instructions, grid, and image remain visible at the same time. When the direction “fill in square with color” is given, drag one of the two squares on the slide onto the grid to represent a square filled in with color.\n\n![](https://code.org/curriculum/docs/csf/c2_GraphPaper1.png)"
+        "description": "<i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> **Display**: Show “Graph Paper Programming - Puzzle #1” slide\n\nDisplay both the image that you are going to have the students walk you through, and a blank grid that you will fill-in with your ARM. Make sure that the instructions, grid, and image remain visible at the same time. When the direction “fill in square with color” is given, drag one of the two squares on the slide onto the grid to represent a square filled in with color.\n\n![](https://studio.code.org/blockly/media/curriculum/docs/csf/c2_GraphPaper1.png)"
       },
       "seeding_key": {
         "activity_section.key": "944a8cbb-4600-40a3-83b0-3e8042daf571",
