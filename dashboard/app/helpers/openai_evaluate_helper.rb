@@ -71,7 +71,7 @@ module OpenaiEvaluateHelper
       if user_level.level_source && user_level.level_source.data.present?
         evaluate_free_response(user_level, unit)
       elsif user_level.level.name == 'U4 L03 Variables operator practice 5_2024' || user_level.level.name == 'U4 L03 Variables numbers practice 4_2024'
-        evaluate_code_level(user_level, unit)
+        evaluate_code_level(user_level, unit, true)
       end
     end
 

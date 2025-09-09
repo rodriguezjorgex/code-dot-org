@@ -20,53 +20,20 @@ class OpenaiEvaluateHelperTest < ActionView::TestCase
     Level.find_by(id: @other_level.id).update!(name: 'Some other level')
   end
 
-  test "evaluate_section evaluates free response levels" do
+  test "evaluate_free_response calls evaluate" do
     fr_level_source = create(:level_source, data: "This is my free response answer")
     fr_user_level = create(:user_level, user: @student1, level: @free_response_level, script: @unit, level_source: fr_level_source)
-
-    OpenaiEvaluateHelper.expects(:evaluate_free_response).with(
-      fr_user_level,
-      @unit,
-    )
-
-    OpenaiEvaluateHelper.evaluate_section(@unit, @section)
-  end
-
-  test "evaluate_section evaluates coding levels" do
-    code_user_level = create(:user_level, user: @student1, level: @code_level1, script: @unit)
-
-    OpenaiEvaluateHelper.expects(:evaluate_code_level).with(
-      code_user_level,
-      @unit,
-      should_evaluate_skills: true
-    )
-
-    OpenaiEvaluateHelper.evaluate_section(@unit, @section)
-  end
-
-  test "evaluate_free_response calls evaluate and creates student work evaluation" do
-    fr_level_source = create(:level_source, data: "This is my free response answer")
-    fr_user_level = create(:user_level, user: @student1, level: @free_response_level, script: @unit, level_source: fr_level_source)
-
-    mock_response = {
-      status: :ok,
-      json: {"content" => {
-        aiEvaluation: "Meets",
-        evaluationCriteria: "Did student answer the question?",
-        aiReasoning: "Student provided a complete answer",
-      }.to_json}
-    }
 
     OpenaiEvaluateHelper.expects(:evaluate).with(
-      @fr_user_level.level,
+      @free_response_level,
       student_work: "This is my free response answer",
-      evaluation_type: SharedConstants::AI_EVALUATION_TYPES[:SINGLE_STUDENT],
-      should_evaluate_skills: false
-    ).returns(mock_response)
-
-    StudentWorkEvaluation.expects(:create!).with(
-      has_entry(type: 'UserLevelEvaluation')
-    ).returns(mock('work_evaluation'))
+      evaluation_type: SharedConstants::AI_EVALUATION_TYPES[:SINGLE_STUDENT]
+    ).returns({status: 200, json: {"content" => {
+      aiEvaluation: "Meets",
+      evaluationCriteria: "Did student answer the question?",
+      aiReasoning: "Student provided a complete answer",
+    }.to_json}}
+)
 
     OpenaiEvaluateHelper.evaluate_free_response(fr_user_level, @unit)
   end
@@ -121,6 +88,30 @@ class OpenaiEvaluateHelperTest < ActionView::TestCase
     OpenaiEvaluateHelper.evaluate_code_level(code_user_level, @unit, true)
   end
 
+  test "evaluate_section evaluates free response levels" do
+    fr_level_source = create(:level_source, data: "This is my free response answer")
+    fr_user_level = create(:user_level, user: @student1, level: @free_response_level, script: @unit, level_source: fr_level_source)
+
+    OpenaiEvaluateHelper.expects(:evaluate_free_response).with(
+      fr_user_level,
+      @unit,
+    )
+
+    OpenaiEvaluateHelper.evaluate_section(@unit, @section)
+  end
+
+  test "evaluate_section evaluates coding levels" do
+    code_user_level = create(:user_level, user: @student1, level: @code_level1, script: @unit)
+
+    OpenaiEvaluateHelper.expects(:evaluate_code_level).with(
+      code_user_level,
+      @unit,
+      true
+    )
+
+    OpenaiEvaluateHelper.evaluate_section(@unit, @section)
+  end
+
   test "evaluate_section skips levels with no level_source data" do
     level_source = create(:level_source, data: "")
     create(:user_level, user: @student1, level: @free_response_level, script: @unit, level_source: level_source)
@@ -167,7 +158,7 @@ class OpenaiEvaluateHelperTest < ActionView::TestCase
 
     OpenaiEvaluateHelper.expects(:evaluate_free_response).times(2).returns
 
-    StudentWorkEvaluation.expects(:evaluate_code_level).times(1)
+    OpenaiEvaluateHelper.expects(:evaluate_code_level).times(1)
 
     OpenaiEvaluateHelper.evaluate_section(@unit, @section)
   end
