@@ -26,6 +26,7 @@ import regionalPartnerReducers, {
   setRegionalPartners,
 } from '../components/regional_partners_reducers';
 
+import TakeAttendance from './attendance/workshop_attendance';
 import LegacySurveySummaries from './legacy_survey_summaries.jsx';
 import {WorkshopAdmin} from './permission';
 import workshopDashboardReducers, {
@@ -35,7 +36,6 @@ import workshopDashboardReducers, {
 import FoormDailySurveyResultsLoader from './reports/foorm/results_loader';
 import DailySurveyResultsLoader from './reports/local_summer_workshop_daily_survey/results_loader';
 import ReportView from './reports/report_view';
-import Workshop from './workshop';
 import WorkshopFilter from './workshop_filter';
 import WorkshopIndex from './workshop_index';
 import {WorkshopFormTemplate} from './WorkshopFormTemplate';
@@ -86,34 +86,33 @@ const postSurveyCategoryChildRoutes = [
     path: 'implementation',
     icon: 'rocket',
     component: Implementation,
-    breadcrumbs: 'Workshops,Workshop,Temp,Surveys,Post,Implementation',
+    breadcrumbs: 'Workshops,Workshop,Surveys,Post,Implementation',
   },
   {
     label: 'Engagement',
     path: 'engagement',
     icon: 'heart',
     component: Engagement,
-    breadcrumbs: 'Workshops,Workshop,Temp,Surveys,Post,Engagement',
+    breadcrumbs: 'Workshops,Workshop,Surveys,Post,Engagement',
   },
   {
     label: 'Logistics',
     path: 'logistics',
     icon: 'calendar-check',
     component: Logistics,
-    breadcrumbs: 'Workshops,Workshop,Temp,Surveys,Post,Logistics',
+    breadcrumbs: 'Workshops,Workshop,Surveys,Post,Logistics',
   },
   {
     label: 'Facilitator Feedback',
     path: 'facilitators',
     icon: 'star',
     component: Outlet,
-    breadcrumbs: 'Workshops,Workshop,Temp,Surveys,Post,Facilitators',
+    breadcrumbs: 'Workshops,Workshop,Surveys,Post,Facilitators',
     childRoutes: [
       {
         path: ':facilitatorId',
         component: FacilitatorFeedback,
-        breadcrumbs:
-          'Workshops,Workshop,Temp,Surveys,Post,Facilitators,Facilitator',
+        breadcrumbs: 'Workshops,Workshop,Surveys,Post,Facilitators,Facilitator',
       },
     ],
   },
@@ -122,7 +121,7 @@ const postSurveyCategoryChildRoutes = [
     path: 'other',
     icon: 'ellipsis',
     component: Other,
-    breadcrumbs: 'Workshops,Workshop,Temp,Surveys,Post,Other',
+    breadcrumbs: 'Workshops,Workshop,Surveys,Post,Other',
   },
 ];
 
@@ -145,7 +144,7 @@ const surveyTypeChildRoutes = [
     label: 'Post-workshop survey',
     path: 'post',
     component: Outlet,
-    breadcrumbs: 'Workshops,Workshop,Temp,Surveys,Post',
+    breadcrumbs: 'Workshops,Workshop,Surveys,Post',
     childRoutes: [
       // this makes "implementation" the default
       {
@@ -167,19 +166,19 @@ const workshopChildRouteConfigs = [
     label: 'Enrollment',
     path: 'enrollments',
     component: WorkshopEnrollments,
-    breadcrumbs: 'Workshops,Workshop,Temp,Enrollments',
+    breadcrumbs: 'Workshops,Workshop,Enrollments',
   },
   {
     label: 'Attendance',
     path: 'attendance',
     component: WorkshopAttendance,
-    breadcrumbs: 'Workshops,Workshop,Temp,Attendance',
+    breadcrumbs: 'Workshops,Workshop,Attendance',
   },
   {
     label: 'Surveys',
     path: 'surveys',
     component: Outlet,
-    breadcrumbs: 'Workshops,Workshop,Temp,Surveys',
+    breadcrumbs: 'Workshops,Workshop,Surveys',
     childRoutes: [
       // this makes "post" the default
       {
@@ -216,17 +215,9 @@ const routeConfigs = [
     component: WorkshopFormTemplate,
     props: {config},
   })),
-  // replace with temp route when ready to switch over
   {
     path: 'workshops/:workshopId',
-    breadcrumbs: 'Workshops,View Workshop',
-    component: Workshop,
-    withRouter: true,
-  },
-  {
-    // remove /temp for switch over
-    path: 'workshops/:workshopId/temp',
-    breadcrumbs: 'Workshops,Workshop,Temp',
+    breadcrumbs: 'Workshops,Workshop',
     component: WorkshopLayout,
     props: {
       tabList: workshopChildRouteConfigs.map(({label, path}) => ({
@@ -258,26 +249,15 @@ const routeConfigs = [
       ...workshopChildRouteConfigs,
       {
         path: 'edit',
-        breadcrumbs: 'Workshops,Workshop,Temp,Edit',
+        breadcrumbs: 'Workshops,Workshop,Edit',
         component: WorkshopFormTemplate,
       },
     ],
   },
   {
-    path: 'workshops/:workshopId/edit',
-    breadcrumbs: 'Workshops,Edit Workshop',
-    component: WorkshopFormTemplate,
-  },
-  {
-    path: 'workshops/:workshopId/attendance',
-    breadcrumbs: 'Workshops,Workshop,Take Attendance',
-    component: WorkshopAttendance,
-    withRouter: true,
-  },
-  {
     path: 'workshops/:workshopId/attendance/:sessionId',
-    breadcrumbs: 'Workshops,Workshop,Take Attendance',
-    component: WorkshopAttendance,
+    breadcrumbs: 'Workshops,Workshop,Attendance,Take Attendance',
+    component: TakeAttendance,
     withRouter: true,
   },
   {
