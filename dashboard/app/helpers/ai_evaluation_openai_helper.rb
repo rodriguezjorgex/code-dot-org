@@ -65,6 +65,7 @@ module AiEvaluationOpenaiHelper
                     type: "object",
                     properties: {
                       skillId: {type: "integer"},
+                      skillKey: {type: "string"},
                       evaluationCriteria: {type: "string"},
                       aiEvaluation: {type: "string"},
                       aiReasoning: {type: "string"}

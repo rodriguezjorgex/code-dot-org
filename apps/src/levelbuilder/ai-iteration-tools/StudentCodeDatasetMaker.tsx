@@ -13,13 +13,18 @@ import {
 
 import {fetchStudentCodeSamples} from './StudentWorkSamplesApi';
 
-type EvaluatedCodeSample = StudentAnswer &
-  AIResponse & {
-    [key in `skill-${string}${
-      | 'evaluationCriteria'
-      | 'aiEvaluation'
-      | 'aiReasoning'}`]?: string;
-  };
+type EvaluatedCodeSample =
+  | OverallEvaluatedCodeSample
+  | SkillsEvaluatedCodeSample;
+
+type OverallEvaluatedCodeSample = StudentAnswer & AIResponse;
+
+type SkillsEvaluatedCodeSample = StudentAnswer & {
+  [key in `skill-${string}${
+    | 'evaluationCriteria'
+    | 'aiEvaluation'
+    | 'aiReasoning'}`]?: string;
+};
 
 const StudentCodeDatasetMaker: React.FC = () => {
   const [datasetName, setDatasetName] = useState<string>('');
@@ -67,7 +72,7 @@ const StudentCodeDatasetMaker: React.FC = () => {
       levelId: Number(levelId),
     };
     const codeSamples = await fetchStudentCodeSamples(studentWorkRequest);
-    if (!codeSamples) {
+    if (codeSamples?.length === 0) {
       alert('No samples found for the given parameters.');
     } else {
       const fetchedCodeSamples = codeSamples as unknown as StudentAnswer[];
@@ -108,14 +113,13 @@ const StudentCodeDatasetMaker: React.FC = () => {
         parseInt(unitId)
       );
     }
-    const evaluation: EvaluatedCodeSample = {
-      ...studentAnswer,
-      aiEvaluation: aiResponse.aiEvaluation,
-      aiReasoning: aiResponse.aiReasoning,
-      evaluationCriteria: aiResponse.evaluationCriteria,
-      id: aiResponse.id,
-    };
+
+    let evaluation: EvaluatedCodeSample;
+
     if (aiResponse.skillEvaluations) {
+      evaluation = {
+        ...studentAnswer,
+      };
       for (let i = 0; i < aiResponse.skillEvaluations.length; i++) {
         const skillEvaluation = aiResponse.skillEvaluations[i];
         const skillKey = skillEvaluation.skillKey;
@@ -126,6 +130,13 @@ const StudentCodeDatasetMaker: React.FC = () => {
         evaluation[`skill-${skillKey}-aiReasoning`] =
           skillEvaluation.aiReasoning;
       }
+    } else {
+      evaluation = {
+        ...studentAnswer,
+        evaluationCriteria: aiResponse.evaluationCriteria,
+        aiEvaluation: aiResponse.aiEvaluation,
+        aiReasoning: aiResponse.aiReasoning,
+      };
     }
     setEvaluatedSamples(prevSamples => [...prevSamples, evaluation]);
   };
