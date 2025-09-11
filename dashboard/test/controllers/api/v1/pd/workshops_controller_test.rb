@@ -613,12 +613,23 @@ class Api::V1::Pd::WorkshopsControllerTest < ActionController::TestCase
 
     # create some enrollments
     5.times do
-      create(:pd_enrollment, workshop: @workshop)
+      create(:pd_enrollment, workshop: @workshop, user: create(:teacher))
     end
     mock_mail = stub(deliver_now: nil)
-    Pd::WorkshopMailer.any_instance.expects(:detail_change_notification).times(5).returns(mock_mail)
     Pd::WorkshopMailer.any_instance.expects(:facilitator_detail_change_notification).returns(mock_mail)
     Pd::WorkshopMailer.any_instance.expects(:organizer_detail_change_notification).returns(mock_mail)
+
+    pre_update_workshop_sessions = @workshop.sessions.map(&:session_info_for_emails)
+    post_update_workshop_sessions = pre_update_workshop_sessions + [(create(:pd_session, start: (tomorrow_at 9), end: (tomorrow_at 9) + 8.hours)).session_info_for_emails]
+    Pd::WorkshopMailjetMailer.expects(:send_teacher_workshop_detail_change_notification).with(
+      anything,
+      anything,
+      false,
+      [{name: 'Description', old: 'A really cool workshop', new: workshop_params[:description]}],
+      true,
+      pre_update_workshop_sessions,
+      post_update_workshop_sessions
+    ).times(5)
 
     put :update, params: {
       id: @workshop.id,
@@ -635,10 +646,9 @@ class Api::V1::Pd::WorkshopsControllerTest < ActionController::TestCase
     teacher = create(:teacher)
     workshop = create(:csa_academic_year_workshop, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, virtual: 'true', funding_type: nil)
     application = create(:pd_teacher_application, course: 'csa', application_year: workshop.school_year, user: teacher, status: 'accepted')
-    enrollment = create(:pd_enrollment, application_id: application.id, user: teacher, workshop: workshop)
+    create(:pd_enrollment, application_id: application.id, user: teacher, workshop: workshop)
 
-    Pd::WorkshopMailer.expects(:detail_change_notification).with(enrollment).returns(mock_mail)
-    Pd::WorkshopMailer.expects(:detail_change_notification).with(enrollment, to_email: teacher.alternate_email).returns(mock_mail)
+    Pd::WorkshopMailjetMailer.expects(:send_teacher_workshop_detail_change_notification).times(2)
 
     params = workshop_params.merge(course: Pd::Workshop::COURSE_CSA, subject: Pd::Workshop::SUBJECT_SUMMER_WORKSHOP, virtual: true, funding_type: nil)
 
@@ -656,7 +666,7 @@ class Api::V1::Pd::WorkshopsControllerTest < ActionController::TestCase
     5.times do
       create(:pd_enrollment, workshop: @workshop)
     end
-    Pd::WorkshopMailer.any_instance.expects(:detail_change_notification).never
+    Pd::WorkshopMailjetMailer.expects(:send_teacher_workshop_detail_change_notification).never
 
     put :update, params: {
       id: @workshop.id,

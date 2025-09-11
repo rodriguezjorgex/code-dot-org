@@ -27,6 +27,30 @@ class Pd::WorkshopMailjetMailer
     retryable_send_email('teacher_workshop_reminder', email, user.friendly_name, email_vars)
   end
 
+  def self.send_teacher_workshop_detail_change_notification(enrollment, user, use_alternate_email, general_detail_changes, sessions_have_changed, pre_update_session_info, post_update_session_info)
+    workshop = enrollment.workshop
+    organizer = workshop.organizer
+    regional_partner = workshop.regional_partner
+    email = use_alternate_email ? user.alternate_email : user.email
+    email_vars = {
+      email_to: email,
+      name: user.given_name || user.name,
+      workshop_name: workshop.name || "#{workshop.course} #{workshop.subject}",
+      cancel_registration_link: CDO.studio_url("pd/workshop_enrollment/#{enrollment.code}/cancel", CDO.default_scheme),
+      facilitator_name: workshop.facilitators&.map(&:name)&.join(', ').presence || 'None',
+      rp_email: regional_partner&.contact_email_with_backup || 'support@code.org',
+      rp_name: regional_partner&.name || 'Code.org',
+      organizer_email: organizer&.email || 'support@code.org',
+      organizer_name: organizer&.name || 'Code.org',
+      detail_changes: general_detail_changes,
+      sessions_have_changed: sessions_have_changed,
+      pre_update_session_info: pre_update_session_info,
+      post_update_session_info: post_update_session_info
+    }
+
+    retryable_send_email('teacher_workshop_detail_change_notification', email, user.friendly_name, email_vars)
+  end
+
   def self.send_teacher_post_workshop_survey(enrollment, user, use_alternate_email)
     workshop = enrollment.workshop
     organizer = workshop.organizer
