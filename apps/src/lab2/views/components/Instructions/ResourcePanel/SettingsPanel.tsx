@@ -1,7 +1,7 @@
 import CloseButton from '@code-dot-org/component-library/closeButton';
 import {useTheme} from '@code-dot-org/component-library/common/contexts';
 import {SimpleDropdown} from '@code-dot-org/component-library/dropdown';
-import Typography from '@mui/material/Typography';
+import {Heading2} from '@code-dot-org/component-library/typography';
 import React, {useEffect, useState} from 'react';
 
 import {Setting} from '@cdo/apps/lab2/views/components/Instructions/ResourcePanel';
@@ -50,12 +50,9 @@ const SettingsPanel: React.FunctionComponent<SettingsPanelProps> = ({
     <div className={styles.settingsPanel}>
       <div className={styles.header}>
         <Typography
-          component="h2"
-          variant="body3"
-          className={styles.headerText}
-        >
+        <Heading2 className={styles.headerText} visualAppearance={'body-three'}>
           {commonI18n.settings()}
-        </Typography>
+        </Heading2>
         <CloseButton
           onClick={closePanel}
           aria-label={commonI18n.closeSettings()}
