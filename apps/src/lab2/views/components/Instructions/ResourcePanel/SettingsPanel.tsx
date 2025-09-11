@@ -49,7 +49,6 @@ const SettingsPanel: React.FunctionComponent<SettingsPanelProps> = ({
   return (
     <div className={styles.settingsPanel}>
       <div className={styles.header}>
-        <Typography
         <Heading2 className={styles.headerText} visualAppearance={'body-three'}>
           {commonI18n.settings()}
         </Heading2>
