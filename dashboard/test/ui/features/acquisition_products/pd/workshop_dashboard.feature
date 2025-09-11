@@ -51,6 +51,23 @@ Scenario: New workshop: BYOW
   And I get the workshop id from the current url
   And I clean up my records
 
+Scenario: Edit workshop: BYOW
+  Given I am an organizer with a started course
+  And I am viewing a workshop in the workshop dashboard
+  And I wait until element "strong:contains('Workshop Information')" is visible
+
+  Then I click selector "button:contains('Edit')"
+  And I wait until element "h1:contains('Edit Build Your Own Workshop')" is visible
+  Then I press keys "This is a new description." for element "textarea[name='description']"
+  And I click selector "button:contains('Publish')"
+  And I wait until element "h2:contains('Workshop Detail Change')" is visible
+  Then I click selector "button:contains('Notify')"
+  And I wait until element "h2:contains('Workshop Detail Change')" is not visible
+  And I wait until element "textarea:contains('This is a new description.')" is visible
+
+  And I get the workshop id from the current url
+  And I clean up my records
+
 Scenario: Workshop Overview
   Given I am an organizer with a completed course
   And I am viewing a workshop in the workshop dashboard
@@ -119,4 +136,5 @@ Scenario: Workshop Post Survey
   And I close my eyes
 
   And I clean up my records
-  
+
+
