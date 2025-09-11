@@ -611,29 +611,32 @@ class Api::V1::Pd::WorkshopsControllerTest < ActionController::TestCase
   test 'updating with notify true sends detail change notification emails' do
     sign_in create :admin
 
-    # create some enrollments
+    workshop = create(:byo_workshop, num_sessions: 1, facilitators: [@facilitator])
     5.times do
-      create(:pd_enrollment, workshop: @workshop, user: create(:teacher))
+      create(:pd_enrollment, workshop: workshop, user: create(:teacher))
     end
     mock_mail = stub(deliver_now: nil)
     Pd::WorkshopMailer.any_instance.expects(:facilitator_detail_change_notification).returns(mock_mail)
     Pd::WorkshopMailer.any_instance.expects(:organizer_detail_change_notification).returns(mock_mail)
 
-    pre_update_workshop_sessions = @workshop.sessions.map(&:session_info_for_emails)
-    post_update_workshop_sessions = pre_update_workshop_sessions + [(create(:pd_session, start: (tomorrow_at 9), end: (tomorrow_at 9) + 8.hours)).session_info_for_emails]
+    update_session_info = workshop.sessions.map(&:session_info_for_calendar)
+    update_session_info.first[:location_name] = "New location"
+    expected_post_update_session_info = workshop.sessions.map(&:session_info_for_emails)
+    expected_post_update_session_info.first[:location] = "New location"
+
     Pd::WorkshopMailjetMailer.expects(:send_teacher_workshop_detail_change_notification).with(
       anything,
       anything,
       false,
       [{name: 'Description', old: 'A really cool workshop', new: workshop_params[:description]}],
       true,
-      pre_update_workshop_sessions,
-      post_update_workshop_sessions
+      workshop.sessions.map(&:session_info_for_emails),
+      expected_post_update_session_info
     ).times(5)
 
     put :update, params: {
-      id: @workshop.id,
-      pd_workshop: workshop_params,
+      id: workshop.id,
+      pd_workshop: {description: workshop_params[:description], sessions_attributes: update_session_info},
       notify: true
     }
   end
