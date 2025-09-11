@@ -1,12 +1,12 @@
 import {createTheme} from '@mui/material';
 
-import {NOTO_FONT, BARLOW_FONT, FIGTREE_FONT} from './constants/fonts';
+import {
+  NOTO_FONT,
+  BARLOW_FONT,
+  FIGTREE_FONT,
+  createFontStack,
+} from './constants/fonts';
 import {STYLE_OVERRIDES} from './styleOverrides';
-
-// copied from ../common/constants in frontend
-const createFontStack = (font: string, fallback: string) => {
-  return [font, fallback, 'sans-serif'].join(', ');
-};
 
 const theme = createTheme({
   cssVariables: true,
