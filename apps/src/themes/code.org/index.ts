@@ -11,9 +11,6 @@ import {STYLE_OVERRIDES} from './styleOverrides';
 const theme = createTheme({
   cssVariables: true,
   components: STYLE_OVERRIDES,
-  shape: {
-    borderRadius: 4,
-  },
   typography: {
     fontFamily: createFontStack(FIGTREE_FONT, NOTO_FONT),
     h1: {
