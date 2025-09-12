@@ -59,6 +59,8 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
   const {workshopId} = useParams();
   const [workshopConfig, setWorkshopConfig] = useState(config);
   const [loading, setLoading] = useState(false);
+  const [notifyLoading, setNotifyLoading] = useState(false);
+  const [dontNotifyPending, setDontNotifyPending] = useState(false);
   const [showDetailChangeEmailDialog, setShowDetailChangeEmailDialog] =
     useState(false);
 
@@ -171,6 +173,11 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
     async (notify: boolean) => {
       try {
         setLoading(true);
+        if (notify) {
+          setNotifyLoading(true);
+        } else {
+          setDontNotifyPending(true);
+        }
         const workshopData = workshopStateToApi(workshopFormState);
         const sessionData = sessionStateToApi(
           sessionFormState,
@@ -213,6 +220,8 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
         ]);
       } finally {
         setLoading(false);
+        setNotifyLoading(false);
+        setDontNotifyPending(false);
       }
     },
     [navigate, sessionFormState, workshop, workshopFormState]
@@ -280,15 +289,19 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
           mode="light"
           primaryButtonProps={{
             text: 'Notify',
+            isPending: notifyLoading,
             onClick: () => publish(true),
           }}
           secondaryButtonProps={{
             text: "Don't notify",
+            isPending: dontNotifyPending,
             onClick: () => publish(false),
           }}
           onClose={() => {
             setShowDetailChangeEmailDialog(false);
             setLoading(false);
+            setNotifyLoading(false);
+            setDontNotifyPending(false);
           }}
           closeLabel="Cancel"
         />
