@@ -214,7 +214,7 @@ const AiDiffFloatingActionButton: React.FC<AiDiffFloatingActionButtonProps> = ({
               onLoad={() => !isFabImageLoaded && setIsFabImageLoaded(true)}
             />
             <img
-              alt="AI bot TA tag"
+              alt="TA tag"
               src={aiFabWithIconTag}
               className={style.floatingActionButtonTag}
               onLoad={() => !isFabImageLoaded && setIsFabImageLoaded(true)}
