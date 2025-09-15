@@ -58,9 +58,9 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const {workshopId} = useParams();
   const [workshopConfig, setWorkshopConfig] = useState(config);
-  const [loading, setLoading] = useState(false);
-  const [notifyLoading, setNotifyLoading] = useState(false);
-  const [dontNotifyPending, setDontNotifyPending] = useState(false);
+  const [loadingState, setLoadingState] = useState<
+    'notifyLoading' | 'dontNotifyLoading' | null
+  >(null);
   const [showDetailChangeEmailDialog, setShowDetailChangeEmailDialog] =
     useState(false);
 
@@ -172,12 +172,7 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
   const publish = useCallback(
     async (notify: boolean) => {
       try {
-        setLoading(true);
-        if (notify) {
-          setNotifyLoading(true);
-        } else {
-          setDontNotifyPending(true);
-        }
+        setLoadingState(notify ? 'notifyLoading' : 'dontNotifyLoading');
         const workshopData = workshopStateToApi(workshopFormState);
         const sessionData = sessionStateToApi(
           sessionFormState,
@@ -218,10 +213,8 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
         setResponseErrors([
           'There was a problem processing your request. Please try again or contact support@code.org',
         ]);
-      } finally {
-        setLoading(false);
-        setNotifyLoading(false);
-        setDontNotifyPending(false);
+        setLoadingState(null);
+        setShowDetailChangeEmailDialog(false);
       }
     },
     [navigate, sessionFormState, workshop, workshopFormState]
@@ -289,19 +282,17 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
           mode="light"
           primaryButtonProps={{
             text: 'Notify',
-            isPending: notifyLoading,
+            isPending: loadingState === 'notifyLoading',
             onClick: () => publish(true),
           }}
           secondaryButtonProps={{
             text: "Don't notify",
-            isPending: dontNotifyPending,
+            isPending: loadingState === 'dontNotifyLoading',
             onClick: () => publish(false),
           }}
           onClose={() => {
             setShowDetailChangeEmailDialog(false);
-            setLoading(false);
-            setNotifyLoading(false);
-            setDontNotifyPending(false);
+            setLoadingState(null);
           }}
           closeLabel="Cancel"
         />
@@ -364,7 +355,7 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
       <PublishCancelButtons
         publish={clickPublish}
         cancel={cancel}
-        loading={loading}
+        loading={loadingState !== null}
       />
     </form>
   );
