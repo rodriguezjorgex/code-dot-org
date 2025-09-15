@@ -58,12 +58,12 @@ Scenario: Edit workshop: BYOW
 
   Then I click selector "button:contains('Edit')"
   And I wait until element "h1:contains('Edit Build Your Own Workshop')" is visible
-  Then I press keys "New Location Name" for element "input[name='locationName']"
+  Then I press keys " with Test Change" for element "input[name='name']"
   And I click selector "button:contains('Publish')"
   And I wait until element "h2:contains('Workshop Detail Change')" is visible
   Then I click selector "button:contains('Notify')"
   And I wait until element "h2:contains('Workshop Detail Change')" is not visible
-  And I wait until element "p:contains('New Location Name')" is visible
+  And I wait until element "p:contains('Cool workshop with Test Change')" is visible
 
   And I get the workshop id from the current url
   And I clean up my records
