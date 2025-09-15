@@ -14,6 +14,7 @@ import {
 } from '@cdo/generated-scripts/sharedConstants';
 
 import AccuracyDetails from './AccuracyDetails';
+import Checkbox from '@code-dot-org/component-library/checkbox';
 
 type AIEvaluation = {
   aiEvaluation: string;
@@ -37,7 +38,8 @@ type ExampleAnswer = {
 
 const AccuracyCheck: React.FC<{
   levelId: number;
-}> = ({levelId}) => {
+  hasSkills: boolean;
+}> = ({levelId, hasSkills}) => {
   const [csvFile, setCsvFile] = useState<File | null>(null);
   const [studentAnswers, setStudentAnswers] = useState<ExampleAnswer[]>([]);
   const [evaluationPending, setEvaluationPending] = useState<boolean>(false);
@@ -48,6 +50,7 @@ const AccuracyCheck: React.FC<{
   const datasetName = csvFile
     ? `${csvFile.name}-ai-evaluations.csv`
     : 'ai-evaluations.csv';
+  const [evaluateSkills, setEvaluateSkills] = useState<boolean>(false);
 
   function renderStudentWorkEvaluationStatusCodes() {
     return (
@@ -95,13 +98,12 @@ const AccuracyCheck: React.FC<{
     setEvaluationPending(false);
   };
 
-  // TODO: This function will need to updated to determine
-  // whether we're asking for a skill-based evaluation or not.
   const evaluateStudentWork = async (example: ExampleAnswer) => {
     const aiResponse = await evaluationFromOpenAI(
       example.studentWork,
       levelId,
-      AiEvaluationTypes.SINGLE_STUDENT
+      AiEvaluationTypes.SINGLE_STUDENT,
+      evaluateSkills
     );
     const parsedResponse = JSON.parse(aiResponse?.content || '{}');
     const evaluation: EvaluatedExample = {
@@ -223,6 +225,19 @@ const AccuracyCheck: React.FC<{
           isPending={evaluationPending}
         />
       </div>
+      <br />
+      {hasSkills && (
+        <Checkbox
+          label={
+            'Evaluate skills (if not checked, you will get an overall evaluation based on completeness of the level instructions)'
+          }
+          name={'evaluateSkills'}
+          checked={evaluateSkills}
+          size="s"
+          onChange={e => setEvaluateSkills(e.target.checked)}
+        />
+      )}
+      <br />
       <br />
       <div>
         <Button

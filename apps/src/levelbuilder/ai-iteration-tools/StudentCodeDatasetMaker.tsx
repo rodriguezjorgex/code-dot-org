@@ -188,15 +188,6 @@ const StudentCodeDatasetMaker: React.FC = () => {
           />
         </div>
         <br />
-        <div>
-          <Button
-            text="Evaluate Student Code Samples"
-            onClick={getAIEvaluations}
-            disabled={fetchedSamples.length === 0}
-            isPending={evaluationPending}
-          />
-        </div>
-        <br />
         <Checkbox
           label={'Evaluate skills (if any) associated with the level'}
           name={'evaluateSkills'}
@@ -205,6 +196,15 @@ const StudentCodeDatasetMaker: React.FC = () => {
           onChange={e => setEvaluateSkills(e.target.checked)}
         />
         <br />
+        <br />
+        <div>
+          <Button
+            text="Evaluate Student Code Samples"
+            onClick={getAIEvaluations}
+            disabled={fetchedSamples.length === 0}
+            isPending={evaluationPending}
+          />
+        </div>
         <br />
         <div>
           <Button
