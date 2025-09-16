@@ -223,7 +223,7 @@ class ApplicationHelperTest < ActionView::TestCase
 
   test 'meta_image_url for level_source with image with s3 disabled' do
     CDO.stubs(:disable_s3_image_uploads).returns true
-    assert_equal 'http://studio.code.org/blockly/media/logo.png', meta_image_url(level_source: create(:level_source_image).level_source)
+    assert_equal '/blockly/media/logo.png', meta_image_url(level_source: create(:level_source_image).level_source)
   end
 
   test 'best_activity_css_class returns "not started" for no activity' do

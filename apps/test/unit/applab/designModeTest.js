@@ -240,12 +240,7 @@ describe('setProperty and read Property', () => {
     });
 
     it('Return url for url input', () => {
-      expect(
-        assignImageType(
-          picture,
-          'https://studio.code.org/blockly/media/logo.png'
-        )
-      ).toBe('url');
+      expect(assignImageType(picture, '/blockly/media/logo.png')).toBe('url');
     });
 
     it('Return default for empty input', () => {
