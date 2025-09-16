@@ -3,7 +3,6 @@ import {FontAwesomeV6IconProps} from '@code-dot-org/component-library/fontAwesom
 import classNames from 'classnames';
 import React, {useState, useEffect} from 'react';
 
-import {clearChatMessages} from '@cdo/apps/aichat/redux';
 import {
   ModelParameters,
   ChatButtonClickHandler,
@@ -16,7 +15,6 @@ import {queryParams} from '@cdo/apps/code-studio/utils';
 import {buildHiddenContextString} from '@cdo/apps/pythonlab/aiTutorHelper';
 import Spinner from '@cdo/apps/sharedComponents/Spinner';
 import HttpClient from '@cdo/apps/util/HttpClient';
-import {useAppDispatch} from '@cdo/apps/util/reduxHooks';
 import {AiChatClientTypes} from '@cdo/generated-scripts/sharedConstants';
 
 import {shouldShowCopyCode} from '../../ai/ai-should-show-copy-code';
@@ -116,8 +114,6 @@ const AiTutor2Chat: React.FunctionComponent<AiTutor2ChatProps> = ({
   aiTutorContextPromise,
   aiTutorSystemPromptSettings,
 }) => {
-  const dispatch = useAppDispatch();
-
   const [systemPrompt, setSystemPrompt] = useState<string>();
   const [hiddenContextString, setHiddenContextString] = useState<string>();
 
@@ -192,9 +188,6 @@ const AiTutor2Chat: React.FunctionComponent<AiTutor2ChatProps> = ({
         modelParameters={{...modelParameters, systemPrompt}}
         chatButtons={chatButtons}
         hiddenContext={hiddenContextString}
-        onClear={() => {
-          dispatch(clearChatMessages());
-        }}
         systemPromptSettings={aiTutorSystemPromptSettings}
       />
     </div>
