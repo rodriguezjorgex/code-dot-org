@@ -15,6 +15,26 @@ import {WorkshopCourseConfigs} from '@cdo/apps/generated/pd/sharedWorkshopConsta
 import {getAuthenticityToken} from '@cdo/apps/util/AuthenticityTokenStore';
 import {useFetch} from '@cdo/apps/util/useFetch';
 
+import {
+  Workshop,
+  WorkshopFormState,
+  SessionErrors,
+  WorkshopCourseConfig,
+  SessionFormState,
+  FieldConfig,
+  RegionalPartner,
+  WorkshopErrors,
+} from '../workshops/types';
+import {
+  workshopDataToState,
+  sessionDataToState,
+  emptyValue,
+  workshopStateToApi,
+  sessionStateToApi,
+  workshopLabel,
+  madeImportantDetailChange,
+} from '../workshops/utils';
+
 import {generateNewSession} from './components/SessionsEditor';
 import {sessionsReducer} from './reducers/sessionsReducer';
 import {workshopReducer} from './reducers/workshopReducer';
@@ -25,31 +45,17 @@ import PartnerFacilitator from './sections/PartnerFacilitator';
 import PublishCancelButtons from './sections/PublishCancelButtons';
 import PublishSettings from './sections/PublishSettings';
 import Schedule from './sections/Schedule';
-import {
-  Errors,
-  FieldConfig,
-  SessionErrors,
-  SessionFormState,
-  Workshop,
-  WorkshopFormState,
-  WorkshopFormTemplateProps,
-  WorkshopCourseConfig,
-} from './types';
-import {
-  workshopDataToState,
-  sessionDataToState,
-  workshopLabel,
-  sessionStateToApi,
-  workshopStateToApi,
-  emptyValue,
-  madeImportantDetailChange,
-} from './utils';
 
 import styles from './styles.module.scss';
 
 export const REQUIRED_ERROR = 'Required';
 export const VALIDATION_ERROR =
   'Your form contains validation errors that must be corrected';
+
+export interface WorkshopFormTemplateProps {
+  config?: WorkshopCourseConfig;
+  regionalPartnerData?: RegionalPartner[];
+}
 
 export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
   config,
@@ -94,9 +100,7 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
     generateNewSession(),
   ]);
 
-  const [workshopErrors, setWorkshopErrors] = useState<
-    Errors<keyof WorkshopFormState>
-  >({});
+  const [workshopErrors, setWorkshopErrors] = useState<WorkshopErrors>({});
 
   const [sessionErrors, setSessionErrors] = useState<SessionErrors>({});
 
@@ -127,10 +131,7 @@ export const WorkshopFormTemplate: FC<WorkshopFormTemplateProps> = ({
   const getWorkshopErrors = useCallback(
     () =>
       Object.values(workshopConfig?.fields ?? {}).reduce(
-        (
-          acc: Errors<keyof WorkshopFormState>,
-          field: FieldConfig<WorkshopFormState>
-        ) => {
+        (acc: WorkshopErrors, field: FieldConfig<WorkshopFormState>) => {
           const {stateKey} = field;
           let {required} = field;
           // prereq is not configured to be required
