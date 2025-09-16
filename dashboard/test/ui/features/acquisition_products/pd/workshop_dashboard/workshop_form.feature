@@ -63,7 +63,7 @@ Scenario: Edit workshop: BYOW
   And I wait until element "h2:contains('Workshop Detail Change')" is visible
   Then I click selector "button:contains('Notify')"
   And I wait until element "h2:contains('Workshop Detail Change')" is not visible
-  And I wait until element "p:contains('Cool workshop with Test Change')" is visible
+  And I wait until element "strong:contains('Workshop Information')" is visible
 
   And I get the workshop id from the current url
   And I clean up my records
