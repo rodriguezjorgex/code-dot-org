@@ -1,7 +1,4 @@
 // apps/src/lab2/utils/Lab2ProgressTimer.tsx
-import React, {useEffect} from 'react';
-import IdleTimer from 'react-idle-timer';
-
 class Lab2ProgressTimer {
   private milestoneStartTime: number;
   private idleStartTime: number | null = null;
@@ -47,26 +44,6 @@ class Lab2ProgressTimer {
       now - this.milestoneStartTime - (this.accumulatedIdleTime + currentIdle)
     );
   }
-
-  static Mount: React.FC<{resetOnMount?: boolean}> = ({
-    resetOnMount = true,
-  }) => {
-    const IDLE_AFTER = 1000 * 60 * 2;
-    const timer = Lab2ProgressTimer.getInstance();
-
-    useEffect(() => {
-      if (resetOnMount) timer.resetMilestoneTimer();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [resetOnMount]);
-
-    return (
-      <IdleTimer
-        timeout={IDLE_AFTER}
-        onIdle={() => timer.startIdle()}
-        onActive={() => timer.endIdle()}
-      />
-    );
-  };
 }
 
 export default Lab2ProgressTimer;
