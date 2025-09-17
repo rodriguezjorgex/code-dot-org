@@ -240,7 +240,7 @@ export const RichTextExamples: Story = {
       </BodyTwoText>
       <EmText>This is an em text</EmText>
       <StrongText>This is a strong text</StrongText>
-      <ExtraStrongText>This is am extra-strong text</ExtraStrongText>
+      <ExtraStrongText>This is an extra-strong text</ExtraStrongText>
       <EmText>
         <StrongText>This is a strong em text</StrongText>
       </EmText>

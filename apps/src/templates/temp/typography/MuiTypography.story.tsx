@@ -82,14 +82,14 @@ export const AllTypographyElements: Story = {
       <MuiTypography gutterBottom variant="overline3">
         This is a Typography Component. (overline-three)
       </MuiTypography>
-      <MuiTypography gutterBottom variant="body2">
-        <em>This is a Typography Component. (em)</em>
+      <MuiTypography gutterBottom variant="em">
+        This is a Typography Component. (em)
       </MuiTypography>
-      <MuiTypography gutterBottom variant="body2">
-        <strong>This is a Typography Component. (strong)</strong>
+      <MuiTypography gutterBottom variant="strong">
+        This is a Typography Component. (strong)
       </MuiTypography>
-      <MuiTypography gutterBottom variant="body2">
-        <strong>This is a Typography Component. (extra-strong)</strong>
+      <MuiTypography gutterBottom variant="extraStrong">
+        This is a Typography Component. (extra-strong)
       </MuiTypography>
       <MuiTypography gutterBottom component="figcaption" variant="figcaption">
         This is a Typography Component. (figcaption)
@@ -179,14 +179,14 @@ export const OverlineTexts: Story = {
 export const OtherTexts: Story = {
   render: () => (
     <>
-      <MuiTypography gutterBottom variant="body2">
-        <em>This is a Typography Component. (em)</em>
+      <MuiTypography gutterBottom variant="em">
+        This is a Typography Component. (em)
       </MuiTypography>
-      <MuiTypography gutterBottom variant="body2">
+      <MuiTypography gutterBottom variant="strong">
         <strong>This is a Typography Component. (strong)</strong>
       </MuiTypography>
-      <MuiTypography gutterBottom variant="body2">
-        <strong>This is a Typography Component. (extra-strong)</strong>
+      <MuiTypography gutterBottom variant="extraStrong">
+        This is a Typography Component. (extra-strong)
       </MuiTypography>
       <MuiTypography gutterBottom component="figcaption" variant="figcaption">
         This is a Typography Component. (figcaption)
@@ -208,7 +208,7 @@ export const TextWrapper: Story = {
           <li>are also styled as body-one</li>
         </ul>
       </MuiTypography>
-      <MuiTypography gutterBottom component="div" variant="subtitle1">
+      <MuiTypography gutterBottom component="div" variant="body3">
         <p>
           paragraph element child here containing <strong>bold</strong> and{' '}
           <em>emphasized</em> inline elements, styled as body-three
@@ -257,24 +257,20 @@ export const RichTextExamples: Story = {
           <em>This is a body-two extra-strong em text</em>
         </strong>
       </MuiTypography>
-      <MuiTypography gutterBottom variant="body2">
-        <em>This is an em text</em>
+      <MuiTypography gutterBottom variant="em">
+        This is an em text
       </MuiTypography>
-      <MuiTypography gutterBottom variant="body2">
-        <strong>This is a strong text</strong>
+      <MuiTypography gutterBottom variant="strong">
+        This is a strong text
       </MuiTypography>
-      <MuiTypography gutterBottom variant="body2">
-        <strong>This is an extra-strong text</strong>
+      <MuiTypography gutterBottom variant="extraStrong">
+        This is an extra-strong text
       </MuiTypography>
-      <MuiTypography gutterBottom variant="body2">
-        <em>
-          <strong>This is a strong em text</strong>
-        </em>
+      <MuiTypography gutterBottom variant="strong">
+        <em>This is a strong em text</em>
       </MuiTypography>
-      <MuiTypography gutterBottom variant="body2">
-        <strong>
-          <em>This is an extra-strong em text</em>
-        </strong>
+      <MuiTypography gutterBottom variant="extraStrong">
+        <em>This is an extra-strong em text</em>
       </MuiTypography>
     </>
   ),
@@ -284,21 +280,15 @@ export const ElementsWithNoMargin: Story = {
   render: () => (
     <>
       <hr />
-      <MuiTypography variant="h6" gutterBottom={false}>
-        Heading without margins
+      <MuiTypography variant="h6">Heading without margins</MuiTypography>
+      <hr />
+      <MuiTypography variant="body2">Paragraph without margins</MuiTypography>
+      <hr />
+      <MuiTypography variant="strong">
+        Strong text without margins
       </MuiTypography>
       <hr />
-      <MuiTypography variant="body2" gutterBottom={false}>
-        Paragraph without margins
-      </MuiTypography>
-      <hr />
-      <MuiTypography variant="body2" gutterBottom={false}>
-        <strong>Strong text without margins</strong>
-      </MuiTypography>
-      <hr />
-      <MuiTypography variant="body2" gutterBottom={false}>
-        <em>Italic text without margins</em>
-      </MuiTypography>
+      <MuiTypography variant="em">Italic text without margins</MuiTypography>
       <hr />
     </>
   ),
