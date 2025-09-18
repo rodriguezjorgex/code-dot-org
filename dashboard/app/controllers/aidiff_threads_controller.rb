@@ -206,12 +206,10 @@ class AidiffThreadsController < ApplicationController
       course_display_name = CourseOffering.find_by(id: section.course_offering_id)&.display_name
       course_names = [section.unit_group&.name]
       course_names.push(section.unit_group&.family_name) unless section.unit_group&.family_name.nil?
-      students = section.students&.map(&:friendly_name)&.join(', ')
       {
         context: context_scope,
         course_display_name: course_display_name,
-        course_names: course_names,
-        students: students
+        course_names: course_names
       }
     end
     contexts
