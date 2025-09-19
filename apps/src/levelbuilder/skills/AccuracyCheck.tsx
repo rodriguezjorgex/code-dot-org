@@ -1,4 +1,5 @@
 import Button from '@code-dot-org/component-library/button';
+import Checkbox from '@code-dot-org/component-library/checkbox';
 import Link from '@code-dot-org/component-library/link';
 import Papa from 'papaparse';
 import React, {useState} from 'react';
@@ -14,7 +15,6 @@ import {
 } from '@cdo/generated-scripts/sharedConstants';
 
 import AccuracyDetails from './AccuracyDetails';
-import Checkbox from '@code-dot-org/component-library/checkbox';
 
 type AIEvaluation = {
   aiEvaluation: string;
