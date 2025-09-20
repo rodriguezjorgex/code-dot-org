@@ -56,11 +56,11 @@ gem 'xxhash'
 
 # Google APIs. Formerly just the `google-api-client` gem
 # See https://github.com/googleapis/google-api-ruby-client/blob/main/google-api-client/OVERVIEW.md
-gem 'google-apis-core'
+gem 'google-apis-core', '>= 0.12.0'
 
-gem 'google-apis-analytics_v3'
-gem 'google-apis-classroom_v1'
-gem 'google-apis-youtube_v3'
+gem 'google-apis-analytics_v3', '>= 0.14.0'
+gem 'google-apis-classroom_v1', '>= 0.22.0'
+gem 'google-apis-youtube_v3', '>= 0.26.0'
 
 # CSRF protection for Sinatra.
 gem 'rack_csrf'
@@ -98,7 +98,7 @@ group :development, :test do
   gem 'ruby-prof', '>= 1.7.0'
   gem 'vcr', require: false
   # For unit testing.
-  gem 'webmock', '~> 3.8', require: false
+  gem 'webmock', '~> 3.15', '>= 3.15.1', require: false
 
   gem 'faker', '~> 3.4', require: false
   gem 'fakeredis', require: false
@@ -107,7 +107,7 @@ group :development, :test do
 
   # For UI testing.
   gem 'cucumber'
-  gem 'eyes_selenium', '~> 4.0'
+  gem 'eyes_selenium', '~> 5.0', '>= 5.0.0'
   gem 'fakefs', '~> 2.5.0', require: false
   gem 'minitest', '~> 5.15'
   gem 'minitest-around'
@@ -120,7 +120,7 @@ group :development, :test do
   gem 'rspec', require: false
   # Starting with version 4.6, Selenium uses Selenium Manager, eliminating the need for the webdriver gem.
   # See: https://github.com/titusfortner/webdrivers/commit/5b3dc29ff5cdb7bec110de949e78184c789ef63a
-  gem 'selenium-webdriver', '~> 4.6'
+  gem 'selenium-webdriver', '~> 4.26', '>= 4.26.0'
   gem 'simplecov', '~> 0.22.0', require: false
   gem 'spring', '~> 3.1.1'
   gem 'spring-commands-testunit'
@@ -256,11 +256,11 @@ gem 'aws-sdk-secretsmanager'
 
 # Lint tools
 group :development, :staging, :levelbuilder, :test do
-  gem 'haml_lint', require: false
-  gem 'rubocop', '~> 1.28', require: false
-  gem 'rubocop-performance', require: false
-  gem 'rubocop-rails', require: false
-  gem 'rubocop-rails-accessibility', require: false
+  gem 'haml_lint', '>= 0.39.0', require: false
+  gem 'rubocop', '~> 1.66', '>= 1.66.0', require: false
+  gem 'rubocop-performance', '>= 1.14.0', require: false
+  gem 'rubocop-rails', '>= 2.15.0', require: false
+  gem 'rubocop-rails-accessibility', '>= 1.0.0', require: false
   gem 'scss_lint', require: false
 end
 
