@@ -14,7 +14,7 @@ class HocDownloadController < ApplicationController
     when Unit::STARWARS_NAME
       @app_name = t('hoc_download.starwars_blocks_name')
       @file_prefix = 'StarWarsBlocks'
-      @og_image_url = helpers.image_url('star-wars-announcement.jpg')
+      @og_image_url = helpers.image_url('star-wars-announcement.jpg', host: CDO.studio_url('', CDO.default_scheme))
 
       # for JavaScript version (Star Wars only)
       @app_name_js = t('hoc_download.starwars_javascript_name')
