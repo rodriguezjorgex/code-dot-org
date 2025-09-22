@@ -77,7 +77,8 @@ class Pd::WorkshopMailjetMailer
       name: facilitator.given_name || facilitator.name,
       workshop_name: workshop_name_with_fallback(workshop),
       rp_name: contact_name_with_fallback(regional_partner&.name),
-      survey_deadline: 'INSERT HERE' || 'ALSO FALLBACK'
+      survey_deadline: (Time.zone.today + 10.days).strftime('%B %-d'),
+      exit_survey_url: CDO.studio_url("form/professional_learning_facilitator_post_workshop_survey", CDO.default_scheme)
     }
 
     retryable_send_email('facilitator_post_workshop_survey', facilitator.email, facilitator.friendly_name, email_vars)
