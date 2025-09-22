@@ -5,7 +5,7 @@
   },
   "banners": {
     "teacher-apps-open-2021": {
-      "image": "https://code.org/images/professional-learning-2019-3.png",
+      "image": "/blockly/media/professional-learning/2019-3.png",
       "title": "Sign up for Professional Learning",
       "body": "Join our hands-on workshops!",
       "buttonText": "Join us",

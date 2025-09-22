@@ -8,7 +8,7 @@ class AnnouncementsTest < ActiveSupport::TestCase
   test 'gets courses announcement' do
     announcement = Announcements.get_announcement_for_page("/courses")
     assert announcement
-    assert_equal("https://code.org/images/professional-learning-2019-3.png", announcement[:image])
+    assert_equal("/blockly/media/professional-learning/2019-3.png", announcement[:image])
     assert_equal("Join our hands-on workshops!", announcement[:body])
     assert_equal("Sign up for Professional Learning", announcement[:title])
     assert_equal("Join us", announcement[:buttonText])
