@@ -10,7 +10,7 @@ class HocDownloadController < ApplicationController
     when Unit::MINECRAFT_NAME
       @app_name = t('hoc_download.minecraft_name')
       @file_prefix = 'MC'
-      @og_image_url = CDO.code_org_url('/images/mc/mc_social.jpg')
+      @og_image_url = helpers.image_url('mc_social.jpg')
     when Unit::STARWARS_NAME
       @app_name = t('hoc_download.starwars_blocks_name')
       @file_prefix = 'StarWarsBlocks'
