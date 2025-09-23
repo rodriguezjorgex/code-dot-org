@@ -5,8 +5,8 @@ import {WithTooltip} from '@code-dot-org/component-library/tooltip';
 import classNames from 'classnames';
 import React, {useEffect, useMemo, useState} from 'react';
 
-import {SystemPromptSettings} from '@cdo/apps/aichat/types';
-import {queryParams} from '@cdo/apps/code-studio/utils';
+import {ChatButtonData, SystemPromptSettings} from '@cdo/apps/aichat/types';
+import {shouldShowAiTutor} from '@cdo/apps/lab2/ai/shouldShowAiTutor';
 import {isReadOnlyWorkspace} from '@cdo/apps/lab2/redux/lab2ReduxSelectors';
 import {ProjectSources} from '@cdo/apps/lab2/types';
 import AiTutor2Chat from '@cdo/apps/lab2/views/components/AiTutor2Chat';
@@ -81,6 +81,7 @@ type ResourcePanelProps = InstructionsProps & {
   versionHistoryProps?: VersionHistoryProps;
   aiTutorSystemPromptSettings?: SystemPromptSettings;
   aiTutorMultimodalEnabled?: boolean;
+  aiTutorChatButtonData?: ChatButtonData[];
 };
 
 /**
@@ -96,6 +97,7 @@ const ResourcePanel: React.FC<ResourcePanelProps> = ({
   versionHistoryProps,
   aiTutorSystemPromptSettings,
   aiTutorMultimodalEnabled,
+  aiTutorChatButtonData,
   ...instructionsProps
 }) => {
   const {theme} = useTheme();
@@ -117,6 +119,7 @@ const ResourcePanel: React.FC<ResourcePanelProps> = ({
   );
   const levelName = instructionsProps.levelProperties.name;
   const channelId = useAppSelector(state => state.lab.channel?.id);
+  const appName = instructionsProps.levelProperties.appName;
 
   // Build available tabs based on level information.
   const availableTabs = useMemo(() => {
@@ -149,9 +152,8 @@ const ResourcePanel: React.FC<ResourcePanelProps> = ({
     }
 
     if (
-      (levelProperties.aiTutorAvailable ||
-        queryParams('show-ai-tutor2') === 'true') &&
-      hiddenContextCallback
+      hiddenContextCallback &&
+      shouldShowAiTutor(appName, levelProperties.aiTutorAvailable)
     ) {
       tabMap[Tabs.AiTutor] = (
         <AiTutor2Chat
@@ -160,6 +162,7 @@ const ResourcePanel: React.FC<ResourcePanelProps> = ({
           aiTutorMultimodalEnabled={aiTutorMultimodalEnabled}
           levelName={levelName}
           channelId={channelId}
+          aiTutorChatButtonData={aiTutorChatButtonData}
         />
       );
     }
@@ -193,16 +196,18 @@ const ResourcePanel: React.FC<ResourcePanelProps> = ({
     hasValidationConditions,
     isUserTeacher,
     hiddenContextCallback,
+    appName,
     isReadOnly,
     isViewingOldVersion,
     viewAsUserId,
     isWidgetView,
     versionHistoryProps,
     showRubric,
+    aiTutorSystemPromptSettings,
     aiTutorMultimodalEnabled,
     levelName,
     channelId,
-    aiTutorSystemPromptSettings,
+    aiTutorChatButtonData,
     selectedVersion,
     levelId,
   ]);
