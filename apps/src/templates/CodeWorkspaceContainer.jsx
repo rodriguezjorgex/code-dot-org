@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 
 import commonStyles from '../commonStyles';
 import * as utils from '../utils';
+import AiTutorSidebar from '../aiTutor/views/legacyLabs/AiTutorSidebar';
 
 class CodeWorkspaceContainer extends React.Component {
   static propTypes = {
@@ -50,8 +51,11 @@ class CodeWorkspaceContainer extends React.Component {
 
     return (
       <div style={mainStyle} className="editor-column">
-        <div id="codeWorkspace" style={styles.codeWorkspace}>
+        <div id="codeWorkspace" style={{...styles.codeWorkspace, right: 200}}>
           {children}
+        </div>
+        <div>
+          <AiTutorSidebar />
         </div>
       </div>
     );
