@@ -332,10 +332,9 @@ class CourseOffering < ApplicationRecord
 
   def upcoming_facilitated_workshops
     workshops = pd_workshops.select do |ws|
-      next false if ws.hidden || ws.sessions.empty?
-
-      start_time = ws.sessions.first.start
-      start_time && start_time.to_date > Time.zone.today
+      !ws.hidden &&
+        ws.sessions.any? &&
+        ws.sessions.first.start > Time.zone.now
     end
 
     workshops.sort_by {|ws| ws.sessions.first.start}
