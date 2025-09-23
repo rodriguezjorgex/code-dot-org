@@ -330,6 +330,17 @@ class CourseOffering < ApplicationRecord
     !latest_stable_version.nil?
   end
 
+  def upcoming_facilitated_workshops
+    workshops = pd_workshops.select do |ws|
+      next false if ws.hidden || ws.sessions.empty?
+
+      start_time = ws.sessions.first.start
+      start_time && start_time.to_date > Time.zone.today
+    end
+
+    workshops.sort_by {|ws| ws.sessions.first.start}
+  end
+
   def summarize_for_edit
     {
       key: key,
@@ -377,7 +388,8 @@ class CourseOffering < ApplicationRecord
       video: video,
       published_date: published_date,
       self_paced_pl_course_offering_path: self_paced_pl_course_offering&.path_to_latest_published_version(locale_code),
-      available_resources: get_available_resources(locale_code)
+      available_resources: get_available_resources(locale_code),
+      facilitated_workshops: upcoming_facilitated_workshops.map(&:summarize_for_pl_catalog)
     }
   end
 

@@ -983,4 +983,14 @@ class Pd::Workshop < ApplicationRecord
       facilitators: facilitators_info
     }
   end
+
+  def summarize_for_pl_catalog
+    {
+      id: id,
+      date: sessions.first&.start&.strftime('%B %-d, %Y'),
+      location: virtual? ? "Virtual" : location_name,
+      link: "/pd/workshops/#{id}",
+      regional_partner_name: regional_partner&.name
+    }
+  end
 end
