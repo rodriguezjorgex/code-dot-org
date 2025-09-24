@@ -50,6 +50,8 @@ function renderSessionsTooltip(sessions: {start: string}[]) {
   );
 }
 
+const maxVisibleWorkshops = 2;
+
 const SelfPacedPLCatalogCourseFacilitatedWorkshops: React.FC<
   SelfPacedPLCatalogCourseFacilitatedWorkshopsProps
 > = ({facilitated_workshops}) => {
@@ -79,49 +81,56 @@ const SelfPacedPLCatalogCourseFacilitatedWorkshops: React.FC<
     );
   }
 
+  const visibleFacilitatedWorkshops = facilitated_workshops.slice(
+    0,
+    maxVisibleWorkshops
+  );
+
   return (
     <>
-      {facilitated_workshops.map(({id, link, title, sessions, isVirtual}) => (
-        <div className={moduleStyles.facilitatedWorkshopCard}>
-          <div>
-            <BodyThreeText noMargin>
-              <StrongText>{title}</StrongText>
-            </BodyThreeText>
-            <Tags
-              className={moduleStyles.facilitatedWorkshopTags}
-              size="s"
-              tagsList={[
-                {
-                  label: formatWorkshopDate(sessions),
-                  tooltipId: `facilitated-workshop-tag-${id}-session`,
-                  tooltipContent: renderSessionsTooltip(sessions),
-                  icon: {iconName: 'calendar', placement: 'left'},
-                },
-                {
-                  label: isVirtual ? 'VIRTUAL' : 'IN-PERSON',
-                  tooltipContent: isVirtual
-                    ? 'This workshop is virtual'
-                    : 'This workshop is in-person',
-                  tooltipId: `facilitated-workshop-tag-${id}-format`,
-                  icon: {
-                    iconName: isVirtual ? 'video-camera' : 'building',
-                    placement: 'left',
+      {visibleFacilitatedWorkshops.map(
+        ({id, link, title, sessions, isVirtual}) => (
+          <div className={moduleStyles.facilitatedWorkshopCard}>
+            <div>
+              <BodyThreeText noMargin>
+                <StrongText>{title}</StrongText>
+              </BodyThreeText>
+              <Tags
+                className={moduleStyles.facilitatedWorkshopTags}
+                size="s"
+                tagsList={[
+                  {
+                    label: formatWorkshopDate(sessions),
+                    tooltipId: `facilitated-workshop-tag-${id}-session`,
+                    tooltipContent: renderSessionsTooltip(sessions),
+                    icon: {iconName: 'calendar', placement: 'left'},
                   },
-                },
-              ]}
+                  {
+                    label: isVirtual ? 'VIRTUAL' : 'IN-PERSON',
+                    tooltipContent: isVirtual
+                      ? 'This workshop is virtual'
+                      : 'This workshop is in-person',
+                    tooltipId: `facilitated-workshop-tag-${id}-format`,
+                    icon: {
+                      iconName: isVirtual ? 'video-camera' : 'building',
+                      placement: 'left',
+                    },
+                  },
+                ]}
+              />
+            </div>
+
+            <LinkButton
+              size="xs"
+              type="secondary"
+              color="black"
+              text="Learn more"
+              href={link}
+              className={moduleStyles.facilitatedWorkshopLearnMoreButton}
             />
           </div>
-
-          <LinkButton
-            size="xs"
-            type="secondary"
-            color="black"
-            text="Learn more"
-            href={link}
-            className={moduleStyles.facilitatedWorkshopLearnMoreButton}
-          />
-        </div>
-      ))}
+        )
+      )}
       <div className={moduleStyles.findMoreWorkshopsCard}>
         <div>
           <BodyThreeText noMargin>
