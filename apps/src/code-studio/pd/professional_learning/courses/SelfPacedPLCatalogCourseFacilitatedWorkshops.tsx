@@ -90,7 +90,7 @@ const SelfPacedPLCatalogCourseFacilitatedWorkshops: React.FC<
     <>
       {visibleFacilitatedWorkshops.map(
         ({id, link, title, sessions, isVirtual}) => (
-          <div className={moduleStyles.facilitatedWorkshopCard}>
+          <div key={id} className={moduleStyles.facilitatedWorkshopCard}>
             <div>
               <BodyThreeText noMargin>
                 <StrongText>{title}</StrongText>
