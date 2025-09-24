@@ -126,7 +126,7 @@ const CourseOfferingExpandedCard: React.FunctionComponent<
             <>
               <div className={moduleStyles.top}>
                 {relatedProposalsHeader && (
-                  <BodyTwoText>
+                  <BodyTwoText noMargin>
                     <StrongText>{relatedProposalsHeader}</StrongText>
                   </BodyTwoText>
                 )}
