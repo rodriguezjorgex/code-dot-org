@@ -987,10 +987,10 @@ class Pd::Workshop < ApplicationRecord
   def summarize_for_pl_catalog
     {
       id: id,
-      date: sessions.first&.start&.strftime('%B %-d, %Y'),
-      location: virtual? ? "Virtual" : location_name,
+      title: name,
+      sessions: sessions.map {|s| {start: s.start.iso8601}},
       link: "/pd/workshops/#{id}",
-      regional_partner_name: regional_partner&.name
+      isVirtual: virtual?
     }
   end
 end
