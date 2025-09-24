@@ -21,4 +21,11 @@ export interface CourseOffering {
   script_id?: number;
   self_paced_pl_course_offering_path?: string;
   available_resources?: Record<string, string>;
+  facilitated_workshops?: {
+    id: number;
+    title: string;
+    sessions: {start: string}[];
+    link: string;
+    isVirtual: boolean;
+  }[];
 }
