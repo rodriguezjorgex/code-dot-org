@@ -87,14 +87,6 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
     );
   };
 
-  console.log(filteredCourses);
-  console.log(
-    filteredCourses.filter(
-      // @ts-expect-error-next-line
-      filteredCourses => !!filteredCourses.facilitated_workshops.length
-    )
-  );
-
   return (
     <div className={moduleStyles.selfPacedPLCatalog}>
       <HeroBanner
