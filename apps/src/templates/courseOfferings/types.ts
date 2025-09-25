@@ -3,7 +3,7 @@ export type CourseOfferingFacilitatedWorkshop = {
   title: string;
   sessions: {start: string}[];
   link: string;
-  isVirtual: boolean;
+  is_virtual: boolean;
 };
 
 /** Summarized course offering shape */

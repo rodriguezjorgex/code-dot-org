@@ -990,7 +990,7 @@ class Pd::Workshop < ApplicationRecord
       title: name,
       sessions: Array(sessions).map {|s| {start: s.start.iso8601}},
       link: "/professional-learning/workshops/#{id}",
-      isVirtual: virtual?
+      is_virtual: virtual?
     }
   end
 end

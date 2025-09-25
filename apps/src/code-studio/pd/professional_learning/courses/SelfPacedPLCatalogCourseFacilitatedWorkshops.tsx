@@ -89,7 +89,7 @@ const SelfPacedPLCatalogCourseFacilitatedWorkshops: React.FC<
   return (
     <>
       {visibleFacilitatedWorkshops.map(
-        ({id, link, title, sessions, isVirtual}) => (
+        ({id, link, title, sessions, is_virtual}) => (
           <div key={id} className={moduleStyles.facilitatedWorkshopCard}>
             <div>
               <BodyThreeText noMargin>
@@ -106,13 +106,13 @@ const SelfPacedPLCatalogCourseFacilitatedWorkshops: React.FC<
                     icon: {iconName: 'calendar', placement: 'left'},
                   },
                   {
-                    label: isVirtual ? 'VIRTUAL' : 'IN-PERSON',
-                    tooltipContent: isVirtual
+                    label: is_virtual ? 'VIRTUAL' : 'IN-PERSON',
+                    tooltipContent: is_virtual
                       ? 'This workshop is virtual'
                       : 'This workshop is in-person',
                     tooltipId: `facilitated-workshop-tag-${id}-format`,
                     icon: {
-                      iconName: isVirtual ? 'video-camera' : 'building',
+                      iconName: is_virtual ? 'video-camera' : 'building',
                       placement: 'left',
                     },
                   },
