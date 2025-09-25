@@ -1,17 +1,18 @@
 {
-  "name": "codechella2025",
+  "name": "hoai-dance-pilot1",
   "script_names": [
-    "tandl-ai"
+    "hoai-dance-pilot1"
   ],
   "original_script_names": [
-    "tandl-ai"
+    "hoai-dance-pilot1"
   ],
   "published_state": "beta",
-  "instruction_type": "teacher_led",
+  "instruction_type": "self_paced",
   "participant_audience": "student",
   "instructor_audience": "teacher",
   "properties": {
-    "family_name": "codechella2025",
+    "family_name": "hoai-dance-pilot1",
+    "numbered_units": "auto",
     "version_year": "unversioned"
   },
   "resources": [
