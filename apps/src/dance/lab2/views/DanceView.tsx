@@ -582,7 +582,7 @@ export default (props: LabProps<DanceLevelProperties, DanceProjectSources>) => (
         adlibOption={
           (queryParams('ai-generate-adlib') as string) ||
           props.levelProperties.aiDancerGenerateAdlib ||
-          'adjective-animal-accessory'
+          'adjective-animal-attire'
         }
         levelProperties={props.levelProperties}
       />
