@@ -331,6 +331,8 @@ class CourseOffering < ApplicationRecord
   end
 
   def upcoming_facilitated_workshops
+    return [] if pd_workshops.blank?
+
     workshops = pd_workshops.select do |ws|
       !ws.hidden &&
         ws.sessions.any? &&
