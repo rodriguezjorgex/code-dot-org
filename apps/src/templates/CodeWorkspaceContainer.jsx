@@ -9,9 +9,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 
+import {AiTutorContainer} from '../aiTutor/views/legacyLabs/AiTutorContainer';
 import commonStyles from '../commonStyles';
 import * as utils from '../utils';
-import AiTutorSidebar from '../aiTutor/views/legacyLabs/AiTutorSidebar';
 
 class CodeWorkspaceContainer extends React.Component {
   static propTypes = {
@@ -22,6 +22,10 @@ class CodeWorkspaceContainer extends React.Component {
     hidden: PropTypes.bool.isRequired,
     isRtl: PropTypes.bool.isRequired,
     noVisualization: PropTypes.bool.isRequired,
+  };
+
+  state = {
+    aiChatOpen: false,
   };
 
   /**
@@ -38,6 +42,10 @@ class CodeWorkspaceContainer extends React.Component {
     }
   }
 
+  toggleAiChat = () => {
+    this.setState(prevState => ({aiChatOpen: !prevState.aiChatOpen}));
+  };
+
   render() {
     const {hidden, isRtl, noVisualization, children, style} = this.props;
     const mainStyle = {
@@ -51,12 +59,20 @@ class CodeWorkspaceContainer extends React.Component {
 
     return (
       <div style={mainStyle} className="editor-column">
-        <div id="codeWorkspace" style={{...styles.codeWorkspace, right: 200}}>
+        <div
+          id="codeWorkspace"
+          style={{
+            ...styles.codeWorkspace,
+            // 55px sidebar + 6px border = 61px
+            right: this.state.aiChatOpen ? 350 : 61,
+          }}
+        >
           {children}
         </div>
-        <div>
-          <AiTutorSidebar />
-        </div>
+        <AiTutorContainer
+          toggleAiChat={this.toggleAiChat}
+          aiChatOpen={this.state.aiChatOpen}
+        />
       </div>
     );
   }
