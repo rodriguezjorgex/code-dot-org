@@ -134,14 +134,12 @@ const SelfPacedPLCatalogCourseFacilitatedWorkshops: React.FC<
       <div className={moduleStyles.findMoreWorkshopsCard}>
         <div>
           <BodyThreeText noMargin>
-            <StrongText>
-              Find more workshops on this topic and others.
-            </StrongText>
+            Find more workshops on this topic and others.
           </BodyThreeText>
           <Link
             text="Find workshops"
             href="/professional-learning/workshops"
-            size="xs"
+            size="s"
             external
             openInNewTab
           />
