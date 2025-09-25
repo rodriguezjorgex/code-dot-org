@@ -28,6 +28,8 @@ function formatDateString(date: string): string {
   });
 }
 
+const MAX_VISIBLE_WORKSHOPS = 2;
+
 function formatWorkshopDate(sessions: {start: string}[]): string {
   if (!sessions.length) return '';
   const formatted = formatDateString(sessions[0].start);
@@ -49,8 +51,6 @@ function renderSessionsTooltip(sessions: {start: string}[]) {
     </>
   );
 }
-
-const maxVisibleWorkshops = 2;
 
 const SelfPacedPLCatalogCourseFacilitatedWorkshops: React.FC<
   SelfPacedPLCatalogCourseFacilitatedWorkshopsProps
@@ -83,7 +83,7 @@ const SelfPacedPLCatalogCourseFacilitatedWorkshops: React.FC<
 
   const visibleFacilitatedWorkshops = facilitated_workshops.slice(
     0,
-    maxVisibleWorkshops
+    MAX_VISIBLE_WORKSHOPS
   );
 
   return (
