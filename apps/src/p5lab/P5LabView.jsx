@@ -188,7 +188,7 @@ class P5LabView extends React.Component {
           />
         )}
         <VisualizationResizeBar />
-        <InstructionsWithWorkspace>
+        <InstructionsWithWorkspace labType={this.props.labType.downcase()}>
           <CodeWorkspace withSettingsCog={!this.props.isBlockly} />
           <ModalFunctionEditor />
         </InstructionsWithWorkspace>

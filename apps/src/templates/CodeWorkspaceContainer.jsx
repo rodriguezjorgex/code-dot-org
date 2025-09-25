@@ -12,11 +12,13 @@ import {connect} from 'react-redux';
 import {AiTutorContainer} from '../aiTutor/views/legacyLabs/AiTutorContainer';
 import commonStyles from '../commonStyles';
 import * as utils from '../utils';
+import experiments from '../util/experiments';
 
 class CodeWorkspaceContainer extends React.Component {
   static propTypes = {
     children: PropTypes.node,
     style: PropTypes.object,
+    labType: PropTypes.string,
 
     // Provided by redux
     hidden: PropTypes.bool.isRequired,
@@ -47,6 +49,10 @@ class CodeWorkspaceContainer extends React.Component {
   };
 
   render() {
+    const AiTutorLabs = ['applab', 'gamelab', 'weblab'];
+    const showAiTutor =
+      AiTutorLabs.includes(this.props.labType) &&
+      experiments.isEnabled(experiments.LEGACY_LAB_AI_TUTOR);
     const {hidden, isRtl, noVisualization, children, style} = this.props;
     const mainStyle = {
       ...styles.main,
@@ -64,15 +70,17 @@ class CodeWorkspaceContainer extends React.Component {
           style={{
             ...styles.codeWorkspace,
             // 55px sidebar + 6px border = 61px
-            right: this.state.aiChatOpen ? 350 : 61,
+            right: showAiTutor ? (this.state.aiChatOpen ? 350 : 61) : 0,
           }}
         >
           {children}
         </div>
-        <AiTutorContainer
-          toggleAiChat={this.toggleAiChat}
-          aiChatOpen={this.state.aiChatOpen}
-        />
+        {showAiTutor && (
+          <AiTutorContainer
+            toggleAiChat={this.toggleAiChat}
+            aiChatOpen={this.state.aiChatOpen}
+          />
+        )}
       </div>
     );
   }

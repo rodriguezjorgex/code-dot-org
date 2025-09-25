@@ -85,6 +85,7 @@ class AppLabView extends React.Component {
         <InstructionsWithWorkspace
           workspaceStyle={instructionWorkspaceStyle}
           instructionsStyle={instructionWorkspaceStyle}
+          labType="applab"
         >
           <CodeWorkspace
             withSettingsCog
