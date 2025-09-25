@@ -2,6 +2,7 @@ import Button from '@code-dot-org/component-library/button';
 import {FontAwesomeV6IconProps} from '@code-dot-org/component-library/fontAwesomeV6Icon';
 import React from 'react';
 
+import styles from './AiTutorSidebar.module.scss';
 interface SuggestedPrompt {
   id: string;
   color: string;
@@ -17,6 +18,9 @@ interface AiTutorSidebarSuggestedPromptsProps {
 
 // These are basically the same as defaultChatButtonData in AiTutor2Chat, but
 // adapted for the sidebar UI.
+// TODO: customize these for standalone projects v. labs in levels
+// on standalone projects: brainstorm buddy, feature suggestor, example projects to remix,
+// lab-specific documentation
 const defaultPrompts: SuggestedPrompt[] = [
   {
     id: 'example',
@@ -58,7 +62,7 @@ const AiTutorSidebarSuggestedPrompts: React.FC<
       <div className="ai-tutor-suggested-prompts-list">
         {prompts.map(prompt => (
           <Button
-            className={'ai-tutor-suggested-prompt-item'}
+            className={styles['ai-tutor-suggested-prompt-item']}
             aria-label={prompt.text}
             isIconOnly
             icon={prompt.icon}

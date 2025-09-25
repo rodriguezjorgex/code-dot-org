@@ -11,8 +11,8 @@ import {connect} from 'react-redux';
 
 import {AiTutorContainer} from '../aiTutor/views/legacyLabs/AiTutorContainer';
 import commonStyles from '../commonStyles';
-import * as utils from '../utils';
 import experiments from '../util/experiments';
+import * as utils from '../utils';
 
 class CodeWorkspaceContainer extends React.Component {
   static propTypes = {
@@ -69,8 +69,8 @@ class CodeWorkspaceContainer extends React.Component {
           id="codeWorkspace"
           style={{
             ...styles.codeWorkspace,
-            // 55px sidebar + 6px border = 61px
-            right: showAiTutor ? (this.state.aiChatOpen ? 350 : 61) : 0,
+            // 45px sidebar + 6px border = 51px
+            right: showAiTutor ? (this.state.aiChatOpen ? 350 : 51) : 0,
           }}
         >
           {children}
