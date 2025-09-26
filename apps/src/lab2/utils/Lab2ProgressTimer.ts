@@ -1,4 +1,4 @@
-// apps/src/lab2/utils/Lab2ProgressTimer.tsx
+// apps/src/lab2/utils/Lab2ProgressTimer.ts
 class Lab2ProgressTimer {
   private milestoneStartTime: number;
   private idleStartTime: number | null = null;
