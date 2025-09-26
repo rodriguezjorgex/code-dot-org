@@ -3,7 +3,7 @@ import IdleTimer from 'react-idle-timer';
 
 import Lab2ProgressTimer from '@cdo/apps/lab2/utils/Lab2ProgressTimer';
 
-const IDLE_AFTER = 1000 * 60 * 2; // 2 minutes
+const IDLE_AFTER_MS = 1000 * 60 * 2; // 2 minutes
 
 const Lab2IdleTimer: React.FC = () => {
   const timer = Lab2ProgressTimer.getInstance();
@@ -11,7 +11,7 @@ const Lab2IdleTimer: React.FC = () => {
 
   return (
     <IdleTimer
-      timeout={IDLE_AFTER}
+      timeout={IDLE_AFTER_MS}
       onIdle={() => timer.startIdle()}
       onActive={() => timer.endIdle()}
     />

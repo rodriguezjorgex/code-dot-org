@@ -141,7 +141,6 @@ export interface InitProgressPayload {
   isFullProgress: boolean;
   currentPageNumber: number;
   courseName: string | null;
-  milestoneStartTime: number | null;
 }
 
 // LevelResults is a map of levelId -> TestResult. TestResult is a number.
