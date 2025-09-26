@@ -390,7 +390,7 @@ class CourseOffering < ApplicationRecord
       published_date: published_date,
       self_paced_pl_course_offering_path: self_paced_pl_course_offering&.path_to_latest_published_version(locale_code),
       available_resources: get_available_resources(locale_code),
-      facilitated_workshops: upcoming_facilitated_workshops.map(&:summarize_for_pl_catalog)
+      facilitated_workshops: Array(upcoming_facilitated_workshops).map(&:summarize_for_pl_catalog)
     }
   end
 
