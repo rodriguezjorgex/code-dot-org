@@ -24,7 +24,7 @@ gem 'drb' # needed for activesupport in Ruby >= 3.4, drop explicit after we upgr
 gem 'observer' # needed for activesupport in Ruby >= 3.4, drop explicit after we upgrade to activesupport >= 7.2
 gem 'syslog' # needed for activesupport in Ruby >= 3.4, drop explicit after we upgrade to activesupport >= 7.2
 
-gem 'rails', '~> 6.1'
+gem 'rails', '~> 6.1', '>= 6.1.7.8'
 gem 'rails-controller-testing', '~> 1.0.5'
 
 # Compile Sprockets assets concurrently in `assets:precompile`.
@@ -36,9 +36,9 @@ gem 'sprockets', github: 'code-dot-org/sprockets', ref: 'concurrent_asset_bundle
 
 # provide `respond_to` methods
 # (see: http://guides.rubyonrails.org/4_2_release_notes.html#respond-with-class-level-respond-to)
-gem 'responders', '~> 3.0'
+gem 'responders', '~> 3.1', '>= 3.1.1'
 
-gem 'sinatra', '2.2.3', require: 'sinatra/base'
+gem 'sinatra', '2.2.4', require: 'sinatra/base'
 
 gem 'mysql2', '>= 0.4.1'
 
@@ -49,7 +49,7 @@ gem 'jumphash'
 gem 'os'
 gem 'parallel'
 gem 'redis', '~> 4.8.1'
-gem 'redis-actionpack', '~> 5.4.0'
+gem 'redis-actionpack', '~> 5.5.0'
 # Using commit ref on fork until maintainer publishes a new version.
 gem 'redis-slave-read', require: false, github: 'code-dot-org/redis-slave-read', ref: 'cfe1bd0f5cf65eee5b52560139cab133f22cb880'
 gem 'xxhash'
@@ -68,7 +68,7 @@ gem 'rack_csrf'
 # Allow profiling in all environments (including production). It will only be enabled when
 # CDO.rack_mini_profiler_enabled is set. See dashboard/config/initializers/mini_profiler.rb
 gem 'memory_profiler'
-gem 'rack-mini-profiler'
+gem 'rack-mini-profiler', '>= 3.1.0'
 
 group :development do
   gem 'annotate', '~> 3.1.1'
@@ -81,11 +81,11 @@ end
 
 # Rack::Cache middleware used in development/test;
 # Rack::Cache::Response used by Rack::Optimize in non-development environments.
-gem 'rack-cache'
+gem 'rack-cache', '>= 1.14.0'
 
 group :development, :test do
   gem 'rerun'
-  gem 'thin'
+  gem 'thin', '>= 2.0.0'
   # Use debugger
   #gem 'debugger' unless ENV['RM_INFO']
 
@@ -111,7 +111,7 @@ group :development, :test do
   gem 'fakefs', '~> 2.5.0', require: false
   gem 'minitest', '~> 5.15'
   gem 'minitest-around'
-  gem 'minitest-rails', '~> 6.1', require: false
+  gem 'minitest-rails', '~> 7.0', '>= 7.0.0', require: false
   gem 'minitest-reporters', '~> 1.2.0.beta3'
   gem 'minitest-spec-context', '~> 0.0.3'
   gem 'minitest-stub-const', '~> 0.6'
@@ -131,7 +131,7 @@ group :development, :test do
 end
 
 # Needed for unit testing, and also for /rails/mailers email previews.
-gem 'factory_bot_rails', '~> 6.2', group: [:development, :staging, :test, :adhoc]
+gem 'factory_bot_rails', '~> 6.3', '>= 6.3.0', group: [:development, :staging, :test, :adhoc]
 
 # For pegasus PDF generation.
 gem 'open_uri_redirections', require: false
@@ -156,7 +156,7 @@ gem 'sassc-rails', github: 'code-dot-org/sassc-rails', ref: 'frozen-array-fix'
 gem 'uglifier', '>= 1.3.0'
 
 # Use jquery as the JavaScript library.
-gem 'jquery-rails'
+gem 'jquery-rails', '>= 4.2.0'
 
 gem 'phantomjs', '~> 1.9.7.1'
 
@@ -165,12 +165,12 @@ gem 'gemoji'
 
 # Authentication and permissions.
 gem 'cancancan', '~> 3.5.0'
-gem 'devise', '~> 4.9.0'
-gem 'devise_invitable', '~> 2.0.2'
+gem 'devise', '~> 4.9.4'
+gem 'devise_invitable', '~> 2.0.7'
 
 gem 'omniauth-clever', '~> 2.0.1', github: 'code-dot-org/omniauth-clever', tag: 'v2.0.1'
 gem 'omniauth-facebook', '~> 10.0.0'
-gem 'omniauth-google-oauth2', '~> 1.1.3'
+gem 'omniauth-google-oauth2', '~> 1.2.0'
 gem 'omniauth-microsoft_v2_auth', github: 'dooly-ai/omniauth-microsoft_v2_auth'
 
 # Resolve CVE 2015 9284
@@ -181,7 +181,7 @@ gem 'bootstrap-sass', '~> 2.3.2.2'
 
 gem 'haml', '~> 5.2.0'
 
-gem 'jquery-ui-rails', '~> 6.0.1'
+gem 'jquery-ui-rails', '~> 7.0.0'
 
 gem 'nokogiri', '>= 1.10.0'
 
@@ -200,7 +200,7 @@ gem 'rmagick', '~> 4.2.5'
 
 gem 'acts_as_list'
 
-gem 'kaminari' # pagination
+gem 'kaminari' , '>= 1.0.0' # pagination
 
 gem 'stringex', '~> 2.5.2' # Provides String.to_ascii
 
@@ -230,7 +230,7 @@ gem 'user_agent_parser'
 gem 'paranoia', '~> 2.5.0'
 
 # JSON model serializer for REST APIs.
-gem 'active_model_serializers', '~> 0.10.13'
+gem 'active_model_serializers', '~> 0.10.14'
 
 # AWS SDK and associated service APIs.
 gem 'aws-sdk-acm'
@@ -259,7 +259,7 @@ group :development, :staging, :levelbuilder, :test do
   gem 'haml_lint', require: false
   gem 'rubocop', '~> 1.28', require: false
   gem 'rubocop-performance', require: false
-  gem 'rubocop-rails', require: false
+  gem 'rubocop-rails', '>= 2.15.0', require: false
   gem 'rubocop-rails-accessibility', require: false
   gem 'scss_lint', require: false
 end
@@ -267,7 +267,7 @@ end
 # Reduce volume of production logs
 # Ref: https://github.com/roidrage/lograge/pull/252
 gem 'lograge', github: 'code-dot-org/lograge', ref: 'debug_exceptions'
-gem 'request_store', '~> 1.6.0', require: false
+gem 'request_store', '~> 1.7.0', require: false
 
 # Enforce SSL
 gem 'rack-ssl-enforcer'
@@ -312,7 +312,7 @@ gem 'rambling-trie', '>= 2.1.1'
 gem 'image_optim', github: 'code-dot-org/image_optim', ref: 'cdo'
 # Image-optimization tools and binaries.
 gem 'image_optim_pack', '~> 0.5.0', github: 'code-dot-org/image_optim_pack', ref: 'guetzli'
-gem 'image_optim_rails', '~> 0.4.0'
+gem 'image_optim_rails', '~> 0.5.0'
 
 gem 'image_size', require: false
 
@@ -338,14 +338,14 @@ end
 
 gem 'activerecord-import', '~> 1.0.3'
 gem 'active_record_union'
-gem 'scenic'
-gem 'scenic-mysql_adapter'
+gem 'scenic', '>= 1.5.2'
+gem 'scenic-mysql_adapter', '>= 1.0.2'
 
 gem 'colorize'
 
 gem 'require_all', require: false
 
-gem 'dotiw'
+gem 'dotiw', '>= 5.0.0'
 
 gem 'ruby-progressbar'
 
@@ -360,7 +360,7 @@ gem "pycall", ">= 1.5.2"
 
 gem "delayed_job_active_record", "~> 4.1"
 
-gem 'rack-cors', '~> 2.0.1'
+gem 'rack-cors', '~> 2.0.2'
 
 # pin http to 5.0 or greater so that statsig does not pull in an older version.
 # older versions depend on http-parser which breaks some developer builds.
@@ -369,7 +369,7 @@ gem 'http', '~> 5.0'
 gem 'statsig', '~> 1.33'
 
 gem 'mailgun-ruby', '~>1.2.14'
-gem 'mailjet', '~> 1.7.3'
+gem 'mailjet', '~> 1.7.8'
 
 gem 'json-jwt', '~> 1.15'
 gem "json-schema", "~> 4.3"
