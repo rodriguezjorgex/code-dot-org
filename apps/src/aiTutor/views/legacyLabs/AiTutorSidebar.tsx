@@ -9,9 +9,13 @@ import styles from './AiTutorSidebar.module.scss';
 
 interface AiTutorSidebarProps {
   toggleAiChat: () => void;
+  inLevel?: boolean;
 }
 
-const AiTutorSidebar: React.FC<AiTutorSidebarProps> = ({toggleAiChat}) => {
+const AiTutorSidebar: React.FC<AiTutorSidebarProps> = ({
+  toggleAiChat,
+  inLevel,
+}) => {
   return (
     <div className={styles['ai-tutor-sidebar']}>
       <div className={styles['ai-tutor-sidebar-header']}>
@@ -30,7 +34,7 @@ const AiTutorSidebar: React.FC<AiTutorSidebarProps> = ({toggleAiChat}) => {
           type="primary"
           color="white"
         />
-        <AiTutorSidebarSuggestedPrompts />
+        <AiTutorSidebarSuggestedPrompts inLevel={inLevel} />
       </div>
     </div>
   );

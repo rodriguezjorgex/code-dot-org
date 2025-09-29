@@ -5,62 +5,84 @@ import React from 'react';
 import styles from './AiTutorSidebar.module.scss';
 interface SuggestedPrompt {
   id: string;
-  color: string;
   icon: FontAwesomeV6IconProps;
   text: string;
 }
 
 interface AiTutorSidebarSuggestedPromptsProps {
-  prompts?: SuggestedPrompt[];
   onPromptSelect?: (prompt: SuggestedPrompt) => void;
   className?: string;
+  inLevel?: boolean;
 }
-
-// These are basically the same as defaultChatButtonData in AiTutor2Chat, but
-// adapted for the sidebar UI.
-// TODO: customize these for standalone projects v. labs in levels
-// on standalone projects: brainstorm buddy, feature suggestor, example projects to remix,
-// lab-specific documentation
-const defaultPrompts: SuggestedPrompt[] = [
-  {
-    id: 'example',
-    color: 'green',
-    icon: {
-      iconName: 'code',
-    },
-    text: 'Show me an example',
-  },
-  {
-    id: 'hint',
-    color: 'yellow',
-    icon: {
-      iconName: 'lightbulb',
-    },
-    text: 'Give me a hint',
-  },
-  {
-    id: 'documentation',
-    color: 'blue',
-    icon: {
-      iconName: 'file-code',
-    },
-    text: 'Show documentation',
-  },
-];
 
 const AiTutorSidebarSuggestedPrompts: React.FC<
   AiTutorSidebarSuggestedPromptsProps
-> = ({prompts = defaultPrompts, onPromptSelect, className = ''}) => {
+> = ({onPromptSelect, className = '', inLevel = false}) => {
   const handlePromptClick = (prompt: SuggestedPrompt) => {
     if (onPromptSelect) {
       onPromptSelect(prompt);
     }
   };
 
+  const defaultPrompts: SuggestedPrompt[] = [
+    {
+      id: 'documentation',
+      icon: {
+        iconName: 'file-code',
+      },
+      text: 'Show documentation',
+    },
+  ];
+
+  const levelPrompts: SuggestedPrompt[] = [
+    {
+      id: 'example',
+      icon: {
+        iconName: 'code',
+      },
+      text: 'Show me an example',
+    },
+    {
+      id: 'hint',
+      icon: {
+        iconName: 'lightbulb',
+      },
+      text: 'Give me a hint',
+    },
+  ];
+
+  const standaloneProjectPrompts: SuggestedPrompt[] = [
+    {
+      id: 'brainstorm',
+      icon: {
+        iconName: 'brain',
+      },
+      text: 'Help me brainstorm',
+    },
+    {
+      id: 'debug',
+      icon: {
+        iconName: 'bug',
+      },
+      text: 'Help me debug',
+    },
+    {
+      id: 'projects',
+      icon: {
+        iconName: 'star',
+      },
+      text: 'Show me example projects',
+    },
+  ];
+
+  const allPrompts = inLevel
+    ? [...levelPrompts, ...defaultPrompts]
+    : [...standaloneProjectPrompts, ...defaultPrompts];
+
   return (
     <div className={`ai-tutor-suggested-prompts ${className}`}>
       <div className="ai-tutor-suggested-prompts-list">
-        {prompts.map(prompt => (
+        {allPrompts.map(prompt => (
           <Button
             className={styles['ai-tutor-suggested-prompt-item']}
             aria-label={prompt.text}
