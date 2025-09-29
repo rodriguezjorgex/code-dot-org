@@ -21,6 +21,7 @@ export class UnwrappedInstructionsWithWorkspace extends React.Component {
     instructionsStyle: PropTypes.object,
     workspaceStyle: PropTypes.object,
     labType: PropTypes.string,
+    inLevel: PropTypes.bool,
 
     // Provided by redux
     instructionsHeight: PropTypes.number.isRequired,
@@ -102,6 +103,7 @@ export class UnwrappedInstructionsWithWorkspace extends React.Component {
       instructionsHeight,
       labType,
       children,
+      inLevel,
     } = this.props;
 
     return (
@@ -111,6 +113,7 @@ export class UnwrappedInstructionsWithWorkspace extends React.Component {
           ref={this.setCodeWorkspaceContainerRef}
           style={{...workspaceStyle, top: instructionsHeight}}
           labType={labType}
+          inLevel={inLevel}
         >
           {children}
         </CodeWorkspaceContainer>

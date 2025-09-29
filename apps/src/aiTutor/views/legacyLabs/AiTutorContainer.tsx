@@ -4,6 +4,12 @@ import React, {FC} from 'react';
 
 import AiTutor2Chat from '@cdo/apps/lab2/views/components/AiTutor2Chat';
 
+import {
+  defaultPrompts,
+  levelPrompts,
+  standaloneProjectPrompts,
+} from '../../suggestedPrompts';
+
 import AiTutorSidebar from './AiTutorSidebar';
 
 import styles from './AiTutorContainer.module.scss';
@@ -11,7 +17,11 @@ import styles from './AiTutorContainer.module.scss';
 export const AiTutorContainer: FC<{
   toggleAiChat: () => void;
   aiChatOpen: boolean;
-}> = ({toggleAiChat, aiChatOpen}) => {
+  inLevel: boolean;
+}> = ({toggleAiChat, aiChatOpen, inLevel}) => {
+  const allPrompts = inLevel
+    ? [...levelPrompts, ...defaultPrompts]
+    : [...standaloneProjectPrompts, ...defaultPrompts];
   return (
     <>
       {aiChatOpen ? (
@@ -27,10 +37,16 @@ export const AiTutorContainer: FC<{
               type="secondary"
             />
           </div>
-          <AiTutor2Chat hiddenContextCallback={() => Promise.resolve('')} />
+          <AiTutor2Chat
+            hiddenContextCallback={() => Promise.resolve('')}
+            aiTutorChatButtonData={allPrompts}
+          />
         </div>
       ) : (
-        <AiTutorSidebar toggleAiChat={toggleAiChat} />
+        <AiTutorSidebar
+          toggleAiChat={toggleAiChat}
+          suggestedPrompts={allPrompts}
+        />
       )}
     </>
   );

@@ -3,6 +3,7 @@ import {FontAwesomeV6IconProps} from '@code-dot-org/component-library/fontAwesom
 import {AnalyticsProperties} from './analytics';
 
 export interface ChatButtonData {
+  id?: string;
   label: string;
   value: string;
   analyticsProperties?: AnalyticsProperties;

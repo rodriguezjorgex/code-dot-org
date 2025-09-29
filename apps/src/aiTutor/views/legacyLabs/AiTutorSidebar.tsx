@@ -3,18 +3,20 @@ import React from 'react';
 
 import aiBotOutlineIcon from '@cdo/static/ai-bot-outline.png';
 
+import {AiTutorSuggestedPrompt, defaultPrompts} from '../../suggestedPrompts';
+
 import AiTutorSidebarSuggestedPrompts from './AiTutorSidebarSuggestedPrompts';
 
 import styles from './AiTutorSidebar.module.scss';
 
 interface AiTutorSidebarProps {
   toggleAiChat: () => void;
-  inLevel?: boolean;
+  suggestedPrompts?: Array<AiTutorSuggestedPrompt>;
 }
 
 const AiTutorSidebar: React.FC<AiTutorSidebarProps> = ({
   toggleAiChat,
-  inLevel,
+  suggestedPrompts = defaultPrompts,
 }) => {
   return (
     <div className={styles['ai-tutor-sidebar']}>
@@ -34,7 +36,7 @@ const AiTutorSidebar: React.FC<AiTutorSidebarProps> = ({
           type="primary"
           color="white"
         />
-        <AiTutorSidebarSuggestedPrompts inLevel={inLevel} />
+        <AiTutorSidebarSuggestedPrompts suggestedPrompts={suggestedPrompts} />
       </div>
     </div>
   );

@@ -1,91 +1,32 @@
 import Button from '@code-dot-org/component-library/button';
-import {FontAwesomeV6IconProps} from '@code-dot-org/component-library/fontAwesomeV6Icon';
 import React from 'react';
 
+import {AiTutorSuggestedPrompt} from '../../suggestedPrompts';
+
 import styles from './AiTutorSidebar.module.scss';
-interface SuggestedPrompt {
-  id: string;
-  icon: FontAwesomeV6IconProps;
-  text: string;
-}
 
 interface AiTutorSidebarSuggestedPromptsProps {
-  onPromptSelect?: (prompt: SuggestedPrompt) => void;
+  onPromptSelect?: (prompt: AiTutorSuggestedPrompt) => void;
   className?: string;
-  inLevel?: boolean;
+  suggestedPrompts?: Array<AiTutorSuggestedPrompt>;
 }
 
 const AiTutorSidebarSuggestedPrompts: React.FC<
   AiTutorSidebarSuggestedPromptsProps
-> = ({onPromptSelect, className = '', inLevel = false}) => {
-  const handlePromptClick = (prompt: SuggestedPrompt) => {
+> = ({onPromptSelect, className = '', suggestedPrompts = []}) => {
+  const handlePromptClick = (prompt: AiTutorSuggestedPrompt) => {
     if (onPromptSelect) {
       onPromptSelect(prompt);
     }
   };
 
-  const defaultPrompts: SuggestedPrompt[] = [
-    {
-      id: 'documentation',
-      icon: {
-        iconName: 'file-code',
-      },
-      text: 'Show documentation',
-    },
-  ];
-
-  const levelPrompts: SuggestedPrompt[] = [
-    {
-      id: 'example',
-      icon: {
-        iconName: 'code',
-      },
-      text: 'Show me an example',
-    },
-    {
-      id: 'hint',
-      icon: {
-        iconName: 'lightbulb',
-      },
-      text: 'Give me a hint',
-    },
-  ];
-
-  const standaloneProjectPrompts: SuggestedPrompt[] = [
-    {
-      id: 'brainstorm',
-      icon: {
-        iconName: 'brain',
-      },
-      text: 'Help me brainstorm',
-    },
-    {
-      id: 'debug',
-      icon: {
-        iconName: 'bug',
-      },
-      text: 'Help me debug',
-    },
-    {
-      id: 'projects',
-      icon: {
-        iconName: 'star',
-      },
-      text: 'Show me example projects',
-    },
-  ];
-
-  const allPrompts = inLevel
-    ? [...levelPrompts, ...defaultPrompts]
-    : [...standaloneProjectPrompts, ...defaultPrompts];
-
   return (
     <div className={`ai-tutor-suggested-prompts ${className}`}>
       <div className="ai-tutor-suggested-prompts-list">
-        {allPrompts.map(prompt => (
+        {suggestedPrompts.map(prompt => (
           <Button
             className={styles['ai-tutor-suggested-prompt-item']}
-            aria-label={prompt.text}
+            aria-label={prompt.label}
             isIconOnly
             icon={prompt.icon}
             onClick={() => handlePromptClick(prompt)}
