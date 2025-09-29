@@ -1,6 +1,6 @@
 {
   "script": {
-    "name": "hoai-dance-pilot1",
+    "name": "hoai-dance-pilot2",
     "wrapup_video_id": null,
     "login_required": false,
     "properties": {
@@ -8,14 +8,14 @@
     },
     "new_name": null,
     "family_name": null,
-    "serialized_at": "2025-09-26 22:01:12 UTC",
+    "serialized_at": "2025-09-26 22:05:43 UTC",
     "hide_within_course": false,
     "published_state": "in_development",
     "instruction_type": null,
     "instructor_audience": null,
     "participant_audience": null,
     "seeding_key": {
-      "script.name": "hoai-dance-pilot1"
+      "script.name": "hoai-dance-pilot2"
     }
   },
   "lesson_groups": [
@@ -27,14 +27,14 @@
       },
       "seeding_key": {
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1"
+        "script.name": "hoai-dance-pilot2"
       }
     }
   ],
   "lessons": [
     {
-      "key": "lesson-1",
-      "name": "Music Lab: AI Session - Draft 1",
+      "key": "Music Lab: AI Session - Draft 1",
+      "name": "Hour of AI - Pilot 2",
       "absolute_position": 1,
       "lockable": false,
       "has_lesson_plan": true,
@@ -42,35 +42,35 @@
       "properties": {
       },
       "seeding_key": {
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1"
+        "script.name": "hoai-dance-pilot2"
       }
     }
   ],
   "lesson_activities": [
     {
-      "key": "f9a4dfb8-39db-429c-88ce-f3c06da468c9",
+      "key": "36e9ceec-c10f-48bb-835d-59dcae0ddf18",
       "position": 1,
       "properties": {
       },
       "seeding_key": {
-        "lesson_activity.key": "f9a4dfb8-39db-429c-88ce-f3c06da468c9",
-        "lesson.key": "lesson-1",
+        "lesson_activity.key": "36e9ceec-c10f-48bb-835d-59dcae0ddf18",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1"
+        "script.name": "hoai-dance-pilot2"
       }
     }
   ],
   "activity_sections": [
     {
-      "key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0",
+      "key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6",
       "position": 1,
       "properties": {
       },
       "seeding_key": {
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0",
-        "lesson_activity.key": "f9a4dfb8-39db-429c-88ce-f3c06da468c9"
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6",
+        "lesson_activity.key": "36e9ceec-c10f-48bb-835d-59dcae0ddf18"
       }
     }
   ],
@@ -81,22 +81,19 @@
       "activity_section_position": 1,
       "assessment": false,
       "properties": {
-        "level_keys": [
-          "HoAI_intro"
-        ]
       },
       "bonus": false,
       "seeding_key": {
         "script_level.level_keys": [
-          "HoAI_intro"
+          "HoAI_intro_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       },
       "level_keys": [
-        "HoAI_intro"
+        "HoAI_intro_2"
       ]
     },
     {
@@ -105,22 +102,19 @@
       "activity_section_position": 2,
       "assessment": false,
       "properties": {
-        "level_keys": [
-          "pilot_generate_dancer1"
-        ]
       },
       "bonus": false,
       "seeding_key": {
         "script_level.level_keys": [
-          "pilot_generate_dancer1"
+          "pilot_generate_dancer1_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       },
       "level_keys": [
-        "pilot_generate_dancer1"
+        "pilot_generate_dancer1_2"
       ]
     },
     {
@@ -129,22 +123,19 @@
       "activity_section_position": 3,
       "assessment": false,
       "properties": {
-        "level_keys": [
-          "pilot_generate_dancer2"
-        ]
       },
       "bonus": false,
       "seeding_key": {
         "script_level.level_keys": [
-          "pilot_generate_dancer2"
+          "pilot_generate_dancer2_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       },
       "level_keys": [
-        "pilot_generate_dancer2"
+        "pilot_generate_dancer2_2"
       ]
     },
     {
@@ -153,22 +144,19 @@
       "activity_section_position": 4,
       "assessment": false,
       "properties": {
-        "level_keys": [
-          "Generate_dancer_info"
-        ]
       },
       "bonus": false,
       "seeding_key": {
         "script_level.level_keys": [
-          "Generate_dancer_info"
+          "Generate_dancer_info_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       },
       "level_keys": [
-        "Generate_dancer_info"
+        "Generate_dancer_info_2"
       ]
     },
     {
@@ -177,22 +165,19 @@
       "activity_section_position": 5,
       "assessment": false,
       "properties": {
-        "level_keys": [
-          "pilot_generate_dancer"
-        ]
       },
       "bonus": false,
       "seeding_key": {
         "script_level.level_keys": [
-          "pilot_generate_dancer"
+          "pilot_generate_dancer_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       },
       "level_keys": [
-        "pilot_generate_dancer"
+        "pilot_generate_dancer_2"
       ]
     },
     {
@@ -201,22 +186,19 @@
       "activity_section_position": 6,
       "assessment": false,
       "properties": {
-        "level_keys": [
-          "Generate_dancer_more_details"
-        ]
       },
       "bonus": false,
       "seeding_key": {
         "script_level.level_keys": [
-          "Generate_dancer_more_details"
+          "Generate_dancer_more_details_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       },
       "level_keys": [
-        "Generate_dancer_more_details"
+        "Generate_dancer_more_details_2"
       ]
     },
     {
@@ -225,22 +207,19 @@
       "activity_section_position": 7,
       "assessment": false,
       "properties": {
-        "level_keys": [
-          "simple_prompt"
-        ]
       },
       "bonus": false,
       "seeding_key": {
         "script_level.level_keys": [
-          "simple_prompt"
+          "simple_prompt_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       },
       "level_keys": [
-        "simple_prompt"
+        "simple_prompt_2"
       ]
     },
     {
@@ -249,22 +228,19 @@
       "activity_section_position": 8,
       "assessment": false,
       "properties": {
-        "level_keys": [
-          "layers_prompt"
-        ]
       },
       "bonus": false,
       "seeding_key": {
         "script_level.level_keys": [
-          "layers_prompt"
+          "layers_prompt_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       },
       "level_keys": [
-        "layers_prompt"
+        "layers_prompt_2"
       ]
     },
     {
@@ -273,22 +249,19 @@
       "activity_section_position": 9,
       "assessment": false,
       "properties": {
-        "level_keys": [
-          "length_prompt"
-        ]
       },
       "bonus": false,
       "seeding_key": {
         "script_level.level_keys": [
-          "length_prompt"
+          "length_prompt_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       },
       "level_keys": [
-        "length_prompt"
+        "length_prompt_2"
       ]
     },
     {
@@ -297,22 +270,19 @@
       "activity_section_position": 10,
       "assessment": false,
       "properties": {
-        "level_keys": [
-          "length_modify2"
-        ]
       },
       "bonus": false,
       "seeding_key": {
         "script_level.level_keys": [
-          "length_modify2"
+          "length_modify2_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       },
       "level_keys": [
-        "length_modify2"
+        "length_modify2_2"
       ]
     },
     {
@@ -321,22 +291,19 @@
       "activity_section_position": 11,
       "assessment": false,
       "properties": {
-        "level_keys": [
-          "HoAI_congrats"
-        ]
       },
       "bonus": false,
       "seeding_key": {
         "script_level.level_keys": [
-          "HoAI_congrats"
+          "HoAI_congrats_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       },
       "level_keys": [
-        "HoAI_congrats"
+        "HoAI_congrats_2"
       ]
     },
     {
@@ -345,22 +312,19 @@
       "activity_section_position": 12,
       "assessment": false,
       "properties": {
-        "level_keys": [
-          "dance_moves"
-        ]
       },
       "bonus": false,
       "seeding_key": {
         "script_level.level_keys": [
-          "dance_moves"
+          "dance_moves_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       },
       "level_keys": [
-        "dance_moves"
+        "dance_moves_2"
       ]
     },
     {
@@ -369,180 +333,177 @@
       "activity_section_position": 13,
       "assessment": false,
       "properties": {
-        "level_keys": [
-          "HoAI_choice_template_backed"
-        ]
       },
       "bonus": false,
       "seeding_key": {
         "script_level.level_keys": [
-          "HoAI_choice_template_backed"
+          "HoAI_choice_template_backed_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       },
       "level_keys": [
-        "HoAI_choice_template_backed"
+        "HoAI_choice_template_backed_2"
       ]
     }
   ],
   "levels_script_levels": [
     {
       "seeding_key": {
-        "level.key": "HoAI_intro",
+        "level.key": "HoAI_intro_2",
         "script_level.level_keys": [
-          "HoAI_intro"
+          "HoAI_intro_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       }
     },
     {
       "seeding_key": {
-        "level.key": "pilot_generate_dancer1",
+        "level.key": "pilot_generate_dancer1_2",
         "script_level.level_keys": [
-          "pilot_generate_dancer1"
+          "pilot_generate_dancer1_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       }
     },
     {
       "seeding_key": {
-        "level.key": "pilot_generate_dancer2",
+        "level.key": "pilot_generate_dancer2_2",
         "script_level.level_keys": [
-          "pilot_generate_dancer2"
+          "pilot_generate_dancer2_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       }
     },
     {
       "seeding_key": {
-        "level.key": "Generate_dancer_info",
+        "level.key": "Generate_dancer_info_2",
         "script_level.level_keys": [
-          "Generate_dancer_info"
+          "Generate_dancer_info_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       }
     },
     {
       "seeding_key": {
-        "level.key": "pilot_generate_dancer",
+        "level.key": "pilot_generate_dancer_2",
         "script_level.level_keys": [
-          "pilot_generate_dancer"
+          "pilot_generate_dancer_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       }
     },
     {
       "seeding_key": {
-        "level.key": "Generate_dancer_more_details",
+        "level.key": "Generate_dancer_more_details_2",
         "script_level.level_keys": [
-          "Generate_dancer_more_details"
+          "Generate_dancer_more_details_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       }
     },
     {
       "seeding_key": {
-        "level.key": "simple_prompt",
+        "level.key": "simple_prompt_2",
         "script_level.level_keys": [
-          "simple_prompt"
+          "simple_prompt_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       }
     },
     {
       "seeding_key": {
-        "level.key": "layers_prompt",
+        "level.key": "layers_prompt_2",
         "script_level.level_keys": [
-          "layers_prompt"
+          "layers_prompt_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       }
     },
     {
       "seeding_key": {
-        "level.key": "length_prompt",
+        "level.key": "length_prompt_2",
         "script_level.level_keys": [
-          "length_prompt"
+          "length_prompt_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       }
     },
     {
       "seeding_key": {
-        "level.key": "length_modify2",
+        "level.key": "length_modify2_2",
         "script_level.level_keys": [
-          "length_modify2"
+          "length_modify2_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       }
     },
     {
       "seeding_key": {
-        "level.key": "HoAI_congrats",
+        "level.key": "HoAI_congrats_2",
         "script_level.level_keys": [
-          "HoAI_congrats"
+          "HoAI_congrats_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       }
     },
     {
       "seeding_key": {
-        "level.key": "dance_moves",
+        "level.key": "dance_moves_2",
         "script_level.level_keys": [
-          "dance_moves"
+          "dance_moves_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       }
     },
     {
       "seeding_key": {
-        "level.key": "HoAI_choice_template_backed",
+        "level.key": "HoAI_choice_template_backed_2",
         "script_level.level_keys": [
-          "HoAI_choice_template_backed"
+          "HoAI_choice_template_backed_2"
         ],
-        "lesson.key": "lesson-1",
+        "lesson.key": "Music Lab: AI Session - Draft 1",
         "lesson_group.key": "",
-        "script.name": "hoai-dance-pilot1",
-        "activity_section.key": "f2514c01-ab09-4c55-b94b-c3e4ec6b7ae0"
+        "script.name": "hoai-dance-pilot2",
+        "activity_section.key": "e2f1bd2b-20a7-4400-a274-4cf78948f1c6"
       }
     }
   ],
