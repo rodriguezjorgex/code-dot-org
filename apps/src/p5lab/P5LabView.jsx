@@ -86,14 +86,6 @@ class P5LabView extends React.Component {
     return channelId;
   }
 
-  // getPageConstants() {
-  //   return getStore().getState().pageConstants;
-  // }
-
-  // isCurriculumLevel() {
-  //   return this.getPageConstants()?.isCurriculumLevel;
-  // }
-
   componentDidMount() {
     this.props.onMount();
     const locale = window.appOptions.locale;
