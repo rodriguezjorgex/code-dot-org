@@ -3,9 +3,11 @@ import {useTheme} from '@code-dot-org/component-library/common/contexts';
 import {Heading5} from '@code-dot-org/component-library/typography';
 import React, {useCallback, useEffect, useState} from 'react';
 
+import useLifecycleNotifier from '@cdo/apps/lab2/hooks/useLifecycleNotifier';
 import continueOrFinishLesson from '@cdo/apps/lab2/progress/continueOrFinishLesson';
 import {LevelProperties} from '@cdo/apps/lab2/types';
 import {getGeneratedDancerAssets} from '@cdo/apps/lab2/utils/GeneratedDancer';
+import {LifecycleEvent} from '@cdo/apps/lab2/utils/LifecycleNotifier';
 import Adlib, {AdlibsType} from '@cdo/apps/lab2/views/components/guide/Adlib';
 import Guide from '@cdo/apps/lab2/views/components/guide/Guide';
 import getRandomInt from '@cdo/apps/util/getRandomInt';
@@ -25,6 +27,33 @@ const adlibs: AdlibsType = {
     },
     variantCount: 2,
   },
+  'animal-02': {
+    template: 'Please generate a dancer.  It should look like a {animal}.',
+    options: {
+      animal: ['wolf', 'moose', 'frog', 'tiger', 'panda'],
+    },
+    variantCount: 3,
+  },
+  'animal-attire-02': {
+    template:
+      'Please generate a dancer.  It should look like a {animal} wearing a {attire}.',
+    options: {
+      animal: ['wolf', 'moose', 'frog', 'tiger', 'panda'],
+      attire: ['headscarf', 'sunglasses', 'headphones', 'crown', 'beanie'],
+    },
+    variantCount: 3,
+  },
+  'adjective-animal-attire-02': {
+    template:
+      'Please generate a dancer.  It should look like a {adjective} {animal} wearing a {attire}.',
+    options: {
+      adjective: ['basic', 'emo', 'sporty', 'streetwear', 'fancy', 'preppy'],
+      animal: ['wolf', 'moose', 'frog', 'tiger', 'panda'],
+      attire: ['headscarf', 'sunglasses', 'headphones', 'crown', 'beanie'],
+    },
+    variantCount: 3,
+  },
+  // Earlier adlibs which will be removed soon:
   animal: {
     template: 'Please generate a dancer.  It should look like a {animal}.',
     options: {
@@ -100,6 +129,10 @@ const GenerateDancer: React.FunctionComponent<DancerGenerateProps> = ({
   const [headImageUrl, setHeadImageUrl] = useState<string | undefined>(
     undefined
   );
+
+  useLifecycleNotifier(LifecycleEvent.LevelLoadStarted, () => {
+    setAiGenerateState('none');
+  });
 
   const generateDancerCache = useCallback(async () => {
     const startTime = Date.now();
