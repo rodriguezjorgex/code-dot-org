@@ -561,7 +561,7 @@ const DanceView: React.FunctionComponent<{
                 ariaLabel={'Generate dance'}
                 text={generatedAiDance ? 'Generate again!' : 'Generate dance'}
                 type="primary"
-                color="purple"
+                color="black"
                 size="s"
                 iconLeft={{iconName: 'sparkles'}}
                 onClick={generateAiDance}
