@@ -82,7 +82,10 @@ class WebLabView extends React.Component {
 
     return (
       <StudioAppWrapper>
-        <InstructionsWithWorkspace labType="weblab">
+        <InstructionsWithWorkspace
+          labType="weblab"
+          inLevel={this.props.isProjectLevel}
+        >
           <div>
             <PaneHeader hasFocus={true} id="headers">
               {!this.props.isFullScreenPreviewOn &&
