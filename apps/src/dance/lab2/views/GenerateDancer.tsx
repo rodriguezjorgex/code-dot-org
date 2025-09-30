@@ -25,6 +25,33 @@ const adlibs: AdlibsType = {
     },
     variantCount: 2,
   },
+  'animal-02': {
+    template: 'Please generate a dancer.  It should look like a {animal}.',
+    options: {
+      animal: ['wolf', 'moose', 'frog', 'tiger', 'panda'],
+    },
+    variantCount: 3,
+  },
+  'animal-attire-02': {
+    template:
+      'Please generate a dancer.  It should look like a {animal} wearing a {attire}.',
+    options: {
+      animal: ['wolf', 'moose', 'frog', 'tiger', 'panda'],
+      attire: ['headscarf', 'sunglasses', 'headphones', 'crown', 'beanie'],
+    },
+    variantCount: 3,
+  },
+  'adjective-animal-attire-02': {
+    template:
+      'Please generate a dancer.  It should look like a {adjective} {animal} wearing a {attire}.',
+    options: {
+      adjective: ['basic', 'emo', 'sporty', 'streetwear', 'fancy', 'preppy'],
+      animal: ['wolf', 'moose', 'frog', 'tiger', 'panda'],
+      attire: ['headscarf', 'sunglasses', 'headphones', 'crown', 'beanie'],
+    },
+    variantCount: 3,
+  },
+  // Earlier adlibs which will be removed soon:
   animal: {
     template: 'Please generate a dancer.  It should look like a {animal}.',
     options: {
