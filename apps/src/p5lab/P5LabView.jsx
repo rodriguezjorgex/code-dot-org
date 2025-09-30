@@ -86,9 +86,18 @@ class P5LabView extends React.Component {
     return channelId;
   }
 
+  // getPageConstants() {
+  //   return getStore().getState().pageConstants;
+  // }
+
+  // isCurriculumLevel() {
+  //   return this.getPageConstants()?.isCurriculumLevel;
+  // }
+
   componentDidMount() {
     this.props.onMount();
     const locale = window.appOptions.locale;
+    console.log('window.appOptions', window.appOptions);
     const app = this.props.isBlockly ? 'spritelab' : 'gamelab';
     getManifest(app, locale).then(libraryManifest => {
       this.setState({libraryManifest});
@@ -140,7 +149,8 @@ class P5LabView extends React.Component {
     const hideBackgrounds = !this.props.isBackground && this.props.isBlockly;
     const hideCostumes = this.props.isBackground && this.props.isBlockly;
     const channelId = this.getChannelId();
-
+    // If we have a scriptId we can infer that we are in a curriculum level.
+    const inLevel = !!window.appOptions.scriptId;
     return (
       <div style={codeModeStyle}>
         <div
@@ -188,7 +198,10 @@ class P5LabView extends React.Component {
           />
         )}
         <VisualizationResizeBar />
-        <InstructionsWithWorkspace labType={this.props.labType.toLowerCase()}>
+        <InstructionsWithWorkspace
+          labType={this.props.labType.toLowerCase()}
+          inLevel={true}
+        >
           <CodeWorkspace withSettingsCog={!this.props.isBlockly} />
           <ModalFunctionEditor />
         </InstructionsWithWorkspace>
