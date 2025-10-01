@@ -89,7 +89,6 @@ class P5LabView extends React.Component {
   componentDidMount() {
     this.props.onMount();
     const locale = window.appOptions.locale;
-    console.log('window.appOptions', window.appOptions);
     const app = this.props.isBlockly ? 'spritelab' : 'gamelab';
     getManifest(app, locale).then(libraryManifest => {
       this.setState({libraryManifest});

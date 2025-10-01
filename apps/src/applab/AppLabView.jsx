@@ -6,7 +6,6 @@ import {connect} from 'react-redux';
 import ExternalRedirectDialog from '@cdo/apps/applab/ExternalRedirectDialog';
 
 import VisualizationResizeBar from '../code-studio/components/VisualizationResizeBar';
-import {getStore} from '../redux';
 import DataWorkspace from '../storage/dataBrowser/DataWorkspace';
 import CodeWorkspace from '../templates/CodeWorkspace';
 import InstructionsWithWorkspace from '../templates/instructions/InstructionsWithWorkspace';
@@ -40,18 +39,11 @@ class AppLabView extends React.Component {
     ]).isRequired,
     isRtl: PropTypes.bool,
     widgetMode: PropTypes.bool,
+    inLevel: PropTypes.bool,
   };
 
   componentDidMount() {
     this.props.onMount();
-  }
-
-  getPageConstants() {
-    return getStore().getState().pageConstants;
-  }
-
-  isCurriculumLevel() {
-    return this.getPageConstants()?.isCurriculumLevel;
   }
 
   render() {
@@ -66,6 +58,7 @@ class AppLabView extends React.Component {
       hasDesignMode,
       hasDataMode,
       handleVersionHistory,
+      inLevel,
     } = this.props;
 
     const codeWorkspaceVisible = ApplabInterfaceMode.CODE === interfaceMode;
@@ -95,7 +88,7 @@ class AppLabView extends React.Component {
           workspaceStyle={instructionWorkspaceStyle}
           instructionsStyle={instructionWorkspaceStyle}
           labType="applab"
-          inLevel={this.isCurriculumLevel()}
+          inLevel={inLevel}
         >
           <CodeWorkspace
             withSettingsCog
@@ -118,6 +111,7 @@ export default connect(state => ({
   interfaceMode: state.interfaceMode,
   isRtl: state.isRtl,
   widgetMode: state.pageConstants.widgetMode,
+  inLevel: !!state.pageConstants.serverScriptId,
 }))(AppLabView);
 
 const styles = {
