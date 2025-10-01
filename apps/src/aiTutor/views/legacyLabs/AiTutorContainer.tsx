@@ -2,6 +2,8 @@ import Button from '@code-dot-org/component-library/button';
 import {BodyThreeText} from '@code-dot-org/component-library/typography';
 import React, {FC} from 'react';
 
+import aiBotOutlineIcon from '@cdo/static/ai-bot-outline.png';
+
 import AiTutor2Chat from '@cdo/apps/lab2/views/components/AiTutor2Chat';
 
 import {
@@ -27,7 +29,14 @@ export const AiTutorContainer: FC<{
       {aiChatOpen ? (
         <div className={styles.container}>
           <div className={styles.header}>
-            <BodyThreeText noMargin>AI Tutor</BodyThreeText>
+            <img
+              src={aiBotOutlineIcon}
+              alt=""
+              className={styles['mini-bot-icon']}
+            />
+            <BodyThreeText noMargin className={styles['header-text']}>
+              AI Tutor
+            </BodyThreeText>
             <Button
               aria-label="Close AI tutor"
               isIconOnly

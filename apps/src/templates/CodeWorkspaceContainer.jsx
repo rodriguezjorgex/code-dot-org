@@ -72,7 +72,7 @@ class CodeWorkspaceContainer extends React.Component {
           style={{
             ...styles.codeWorkspace,
             // 45px sidebar + 6px border = 51px
-            right: showAiTutor ? (this.state.aiChatOpen ? 350 : 51) : 0,
+            right: showAiTutor ? (this.state.aiChatOpen ? 330 : 51) : 0,
           }}
         >
           {children}
