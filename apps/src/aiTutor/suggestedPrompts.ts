@@ -6,7 +6,7 @@ export const defaultPrompts: AiTutorSuggestedPrompt[] = [
   {
     id: 'documentation',
     icon: {
-      iconName: 'file-code',
+      iconName: 'book',
     },
     label: 'Show documentation',
     value: 'Can you give me some documentation?',

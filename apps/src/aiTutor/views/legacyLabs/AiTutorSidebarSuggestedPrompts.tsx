@@ -1,9 +1,12 @@
 import Button from '@code-dot-org/component-library/button';
+import {FontAwesomeV6IconProps} from '@code-dot-org/component-library/fontAwesomeV6Icon';
+
 import React from 'react';
 
 import {AiTutorSuggestedPrompt} from '../../suggestedPrompts';
 
 import styles from './AiTutorSidebar.module.scss';
+import classNames from 'classnames';
 
 interface AiTutorSidebarSuggestedPromptsProps {
   onPromptSelect?: (prompt: AiTutorSuggestedPrompt) => void;
@@ -28,7 +31,15 @@ const AiTutorSidebarSuggestedPrompts: React.FC<
             className={styles['ai-tutor-suggested-prompt-item']}
             aria-label={prompt.label}
             isIconOnly
-            icon={prompt.icon}
+            icon={
+              {
+                ...prompt.icon,
+                className: classNames({
+                  [styles['icon']]: true,
+                  [styles[`icon-${prompt.icon?.iconName}`]]: prompt.icon,
+                }),
+              } as FontAwesomeV6IconProps
+            }
             onClick={() => handlePromptClick(prompt)}
             key={prompt.id}
             size="m"
