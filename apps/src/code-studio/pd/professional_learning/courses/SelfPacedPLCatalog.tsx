@@ -10,10 +10,6 @@ import {
   filterByTopic,
 } from '@cdo/apps/templates/courseOfferings/filters/helpers';
 import {CourseOffering} from '@cdo/apps/templates/courseOfferings/types';
-import {
-  getSimilarRecommendations,
-  getStretchRecommendations,
-} from '@cdo/apps/util/curriculumRecommender/curriculumRecommender';
 import PLCatalogHeroBannerImage from '@cdo/static/professional-learning/courses/selfPacedPLCatalog-HeroBanner-illustration.png';
 
 import {
@@ -92,31 +88,10 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
   };
 
   const getRelatedCurriculumForPLCourse = (course: CourseOffering) => {
-    const key = course.key;
-
-    if (!key) return [];
-
-    const similar = getSimilarRecommendations(
-      [
-        selfPacedPLCourseOfferings.find(co => co.key === key)!,
-        ...studentsCourseOfferings,
-      ],
-      key
-    ).slice(0, 1);
-    const stretch = getStretchRecommendations(
-      [
-        selfPacedPLCourseOfferings.find(co => co.key === key)!,
-        ...studentsCourseOfferings,
-      ],
-      key
-    ).slice(0, 1);
-
-    // Combine them (filter duplicates by key)
-    const combined = [...similar, ...stretch].filter(
-      (item, index, self) => self.findIndex(c => c.key === item.key) === index
+    const selfPacedPLCourseOfferingID = course.course_offering_id;
+    return studentsCourseOfferings.filter(
+      co => co.self_paced_pl_course_offering_id === selfPacedPLCourseOfferingID
     );
-
-    return combined;
   };
 
   return (
