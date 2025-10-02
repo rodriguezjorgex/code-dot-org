@@ -17,20 +17,29 @@ interface SelfPacedPLCatalogCardProps {
   updateExpandedCardKey: (key: string) => void;
   courseOffering: CourseOffering;
   isExpanded?: boolean;
+  getRelatedCurriculumForPLCourse: (course: CourseOffering) => CourseOffering[];
 }
 
 const SelfPacedPLCatalogCardInitial: React.FunctionComponent<
   SelfPacedPLCatalogCardProps
-> = ({updateExpandedCardKey, isExpanded, courseOffering}) => {
+> = ({
+  updateExpandedCardKey,
+  isExpanded,
+  courseOffering,
+  getRelatedCurriculumForPLCourse,
+}) => {
   const courseOfferingDurationInHours = courseOffering.duration_in_hours || 0;
 
   const courseOfferingDurationLabel = `${courseOfferingDurationInHours} hour${
     courseOfferingDurationInHours > 1 ? 's' : ''
   }`;
 
+  const relatedCurriculum = getRelatedCurriculumForPLCourse(courseOffering);
+
   return (
     <CourseOfferingCard
       isExpanded={isExpanded}
+      associatedCurriculums={relatedCurriculum}
       courseOffering={courseOffering}
       isThisCourseForTeachers
       courseDurationLabel={courseOfferingDurationLabel}

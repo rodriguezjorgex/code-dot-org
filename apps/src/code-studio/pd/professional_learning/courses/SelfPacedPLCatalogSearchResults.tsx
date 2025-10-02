@@ -12,6 +12,7 @@ interface SelfPacedPLCatalogSearchResultsProps {
   handleClearAllFilters: () => void;
   updateExpandedCardKey: (key: string) => void;
   expandedCardKey?: string;
+  getRelatedCurriculumForPLCourse: (course: CourseOffering) => CourseOffering[];
 }
 const SelfPacedPLCatalogSearchResults: React.FunctionComponent<
   SelfPacedPLCatalogSearchResultsProps
@@ -20,6 +21,7 @@ const SelfPacedPLCatalogSearchResults: React.FunctionComponent<
   handleClearAllFilters,
   updateExpandedCardKey,
   expandedCardKey,
+  getRelatedCurriculumForPLCourse,
 }) =>
   filteredCourses.length > 0 ? (
     <div className={moduleStyles.catalogContentCards}>
@@ -29,6 +31,7 @@ const SelfPacedPLCatalogSearchResults: React.FunctionComponent<
           courseOffering={courseOffering}
           updateExpandedCardKey={updateExpandedCardKey}
           isExpanded={expandedCardKey === courseOffering.key}
+          getRelatedCurriculumForPLCourse={getRelatedCurriculumForPLCourse}
         />
       ))}
     </div>

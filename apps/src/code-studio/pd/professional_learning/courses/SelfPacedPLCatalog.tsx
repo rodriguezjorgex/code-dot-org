@@ -10,6 +10,10 @@ import {
   filterByTopic,
 } from '@cdo/apps/templates/courseOfferings/filters/helpers';
 import {CourseOffering} from '@cdo/apps/templates/courseOfferings/types';
+import {
+  getSimilarRecommendations,
+  getStretchRecommendations,
+} from '@cdo/apps/util/curriculumRecommender/curriculumRecommender';
 import PLCatalogHeroBannerImage from '@cdo/static/professional-learning/courses/selfPacedPLCatalog-HeroBanner-illustration.png';
 
 import {
@@ -34,6 +38,7 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
   const [appliedFilters, setAppliedFilters] = useState(
     getInitialFilterStates()
   );
+  const [expandedCardKey, setExpandedCardKey] = useState('');
 
   // Updates the filtered courses based on the applied filters.
   useEffect(() => {
@@ -57,8 +62,6 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
     appliedFilters.duration,
     setFilteredCourses,
   ]);
-
-  const [expandedCardKey, setExpandedCardKey] = useState('');
 
   useEffect(() => {
     const expandedCardFound = filteredCourses.some(
@@ -87,6 +90,28 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
     );
   };
 
+  const getRelatedCurriculumForPLCourse = (course: CourseOffering) => {
+    const key = course.key;
+
+    if (!key) return [];
+
+    const similar = getSimilarRecommendations(
+      selfPacedPLCourseOfferings,
+      key
+    ).slice(0, 1);
+    const stretch = getStretchRecommendations(
+      selfPacedPLCourseOfferings,
+      key
+    ).slice(0, 1);
+
+    // Combine them (filter duplicates by key)
+    const combined = [...similar, ...stretch].filter(
+      (item, index, self) => self.findIndex(c => c.key === item.key) === index
+    );
+
+    return combined;
+  };
+
   return (
     <div className={moduleStyles.selfPacedPLCatalog}>
       <HeroBanner
@@ -109,6 +134,7 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
           handleClearAllFilters={handleClearAllFilters}
           updateExpandedCardKey={updateExpandedCardKey}
           expandedCardKey={expandedCardKey}
+          getRelatedCurriculumForPLCourse={getRelatedCurriculumForPLCourse}
         />
       </section>
     </div>
