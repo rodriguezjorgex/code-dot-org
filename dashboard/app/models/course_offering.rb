@@ -394,6 +394,10 @@ class CourseOffering < ApplicationRecord
     }
   end
 
+  def self.students_course_offerings_for_catalog
+    assignable_published_for_students_course_offerings.map(&:summarize_for_catalog)
+  end
+
   def serialize
     {
       key: key,
