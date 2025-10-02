@@ -22,6 +22,7 @@ import moduleStyles from './courseOfferingCard.module.scss';
 
 interface CourseOfferingCardProps {
   courseOffering: CourseOffering;
+  associatedCurriculums: CourseOffering[];
   isThisCourseForTeachers?: boolean;
   courseDurationLabel: string;
   actionRowContent?: React.ReactNode;
@@ -35,6 +36,7 @@ interface CourseOfferingCardProps {
 
 const CourseOfferingCard: React.FC<CourseOfferingCardProps> = ({
   courseOffering,
+  associatedCurriculums,
   isThisCourseForTeachers = false,
   courseDurationLabel,
   actionRowContent,
@@ -170,6 +172,7 @@ const CourseOfferingCard: React.FC<CourseOfferingCardProps> = ({
       {isExpanded && (
         <CourseOfferingExpandedCard
           courseOffering={courseOffering}
+          associatedCurriculums={associatedCurriculums}
           courseDurationLabel={courseDurationLabel}
           translatedGradeRange={translatedGradeRange}
           isThisCourseForTeachers={isThisCourseForTeachers}
