@@ -101,7 +101,7 @@ const CourseOfferingExpandedCard: React.FunctionComponent<
                 </BodyThreeText>
                 {associatedCurriculums.map(
                   ({display_name, course_version_path}, index) => (
-                    <>
+                    <React.Fragment key={display_name}>
                       <Link
                         size="s"
                         key={display_name}
@@ -118,7 +118,7 @@ const CourseOfferingExpandedCard: React.FunctionComponent<
                           •
                         </BodyThreeText>
                       )}
-                    </>
+                    </React.Fragment>
                   )
                 )}
               </div>
