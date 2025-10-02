@@ -151,7 +151,12 @@ div > div:nth-child(3n + 3) {
       > div {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
         gap: 0.375rem;
+
+        .associatedCurriculumsSeparator {
+          color: var(--text-neutral-quaternary);
+        }
       }
     }
 

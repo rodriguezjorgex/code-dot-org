@@ -100,13 +100,25 @@ const CourseOfferingExpandedCard: React.FunctionComponent<
                   <StrongText>Associated Curriculum:</StrongText>
                 </BodyThreeText>
                 {associatedCurriculums.map(
-                  ({display_name, course_version_path}) => (
-                    <Link
-                      size="s"
-                      key={display_name}
-                      href={course_version_path}
-                      text={display_name}
-                    />
+                  ({display_name, course_version_path}, index) => (
+                    <>
+                      <Link
+                        size="s"
+                        key={display_name}
+                        href={course_version_path}
+                        text={display_name}
+                      />
+                      {index < associatedCurriculums.length - 1 && (
+                        <BodyThreeText
+                          className={
+                            moduleStyles.associatedCurriculumsSeparator
+                          }
+                          noMargin
+                        >
+                          •
+                        </BodyThreeText>
+                      )}
+                    </>
                   )
                 )}
               </div>
