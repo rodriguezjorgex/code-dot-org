@@ -30,7 +30,8 @@ import moduleStyles from './selfPacedPLCatalog.module.scss';
 
 const SelfPacedPLCatalog: React.FunctionComponent<{
   selfPacedPLCourseOfferings: CourseOffering[];
-}> = ({selfPacedPLCourseOfferings}) => {
+  studentsCourseOfferings: CourseOffering[];
+}> = ({selfPacedPLCourseOfferings, studentsCourseOfferings}) => {
   const [filteredCourses, setFilteredCourses] = useState(
     selfPacedPLCourseOfferings
   );
@@ -96,11 +97,17 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
     if (!key) return [];
 
     const similar = getSimilarRecommendations(
-      selfPacedPLCourseOfferings,
+      [
+        selfPacedPLCourseOfferings.find(co => co.key === key)!,
+        ...studentsCourseOfferings,
+      ],
       key
     ).slice(0, 1);
     const stretch = getStretchRecommendations(
-      selfPacedPLCourseOfferings,
+      [
+        selfPacedPLCourseOfferings.find(co => co.key === key)!,
+        ...studentsCourseOfferings,
+      ],
       key
     ).slice(0, 1);
 
