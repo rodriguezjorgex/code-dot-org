@@ -1,12 +1,11 @@
 import Button from '@code-dot-org/component-library/button';
 import {FontAwesomeV6IconProps} from '@code-dot-org/component-library/fontAwesomeV6Icon';
-
+import classNames from 'classnames';
 import React from 'react';
 
 import {AiTutorSuggestedPrompt} from '../../suggestedPrompts';
 
 import styles from './AiTutorSidebar.module.scss';
-import classNames from 'classnames';
 
 interface AiTutorSidebarSuggestedPromptsProps {
   onPromptSelect?: (prompt: AiTutorSuggestedPrompt) => void;

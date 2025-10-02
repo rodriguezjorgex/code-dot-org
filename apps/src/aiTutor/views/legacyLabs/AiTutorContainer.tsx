@@ -2,9 +2,8 @@ import Button from '@code-dot-org/component-library/button';
 import {BodyThreeText} from '@code-dot-org/component-library/typography';
 import React, {FC} from 'react';
 
-import aiBotOutlineIcon from '@cdo/static/ai-bot-outline.png';
-
 import AiTutor2Chat from '@cdo/apps/lab2/views/components/AiTutor2Chat';
+import aiBotOutlineIcon from '@cdo/static/ai-bot-outline.png';
 
 import {
   defaultPrompts,
