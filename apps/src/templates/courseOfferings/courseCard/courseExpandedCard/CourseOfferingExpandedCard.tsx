@@ -102,6 +102,7 @@ const CourseOfferingExpandedCard: React.FunctionComponent<
                 {associatedCurriculums.map(
                   ({display_name, course_version_path}) => (
                     <Link
+                      size="s"
                       key={display_name}
                       href={course_version_path}
                       text={display_name}

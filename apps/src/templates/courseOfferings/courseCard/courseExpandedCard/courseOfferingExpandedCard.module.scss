@@ -147,6 +147,12 @@ div > div:nth-child(3n + 3) {
       align-self: stretch;
 
       border-bottom: 1px solid var(--borders-neutral-primary);
+
+      > div {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+      }
     }
 
     .actionRowContent {
