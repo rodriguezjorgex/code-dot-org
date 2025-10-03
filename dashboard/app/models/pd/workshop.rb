@@ -989,8 +989,6 @@ class Pd::Workshop < ApplicationRecord
       normalized_zip = zip.to_s.rjust(5, '0')
 
       zip_codes = regional_partner&.mappings&.pluck(:zip_code)
-      puts "User ZIP: #{normalized_zip}"
-      puts "Partner ZIPs: #{zip_codes.inspect}"
 
       zip_codes&.include?(normalized_zip)
     else
