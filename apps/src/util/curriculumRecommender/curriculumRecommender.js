@@ -44,7 +44,7 @@ export const getSimilarRecommendations = (
   // Filter out curricula that don't support any of the same grade levels
   curricula = filterHasOverlappingGradeLevels(
     curricula,
-    mainCurriculum.grade_levels ?? []
+    mainCurriculum.grade_levels
   );
 
   // (if signed-in teacher) Filter out curricula the user has taught before
@@ -135,7 +135,7 @@ export const getStretchRecommendations = (
   // Filter out curricula that don't support any of the same grade levels
   curricula = filterHasOverlappingGradeLevels(
     curricula,
-    mainCurriculum.grade_levels ?? []
+    mainCurriculum.grade_levels
   );
 
   // (if signed-in teacher) Filter out curricula the user has taught before
