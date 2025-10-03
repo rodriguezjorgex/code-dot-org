@@ -229,7 +229,7 @@ class CourseOffering < ApplicationRecord
     end
   end
 
-  def self.self_paced_course_offerings_for_catalog(user, locale = 'en-us')
+  def self.self_paced_course_offerings_for_catalog(user = nil, locale = 'en-us')
     offerings = all_course_offerings.select do |co|
       co.get_participant_audience == 'teacher' &&
         co.instruction_type == 'self_paced' &&
