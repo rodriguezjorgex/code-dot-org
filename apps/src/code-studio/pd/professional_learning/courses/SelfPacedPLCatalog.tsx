@@ -86,9 +86,9 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
       updateQueryParam(filter.name, undefined, false)
     );
   };
-
-  const getRelatedCurriculumForPLCourse = (course: CourseOffering) => {
+  const getRelatedCurriculumsForPLCourse = (course: CourseOffering) => {
     const selfPacedPLCourseOfferingID = course.course_offering_id;
+
     return studentsCourseOfferings.filter(
       co => co.self_paced_pl_course_offering_id === selfPacedPLCourseOfferingID
     );
@@ -116,7 +116,7 @@ const SelfPacedPLCatalog: React.FunctionComponent<{
           handleClearAllFilters={handleClearAllFilters}
           updateExpandedCardKey={updateExpandedCardKey}
           expandedCardKey={expandedCardKey}
-          getRelatedCurriculumForPLCourse={getRelatedCurriculumForPLCourse}
+          getRelatedCurriculumsForPLCourse={getRelatedCurriculumsForPLCourse}
         />
       </section>
     </div>

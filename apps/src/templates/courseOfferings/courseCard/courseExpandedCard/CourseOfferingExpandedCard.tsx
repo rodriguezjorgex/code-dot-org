@@ -17,7 +17,7 @@ import moduleStyles from './courseOfferingExpandedCard.module.scss';
 
 interface CourseOfferingExpandedCardProps {
   courseOffering: CourseOffering;
-  associatedCurriculums: CourseOffering[];
+  getRelatedCurriculums: (course: CourseOffering) => CourseOffering[];
   onClose: () => void;
   actionRowContent?: React.ReactNode;
   translatedGradeRange: [string, string];
@@ -31,7 +31,7 @@ const CourseOfferingExpandedCard: React.FunctionComponent<
   CourseOfferingExpandedCardProps
 > = ({
   courseOffering,
-  associatedCurriculums,
+  getRelatedCurriculums,
   onClose,
   actionRowContent,
   isThisCourseForTeachers,
@@ -41,6 +41,7 @@ const CourseOfferingExpandedCard: React.FunctionComponent<
   relatedProposalsContent,
   relatedProposalsHeader,
 }) => {
+  const relatedCurriculums = getRelatedCurriculums(courseOffering);
   return (
     <div className={moduleStyles.courseOfferingExpandedCardContainer}>
       <div className={moduleStyles.arrowContainer} />
@@ -89,7 +90,7 @@ const CourseOfferingExpandedCard: React.FunctionComponent<
             )}
             {courseOffering.image && <Image src={courseOffering.image} />}
           </div>
-          {associatedCurriculums && !!associatedCurriculums.length && (
+          {relatedCurriculums?.length && (
             <div className={moduleStyles.additionalDetails}>
               <div>
                 <FontAwesomeV6Icon
@@ -99,7 +100,7 @@ const CourseOfferingExpandedCard: React.FunctionComponent<
                 <BodyThreeText noMargin>
                   <StrongText>Associated Curriculum:</StrongText>
                 </BodyThreeText>
-                {associatedCurriculums.map(
+                {relatedCurriculums.map(
                   ({display_name, course_version_path}, index) => (
                     <React.Fragment key={display_name}>
                       <Link
@@ -108,7 +109,7 @@ const CourseOfferingExpandedCard: React.FunctionComponent<
                         href={course_version_path}
                         text={display_name}
                       />
-                      {index < associatedCurriculums.length - 1 && (
+                      {index < relatedCurriculums.length - 1 && (
                         <BodyThreeText
                           className={
                             moduleStyles.associatedCurriculumsSeparator
