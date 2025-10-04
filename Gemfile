@@ -56,11 +56,11 @@ gem 'xxhash'
 
 # Google APIs. Formerly just the `google-api-client` gem
 # See https://github.com/googleapis/google-api-ruby-client/blob/main/google-api-client/OVERVIEW.md
-gem 'google-apis-core'
+gem 'google-apis-core', '>= 0.15.1'
 
-gem 'google-apis-analytics_v3'
-gem 'google-apis-classroom_v1'
-gem 'google-apis-youtube_v3'
+gem 'google-apis-analytics_v3', '>= 0.14.0'
+gem 'google-apis-classroom_v1', '>= 0.22.0'
+gem 'google-apis-youtube_v3', '>= 0.26.0'
 
 # CSRF protection for Sinatra.
 gem 'rack_csrf'
@@ -94,7 +94,7 @@ group :development, :test do
   gem 'better_errors', '>= 2.7.0'
   gem 'brakeman'
   gem 'database_cleaner-active_record', '~> 2.1.0'
-  gem 'haml-rails' # haml (instead of erb) generators
+  gem 'haml-rails' , '>= 3.0.0' # haml (instead of erb) generators
   gem 'ruby-prof', '>= 1.7.0'
   gem 'vcr', require: false
   # For unit testing.
@@ -256,11 +256,11 @@ gem 'aws-sdk-secretsmanager'
 
 # Lint tools
 group :development, :staging, :levelbuilder, :test do
-  gem 'haml_lint', require: false
-  gem 'rubocop', '~> 1.28', require: false
-  gem 'rubocop-performance', require: false
-  gem 'rubocop-rails', require: false
-  gem 'rubocop-rails-accessibility', require: false
+  gem 'haml_lint', '>= 0.39.0', require: false
+  gem 'rubocop', '~> 1.66', '>= 1.66.0', require: false
+  gem 'rubocop-performance', '>= 1.14.0', require: false
+  gem 'rubocop-rails', '>= 2.15.0', require: false
+  gem 'rubocop-rails-accessibility', '>= 1.0.0', require: false
   gem 'scss_lint', require: false
 end
 
@@ -337,7 +337,7 @@ install_if require_pg do
 end
 
 gem 'activerecord-import', '~> 1.0.3'
-gem 'active_record_union'
+gem 'active_record_union', '>= 1.4.0'
 gem 'scenic'
 gem 'scenic-mysql_adapter'
 
