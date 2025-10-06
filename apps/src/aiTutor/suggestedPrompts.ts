@@ -22,7 +22,7 @@ export const levelPrompts: AiTutorSuggestedPrompt[] = [
     icon: {
       iconName: 'code',
     },
-    label: 'Show me an example',
+    label: 'Give an example',
     value: 'Can you give me an example?',
     analyticsProperties: {
       cannedPrompt: 'example',
@@ -33,7 +33,7 @@ export const levelPrompts: AiTutorSuggestedPrompt[] = [
     icon: {
       iconName: 'lightbulb',
     },
-    label: 'Give me a hint',
+    label: 'Give a hint',
     value: 'Can you give me a hint?',
     analyticsProperties: {
       cannedPrompt: 'hint',
