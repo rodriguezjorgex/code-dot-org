@@ -1,5 +1,6 @@
 <Dancelab>
   <config><![CDATA[{
+  "published": true,
   "game_id": 63,
   "created_at": "2025-10-01T22:45:32.000Z",
   "level_num": "custom",
@@ -7,7 +8,8 @@
   "properties": {
     "skin": "dance",
     "block_pools": [
-      "Dancelab"
+      "Dancelab",
+      "GeneratedDancers"
     ],
     "helper_libraries": [
       "DanceLab"
@@ -35,10 +37,15 @@
     "display_name": "Regenerate the dance",
     "thumbnail_url": "https://images.code.org/2cc954ff41cbcdad4404fb70778c4032-Untitled 9.jpg",
     "name_suffix": "_4",
-    "preload_asset_list": null
+    "preload_asset_list": null,
+    "encrypted_examples": [
+
+    ],
+    "generate_dancer_mode": "false"
   },
-  "published": true,
-  "audit_log": "[{\"changed_at\":\"2025-10-01T22:45:32.481+00:00\",\"changed\":[\"cloned from \\\"dance_moves_choice_2_3\\\"\"],\"cloned_from\":\"dance_moves_choice_2_3\"}]"
+  "audit_log": "[{\"changed_at\":\"2025-10-01T22:45:32.481+00:00\",\"changed\":[\"cloned from \\\"dance_moves_choice_2_3\\\"\"],\"cloned_from\":\"dance_moves_choice_2_3\"},{\"changed_at\":\"2025-10-07 00:35:43 +0000\",\"changed\":[\"block_pools\",\"preload_asset_list\",\"contained_level_names\"],\"changed_by_id\":831,\"changed_by_email\":\"mike.harvey@code.org\"}]",
+  "level_concept_difficulty": {
+  }
 }]]></config>
   <blocks/>
 </Dancelab>
