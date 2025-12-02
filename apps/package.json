@@ -296,7 +296,7 @@
     "md5": "^2.3.0",
     "memoize-one": "^5.1.1",
     "merge": "^2.1.1",
-    "messageformat": "2.3.0",
+    "messageformat": "4.0.0",
     "ml-knn": "^3.0.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.47",
