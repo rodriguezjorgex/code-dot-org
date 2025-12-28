@@ -24,7 +24,7 @@ gem 'drb' # needed for activesupport in Ruby >= 3.4, drop explicit after we upgr
 gem 'observer' # needed for activesupport in Ruby >= 3.4, drop explicit after we upgrade to activesupport >= 7.2
 gem 'syslog' # needed for activesupport in Ruby >= 3.4, drop explicit after we upgrade to activesupport >= 7.2
 
-gem 'rails', '~> 6.1'
+gem 'rails', '~> 7.0', '>= 7.0.0'
 gem 'rails-controller-testing', '~> 1.0.5'
 
 # Compile Sprockets assets concurrently in `assets:precompile`.
@@ -201,7 +201,7 @@ gem 'rmagick', '~> 4.2.5'
 
 gem 'acts_as_list'
 
-gem 'kaminari' # pagination
+gem 'kaminari' , '>= 1.0.0' # pagination
 
 gem 'stringex', '~> 2.5.2' # Provides String.to_ascii
 
@@ -319,7 +319,7 @@ gem 'rambling-trie', '>= 2.1.1'
 gem 'image_optim', github: 'code-dot-org/image_optim', ref: 'cdo'
 # Image-optimization tools and binaries.
 gem 'image_optim_pack', '~> 0.5.0', github: 'code-dot-org/image_optim_pack', ref: 'guetzli'
-gem 'image_optim_rails', '~> 0.4.0'
+gem 'image_optim_rails', '~> 0.5.0'
 
 gem 'image_size', require: false
 
@@ -353,7 +353,7 @@ gem 'colorize'
 
 gem 'require_all', require: false
 
-gem 'dotiw'
+gem 'dotiw', '>= 5.0.0'
 
 gem 'ruby-progressbar'
 
