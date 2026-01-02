@@ -285,7 +285,7 @@ gem 'pusher', '~> 1.3.1', require: false
 gem 'youtube-dl.rb', group: [:development, :staging, :levelbuilder]
 
 gem 'daemons', '1.1.9' # Pinned to old version, see PR 57938
-gem 'httparty'
+gem 'httparty', '>= 0.24.0'
 gem 'oj', '~> 3.10'
 
 gem 'rest-client', '~> 2.0.1'
