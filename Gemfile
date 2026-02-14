@@ -56,11 +56,11 @@ gem 'xxhash'
 
 # Google APIs. Formerly just the `google-api-client` gem
 # See https://github.com/googleapis/google-api-ruby-client/blob/main/google-api-client/OVERVIEW.md
-gem 'google-apis-core'
+gem 'google-apis-core', '>= 0.12.0'
 
-gem 'google-apis-analytics_v3'
-gem 'google-apis-classroom_v1'
-gem 'google-apis-youtube_v3'
+gem 'google-apis-analytics_v3', '>= 0.14.0'
+gem 'google-apis-classroom_v1', '>= 0.22.0'
+gem 'google-apis-youtube_v3', '>= 0.26.0'
 
 # CSRF protection for Sinatra.
 gem 'rack_csrf'
@@ -72,7 +72,7 @@ gem 'rack-mini-profiler'
 
 group :development do
   gem 'annotate', '~> 3.1.1'
-  gem 'aws-google', '~> 0.2.3'
+  gem 'aws-google', '~> 0.2.4'
   gem 'web-console', '~> 4.2.0'
   # Bootsnap pre-caches Ruby require paths + bytecode and speeds up boot time significantly.
   # We only use it in development atm to get a feel for it, and the benefit is greatest here.
@@ -108,7 +108,7 @@ group :development, :test do
 
   # For UI testing.
   gem 'cucumber'
-  gem 'eyes_selenium', '~> 4.0'
+  gem 'eyes_selenium', '~> 6.12', '>= 6.12.11'
   gem 'fakefs', '~> 2.5.0', require: false
   gem 'minitest', '~> 5.15'
   gem 'minitest-around'
@@ -171,7 +171,7 @@ gem 'devise_invitable', '~> 2.0.2'
 
 gem 'omniauth-clever', '~> 2.0.1', github: 'code-dot-org/omniauth-clever', tag: 'v2.0.1'
 gem 'omniauth-facebook', '~> 10.0.0'
-gem 'omniauth-google-oauth2', '~> 1.1.3'
+gem 'omniauth-google-oauth2', '~> 1.2.0'
 gem 'omniauth-microsoft_v2_auth', github: 'dooly-ai/omniauth-microsoft_v2_auth'
 
 # Resolve CVE 2015 9284
@@ -224,7 +224,7 @@ gem 'jwt', '~> 2.7.0'
 # SMS API for send-to-phone feature; 6.0 includes some breaking changes which
 # we'll need to prepare for:
 # https://github.com/twilio/twilio-ruby/blob/6.0.0/UPGRADE.md#2023-05-03-5xx-to-6xx
-gem 'twilio-ruby', '< 6.0'
+gem 'twilio-ruby', '~> 6.0'
 
 # TwitterCldr uses Unicode's Common Locale Data Repository (CLDR)
 # to format certain types of text into their localized equivalents.
@@ -295,7 +295,7 @@ gem 'rest-client', '~> 2.0.1'
 gem 'unf_ext', '0.0.7.4'
 
 # Generate SSL certificates.
-gem 'acmesmith', '~> 2.3.1'
+gem 'acmesmith', '~> 2.4.0'
 
 gem 'addressable'
 # bcrypt version specified due to "Invalid Hash" error in Linux
@@ -308,7 +308,7 @@ gem 'composite_primary_keys', '~> 13.0'
 
 # GitHub API; used by the DotD script to automatically create new
 # releases on deploy
-gem 'octokit'
+gem 'octokit', '>= 6.1.0'
 
 # Used to create a prefix trie of student names within a section
 gem 'full-name-splitter', github: 'pahanix/full-name-splitter'
