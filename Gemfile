@@ -24,7 +24,7 @@ gem 'drb' # needed for activesupport in Ruby >= 3.4, drop explicit after we upgr
 gem 'observer' # needed for activesupport in Ruby >= 3.4, drop explicit after we upgrade to activesupport >= 7.2
 gem 'syslog' # needed for activesupport in Ruby >= 3.4, drop explicit after we upgrade to activesupport >= 7.2
 
-gem 'rails', '~> 6.1'
+gem 'rails', '~> 6.1', '>= 6.1.7.8'
 gem 'rails-controller-testing', '~> 1.0.5'
 
 # Compile Sprockets assets concurrently in `assets:precompile`.
@@ -36,7 +36,7 @@ gem 'sprockets', github: 'code-dot-org/sprockets', ref: 'concurrent_asset_bundle
 
 # provide `respond_to` methods
 # (see: http://guides.rubyonrails.org/4_2_release_notes.html#respond-with-class-level-respond-to)
-gem 'responders', '~> 3.0'
+gem 'responders', '~> 3.1', '>= 3.1.1'
 
 gem 'sinatra', '2.2.3', require: 'sinatra/base'
 
@@ -49,7 +49,7 @@ gem 'jumphash'
 gem 'os'
 gem 'parallel'
 gem 'redis', '~> 4.8.1'
-gem 'redis-actionpack', '~> 5.4.0'
+gem 'redis-actionpack', '~> 5.5.0'
 # Using commit ref on fork until maintainer publishes a new version.
 gem 'redis-slave-read', require: false, github: 'code-dot-org/redis-slave-read', ref: 'cfe1bd0f5cf65eee5b52560139cab133f22cb880'
 gem 'xxhash'
@@ -112,7 +112,7 @@ group :development, :test do
   gem 'fakefs', '~> 2.5.0', require: false
   gem 'minitest', '~> 5.15'
   gem 'minitest-around'
-  gem 'minitest-rails', '~> 6.1', require: false
+  gem 'minitest-rails', '~> 7.0', '>= 7.0.0', require: false
   gem 'minitest-reporters', '~> 1.2.0.beta3'
   gem 'minitest-spec-context', '~> 0.0.3'
   gem 'minitest-stub-const', '~> 0.6'
@@ -132,7 +132,7 @@ group :development, :test do
 end
 
 # Needed for unit testing, and also for /rails/mailers email previews.
-gem 'factory_bot_rails', '~> 6.2', group: [:development, :staging, :test, :adhoc]
+gem 'factory_bot_rails', '~> 6.3', '>= 6.3.0', group: [:development, :staging, :test, :adhoc]
 
 # For pegasus PDF generation.
 gem 'open_uri_redirections', require: false
@@ -157,7 +157,7 @@ gem 'sassc-rails', github: 'code-dot-org/sassc-rails', ref: 'frozen-array-fix'
 gem 'uglifier', '>= 1.3.0'
 
 # Use jquery as the JavaScript library.
-gem 'jquery-rails'
+gem 'jquery-rails', '>= 4.2.0'
 
 gem 'phantomjs', '~> 1.9.7.1'
 
@@ -166,8 +166,8 @@ gem 'gemoji'
 
 # Authentication and permissions.
 gem 'cancancan', '~> 3.5.0'
-gem 'devise', '~> 4.9.0'
-gem 'devise_invitable', '~> 2.0.2'
+gem 'devise', '~> 4.9.4'
+gem 'devise_invitable', '~> 2.0.7'
 
 gem 'omniauth-clever', '~> 2.0.1', github: 'code-dot-org/omniauth-clever', tag: 'v2.0.1'
 gem 'omniauth-facebook', '~> 10.0.0'
@@ -182,9 +182,9 @@ gem 'bootstrap-sass', '~> 2.3.2.2'
 
 gem 'haml', '~> 5.2.0'
 
-gem 'jquery-ui-rails', '~> 6.0.1'
+gem 'jquery-ui-rails', '~> 7.0.0'
 
-gem 'nokogiri', '>= 1.10.0'
+gem 'nokogiri', '>= 1.18.9'
 
 gem 'highline', '~> 3.1.0'
 
@@ -224,7 +224,7 @@ gem 'jwt', '~> 2.7.0'
 # SMS API for send-to-phone feature; 6.0 includes some breaking changes which
 # we'll need to prepare for:
 # https://github.com/twilio/twilio-ruby/blob/6.0.0/UPGRADE.md#2023-05-03-5xx-to-6xx
-gem 'twilio-ruby', '< 6.0'
+gem 'twilio-ruby', '~> 6.0'
 
 # TwitterCldr uses Unicode's Common Locale Data Repository (CLDR)
 # to format certain types of text into their localized equivalents.
@@ -236,7 +236,7 @@ gem 'user_agent_parser'
 gem 'paranoia', '~> 2.5.0'
 
 # JSON model serializer for REST APIs.
-gem 'active_model_serializers', '~> 0.10.13'
+gem 'active_model_serializers', '~> 0.10.14'
 
 # AWS SDK and associated service APIs.
 gem 'aws-sdk-acm'
@@ -295,7 +295,7 @@ gem 'rest-client', '~> 2.0.1'
 gem 'unf_ext', '0.0.7.4'
 
 # Generate SSL certificates.
-gem 'acmesmith', '~> 2.3.1'
+gem 'acmesmith', '~> 2.4.0'
 
 gem 'addressable'
 # bcrypt version specified due to "Invalid Hash" error in Linux
@@ -319,7 +319,7 @@ gem 'rambling-trie', '>= 2.1.1'
 gem 'image_optim', github: 'code-dot-org/image_optim', ref: 'cdo'
 # Image-optimization tools and binaries.
 gem 'image_optim_pack', '~> 0.5.0', github: 'code-dot-org/image_optim_pack', ref: 'guetzli'
-gem 'image_optim_rails', '~> 0.4.0'
+gem 'image_optim_rails', '~> 0.5.0'
 
 gem 'image_size', require: false
 
@@ -331,7 +331,7 @@ gem 'sort_alphabetical', github: 'grosser/sort_alphabetical'
 
 gem 'recaptcha', require: 'recaptcha/rails'
 
-gem 'loofah', '~> 2.19.1'
+gem 'loofah', '~> 2.20.0'
 
 # Install pg gem only on specific production hosts and the i18n-dev server.
 require_pg = lambda do
@@ -346,8 +346,8 @@ end
 
 gem 'activerecord-import', '~> 1.3.0'
 gem 'active_record_union'
-gem 'scenic'
-gem 'scenic-mysql_adapter'
+gem 'scenic', '>= 1.5.2'
+gem 'scenic-mysql_adapter', '>= 1.0.2'
 
 gem 'colorize'
 
